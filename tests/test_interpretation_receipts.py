@@ -12,7 +12,7 @@ ROOT=Path(__file__).resolve().parents[1]
 REPORT=ROOT/'reviews/interpretation'
 WORK=REPORT/'workspace'
 
-def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
+def sha(path):return hashlib.sha256(b'' if path.suffix=='.lock' and not path.exists() else path.read_bytes()).hexdigest()  # lock files are empty and gitignored
 def load(path):return json.loads(path.read_text())
 
 class IndependentInterpretationReceipts(unittest.TestCase):

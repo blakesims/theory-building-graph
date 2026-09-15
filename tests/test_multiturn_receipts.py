@@ -9,7 +9,7 @@ from acceptance.receipt_validation import validate_receipt_file
 ROOT=Path(__file__).resolve().parents[1]
 BASE=ROOT/'reviews/multiturn/v1'
 def load(p):return json.loads(p.read_text())
-def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+def sha(p):return hashlib.sha256(b'' if p.suffix=='.lock' and not p.exists() else p.read_bytes()).hexdigest()  # lock files are empty and gitignored
 def snapshot(trial,stage,side):return load(BASE/trial/'control'/stage/(side+'.graph.json'))
 class StagedTrialReceipts(unittest.TestCase):
  def test_ports_artifact_hashes_and_stage_chain(self):

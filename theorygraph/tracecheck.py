@@ -7,7 +7,8 @@ SCOPE_NOTE = 'Checks the recorded chooser role after a linked ended attempt. Doe
 def fingerprint(node):
     content=copy.deepcopy(node)
     if isinstance(content.get('meta'),dict):
-        for field in ('review_state','review_reason','layout','position','color','reviewed_inputs','reviewed_input_versions','review_roots','sources','aliases','title'): content['meta'].pop(field,None)
+        # Review currency, commentary and presentation never change what was checked.
+        for field in ('review_state','review_reason','review_note','review_result','review','note','notes','layout','position','color','reviewed_inputs','reviewed_input_versions','review_roots','sources','aliases','title'): content['meta'].pop(field,None)
         if not content['meta']: content.pop('meta')
     content.pop('result_state',None)
     for field in ('layout','position','color','reviewed_inputs','reviewed_input_versions','review_roots','sources','aliases','title','semantic_version'): content.pop(field,None)

@@ -33,7 +33,9 @@ with tempfile.TemporaryDirectory(prefix='theory-browser-') as d:
         browser('wait','--text','Readiness:')
         browser('snapshot','-i')
         body=browser('get','text','#detail')
-        assert 'Resolution: open' in body,body
+        from theorygraph import dependency
+        expected=dependency.resolution(graph.load(path),'stopping-authority')['resolution']
+        assert 'Resolution: '+expected in body,(expected,body)  # viewer agrees with the engine; the live state may change between runs
         browser('find','role','button','click','--name','Show affected dependencies')
         browser('wait','--text','Declared dependency impact')
         browser('find','role','button','click','--name','Inspect checks')

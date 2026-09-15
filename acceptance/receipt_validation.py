@@ -52,7 +52,7 @@ def validate_receipt_file(root,relative,case, *, _component=False, _seen=()):
         for kind,rel,expected in bindings:
             item=(root/rel).resolve()
             if not item.is_relative_to(root.resolve()):raise ValueError('evidence path outside repository')
-            content=item.read_bytes()
+            content=b'' if item.suffix=='.lock' and not item.exists() else item.read_bytes()
             if not expected or hashlib.sha256(content).hexdigest()!=expected:errors.append(kind+'-hash-mismatch')
             # Input can be a task Markdown rather than JSON; raw/rubric must parse.
             if kind=='rubric':data[kind]=json.loads(content)
@@ -70,7 +70,7 @@ def validate_receipt_file(root,relative,case, *, _component=False, _seen=()):
             artifact=(root/rel).resolve()
             if not artifact.exists():artifact=(path.parent/rel).resolve()
             if not artifact.is_relative_to(root.resolve()):raise ValueError('artifact outside repository')
-            if hashlib.sha256(artifact.read_bytes()).hexdigest()!=expected_hash:errors.append('artifact-hash-mismatch:'+rel)
+            if hashlib.sha256(b'' if artifact.suffix=='.lock' and not artifact.exists() else artifact.read_bytes()).hexdigest()!=expected_hash:errors.append('artifact-hash-mismatch:'+rel)
         rubric=data['rubric']
         expected=list(rubric.get('required_grades',[]))+[g['id'] for key in ('criteria','regression_criteria','cross_cutting','rubric') for g in rubric.get(key,[])]
         if not expected:errors.append('empty-rubric')

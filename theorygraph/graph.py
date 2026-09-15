@@ -43,6 +43,16 @@ def validate(g):
 
 def review_state(n): return (n.get('meta') or {}).get('review_state','current')
 
+EVIDENCE_TYPES=('trace','check-result')  # legacy graphs without node_types.TYPE.evidence
+def is_evidence(g,n):
+    declared=(g.get('node_types',{}).get(n.get('type')) or {}).get('evidence')
+    return bool(declared) if declared is not None else n.get('type') in EVIDENCE_TYPES
+
+def theory_view(g,keep=()):
+    """The theory without evidence machinery (traces, saved check results) and their edges."""
+    nodes={i:n for i,n in sorted(g['nodes'].items()) if i in keep or not is_evidence(g,n)}
+    return {**g,'nodes':nodes,'edges':{i:e for i,e in sorted(g['edges'].items()) if e['from'] in nodes and e['to'] in nodes}}
+
 def questions(g, limit=30, historical=False):
     if limit < 1: raise GraphError('limit must be >= 1')
     states={}; nodes={}; totals=collections.Counter()
@@ -65,11 +75,13 @@ def questions(g, limit=30, historical=False):
     ids=sorted(nodes)[:limit]
     return {'revision':g['revision'],'total_questions':len(all_questions),'included_questions':len(nodes),'historical_excluded':sum(review_state(n)=='historical' for n in all_questions.values()) if not historical else 0,'counts':dict(totals),'question_states':{i:states[i] for i in ids},'truncated':len(nodes)>limit,'nodes':{i:nodes[i] for i in ids},'resolutions':{i:dependency.resolution(g,i) for i in ids},'readiness':{i:dependency.readiness(g,i) for i in ids}}
 
-def review(g, root=None, limit=30, edge_limit=60):
+def review(g, root=None, limit=30, edge_limit=60, evidence=False):
     if root is None:
-        items=[(i,n) for i,n in sorted(g['nodes'].items()) if review_state(n)=='needs-review']
+        view=g if evidence else theory_view(g)
+        items=[(i,n) for i,n in sorted(view['nodes'].items()) if review_state(n)=='needs-review']
         return {'revision':g['revision'],'total':len(items),'truncated':len(items)>limit,'nodes':dict(items[:limit])}
     if root not in g['nodes']: root=resolve(g,root)
+    if not evidence: g=theory_view(g,keep=(root,))
     relevant={i:e for i,e in sorted(g['edges'].items()) if (e['to']==root and e['type'] in ('answers','revises','challenges','raises','motivates','informs','about','governs','potential-conflict','depends-on','extracted-from')) or (e['from']==root and (e['type'] in ('revises','challenges','depends-on','extracted-from') or g['nodes'][e['to']]['type']=='question'))}
     edge_truncated=len(relevant)>edge_limit
     relevant=dict(list(relevant.items())[:edge_limit])
@@ -77,11 +89,15 @@ def review(g, root=None, limit=30, edge_limit=60):
     chosen=ids[:limit]
     return {'revision':g['revision'],'focus':root,'edge_truncated':edge_truncated,'truncated':len(ids)>limit,'nodes':{i:g['nodes'][i] for i in chosen},'edges':{i:e for i,e in relevant.items() if e['from'] in chosen and e['to'] in chosen}}
 
-def overview(g):
-    return {'revision':g['revision'],'nodes':len(g['nodes']),'edges':len(g['edges']),'node_types':dict(collections.Counter(n['type'] for n in g['nodes'].values())),'statuses':dict(collections.Counter(n.get('status','unset') for n in g['nodes'].values()))}
+def overview(g,evidence=False):
+    view=g if evidence else theory_view(g)
+    result={'revision':g['revision'],'nodes':len(view['nodes']),'edges':len(view['edges']),'node_types':dict(collections.Counter(n['type'] for n in view['nodes'].values())),'statuses':dict(collections.Counter(n.get('status','unset') for n in view['nodes'].values()))}
+    if not evidence: result['evidence']=dict(collections.Counter(n['type'] for n in g['nodes'].values() if is_evidence(g,n)))
+    return result
 
-def walk(g, root, depth=1, direction='both', limit=40, edge_limit=100, current=True, anchors='stop', relations=None):
+def walk(g, root, depth=1, direction='both', limit=40, edge_limit=100, current=True, anchors='stop', relations=None, evidence=False):
     root=resolve(g,root)
+    if not evidence: g=theory_view(g,keep=(root,))
     if direction not in ('both','in','out'): raise GraphError('direction must be both, in or out')
     if anchors not in ('stop','cross','omit'): raise GraphError('anchors must be stop, cross or omit')
     if relations:
@@ -122,8 +138,9 @@ def resolve(g, value):
     if matches: raise GraphError('Ambiguous name; use an id: '+', '.join(matches))
     raise GraphError('Unknown node: '+value+' (try anchors or search)')
 
-def search(g, query, limit=20):
+def search(g, query, limit=20, evidence=False):
     if limit < 1: raise GraphError('limit must be >= 1')
+    if not evidence: g=theory_view(g)
     def tokens(text):
         # Deliberately tiny vocabulary normalization, not semantic/full-text search.
         synonyms={'failure':'fail','failures':'fail','failed':'fail','failing':'fail'}
@@ -191,87 +208,92 @@ def check(g):
             'scope':'Declared dependencies, structural gaps, recorded tensions, and supported formal patterns only. Prose requires agent review.'}
 
 
-def apply(path, ops, actor, reason, expected=None):
+def simulate(g, ops, actor, reason):
+    """Apply a batch to a deep copy and return (new_graph, edits). Pure: no lock, no write."""
     if not actor.strip() or not reason.strip(): raise GraphError('actor and reason are required')
     if not isinstance(ops,list) or not ops: raise GraphError('Expected a nonempty JSON array of operations')
+    original=copy.deepcopy(g); g=copy.deepcopy(g)
+    edits=[]
+    for op in ops:
+        if not isinstance(op,dict): raise GraphError('Each operation must be an object')
+        action=op.get('op'); collection=op.get('collection'); key=op.get('id')
+        if collection not in ('nodes','edges','node_types','edge_types','formal_model') or not isinstance(key,str) or not key: raise GraphError('Operation needs collection and nonempty id')
+        if action in ('add','update') and 'value' not in op:raise GraphError('add/update require an explicit value')
+        if collection=='formal_model': g.setdefault(collection,{})
+        before=copy.deepcopy(g[collection].get(key))
+        if action=='add':
+            if key in g[collection]: raise GraphError(f'Already exists: {collection}/{key}')
+            after=op.get('value')
+        elif action=='update':
+            if key not in g[collection]: raise GraphError(f'Not found: {collection}/{key}')
+            if collection=='formal_model': after=copy.deepcopy(op.get('value'))
+            else:
+                if not isinstance(op.get('value'),dict): raise GraphError('update value must be an object')
+                after={**before,**op['value']}
+                if isinstance(before.get('meta'),dict) and isinstance(op['value'].get('meta'),dict): after['meta']={**before['meta'],**op['value']['meta']}
+        elif action=='delete':
+            if key not in g[collection]: raise GraphError(f'Not found: {collection}/{key}')
+            after=None
+        else: raise GraphError('op must be add, update, or delete')
+        if action=='delete': del g[collection][key]
+        else:
+            if collection!='formal_model' and not isinstance(after,dict): raise GraphError('value must be an object')
+            g[collection][key]=copy.deepcopy(after)
+        edits.append({'collection':collection,'id':key,'before':before,'after':copy.deepcopy(after)})
+    # Validate before automatic interpretation; malformed JSON must be an atomic domain error.
+    validate(g)
+    reviewed={o['id'] for o in ops if o.get('collection')=='nodes' and 'review_state' in (o.get('value',{}).get('meta') or {})}
+    dependency.refresh(original,g,edits,reviewed)
+    # Deleting a named semantic input must not leave a surviving opaque pattern dangling.
+    deleted=set(original['nodes'])-set(g['nodes'])
+    def node_references(node):
+        from . import formalcheck
+        refs=set(node.get('references',[]))
+        if isinstance(node.get('pattern'),dict):refs.update(formalcheck.references(node['pattern']).get('nodes',[]))
+        provenance=node.get('provenance') or {}
+        for source in provenance.get('sources',[]):
+            ref=source if isinstance(source,str) else source.get('id') if isinstance(source,dict) else None
+            if isinstance(ref,str):refs.add(ref)
+        # Event IDs, attempts, labels and report field values are trace-local data,
+        # not graph references. Only declared operation/role fields point to nodes.
+        trace=node.get('trace') or {}
+        for event in (trace.get('events',[]) if isinstance(trace.get('events',[]),list) else []):
+            if not isinstance(event,dict):continue
+            for key in ('operation','actor_role'):
+                if isinstance(event.get(key),str):refs.add(event[key])
+            refs.update(r for r in (event.get('actor_roles',[]) if isinstance(event.get('actor_roles',[]),list) else []) if isinstance(r,str))
+        result=node.get('result') or {}
+        refs.update(result.get('input_fingerprints',{}))
+        for key in ('claim','trace'):
+            if isinstance(result.get(key),str):refs.add(result[key])
+        return refs
+    for nid,node in g['nodes'].items():
+        if not deleted:break
+        dangling=sorted(deleted & node_references(node))
+        if dangling:raise GraphError(f'Deletion leaves semantic reference {nid} -> '+', '.join(dangling)+'; retire the input instead')
+    try:
+        from . import formalcheck
+        for nid,node in g['nodes'].items():
+            refs=formalcheck.references(node.get('pattern') or {})
+            for target in refs.get('scopes',[]):
+                if target in original.get('formal_model',{}).get('scopes',{}) and target not in g.get('formal_model',{}).get('scopes',{}):
+                    raise GraphError(f'Deletion leaves scope reference {nid} -> {target}')
+            for target in refs.get('relations',[]):
+                if target in original['edge_types'] and target not in g['edge_types']:
+                    raise GraphError(f'Deletion leaves relation reference {nid} -> {target}')
+    except ImportError: pass
+    g['revision']+=1
+    g['changes'].append({'revision':g['revision'],'at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'actor':actor,'reason':reason,'edits':edits})
+    validate(g)
+    return g,edits
+
+def apply(path, ops, actor, reason, expected=None):
     path=Path(path)
     with open(str(path)+'.lock','a') as lock:
         fcntl.flock(lock,fcntl.LOCK_EX)
         g=load(path)
         if expected is not None and expected!=g['revision']: raise GraphError(f'Revision conflict: expected {expected}, found {g["revision"]}')
-        original=copy.deepcopy(g)
-        edits=[]
-        for op in ops:
-            if not isinstance(op,dict): raise GraphError('Each operation must be an object')
-            action=op.get('op'); collection=op.get('collection'); key=op.get('id')
-            if collection not in ('nodes','edges','node_types','edge_types','formal_model') or not isinstance(key,str) or not key: raise GraphError('Operation needs collection and nonempty id')
-            if action in ('add','update') and 'value' not in op:raise GraphError('add/update require an explicit value')
-            if collection=='formal_model': g.setdefault(collection,{})
-            before=copy.deepcopy(g[collection].get(key))
-            if action=='add':
-                if key in g[collection]: raise GraphError(f'Already exists: {collection}/{key}')
-                after=op.get('value')
-            elif action=='update':
-                if key not in g[collection]: raise GraphError(f'Not found: {collection}/{key}')
-                if collection=='formal_model': after=copy.deepcopy(op.get('value'))
-                else:
-                    if not isinstance(op.get('value'),dict): raise GraphError('update value must be an object')
-                    after={**before,**op['value']}
-                    if isinstance(before.get('meta'),dict) and isinstance(op['value'].get('meta'),dict): after['meta']={**before['meta'],**op['value']['meta']}
-            elif action=='delete':
-                if key not in g[collection]: raise GraphError(f'Not found: {collection}/{key}')
-                after=None
-            else: raise GraphError('op must be add, update, or delete')
-            if action=='delete': del g[collection][key]
-            else:
-                if collection!='formal_model' and not isinstance(after,dict): raise GraphError('value must be an object')
-                g[collection][key]=copy.deepcopy(after)
-            edits.append({'collection':collection,'id':key,'before':before,'after':copy.deepcopy(after)})
-        # Validate before automatic interpretation; malformed JSON must be an atomic domain error.
-        validate(g)
-        reviewed={o['id'] for o in ops if o.get('collection')=='nodes' and 'review_state' in (o.get('value',{}).get('meta') or {})}
-        dependency.refresh(original,g,edits,reviewed)
-        # Deleting a named semantic input must not leave a surviving opaque pattern dangling.
-        deleted=set(original['nodes'])-set(g['nodes'])
-        def node_references(node):
-            from . import formalcheck
-            refs=set(node.get('references',[]))
-            if isinstance(node.get('pattern'),dict):refs.update(formalcheck.references(node['pattern']).get('nodes',[]))
-            provenance=node.get('provenance') or {}
-            for source in provenance.get('sources',[]):
-                ref=source if isinstance(source,str) else source.get('id') if isinstance(source,dict) else None
-                if isinstance(ref,str):refs.add(ref)
-            # Event IDs, attempts, labels and report field values are trace-local data,
-            # not graph references. Only declared operation/role fields point to nodes.
-            trace=node.get('trace') or {}
-            for event in (trace.get('events',[]) if isinstance(trace.get('events',[]),list) else []):
-                if not isinstance(event,dict):continue
-                for key in ('operation','actor_role'):
-                    if isinstance(event.get(key),str):refs.add(event[key])
-                refs.update(r for r in (event.get('actor_roles',[]) if isinstance(event.get('actor_roles',[]),list) else []) if isinstance(r,str))
-            result=node.get('result') or {}
-            refs.update(result.get('input_fingerprints',{}))
-            for key in ('claim','trace'):
-                if isinstance(result.get(key),str):refs.add(result[key])
-            return refs
-        for nid,node in g['nodes'].items():
-            if not deleted:break
-            dangling=sorted(deleted & node_references(node))
-            if dangling:raise GraphError(f'Deletion leaves semantic reference {nid} -> '+', '.join(dangling)+'; retire the input instead')
-        try:
-            from . import formalcheck
-            for nid,node in g['nodes'].items():
-                refs=formalcheck.references(node.get('pattern') or {})
-                for target in refs.get('scopes',[]):
-                    if target in original.get('formal_model',{}).get('scopes',{}) and target not in g.get('formal_model',{}).get('scopes',{}):
-                        raise GraphError(f'Deletion leaves scope reference {nid} -> {target}')
-                for target in refs.get('relations',[]):
-                    if target in original['edge_types'] and target not in g['edge_types']:
-                        raise GraphError(f'Deletion leaves relation reference {nid} -> {target}')
-        except ImportError: pass
-        g['revision']+=1
-        g['changes'].append({'revision':g['revision'],'at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'actor':actor,'reason':reason,'edits':edits})
-        validate(g)
+        g,edits=simulate(g,ops,actor,reason)
         fd,name=tempfile.mkstemp(dir=path.parent,prefix='.graph-',suffix='.tmp')
         try:
             with os.fdopen(fd,'w') as f:
@@ -283,6 +305,54 @@ def apply(path, ops, actor, reason, expected=None):
         finally:
             if os.path.exists(name): os.unlink(name)
     return {'revision':g['revision'],'changes':len(edits)}
+
+def effects(before, after, edits):
+    """What a batch changes beyond its own edits: findings, review currency, question resolution, evidence freshness."""
+    fb={f['id']:f for f in check(before)['findings']}; fa={f['id']:f for f in check(after)['findings']}
+    brief=lambda f:{'code':f['code'],'severity':f.get('severity','review'),'nodes':f['nodes'],'message':f['message']}
+    needs_review=[{'id':i,'type':n['type'],'review_reason':(n.get('meta') or {}).get('review_reason','')} for i,n in sorted(after['nodes'].items()) if review_state(n)=='needs-review' and review_state(before['nodes'].get(i,{}))!='needs-review']
+    reviewed=[i for i,n in sorted(after['nodes'].items()) if review_state(n)=='current' and i in before['nodes'] and review_state(before['nodes'][i])=='needs-review']
+    questions_changed=[]
+    for i,n in sorted(after['nodes'].items()):
+        if n['type']!='question' or i not in before['nodes']: continue
+        a,b=dependency.resolution(after,i)['resolution'],dependency.resolution(before,i)['resolution']
+        if a!=b: questions_changed.append({'id':i,'before':b,'after':a})
+    stale=[i for i,n in sorted(after['nodes'].items()) if n.get('type')=='check-result' and isinstance(n.get('result'),dict) and i in before['nodes'] and tracecheck.result_state(before,before['nodes'][i]['result'])=='current' and tracecheck.result_state(after,n['result'])!='current']
+    summary=[{'collection':e['collection'],'id':e['id'],'action':'add' if e['before'] is None else 'delete' if e['after'] is None else 'update',**({'automatic':e['automatic']} if 'automatic' in e else {})} for e in edits]
+    return {'revision_before':before['revision'],'revision_after':after['revision'],'edits':summary,'findings_added':[brief(fa[i]) for i in sorted(set(fa)-set(fb))],'findings_removed':[brief(fb[i]) for i in sorted(set(fb)-set(fa))],'newly_needs_review':needs_review,'newly_reviewed':reviewed,'question_resolution_changed':questions_changed,'evidence_becoming_stale':stale}
+
+def dry_run(path, ops, actor, reason, expected=None):
+    g=load(path)
+    if expected is not None and expected!=g['revision']: raise GraphError(f'Revision conflict: expected {expected}, found {g["revision"]}')
+    after,edits=simulate(g,ops,actor,reason)
+    return {'dry_run':True,'written':False,**effects(g,after,edits)}
+
+def reviewed(path, ids, reason, actor='assistant', expected=None):
+    g=load(path)
+    unknown=[i for i in ids if i not in g['nodes']]
+    if unknown: raise GraphError('Unknown node(s): '+', '.join(unknown))
+    ops=[{'op':'update','collection':'nodes','id':i,'value':{'meta':{'review_state':'current','review_reason':reason}}} for i in dict.fromkeys(ids)]
+    return {**apply(path,ops,actor,reason,expected),'reviewed':list(dict.fromkeys(ids))}
+
+def check_view(result, all_findings=False):
+    """CLI presentation: review-severity findings listed, informational ones counted."""
+    if all_findings: return result
+    informational=[f for f in result['findings'] if f.get('severity')=='informational']
+    return {**result,'findings':[f for f in result['findings'] if f.get('severity')!='informational'],'informational_counts':dict(sorted(collections.Counter(f['code'] for f in informational).items()))}
+
+def frontier(g, limit=30, changes=5):
+    """One session opener: what is open, unreviewed, proposed, flagged or stale. Historical and evidence nodes excluded."""
+    view=theory_view(g); live={i:n for i,n in view['nodes'].items() if review_state(n)!='historical'}
+    title=lambda n:(n.get('meta') or {}).get('title') or n['text']
+    open_questions=[{'id':i,'title':title(n),'resolution':dependency.resolution(g,i)['resolution'],'readiness':dependency.readiness(g,i)['readiness']} for i,n in live.items() if n['type']=='question' and n.get('status')!='retired' and dependency.resolution(g,i)['resolution']!='answered']
+    needs_review=[{'id':i,'type':n['type'],'review_reason':(n.get('meta') or {}).get('review_reason','')} for i,n in live.items() if review_state(n)=='needs-review']
+    proposed=[{'id':i,'text':n['text']} for i,n in live.items() if n['type']=='claim' and n.get('status')=='proposed']
+    findings=[{'code':f['code'],'nodes':f['nodes'],'message':f['message']} for f in check(g)['findings'] if f.get('severity')!='informational']
+    conflicts=[{'edge':i,'from':e['from'],'to':e['to']} for i,e in view['edges'].items() if e['type'] in ('potential-conflict','contradicts') and not (e.get('meta') or {}).get('resolution') and e['from'] in live and e['to'] in live]
+    stale=sum(1 for i,n in g['nodes'].items() if n.get('type')=='check-result' and isinstance(n.get('result'),dict) and review_state(n)!='historical' and tracecheck.result_state(g,n['result'])!='current')
+    recent=[{'revision':c['revision'],'actor':c['actor'],'reason':c['reason']} for c in g['changes'][-changes:]]
+    sections={'open_questions':open_questions,'needs_review':needs_review,'proposed_claims':proposed,'findings':findings,'unresolved_conflicts':conflicts}
+    return {'revision':g['revision'],'counts':{k:len(v) for k,v in sections.items()}|{'evidence_stale':stale},**{k:v[:limit] for k,v in sections.items()},'truncated':any(len(v)>limit for v in sections.values()),'evidence_stale':stale,'recent_changes':recent}
 
 def save_evaluation(path,g,result,result_id=None,actor='assistant'):
     result_id=result_id or f"check-{result['claim']}-{result['trace']}-r{g['revision']}"
@@ -341,8 +411,34 @@ def compact(data, full=False):
             for e in c['edits']:
                 lines.append('  '+(json.dumps(e,ensure_ascii=False) if full else f"{e['action']} {e['collection']}/{e['id']} ({', '.join(e['fields'])})"))
         return '\n'.join(lines)
+    if 'dry_run' in data:
+        lines=[f"DRY RUN · revision {data['revision_before']} → {data['revision_after']} · {len(data['edits'])} edits · nothing written"]
+        lines.extend(f"  {e['action']} {e['collection']}/{e['id']}"+(f" (automatic: {e['automatic']})" if 'automatic' in e else '') for e in data['edits'])
+        for label,key in (('findings added','findings_added'),('findings removed','findings_removed')):
+            lines.append(f"{label}: {len(data[key])}"); lines.extend(f"  [{f['severity']}] {f['code']} [{', '.join(f['nodes'])}]" for f in data[key])
+        lines.append(f"newly needs-review: {len(data['newly_needs_review'])}"); lines.extend(f"  {n['id']} ({n['type']}): {n['review_reason']}" for n in data['newly_needs_review'])
+        if data['newly_reviewed']: lines.append('newly reviewed: '+', '.join(data['newly_reviewed']))
+        lines.append(f"question resolution changed: {len(data['question_resolution_changed'])}"); lines.extend(f"  {q['id']}: {q['before']} → {q['after']}" for q in data['question_resolution_changed'])
+        lines.append(f"evidence becoming stale: {len(data['evidence_becoming_stale'])}"+(' ('+', '.join(data['evidence_becoming_stale'])+')' if data['evidence_becoming_stale'] else ''))
+        return '\n'.join(lines)
+    if 'open_questions' in data:
+        c=data['counts']; lines=[f"Revision {data['revision']} · frontier: {c['open_questions']} open questions · {c['needs_review']} needs review · {c['proposed_claims']} proposed · {c['findings']} findings · {c['unresolved_conflicts']} conflicts · {c['evidence_stale']} stale evidence"]
+        def section(title,items,fmt):
+            if items: lines.append(title); lines.extend('  '+fmt(x) for x in items)
+        section('open questions',data['open_questions'],lambda q:f"{q['id']} [{q['resolution']}; {q['readiness']}] {q['title']}")
+        section('needs review',data['needs_review'],lambda n:f"{n['id']} ({n['type']}): {n['review_reason']}")
+        section('proposed claims',data['proposed_claims'],lambda n:f"{n['id']}: {n['text']}")
+        section('findings',data['findings'],lambda f:f"{f['code']} [{', '.join(f['nodes'])}]: {f['message']}")
+        section('unresolved conflicts',data['unresolved_conflicts'],lambda e:f"{e['edge']}: {e['from']} × {e['to']}")
+        section('recent changes',data['recent_changes'],lambda ch:f"r{ch['revision']} {ch['actor']}: {ch['reason']}")
+        if data.get('truncated'): lines.append('(sections truncated; use --json)')
+        return '\n'.join(lines)
     if 'findings' in data:
-        return '\n'.join([f"Revision {data['revision']} · {len(data['findings'])} findings"]+[f"[{f.get('severity','review')}{'; suppressed' if f.get('suppressed') else ''}] {f['code']}: {f['message']} [{', '.join(f['nodes'])}]" for f in data['findings']]+[data['scope']])
+        info=data.get('informational_counts')
+        lines=[f"Revision {data['revision']} · {len(data['findings'])} findings"+(f" · {sum(info.values())} informational" if info else '')]
+        lines.extend(f"[{f.get('severity','review')}{'; suppressed' if f.get('suppressed') else ''}] {f['code']}: {f['message']} [{', '.join(f['nodes'])}]" for f in data['findings'])
+        if info: lines.extend(f"{n} {code} (informational; --all to list)" for code,n in info.items())
+        return '\n'.join(lines+[data['scope']])
     if not isinstance(data.get('nodes'),dict): return '\n'.join(f'{k}: {display(v)}' for k,v in data.items())
     lines=[' · '.join(f'{k}={display(v)}' for k,v in data.items() if k not in ('nodes','edges','distances','question_states','resolutions','readiness'))]
     for i,n in data['nodes'].items():
@@ -402,9 +498,9 @@ def serve(path,port):
 
 def main():
     p=argparse.ArgumentParser(description=__doc__,epilog='Default reads omit historical material. Use --historical to include it. JSON flags work before or after subcommands.')
-    p.add_argument('--file',type=Path,default=None,help='Graph JSON file (default: -p project, $TG_PROJECT, nearest theory/graph.json, then the registry default)'); p.add_argument('-p','--project',default=None,help='Registered project name (see `tg projects`)'); p.add_argument('--json',action='store_true',help='Emit machine-readable JSON'); p.add_argument('--full',action='store_true',help='Include metadata or full history before/after values')
+    p.add_argument('--file',type=Path,default=None,help='Graph JSON file (default: -p project, $TG_PROJECT, nearest theory/graph.json, then the registry default)'); p.add_argument('-p','--project',default=None,help='Registered project name (see `tg projects`)'); p.add_argument('--all',action='store_true',help='check: list informational findings too'); p.add_argument('--evidence',action='store_true',help='Include evidence nodes (traces, saved check results) in reads'); p.add_argument('--json',action='store_true',help='Emit machine-readable JSON'); p.add_argument('--full',action='store_true',help='Include metadata or full history before/after values')
     sub=p.add_subparsers(dest='cmd',required=True)
-    for name in ('overview','types','anchors','check'): sub.add_parser(name,help={'anchors':'List entity and operation anchors','check':'Check declared tensions and structural consistency'}.get(name,name))
+    for name in ('overview','types','anchors','check','frontier','where'): sub.add_parser(name,help={'anchors':'List entity and operation anchors','check':'Check declared tensions and structural consistency; informational findings are counted unless --all','frontier':'Session opener: open questions, needs-review, proposed claims, findings, conflicts, stale evidence, recent changes','where':'Engine root, registry, and which rule selected the graph'}.get(name,name))
     q=sub.add_parser('readiness',help='Explicit prerequisites and independent answer resolution');q.add_argument('id')
     q=sub.add_parser('impact',help='Transitive dependent IDs and bounded dependency path witnesses');q.add_argument('id');q.add_argument('--limit',type=int,default=100);q.add_argument('--offset',type=int,default=0);q.add_argument('--path-limit',type=int,default=8)
     q=sub.add_parser('export',help='Canonical sorted JSON snapshot')
@@ -417,7 +513,9 @@ def main():
         q.add_argument('id',help='Node id, title or alias');q.add_argument('--depth',type=int,default=1,help='Maximum hop distance');q.add_argument('--direction',choices=['both','in','out'],default='both',help='Traversal direction; edge direction is preserved');q.add_argument('--limit',type=int,default=40,help='Maximum nodes');q.add_argument('--edge-limit',type=int,default=100,help='Maximum induced edges');q.add_argument('--current',action='store_true',help='Current material (default)');q.add_argument('--historical',action='store_true',help='Include historical nodes');q.add_argument('--anchors',choices=['stop','cross','omit'],default='stop',help='Stop at anchor hubs, cross them, or omit anchor links');q.add_argument('--relations',help='Only traverse comma-separated relation types')
     q=sub.add_parser('history',help='Compact change summaries; --full restores before/after');q.add_argument('--limit',type=int,default=10,help='Maximum revisions')
     q=sub.add_parser('apply',help='Apply an atomic audited JSON batch',description='Input: [{"op":"add|update|delete","collection":"nodes|edges|node_types|edge_types|formal_model","id":"stable-id","value":{...}}]. Node value: {"type":"claim","text":"...","status":"proposed","meta":{...}}. Edge value: {"from":"id","to":"id","type":"about","meta":{...}}. answers additionally require coverage full|partial|unknown. Updates merge fields and merge meta one level. Deletes omit value. Unknown references/types/states reject the entire batch. Explicit node meta.review_state reconciles that node in the same batch.')
-    q.add_argument('operations',help='JSON array file path or - for stdin');q.add_argument('--actor',required=True,help='Who made this edit');q.add_argument('--reason',required=True,help='Why the batch is needed');q.add_argument('--expect',type=int,help='Reject the edit if current revision differs (recommended)')
+    q.add_argument('operations',help='JSON array file path or - for stdin');q.add_argument('--actor',required=True,help='Who made this edit');q.add_argument('--reason',required=True,help='Why the batch is needed');q.add_argument('--expect',type=int,help='Reject the edit if current revision differs (recommended)');q.add_argument('--dry-run',action='store_true',help='Validate and report effects without writing')
+    q=sub.add_parser('reviewed',help='Mark nodes reviewed (meta.review_state current) through the audited apply path');q.add_argument('ids',nargs='+');q.add_argument('--reason',required=True);q.add_argument('--actor',default='assistant');q.add_argument('--expect',type=int)
+    q=sub.add_parser('sync',help='Commit the graph if changed, pull with rebase, push');q.add_argument('--message',default=None,help='Commit message (default: last audit reason)')
     q=sub.add_parser('evaluate',help='Check one optional pattern against a finite trace; not a proof of the claim')
     q.add_argument('claim'); q.add_argument('trace'); q.add_argument('--save',nargs='?',const='',help='Save an audited check-result node, optionally with this new id');q.add_argument('--actor',default='assistant',help='Author of a saved evaluation')
     q=sub.add_parser('projects',help='List registered projects and the default')
@@ -428,7 +526,7 @@ def main():
     # Normalize these global flags so they also work after subcommands.
     argv=sys.argv[1:]; front=[];rest=[];i=0
     while i<len(argv):
-        if argv[i] in ('--json','--full'): front.append(argv[i])
+        if argv[i] in ('--json','--full','--all','--evidence'): front.append(argv[i])
         elif argv[i] in ('--file','-p','--project'): front.extend(argv[i:i+2]);i+=1
         elif argv[i].startswith('--file=') or argv[i].startswith('--project='): front.append(argv[i])
         else: rest.append(argv[i])
@@ -448,8 +546,12 @@ def main():
             return 0
         a.file,selected_by=projects.resolve(a.file,a.project)
         if a.cmd=='serve': return serve(a.file,a.port)
-        if a.cmd=='apply':
-            ops=json.load(sys.stdin) if a.operations=='-' else json.loads(Path(a.operations).read_text());result=apply(a.file,ops,a.actor,a.reason,a.expect)
+        if a.cmd=='where': result=projects.where(a.file,selected_by,a.project)
+        elif a.cmd=='sync': result=projects.sync(a.file,a.message)
+        elif a.cmd=='reviewed': result=reviewed(a.file,a.ids,a.reason,a.actor,a.expect)
+        elif a.cmd=='apply':
+            ops=json.load(sys.stdin) if a.operations=='-' else json.loads(Path(a.operations).read_text())
+            result=dry_run(a.file,ops,a.actor,a.reason,a.expect) if a.dry_run else apply(a.file,ops,a.actor,a.reason,a.expect)
         else:
             g=load(a.file)
             if a.cmd=='evaluate':
@@ -458,18 +560,19 @@ def main():
             elif a.cmd=='readiness': result=dependency.readiness(g,resolve(g,a.id))
             elif a.cmd=='impact': result=dependency.impact(g,[resolve(g,a.id)],a.limit,a.offset,a.path_limit)
             elif a.cmd=='export': result=g
-            elif a.cmd=='overview': result=overview(g)
+            elif a.cmd=='overview': result=overview(g,a.evidence)
+            elif a.cmd=='frontier': result=frontier(g)
             elif a.cmd=='questions': result=questions(g,a.limit,a.historical)
-            elif a.cmd=='check': result=check(g)
+            elif a.cmd=='check': result=check_view(check(g),a.all)
             elif a.cmd=='anchors': result={'revision':g['revision'],'nodes':{i:n for i,n in sorted(g['nodes'].items()) if n['type'] in ('entity','operation')}}
-            elif a.cmd=='review': result=review(g,resolve(g,a.id) if a.id else None,a.limit,a.edge_limit)
+            elif a.cmd=='review': result=review(g,resolve(g,a.id) if a.id else None,a.limit,a.edge_limit,a.evidence)
             elif a.cmd=='types': result={k:g[k] for k in ('node_types','edge_types')}
-            elif a.cmd=='search': result=search(g,a.query,a.limit)
-            elif a.cmd in ('walk','neighbors'): result=walk(g,a.id,a.depth,a.direction,a.limit,a.edge_limit,not a.historical,a.anchors,a.relations)
+            elif a.cmd=='search': result=search(g,a.query,a.limit,a.evidence)
+            elif a.cmd in ('walk','neighbors'): result=walk(g,a.id,a.depth,a.direction,a.limit,a.edge_limit,not a.historical,a.anchors,a.relations,a.evidence)
             elif a.cmd=='node':
-                nid=resolve(g,a.id);r=walk(g,nid,1,limit=200,edge_limit=500,current=not a.historical);result={'revision':g['revision'],'nodes':{nid:g['nodes'][nid]},'edges':{i:e for i,e in r['edges'].items() if nid in (e['from'],e['to'])},'neighbor_bodies':'omitted; use walk','truncated':r['truncated'],'edge_truncated':r['edge_truncated']}
+                nid=resolve(g,a.id);r=walk(g,nid,1,limit=200,edge_limit=500,current=not a.historical,evidence=True);result={'revision':g['revision'],'nodes':{nid:g['nodes'][nid]},'edges':{i:e for i,e in r['edges'].items() if nid in (e['from'],e['to'])},'neighbor_bodies':'omitted; use walk','truncated':r['truncated'],'edge_truncated':r['edge_truncated']}
             else: result=history(g,a.limit,a.full)
-        if a.cmd!='apply': result=tracecheck.annotate(g,result)
+        if a.cmd not in ('apply','reviewed','where','sync'): result=tracecheck.annotate(g,result)
         if not a.full and a.cmd in ('node','walk','neighbors','search','review','questions','anchors'): result=compact_read(result,g)
         print(json.dumps(result,ensure_ascii=False,sort_keys=True,separators=(',',':')) if a.json or a.cmd=='export' else compact(result,a.full))
     except (GraphError,projects.ProjectError,ValueError,KeyError,OSError,TypeError) as e: print('error: '+str(e),file=sys.stderr); return 1

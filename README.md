@@ -6,13 +6,20 @@ A local tool for keeping the *theory* of a program (Naur, "Programming as Theory
 
 ```sh
 tg projects                       # registered projects, default marked *
-tg -p morphisms overview          # counts by type and status
-tg -p morphisms check             # structural findings and declared tensions
+tg -p morphisms frontier          # session opener: open, unreviewed, proposed, flagged, stale, recent
+tg -p morphisms overview          # counts by type and status; evidence nodes counted separately
+tg -p morphisms check             # review-level findings; informational ones counted (--all to list)
 tg -p morphisms questions         # open, answered and needs-review questions
 tg -p morphisms review steward-role
+tg -p morphisms apply edits.json --actor assistant --reason '...' --expect 17 --dry-run   # effects, no write
+tg -p morphisms reviewed ID --reason '...'   # mark reviewed through the audited path
+tg -p morphisms sync              # commit the graph if changed, pull --rebase, push
+tg -p morphisms where             # engine root, registry, which rule chose the graph
 tg -p morphisms serve             # viewer at http://127.0.0.1:8767
 tg new my-program                 # ./theory/graph.json from the template, registered as my-program
 ```
+
+Reads hide evidence machinery (traces and saved check results) unless `--evidence` is passed.
 
 `tg` is on PATH via `~/bin/tg` (installed by `~/dotfiles/install.sh`). The graph a command targets is chosen by, in order: `--file`, `-p NAME`, `$TG_PROJECT`, the nearest `theory/graph.json` above the working directory, then the registry default (`tg use NAME`). The registry lives at `~/.config/theory-graph/projects.json`.
 

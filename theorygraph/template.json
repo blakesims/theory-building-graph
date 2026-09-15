@@ -55,6 +55,7 @@
   },
   "check-result": {
    "description": "A reproducible bounded pattern evaluation tied to exact claim and trace inputs; not a proof of the prose theory.",
+   "evidence": true,
    "states": [
     "recorded"
    ]
@@ -97,6 +98,7 @@
   },
   "trace": {
    "description": "An explicitly bounded event trace extracted from evidence or constructed as a synthetic fixture. Roles are recorded at event time.",
+   "evidence": true,
    "states": [
     "recorded"
    ]

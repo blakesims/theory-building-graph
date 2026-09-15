@@ -9,7 +9,7 @@ A project is one graph.json. The registry maps a short name to that file so
 4. nearest ancestor of the working directory containing theory/graph.json or graph.json
 5. the registry default project
 """
-import json, os, shutil
+import json, os, shutil, subprocess
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -104,3 +104,45 @@ def listing():
             except (OSError, ValueError): info['error'] = 'unreadable'
         rows.append(info)
     return {'registry': str(REGISTRY), 'default': reg['default'], 'projects': rows}
+
+
+def where(graph_path, selected_by, project=None):
+    graph_path = Path(graph_path).resolve(); reg = read_registry()
+    name = (project or os.environ.get('TG_PROJECT')) if selected_by in ('project', 'env') else (reg['default'] if selected_by == 'default' else None)
+    if name is None: name = next((n for n, p in reg['projects'].items() if Path(p).resolve() == graph_path), None)
+    return {'engine': str(HERE.parent), 'registry': str(REGISTRY), 'project': name, 'graph': str(graph_path), 'selected_by': selected_by, 'git_root': git_root(graph_path)}
+
+
+def git_root(path):
+    r = subprocess.run(['git', '-C', str(Path(path).resolve().parent), 'rev-parse', '--show-toplevel'], capture_output=True, text=True)
+    return r.stdout.strip() if r.returncode == 0 else None
+
+
+def sync(graph_path, message=None):
+    """Commit the graph file if it changed, pull with rebase, push. Never forces.
+
+    The local commit happens first because a rebase refuses a dirty tree; on a
+    conflict the rebase is aborted and the local commit is kept for hand merging.
+    """
+    graph_path = Path(graph_path).resolve(); root = git_root(graph_path)
+    if not root: raise ProjectError(f'{graph_path} is not inside a git repository')
+    steps = []
+    def git(*args, check=True):
+        r = subprocess.run(['git', '-C', root, *args], capture_output=True, text=True)
+        steps.append({'command': 'git '+' '.join(args), 'exit_code': r.returncode, 'output': (r.stdout+r.stderr).strip()[-2000:]})
+        if check and r.returncode: raise ProjectError(f'git {args[0]} failed: '+(r.stderr or r.stdout).strip())
+        return r
+    rel = str(graph_path.relative_to(Path(root).resolve()))
+    committed = None
+    if git('status', '--porcelain', '--', rel).stdout.strip():
+        if message is None:
+            try: changes = json.loads(graph_path.read_text()).get('changes', []); message = changes[-1]['reason'] if changes else f'Update {rel}'
+            except (OSError, ValueError, KeyError, TypeError): message = f'Update {rel}'
+        git('add', '--', rel); git('commit', '-q', '-m', message, '--', rel)
+        committed = git('rev-parse', '--short', 'HEAD').stdout.strip()
+    r = git('pull', '--rebase', check=False)
+    if r.returncode:
+        git('rebase', '--abort', check=False)
+        raise ProjectError(f'Rebase conflict; aborted, local commit kept. Resolve by hand in {root} (graph file: {rel}). Output: '+(r.stderr or r.stdout).strip()[-800:])
+    git('push')
+    return {'repository': root, 'graph': rel, 'committed': committed, 'message': message if committed else None, 'steps': steps}

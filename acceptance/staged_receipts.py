@@ -3,7 +3,8 @@ import hashlib
 import json
 from pathlib import Path
 
-def digest(p): return hashlib.sha256(p.read_bytes()).hexdigest()
+# Lock files are created empty by apply() and are gitignored; a fresh clone lacks them.
+def digest(p): return hashlib.sha256(b'' if p.suffix=='.lock' and not p.exists() else p.read_bytes()).hexdigest()
 
 def staged_errors(root, path, receipt, raw, inputs, rubric, case):
     errors=[];root=Path(root).resolve();path=Path(path).resolve()

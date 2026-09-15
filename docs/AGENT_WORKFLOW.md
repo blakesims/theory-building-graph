@@ -7,10 +7,14 @@ The graph records the theory and its revisions. It does not infer English meanin
 Only declared supported patterns participate in mechanical checks. A checker receipt
 never ratifies the extraction or establishes that a synthetic incident occurred.
 
-1. **Locate the object first.** Show and run `./tg search steward`, then
-   `./tg review steward-role`. Read the relevant current claims, questions and
-   operations before proposing an edit. Retrieve historical alternatives with
-   `./tg walk steward-role --depth 2 --historical` when discussing a revision.
+1. **Open with the frontier, then locate the object.** Run `tg frontier` once:
+   it lists open questions, nodes needing review, proposed claims, review-level
+   findings, unresolved conflicts, stale evidence and recent changes. Then
+   `tg search steward` and `tg review steward-role` for the object at hand.
+   Reads hide evidence machinery (traces, saved check results) unless
+   `--evidence`; `check` counts informational findings unless `--all`. Retrieve
+   historical alternatives with `tg walk steward-role --depth 2 --historical`
+   when discussing a revision.
 2. **Separate what was said from your interpretation.** A source is evidence;
    an extraction has an author, assumptions, source references and its own standing.
    Preserve the original user wording before paraphrasing. Resolve pronouns to
@@ -25,12 +29,18 @@ never ratifies the extraction or establishes that a synthetic incident occurred.
    use a temporary graph or explicitly synthetic proposed nodes; don't change the
    accepted design. If the user asked to see every CLI command, show each exact
    command immediately before executing it and explain only its observed result.
-4. **Apply one authorized batch.** Use `./tg apply edits.json --actor assistant
-   --reason 'User chose steward next-work ownership' --expect REVISION`.
-   Preserve retired alternatives and rationale. Atomicity is for one meaningful
-   decision, not a license to hide several design decisions in a batch.
-5. **Reconcile consequences.** Run `./tg impact CLAIM`, `./tg readiness QUESTION`
-   and `./tg check`. Review declared dependents, not all statements sharing a topic.
+4. **Dry-run, then apply one authorized batch.** `tg apply edits.json --actor
+   assistant --reason 'User chose steward next-work ownership' --expect REVISION
+   --dry-run` prints the effects (findings added or removed, nodes newly needing
+   review, question resolution changes, evidence becoming stale) without writing.
+   Drop `--dry-run` to write. Preserve retired alternatives and rationale.
+   Atomicity is for one meaningful decision, not a license to hide several
+   design decisions in a batch.
+5. **Reconcile consequences.** Run `tg impact CLAIM`, `tg readiness QUESTION`
+   and `tg check`. Review declared dependents, not all statements sharing a topic.
+   Clear a reviewed item with `tg reviewed ID [ID ...] --reason '...'`; it goes
+   through the same audited path as apply. Finish with `tg sync` so the graph is
+   committed and pushed.
    Do not erase an accepted claim merely because a premise changed. Show the IDs
    changed and the ownership/uncertainty that remains. Open `http://127.0.0.1:8767/#ID`
    for the changed theory item. Port8766 remains the separate original notebook.
