@@ -4,25 +4,28 @@
   "synthetic": true,
   "graph_revision": 17,
   "live_graph_unchanged": true,
-  "scope": "Browser integration on isolated graph: search, question resolution, impact, scoped findings, live add+edge update and history. Not an LLM or design evaluation.",
+  "scope": "Browser integration on isolated graph: search, question resolution, impact, scoped findings, live add+edge update, history and dark theme. Not an LLM or design evaluation.",
   "files_sha256": {
-    "index.html": "6890b1d686f96eb3a6cbaeb9767db513cdc9a792304b967b0135dda43207a7b9",
-    "graph.py": "0c48b2bf09cf5ebe004214f63e78a79485d79e8bb3a0c12ae6357cf68743c7dd",
-    "commands.json": "b5b0e7b4922e5d1f4bb28dd404866d62ecdd1542514b72eee9f6965463a51608",
+    "index.html": "20c85bc088933c8763e939c5bf2e032611501e109cf675a21636bf088eedc9e6",
+    "graph.py": "b93ab873f0816815fec1223a4d447248d1bde789350e95f03396dd8214bf7061",
+    "commands.json": "779842988b5b40b5ba2bec6e7056667b9414dc01eb446d3dae2a7b9b3ac0148e",
     "edits.json": "8c8a27dc07612e1e70ce917578cc17e33810c8d4d174660851edb165167faabb"
   },
-  "screenshots": {
-    "readiness.png": "940c4cde03543fe0d353cd6d10c692445777e35abb5aad134c11bf091b36f729",
-    "live-change.png": "77c2a6d8afbb8076a363f32fb8285e67ce21fa58e63143ea6e60a34598503ad5",
-    "change-history.png": "08bae55000758548918fb9b43782bacebc9fcd1ef11ec92e0c5d7e0fb427c35f"
-  },
   "checks": [
-    "resolution-open",
+    "resolution-visible",
     "impact-visible",
     "findings-visible",
     "revision-live-update",
     "new-node-findable",
     "node-and-edge-history",
     "live-data-unchanged"
-  ]
+  ],
+  "question": "cancellation-wakeup",
+  "expected_resolution": "partial-answer",
+  "screenshots": {
+    "readiness.png": "b9f7921d02af39bf32e2a6da792f8c5fdba6a1de7d7ee0df7d44e91fdfab9eb2",
+    "live-change.png": "e924f90f7507d9fe78bd586e8f3eed30dfc9e2c63271988928dc406ba5756d9b",
+    "change-history.png": "28ccf7c516c9480e4c64cd1a82b88cddcbc1cef2a723742539165aece5c809d6",
+    "dark-mode.png": "5ca9a5d9ea7308af707c8dcdbe76932863bb1471a421cb8fa73cfb0531f77127"
+  }
 }

@@ -469,7 +469,10 @@ def serve(path,port):
             try:
                 route=parsed.path
                 if route in ('/','/index.html'): return self.send((HERE/'viewer'/'index.html').read_bytes(),'text/html; charset=utf-8')
-                if route=='/vendor/cytoscape.min.js': return self.send((HERE/'viewer'/'vendor'/'cytoscape.min.js').read_bytes(),'application/javascript')
+                if route.startswith('/vendor/'):
+                    name=route[len('/vendor/'):]; file=HERE/'viewer'/'vendor'/name
+                    if '/' in name or not name.endswith('.js') or not file.is_file(): return self.send(b'Not found','text/plain',404)
+                    return self.send(file.read_bytes(),'application/javascript')
                 g=load(path)
                 if route=='/api/status': result=overview(g)
                 elif route=='/api/walk': result=walk(g,p('id',next(iter(g['nodes']),'')),int(p('depth','2')),p('direction','both'),min(200,int(p('limit','40'))),min(500,int(p('edge_limit','100'))),p('current','1')=='1',p('anchors','stop'),p('relations',None))
@@ -478,7 +481,7 @@ def serve(path,port):
                 elif route=='/api/readiness': result=dependency.readiness(g,resolve(g,p('id','')))
                 elif route=='/api/impact': result=dependency.impact(g,[resolve(g,p('id',''))],min(200,int(p('limit','100'))),int(p('offset','0')))
                 elif route=='/api/check': result=check(g)
-                elif route=='/api/questions': result=questions(g,historical=p('historical','0')=='1')
+                elif route=='/api/questions': result=questions(g,min(500,int(p('limit','30'))),historical=p('historical','0')=='1')
                 elif route=='/api/review': result=review(g,p('id',None))
                 elif route=='/api/search': result=search(g,p('q',''),min(200,int(p('limit','30'))))
                 elif route=='/api/node':

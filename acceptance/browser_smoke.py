@@ -27,15 +27,16 @@ with tempfile.TemporaryDirectory(prefix='theory-browser-') as d:
         browser('open',url)
         browser('wait','--text','Live · r'+str(json.loads(before)['revision']))
         browser('snapshot','-i')
-        browser('fill','#search','stopping-authority')
+        seed=json.loads(before)
+        question=sorted(i for i,n in seed['nodes'].items() if n['type']=='question' and (n.get('meta') or {}).get('review_state','current')!='historical')[0]
+        expected=json.load(urllib.request.urlopen(url+'/api/readiness?id='+question,timeout=5))
+        browser('fill','#search',question)
         browser('wait','--fn',"document.querySelector('#results button') !== null")
         browser('click','#results button')
         browser('wait','--text','Readiness:')
         browser('snapshot','-i')
         body=browser('get','text','#detail')
-        from theorygraph import dependency
-        expected=dependency.resolution(graph.load(path),'stopping-authority')['resolution']
-        assert 'Resolution: '+expected in body,(expected,body)  # viewer agrees with the engine; the live state may change between runs
+        assert f"Readiness: {expected['readiness']} · Resolution: {expected['resolution']}" in body,body
         browser('find','role','button','click','--name','Show affected dependencies')
         browser('wait','--text','Declared dependency impact')
         browser('find','role','button','click','--name','Inspect checks')
@@ -57,8 +58,11 @@ with tempfile.TemporaryDirectory(prefix='theory-browser-') as d:
         browser('wait','--text','Synthetic visual observability check')
         history=browser('get','text','#activity-body');assert 'ui-observability-fixture' in history and 'ui-fixture-about' in history
         browser('screenshot',str(OUT/'change-history.png'))
+        browser('click','#theme'); browser('click','#theme')
+        browser('wait','--fn',"document.documentElement.dataset.theme==='dark'")
+        browser('screenshot',str(OUT/'dark-mode.png'))
         assert (ROOT/'projects'/'morphisms'/'graph.json').read_bytes()==before
-        (OUT/'receipt.json').write_text(json.dumps({'status':'completed','passed':True,'synthetic':True,'graph_revision':original['revision'],'live_graph_unchanged':True,'scope':'Browser integration on isolated graph: search, question resolution, impact, scoped findings, live add+edge update and history. Not an LLM or design evaluation.','files_sha256':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in [ROOT/'theorygraph'/'viewer'/'index.html',ROOT/'theorygraph'/'graph.py',OUT/'commands.json',OUT/'edits.json']},'screenshots':{n:hashlib.sha256((OUT/n).read_bytes()).hexdigest() for n in ['readiness.png','live-change.png','change-history.png']},'checks':['resolution-open','impact-visible','findings-visible','revision-live-update','new-node-findable','node-and-edge-history','live-data-unchanged']},indent=2)+'\n')
+        (OUT/'receipt.json').write_text(json.dumps({'status':'completed','passed':True,'synthetic':True,'graph_revision':original['revision'],'live_graph_unchanged':True,'scope':'Browser integration on isolated graph: search, question resolution, impact, scoped findings, live add+edge update, history and dark theme. Not an LLM or design evaluation.','files_sha256':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in [ROOT/'theorygraph'/'viewer'/'index.html',ROOT/'theorygraph'/'graph.py',OUT/'commands.json',OUT/'edits.json']},'checks':['resolution-visible','impact-visible','findings-visible','revision-live-update','new-node-findable','node-and-edge-history','live-data-unchanged'],'question':question,'expected_resolution':expected['resolution'],'screenshots':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in [OUT/'readiness.png',OUT/'live-change.png',OUT/'change-history.png',OUT/'dark-mode.png']}},indent=2)+'\n')
         print('Browser smoke passed:',OUT/'receipt.json')
     finally:
         browser('close');proc.terminate();proc.wait(timeout=10)

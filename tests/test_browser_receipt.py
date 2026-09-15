@@ -14,4 +14,4 @@ class BrowserReceipt(unittest.TestCase):
         self.assertTrue(all(c['exit_code']==0 for c in commands))
         self.assertTrue(any(('Live · r'+str(r['graph_revision']+1)) in c['stdout'] for c in commands))
         self.assertTrue(any('ui-fixture-about' in c['stdout'] and 'ui-observability-fixture' in c['stdout'] for c in commands))
-        self.assertEqual(set(r['checks']),{'resolution-open','impact-visible','findings-visible','revision-live-update','new-node-findable','node-and-edge-history','live-data-unchanged'})
+        self.assertEqual(set(r['checks']),{'resolution-visible','impact-visible','findings-visible','revision-live-update','new-node-findable','node-and-edge-history','live-data-unchanged'})
