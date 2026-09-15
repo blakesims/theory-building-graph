@@ -1,4 +1,7 @@
 __pycache__/
 *.pyc
 *.lock
+# Recorded evidence workspaces hash their (empty) lock files; keep those tracked.
+!reviews/**/*.lock
+!fixtures/**/*.lock
 .DS_Store
