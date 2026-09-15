@@ -1,0 +1,28 @@
+{
+  "status": "completed",
+  "passed": true,
+  "synthetic": true,
+  "graph_revision": 16,
+  "live_graph_unchanged": true,
+  "scope": "Browser integration on isolated graph: search, question resolution, impact, scoped findings, live add+edge update and history. Not an LLM or design evaluation.",
+  "files_sha256": {
+    "index.html": "6890b1d686f96eb3a6cbaeb9767db513cdc9a792304b967b0135dda43207a7b9",
+    "graph.py": "fd1672900351a595d35996ca8bef6f31ca9f8ebd8c38ef0fa12d9f21ac53f4b0",
+    "commands.json": "46f4b1013c418fc4681a89a0a2d1f601cdc20cf335a865c9dfe5d1c5642f67c0",
+    "edits.json": "8c8a27dc07612e1e70ce917578cc17e33810c8d4d174660851edb165167faabb"
+  },
+  "screenshots": {
+    "readiness.png": "e910073290189420818a4a50eb951c9be6a587448eab49a500c144cf64ea03e5",
+    "live-change.png": "134ebedd4cb05c1f7302d7e9cb49f1e177d816ae7b084ec477f17477dfec6652",
+    "change-history.png": "7334d664254d268130de052cf9fb75f41a3b6498880b1e6b15ea0e2c4a9603bb"
+  },
+  "checks": [
+    "resolution-open",
+    "impact-visible",
+    "findings-visible",
+    "revision-live-update",
+    "new-node-findable",
+    "node-and-edge-history",
+    "live-data-unchanged"
+  ]
+}

@@ -76,10 +76,10 @@ GUIDANCE='''You are continuing a synthetic design session using the actual local
 def prepare(out):
  if out.exists():raise ValueError('Output exists; use fresh path')
  out.mkdir(parents=True);control=out/'control';control.mkdir()
- contract=(ROOT/'AGENT_CONTRACT.md').read_text() if (ROOT/'AGENT_CONTRACT.md').exists() else (ROOT/'AGENT_WORKFLOW.md').read_text()
+ contract=(ROOT/'docs'/'AGENT_CONTRACT.md').read_text() if (ROOT/'docs'/'AGENT_CONTRACT.md').exists() else (ROOT/'docs'/'AGENT_WORKFLOW.md').read_text()
  for name,initial,turns in [('design',design_initial(),DESIGN_TURNS),('ports',ports_initial(),PORT_TURNS)]:
   workspace=out/name;workspace.mkdir()
-  for file in ['tg','graph.py','dependency.py','formalcheck.py','tracecheck.py','DEPENDENCY-SCHEMA.md']:shutil.copy2(ROOT/file,workspace/file)
+  shutil.copy2(ROOT/'tg',workspace/'tg');shutil.copytree(ROOT/'theorygraph',workspace/'theorygraph',ignore=shutil.ignore_patterns('__pycache__'));shutil.copy2(ROOT/'docs'/'DEPENDENCY-SCHEMA.md',workspace/'DEPENDENCY-SCHEMA.md')
   shutil.copy2(ROOT/'acceptance'/'FORMAL-SCHEMA.md',workspace/'FORMAL-SCHEMA.md')
   put(workspace/'graph.json',initial);(workspace/'AGENT_CONTRACT.md').write_text(contract)
   (control/name).mkdir();(control/name/'authoring-contract.txt').write_text(contract);put(control/name/'initial.graph.json',initial);put(control/name/'future-turns.json',turns);put(control/name/'grader-only.json',{'criteria':RUBRIC[name],'status':'not-graded','forbidden':'Do not show to participant','cases':sorted({c for t in turns for c in t['cases']})})

@@ -4,8 +4,8 @@ import hashlib,json,socket,subprocess,sys,tempfile,time,urllib.request
 from pathlib import Path
 ROOT=Path(__file__).resolve().parent.parent
 sys.path.insert(0,str(ROOT))
-import graph
-OUT=ROOT/'reviews'/'browser';OUT.mkdir(exist_ok=True)
+from theorygraph import graph
+OUT=ROOT/'reviews'/'browser'/'current';OUT.mkdir(parents=True,exist_ok=True)  # original 2026-09-15 r12 run stays at reviews/browser/ (bound by S08)
 log=[]
 def browser(*args):
     cmd=['npx','--yes','agent-browser@0.27.0','--session','theory-smoke',*args]
@@ -14,11 +14,11 @@ def browser(*args):
     (OUT/'commands.json').write_text(json.dumps(log,indent=2)+'\n')
     if r.returncode:raise RuntimeError(r.stderr or r.stdout)
     return r.stdout
-before=(ROOT/'graph.json').read_bytes()
+before=(ROOT/'projects'/'morphisms'/'graph.json').read_bytes()
 with tempfile.TemporaryDirectory(prefix='theory-browser-') as d:
     path=Path(d)/'graph.json';path.write_bytes(before)
     sock=socket.socket();sock.bind(('127.0.0.1',0));port=sock.getsockname()[1];sock.close()
-    proc=subprocess.Popen([sys.executable,str(ROOT/'graph.py'),'--file',str(path),'serve','--port',str(port)],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+    proc=subprocess.Popen([sys.executable,str(ROOT/'tg'),'--file',str(path),'serve','--port',str(port)],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
     url=f'http://127.0.0.1:{port}'
     try:
         for _ in range(100):
@@ -42,7 +42,7 @@ with tempfile.TemporaryDirectory(prefix='theory-browser-') as d:
         original=graph.load(path);anchor=next(k for k,v in original['nodes'].items() if v['type']=='entity')
         edits=[{'op':'add','collection':'nodes','id':'ui-observability-fixture','value':{'type':'question','status':'open','text':'SYNTHETIC: can the user see this new question?','meta':{'synthetic':True,'answer_shape':'verdict'}}}, {'op':'add','collection':'edges','id':'ui-fixture-about','value':{'type':'about','from':'ui-observability-fixture','to':anchor}}]
         (OUT/'edits.json').write_text(json.dumps(edits,indent=2)+'\n')
-        r=subprocess.run([sys.executable,str(ROOT/'graph.py'),'--file',str(path),'apply',str(OUT/'edits.json'),'--actor','browser-smoke','--reason','Synthetic visual observability check','--expect',str(original['revision']),'--json'],capture_output=True,text=True)
+        r=subprocess.run([sys.executable,str(ROOT/'tg'),'--file',str(path),'apply',str(OUT/'edits.json'),'--actor','browser-smoke','--reason','Synthetic visual observability check','--expect',str(original['revision']),'--json'],capture_output=True,text=True)
         log.append({'command':['graph.py','--file','TEMP_GRAPH','apply','reviews/browser/edits.json'],'exit_code':r.returncode,'stdout':r.stdout,'stderr':r.stderr});assert r.returncode==0,r.stderr
         browser('wait','--text',f"Live · r{original['revision']+1}")
         browser('fill','#search','ui-observability-fixture')
@@ -55,8 +55,8 @@ with tempfile.TemporaryDirectory(prefix='theory-browser-') as d:
         browser('wait','--text','Synthetic visual observability check')
         history=browser('get','text','#activity-body');assert 'ui-observability-fixture' in history and 'ui-fixture-about' in history
         browser('screenshot',str(OUT/'change-history.png'))
-        assert (ROOT/'graph.json').read_bytes()==before
-        (OUT/'receipt.json').write_text(json.dumps({'status':'completed','passed':True,'synthetic':True,'graph_revision':original['revision'],'live_graph_unchanged':True,'scope':'Browser integration on isolated graph: search, question resolution, impact, scoped findings, live add+edge update and history. Not an LLM or design evaluation.','files_sha256':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in [ROOT/'index.html',ROOT/'graph.py',OUT/'commands.json',OUT/'edits.json']},'checks':['resolution-open','impact-visible','findings-visible','revision-live-update','new-node-findable','node-and-edge-history','live-data-unchanged']},indent=2)+'\n')
+        assert (ROOT/'projects'/'morphisms'/'graph.json').read_bytes()==before
+        (OUT/'receipt.json').write_text(json.dumps({'status':'completed','passed':True,'synthetic':True,'graph_revision':original['revision'],'live_graph_unchanged':True,'scope':'Browser integration on isolated graph: search, question resolution, impact, scoped findings, live add+edge update and history. Not an LLM or design evaluation.','files_sha256':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in [ROOT/'theorygraph'/'viewer'/'index.html',ROOT/'theorygraph'/'graph.py',OUT/'commands.json',OUT/'edits.json']},'screenshots':{n:hashlib.sha256((OUT/n).read_bytes()).hexdigest() for n in ['readiness.png','live-change.png','change-history.png']},'checks':['resolution-open','impact-visible','findings-visible','revision-live-update','new-node-findable','node-and-edge-history','live-data-unchanged']},indent=2)+'\n')
         print('Browser smoke passed:',OUT/'receipt.json')
     finally:
         browser('close');proc.terminate();proc.wait(timeout=10)

@@ -1,8 +1,8 @@
 # Working in this project
 
-Read [AGENT_CONTRACT.md](AGENT_CONTRACT.md) before using this tool to represent a
+Read [docs/AGENT_CONTRACT.md](docs/AGENT_CONTRACT.md) before using this tool to represent a
 user's theory. It defines the authoring boundary, supported CLI and question schema.
-[AGENT_WORKFLOW.md](AGENT_WORKFLOW.md) describes the normal conversation loop.
+[docs/AGENT_WORKFLOW.md](docs/AGENT_WORKFLOW.md) describes the normal conversation loop.
 
 The user's statements are the source of the design. A valid storage operation does
 not establish a faithful interpretation. Preserve exact source material and keep

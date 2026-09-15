@@ -7,8 +7,8 @@ import time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parent.parent
 sys.path.insert(0,str(ROOT))
-import graph
-import dependency
+from theorygraph import graph
+from theorygraph import dependency
 
 def make_fixture():
     g={'version':1,'revision':0,'node_types':{t:{} for t in ('claim','entity','question')},'edge_types':{'about':{},'depends-on':{}},'nodes':{},'edges':{},'changes':[]}

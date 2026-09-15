@@ -27,7 +27,7 @@ def run(item):
             path=Path(directory)/'graph.json';path.write_text(json.dumps(data['graph']))
             before=path.read_bytes();operations=proposal.get('proposed_operations',[])
             if operations:
-                cmd=[sys.executable,str(ROOT/'graph.py'),'--file',str(path),'apply','-','--actor','blind-participant','--reason','Synthetic authorized proposal validation','--expect',str(data['graph']['revision']),'--json']
+                cmd=[sys.executable,str(ROOT/'tg'),'--file',str(path),'apply','-','--actor','blind-participant','--reason','Synthetic authorized proposal validation','--expect',str(data['graph']['revision']),'--json']
                 applied=subprocess.run(cmd,input=json.dumps(operations),text=True,capture_output=True,cwd=ROOT,timeout=20)
                 receipt['apply']={'command':cmd,'returncode':applied.returncode,'stdout':applied.stdout,'stderr':applied.stderr,'final_graph':json.loads(path.read_text())}
             else:receipt['apply']={'status':'no-edits-proposed','unchanged':path.read_bytes()==before}

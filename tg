@@ -1,2 +1,7 @@
-#!/bin/sh
-exec python3 "$(dirname "$0")/graph.py" "$@"
+#!/usr/bin/env python3
+"""Launcher for the theory graph CLI. Safe to symlink from ~/bin."""
+import os, sys
+ROOT = os.path.dirname(os.path.realpath(__file__))
+if ROOT not in sys.path: sys.path.insert(0, ROOT)
+from theorygraph.graph import main
+sys.exit(main())

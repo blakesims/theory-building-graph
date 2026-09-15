@@ -100,7 +100,7 @@ Write `maintenance-report.json` with keys: `changed_claim_ids`, `needs_review_id
 def snapshot(workspace):
     result={}
     for p in sorted(workspace.rglob('*')):
-        if not p.is_file() or '__pycache__' in p.parts or p.name.endswith('.lock'):continue
+        if not p.is_file() or '__pycache__' in p.parts or 'theorygraph' in p.parts or p.name.endswith('.lock'):continue
         if p.suffix in {'.py','.sh'} or p.name=='tg' or p.name=='TASK.md':continue
         result[str(p.relative_to(workspace))]=p.read_text()
     return result
@@ -116,8 +116,7 @@ def prepare(out):
         workspace=out/arm;workspace.mkdir()
         (workspace/'sources.md').write_text(source_text);(workspace/'unrelated-history.md').write_text(history)
         if arm=='graph':
-            for name in ['graph.py','dependency.py','formalcheck.py','tracecheck.py','tg']:
-                shutil.copy2(ROOT/name,workspace/name)
+            shutil.copy2(ROOT/'tg',workspace/'tg');shutil.copytree(ROOT/'theorygraph',workspace/'theorygraph',ignore=shutil.ignore_patterns('__pycache__'))
             write_json(workspace/'graph.json',model)
             help_text='''\n## Graph tools\nUse `./tg --help` or subcommand `--help`. Useful commands: `./tg search WORD`, `./tg node ID --full`, `./tg walk ID --depth N --limit N --json`, `./tg impact ID --json`, `./tg readiness ID --json`, `./tg history --full --json`.\n\nWrites use `./tg apply batch.json --actor participant --reason "description" --expect REV`. A batch is a JSON array of `{op:"add|update|delete", collection:"nodes|edges|node_types|edge_types", id:"stable-id", value:{...}}`. Updates merge node fields and meta one level. Explicit `meta.review_state: current` records a reviewed decision; semantic edits automatically flag explicit transitive dependents without rejecting accepted claims. Existing source references are in meta.source_ref; `node --full` includes rationale. Use audited CLI writes to graph.json. Source and unrelated history files are also available as plain text.\n'''
         else:

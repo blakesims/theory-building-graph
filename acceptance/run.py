@@ -55,7 +55,9 @@ def main():
     names = sorted({name for c in selected for m in maps[c['id']] for name in m.get('tests', [])} | {name for c in criteria_spec for name in c.get('additional_tests',[])})
     start = time.monotonic()
     log = io.StringIO()
-    result = unittest.TextTestRunner(stream=log, verbosity=2, resultclass=Results).run(unittest.TestLoader().loadTestsFromNames(names))
+    # Mappings name tests as module.Class.method with the module at repo root; tests now live in tests/.
+    result = unittest.TextTestRunner(stream=log, verbosity=2, resultclass=Results).run(unittest.TestLoader().loadTestsFromNames(['tests.'+n for n in names]))
+    result.outcomes = {k[len('tests.'):] if k.startswith('tests.') else k: v for k, v in result.outcomes.items()}
     cases = []
     for c in selected:
         mapped = maps[c['id']]
@@ -83,7 +85,7 @@ def main():
               'all_passed': result.wasSuccessful() and all(v=='passed' for v in result.outcomes.values()) and bool(cases) and all(c['status']=='passed' for c in cases) and (bool(args.case) or all(c['status']=='passed' for c in criteria)),
               'criteria':criteria,'criteria_counts':dict(collections.Counter(c['status'] for c in criteria)),
               'unique_test_count': len(names), 'elapsed_seconds': round(time.monotonic()-start, 3),
-              'files_sha256': {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(ROOT.glob('*.py'))},
+              'files_sha256': {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(list(ROOT.glob('theorygraph/*.py'))+list(ROOT.glob('tests/*.py'))+list(ROOT.glob('acceptance/*.py')))},
               'scope': 'Mapped behavioral checks. Full coverage is an explicit reviewable claim, not inferred from number of assertions. Independent agent evaluations require recorded evidence in their mappings.',
               'cases': cases, 'test_log': log.getvalue()}
     args.report.parent.mkdir(parents=True, exist_ok=True)

@@ -1,0 +1,108 @@
+{
+ "changes": [],
+ "edge_types": {
+  "about": {
+   "description": "Source claim, question or evidence concerns the target domain anchor; no assertion of truth or implication."
+  },
+  "answers": {
+   "coverage_required": true,
+   "description": "Claim offers full, partial or unknown coverage of a question. Only a current accepted full answer resolves it; partial answers preserve the remainder."
+  },
+  "challenges": {
+   "description": "Source disputes or supplies a potential counterexample to the target claim."
+  },
+  "checks": {
+   "description": "A saved computation checked this input; does not imply support or acceptance."
+  },
+  "depends-on": {
+   "description": "Dependent statement requires the prerequisite to hold; a semantic change to the prerequisite marks the dependent for review.",
+   "invalidation": "dependent-to-prerequisite",
+   "readiness": true
+  },
+  "extracted-from": {
+   "description": "Interpretation was extracted from the source; a corrected source marks the extraction for review. The source needs no accepted standing.",
+   "invalidation": "dependent-to-prerequisite"
+  },
+  "governs": {
+   "description": "Source claim specifies a responsibility, permission or constraint concerning the target operation; conditions remain in the claim text."
+  },
+  "informs": {
+   "description": "Source contributes context for the target proposal without logical entailment."
+  },
+  "motivates": {
+   "description": "Source explains why the target question is worth asking; does not answer it."
+  },
+  "potential-conflict": {
+   "description": "Recorded possible incompatibility between claims requiring interpretation of conditions and scope. Not proof of contradiction."
+  },
+  "raises": {
+   "description": "Source gives rise to the target unresolved question."
+  },
+  "revises": {
+   "description": "Source updates or corrects the target earlier formulation."
+  },
+  "supports": {
+   "description": "Source supplies a reason to believe the target claim; not a proof."
+  }
+ },
+ "edges": {},
+ "node_types": {
+  "case": {
+   "description": "An experience or case-study summary, with source provenance.",
+   "states": [
+    "recorded"
+   ]
+  },
+  "check-result": {
+   "description": "A reproducible bounded pattern evaluation tied to exact claim and trace inputs; not a proof of the prose theory.",
+   "states": [
+    "recorded"
+   ]
+  },
+  "claim": {
+   "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
+   "states": [
+    "proposed",
+    "accepted",
+    "withdrawn"
+   ]
+  },
+  "entity": {
+   "description": "A named domain role or object type that statements refer to; subtype is recorded in metadata.",
+   "states": [
+    "provisional",
+    "defined"
+   ]
+  },
+  "operation": {
+   "description": "A named action whose meaning is distinct from its permission or implementation.",
+   "states": [
+    "provisional",
+    "defined"
+   ]
+  },
+  "question": {
+   "description": "An unresolved or answered inquiry; answers are linked claims.",
+   "states": [
+    "open",
+    "answered",
+    "retired"
+   ]
+  },
+  "source": {
+   "description": "A source artifact or provenance context.",
+   "states": [
+    "recorded"
+   ]
+  },
+  "trace": {
+   "description": "An explicitly bounded event trace extracted from evidence or constructed as a synthetic fixture. Roles are recorded at event time.",
+   "states": [
+    "recorded"
+   ]
+  }
+ },
+ "nodes": {},
+ "revision": 0,
+ "version": 1
+}
