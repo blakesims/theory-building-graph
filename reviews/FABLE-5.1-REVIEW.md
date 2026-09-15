@@ -133,6 +133,19 @@ These tests pass, but their names promise semantics they do not establish. Mark 
 
 None of the fixtures resolve stopping authority or cancellation policy; S02 and `test_no_silent_stopping_or_cancellation_policy` hold.
 
+## Checks not run in this pass
+
+These are explicitly unverified. Nothing below should be read as passed or failed.
+
+- **Browser UI.** I did not start `serve` or open `index.html`. L9 rests on a grep of the API routes the page calls, not on rendering. `/api/readiness` and `/api/impact` were not exercised over HTTP.
+- **Scale fixture.** The IMPLEMENTER.md recipe (2500 claims, depth-20 chain, wide fanout) was not generated. Only the suite's own 1000-node hub test (R05) and the 20-node budget test (R06) ran. No latency or output-size measurements of my own.
+- **Full case-by-case audit.** I read about fifteen of the eighty case specifications against their mapped tests (I02, I03, I04, Q04, A03, A04, A11, E01, E06, E07, D08, M01, M03, M06, S06, R07). The other sixty-five were judged only through the run-report mechanism and coverage fields.
+- **Trial receipts.** I read both `comparison.md` files and the metrics of one graded blind-trial receipt. I did not re-grade any participant answer, verify receipt hashes, or inspect `fixtures/author-trials-v2/`, `acceptance/run_author_trials.py`, `run_blind_trials.py`, `prepare_author_trials.py`, `benchmark.py`, or `benchmark-report.json`.
+- **Replay and evaluation CLIs.** `replay.py` and `session_evaluation.py` were exercised only through their unit tests, not invoked directly on `fixtures/design-session/`.
+- **Formal-model paths.** `scope_overlap` witness entries, `actors` with `roles_complete`, `any_group` alternatives, `input_version` receipts, and `impact` pagination were reviewed by reading code and unit tests, not by my own CLI probes.
+- **Exclusive_actor demo path.** Only `baseline_smoke.py` ran it; I wrote no new probes for the legacy checker beyond what the tests already cover.
+- **Concurrent work.** Files that changed during the review (`AGENT_WORKFLOW.md`, `AGENTS.md`, `AGENT_CONTRACT.md`, `prepare_author_trials.py`, `acceptance/run_author_trials.py`) were not reviewed.
+
 ## Commands executed
 
 ```sh
