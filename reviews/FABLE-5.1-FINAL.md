@@ -93,6 +93,28 @@ Graders for the author, interpretation and maintenance receipts are disclosed as
 - Final pacing and design trial grades had not arrived when this was written; the acceptance rerun after they land is out of this report's scope.
 - Unchanged from earlier passes: no scale fixture, no replay CLI run, sixty-five case specs not read line by line.
 
+## Addendum: scoped receipts and final evidence state
+
+Written after `reviews/FINAL_PROGRESS.md`. Live graph still `304a456b032e16a1`. Unit suite 233 OK, no skips. Acceptance 79 passed / 1 partial (S01), criteria 21 / 1 incomplete (AC15). Whole-run receipts for v1 and v2 design remain `passed: false` and the gate rejects them.
+
+### How the carve-out was done, measured against G1–G4
+
+- **G2 stage completeness: met by convention.** Each `graded-S0N.json` under `reviews/multiturn/v2/design` binds all seven `control/<stage>/` artifact sets, `participant.json`, the workspace, and the parent `graded.json`. I recomputed the parent hash from each scoped receipt: all match. The failed whole-run report is therefore tamper-bound into every passing scoped receipt.
+- **G3 parent-failure disclosure: met by convention, not by field.** Scoped receipts carry `hard_failures: []`, which is correct for their own criteria. The parent's failures (`01-read-only`, `04-explicit-choice`) are disclosed in each `rubric-S0N.json` scope note and in the mapping notes, and are hash-bound via the parent report. No machine-readable `parent_hard_failures` field exists, and `receipt_validation.py` still has no parent or stage-completeness check. The evidence now relies on this convention four times, so the gate rule from the main report should be implemented; not blocking because `test_multiturn_receipts.py` asserts the exact before/after graphs for each scoped stage.
+- **G1 criterion-to-case binding: met per receipt.** Each `rubric-S0N.json` lists only the stage criteria for its case. I checked the pairings against `cases.json` assertions: S02 ↔ stage 05 (may is not must, potential conflict, steward agreement unchanged), S03 ↔ stage 06 (M1688, summary-only provenance, threshold open), S04 ↔ stage 07 (M1689, means revisable, intention preserved), S01 ↔ stages 02–04. All consistent. The pairing is still asserted by the rubric author rather than declared in `cases.json`.
+- **G4 prompt provenance: disclosed in bytes, not in receipts.** The v2 design run used contract `authoring/6`; pace3 `authoring/7`; pace4 `authoring/8`; the pending S01 fork injects `authoring/9`. The composite S08 receipt binds pace4 stage 01, v2 stage 02 and the browser receipt without recording the contract version of each component. Record it in the receipt or mapping note so a reader knows S08's pacing evidence is under guidance written after the pacing failures.
+
+### Honest scope statement per case
+
+- **S02, S03, S04: passed on scoped evidence from a run that failed elsewhere.** The failed stages do not evidence these cases, the full trial is bound, nothing is hidden. That is the distinction you asked for, applied correctly.
+- **S08: passed as a composite** of one exact-pacing stage (pace4), one proposal stage (v2 stage 02) and a root-observed browser update. Not one continuous session, as the mapping note says. The pacing component was obtained under guidance that addresses the earlier pacing failure directly.
+- **S07: passed** on the tool-enabled maintenance pair plus two separately timed no-tool review receipts; the gate requires all three and all three validate. No superiority claim; human time null.
+- **S01: partial, correctly.** v2 stage 04 kept the replacement question pending because of the adjacent unresolved consultation question; the criterion required it answered or retired while consultation stays open. The grader's explanation matches the stage snapshot. The planned fork reruns stage 04 alone from v2's pre-stage graph with `authoring/9`. If it passes, the S01 receipt must bind the fork manifest and the v2 parent, list the contract version per stage (02–03 under `/6`, 04 under `/9`), and show the grading criterion unchanged. I cannot assess the fork until it exists.
+
+### Remaining concrete issue
+
+Only one, non-blocking: the gate enforces none of G1–G3; it accepts them as conventions that the mapping authors have so far honoured. Add `parent_receipt`, `parent_hard_failures`, and a `participant.json` stage-coverage check to `receipt_validation.py`, with a test that a scoped receipt omitting a stage or the parent fails. Until then, every scoped pass is as trustworthy as the hand-written snapshot tests behind it, which I read and which are specific.
+
 ## Commands executed
 
 ```sh
