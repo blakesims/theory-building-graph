@@ -1,0 +1,18 @@
+[
+  {
+    "id": "q1",
+    "text": "An attempt to improve performance has failed. The operator tells the orchestrator to create replacement work now. Under the current design, who chooses the subsequent work? Explain any distinction needed."
+  },
+  {
+    "id": "q2",
+    "text": "Was a different replacement policy previously considered? What was its rationale and why did it change?"
+  },
+  {
+    "id": "q3",
+    "text": "Does the current theory require operator permission every time the orchestrator ends a degraded attempt? What is settled and what remains open?"
+  },
+  {
+    "id": "q4",
+    "text": "What can the supplied postmortem material establish, and what cannot it establish?"
+  }
+]

@@ -1,0 +1,133 @@
+{
+  "arm": "prose",
+  "trial": 1,
+  "command": [
+    "claude",
+    "-p",
+    "--safe-mode",
+    "--tools",
+    "",
+    "--no-session-persistence",
+    "--output-format",
+    "json"
+  ],
+  "input_bytes": 4270,
+  "input_sha256": "328a856acf1abb3f8c9155f00caf7d9940ba1f9cae6b95a25cb9adc8a3cf2cbc",
+  "elapsed_seconds": 19.569,
+  "retrieval_calls": 0,
+  "packet_deliveries": 1,
+  "exit_code": 0,
+  "stderr": "",
+  "scope": "Controlled cold-start on injected equivalent packet; no tool retrieval or graph authoring measured.",
+  "claude_result": {
+    "duration_api_ms": 19665,
+    "stop_reason": "end_turn",
+    "session_id": "28ebdaee-b78b-40b1-99b0-635f99de1f59",
+    "total_cost_usd": 0.17890399999999998,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 5071,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 1509,
+      "output_tokens_details": {
+        "thinking_tokens": 105
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 5071,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "not_available",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1509,
+          "cache_read_input_tokens": 0,
+          "cache_creation_input_tokens": 5071,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 5071
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard"
+    },
+    "modelUsage": {
+      "claude-haiku-4-5-20251001": {
+        "inputTokens": 1944,
+        "outputTokens": 14,
+        "cacheReadInputTokens": 0,
+        "cacheCreationInputTokens": 0,
+        "webSearchRequests": 0,
+        "costUSD": 0.002014,
+        "contextWindow": 200000,
+        "maxOutputTokens": 32000,
+        "thinkingTokens": 0,
+        "canonicalModel": "claude-haiku-4-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      },
+      "claude-fable-5-1": {
+        "inputTokens": 2,
+        "outputTokens": 1509,
+        "cacheReadInputTokens": 0,
+        "cacheCreationInputTokens": 5071,
+        "webSearchRequests": 0,
+        "costUSD": 0.17689,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 64000,
+        "thinkingTokens": 105,
+        "canonicalModel": "claude-fable-5-1",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "is_error": false,
+    "num_turns": 1,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"answers\":{\"q1\":\"Under the current design the steward chooses the subsequent work, not the orchestrator and not the operator's instruction to the orchestrator. The accepted, current claim steward-next-work (sources: source-2) states the steward always chooses next work after a failed attempt, and it governs the operation choose-next-work. The necessary distinction is between deciding which subsequent work pursues the intention (choose-next-work, a steward decision) and the mechanical act of inserting or creating a record, which choose-next-work explicitly says is distinct. The orchestrator may end the failed attempt and return it to the steward, and may ask 'keep trying versus mark failed' (source-2, steward-next-work rationale), but selecting the replacement work belongs to the steward. The withdrawn claims replacement-exception and atomic-replacement, which would have let an operator-approved orchestrator replacement bypass the steward, are marked historical and revised by steward-next-work, so an operator telling the orchestrator to create replacement work does not shift the choice away from the steward. Also, per concern-persists, ending the failed attempt does not satisfy or withdraw the underlying intention, so the intention still needs steward-chosen work.\",\"q2\":\"Yes. Two related withdrawn claims record an earlier policy: replacement-exception ('Operator-approved orchestrator replacement can bypass steward', source-1) and atomic-replacement ('Orchestrator replacement is atomic archive/add and does not wake steward until new work completes', sources source-1 and source-2). Rationale for the earlier policy: avoid a relay when the orchestrator already had the context (source-1; replacement-exception rationale). Why it changed: Blake later chose the simpler rule that the steward always chooses the work (source-2), preferring a single owner of the next-work choice and a clean responsibility boundary (steward-next-work rationale; replacement-exception rationale 'later rejected in favor of one owner of next-work choice'; atomic-replacement rationale 'retired when steward always choosing was selected'). The explicit relations confirm steward-next-work revises both replacement-exception and atomic-replacement. Both older claims have status withdrawn and review_state historical.\",\"q3\":\"No, the current theory does not establish a requirement for operator permission every time. Settled (accepted, current): the steward always chooses next work after a failed attempt (steward-next-work, source-2); the orchestrator may end a failed attempt and return it to the steward (steward-next-work rationale); ending a failed attempt does not itself satisfy or withdraw the underlying intention (concern-persists, source-2). Open (status open, current): the question consultation asks whether the orchestrator must consult the operator before ending degraded work or may end autonomously within a configured threshold; its rationale notes that 'may ask' in source-2 does not establish mandatory consultation and that this is not settled by next-work ownership. Also open: cancellation, whether every arbitrary cancellation wakes the steward beyond the agreed failed terminal result (source-2). So consultation requirements and the scope of what wakes the steward remain undecided; the packet gives no threshold value or consultation rule.\",\"q4\":\"Per source-3, only summaries of M1688 and M1689 are supplied, and the primary postmortems are unavailable in this fixture. What the material can establish: at the level of summary, M1688 describes a pattern of repeated useful reviews without an effective ruling, and M1689 describes planning a proposed solution instead of reassessing the original performance concern. These summaries are consistent with the design's motivation for a single owner of the next-work choice (steward-next-work) and for the claim that ending an attempt does not resolve the underlying concern (concern-persists), but no packet claim lists source-3 as a source, so the postmortems are not cited as evidence for any accepted claim. What it cannot establish: the specific details, causes, participants, timelines, or recommendations of the postmortems; whether either incident directly motivated the change from replacement-exception to steward-next-work (that change is attributed to source-1 and source-2, not source-3); and any resolution of the open questions consultation or cancellation. Any further characterization of M1688 or M1689 beyond the two summary sentences would be invention.\"}}",
+    "ttft_ms": 3015,
+    "type": "result",
+    "duration_ms": 18722,
+    "uuid": "978c8efd-b447-46f5-8359-83f2a37a7751",
+    "ttft_stream_ms": 1491,
+    "time_to_request_ms": 247,
+    "first_content_frame_ms": 2301,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

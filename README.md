@@ -1,6 +1,37 @@
+# Build and acceptance checks
+
+This is a local theory-design tool, not the Morphisms runtime. It preserves explicit statements, revisions, dependencies, and finite formal checks; it does not infer prose truth or prove a complete theory.
+
+```sh
+cd ~/projects/theory-building-graph
+make test
+make acceptance
+make baseline
+make serve
+```
+
+`make acceptance` exits nonzero until all80 mapped scenarios are covered and passing. Consult `acceptance/run-report.json` for per-case evidence and limitations. Independent LLM receipts are separate from deterministic tests; passing an authored fixture does not establish agent performance.
+
+Useful next reads:
+
+- [Agent workflow](AGENT_WORKFLOW.md): how to converse, retrieve, propose and reconcile.
+- [Dependency schema](DEPENDENCY-SCHEMA.md): transitive review, readiness and version receipts.
+- [Formal fragments](acceptance/FORMAL-SCHEMA.md): authority, scope, cardinality, bounded obligations.
+- [Acceptance contract](acceptance/CONTRACT.md) and [80 scenarios](acceptance/CASES.md).
+- [Independent review](reviews/FABLE-5.1-REVIEW.md) when completed.
+
+```sh
+./tg impact steward-chooses-next-work --limit 20
+./tg readiness stopping-authority
+./tg check --json
+python3 acceptance/benchmark.py
+```
+
+The canonical user data is `graph.json`. Tests and review fixtures use isolated copies. `replay.py` runs explicitly authored synthetic transition models; it does not silently add rules to Morphisms.
+
 # Morphisms theory graph
 
-Standalone local project: code, graph.json, graph engine, tests and this guide live here. Original September14 notebook is a separate sibling project `../model-workspace` on8766; this project serves only8767.
+Standalone local project: code, graph.json, graph engine, tests and this guide live here. The original September14 notebook remains in the prior workspace on port8766; this project serves only8767. The previous theory-graph path is a compatibility symlink to this repository.
 
 Start from this directory: `python3 graph.py serve` → http://127.0.0.1:8767
 
@@ -21,7 +52,7 @@ From the project directory:
 ./tg history --limit 1
 ```
 
-`--json` and `--full` work before or after the subcommand. Default output is readable text; JSON is a complete structured result. Normal history is a small edit summary, `history --full` returns before/after. Node returns statement and incident edge references; walk includes neighbor bodies. Alias/title resolution is exact case-insensitive, rejects ambiguity, and keeps stable IDs.
+`--json` and `--full` work before or after the subcommand. Default output is readable text. Ordinary JSON node/neighborhood reads preserve semantic content and source references while explicitly listing omitted metadata; `--full` retrieves that metadata. Check/evaluation results retain their evidence. Normal history is a small edit summary, `history --full` returns before/after. Node returns statement and incident edge references; walk includes neighbor bodies. Alias/title resolution is exact case-insensitive, rejects ambiguity, and keeps stable IDs.
 
 CLI and browser default to current material. `--historical` includes history; current includes items needing review but not explicitly historical entries. An explicitly requested historical root remains inspectable. `questions` reports total, included and historical-excluded counts.
 
@@ -55,9 +86,9 @@ Attribution is separate: `meta.author`, `meta.source_kind` (e.g. assistant-parap
 ]
 ```
 
-Operations: add/update/delete. Collections: nodes/edges/node_types/edge_types. Updates merge fields and meta one level. Add types with a description and optionally allowed states. Add edges with from/to/type and arbitrary meta. Reciprocal directed edges are independent. Unknown endpoints/types/states and invalid answer coverage reject the entire batch. IDs are caller-chosen stable identities; existing IDs cannot be added twice. No migration renames IDs just for appearance.
+Operations: add/update/delete. Collections: nodes/edges/node_types/edge_types/formal_model. Formal-model operations edit complete named sections; see `DEPENDENCY-SCHEMA.md`. Updates merge fields and meta one level. Add types with a description and optionally allowed states. Add edges with from/to/type and arbitrary meta. Reciprocal directed edges are independent. Unknown endpoints/types/states and invalid answer coverage reject the entire batch. IDs are caller-chosen stable identities; existing IDs cannot be added twice. No migration renames IDs just for appearance.
 
-Edits acquire a single-host file lock and atomically replace the graph with its audit record. Text/state/currency edits flag directly connected questions; decision relation edits flag their targets. Explicit `meta.review_state` in a batch records deliberate reconciliation. Metadata-only provenance additions don't invalidate claims. This is bounded review assistance, not complete semantic propagation.
+Edits acquire a single-host file lock and atomically replace the graph with its audit record. Semantic edits propagate review requirements transitively along declared dependency/provenance edges. Topic links do not imply dependence. Version-bound review receipts prevent a review of an older premise from clearing a newer change. See `DEPENDENCY-SCHEMA.md` for exact reconciliation, readiness, and metadata semantics.
 
 ## Verify and limits
 
@@ -67,7 +98,7 @@ The browser is read-only. All writes go through the CLI. Graph history remains i
 
 Cytoscape is vendored locally under vendor/ with its license; no runtime CDN needed. The visual graph is a representation of stored relations, not an inference engine.
 
-## Optional finite-trace pattern checker
+## Legacy finite-trace demonstration
 
 ```sh
 ./tg evaluate steward-chooses-next-work fixture-steward-next
@@ -81,7 +112,7 @@ This checks one optional `claim.pattern` fragment, **not the complete prose clai
 {"kind":"exclusive_actor","operation":"choose-work","allowed_role":"steward-role","scope":"after_attempt_ended"}
 ```
 
-Both `choose-work` and `end-attempt` must be operation anchors. Allowed/recorded roles must be entity anchors with `meta.kind: "agent-role"`. `meta.pattern_standing: "proposed"` keeps the proposed pattern interpretation separate from the claim's acceptance. No other pattern kind or scope is implemented.
+Both `choose-work` and `end-attempt` must be operation anchors. Allowed/recorded roles must be entity anchors with `meta.kind: "agent-role"`. `meta.pattern_standing: "proposed"` keeps the proposed pattern interpretation separate from the claim's acceptance. This legacy fragment remains supported. The additional authority, cardinality and bounded-obligation fragments are documented in `acceptance/FORMAL-SCHEMA.md`.
 
 A `trace` node has status `recorded` and a top-level payload:
 

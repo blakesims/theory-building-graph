@@ -1,0 +1,19 @@
+{
+  "participant": null,
+  "arm": null,
+  "trial": null,
+  "input_hash": "07916e92ec0ee7ba79188e81ac9d9304b8d287c995b993530a02dfc03cd5dd2f",
+  "answers": {},
+  "metrics": {
+    "input_tokens": null,
+    "output_tokens": null,
+    "retrieval_calls": null,
+    "elapsed_seconds": null,
+    "authoring_seconds": null,
+    "review_seconds": null
+  },
+  "grades": [],
+  "hard_failures": [],
+  "status": "not-run",
+  "limitation": "Preparation is not an independent-agent evaluation."
+}

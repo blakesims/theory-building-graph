@@ -1,0 +1,413 @@
+{
+  "model": {
+    "meta": {
+      "synthetic": true,
+      "source": "Morphisms design session; executable interpretation requires separate review"
+    },
+    "initial": {
+      "intentions": {
+        "I": {
+          "state": "open",
+          "text": "reduce CPU",
+          "valid": true
+        }
+      },
+      "records": {
+        "A": {
+          "intention": "I",
+          "lifecycle": "running",
+          "outcome": null
+        },
+        "B": {
+          "intention": "I",
+          "lifecycle": "running",
+          "outcome": null
+        }
+      },
+      "responses": {},
+      "decisions": {
+        "D": {
+          "owner": "operator",
+          "answer": null
+        }
+      },
+      "config": {
+        "desk": true,
+        "next_work_roles": [
+          "steward"
+        ]
+      },
+      "pulse": [],
+      "roles": {
+        "assistant": {
+          "start": "user",
+          "drive": "user"
+        },
+        "architect": {
+          "start": "user",
+          "drive": "user"
+        },
+        "orchestrator": {
+          "start": "user",
+          "drive": "autonomous"
+        },
+        "steward": {
+          "start": "event",
+          "drive": "autonomous"
+        }
+      }
+    },
+    "rules": [
+      {
+        "id": "blocked-report",
+        "on": "blocked",
+        "guards": [
+          {
+            "path": [
+              "records",
+              {
+                "$arg": "record"
+              },
+              "lifecycle"
+            ],
+            "equals": "running"
+          }
+        ],
+        "effects": [
+          {
+            "op": "set",
+            "path": [
+              "records",
+              {
+                "$arg": "record"
+              },
+              "lifecycle"
+            ],
+            "value": "blocked"
+          },
+          {
+            "op": "create",
+            "path": [
+              "responses",
+              {
+                "$event": "id"
+              }
+            ],
+            "value": {
+              "owner": "orchestrator",
+              "state": "pending",
+              "record": {
+                "$arg": "record"
+              },
+              "intention": {
+                "$state": [
+                  "records",
+                  {
+                    "$arg": "record"
+                  },
+                  "intention"
+                ]
+              },
+              "evidence": {
+                "$arg": "evidence"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "recovery",
+        "on": "recover",
+        "guards": [
+          {
+            "path": [
+              "responses",
+              {
+                "$arg": "response"
+              },
+              "owner"
+            ],
+            "equals": "orchestrator"
+          }
+        ],
+        "effects": [
+          {
+            "op": "set",
+            "path": [
+              "records",
+              {
+                "$arg": "record"
+              },
+              "lifecycle"
+            ],
+            "value": "running"
+          },
+          {
+            "op": "set",
+            "path": [
+              "responses",
+              {
+                "$arg": "response"
+              },
+              "state"
+            ],
+            "value": "resolved"
+          }
+        ]
+      },
+      {
+        "id": "terminal-result",
+        "on": "end",
+        "guards": [
+          {
+            "path": [
+              "records",
+              {
+                "$arg": "record"
+              },
+              "lifecycle"
+            ],
+            "not_equals": "ended"
+          }
+        ],
+        "effects": [
+          {
+            "op": "set",
+            "path": [
+              "records",
+              {
+                "$arg": "record"
+              },
+              "lifecycle"
+            ],
+            "value": "ended"
+          },
+          {
+            "op": "set",
+            "path": [
+              "records",
+              {
+                "$arg": "record"
+              },
+              "outcome"
+            ],
+            "value": {
+              "$arg": "outcome"
+            }
+          },
+          {
+            "op": "create",
+            "path": [
+              "responses",
+              {
+                "$event": "id"
+              }
+            ],
+            "value": {
+              "owner": "steward",
+              "state": "pending",
+              "record": {
+                "$arg": "record"
+              },
+              "intention": {
+                "$state": [
+                  "records",
+                  {
+                    "$arg": "record"
+                  },
+                  "intention"
+                ]
+              },
+              "evidence": {
+                "$arg": "evidence"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "choose-subsequent-work",
+        "on": "choose",
+        "guards": [
+          {
+            "path": [
+              "config",
+              "next_work_roles"
+            ],
+            "includes": {
+              "$arg": "role"
+            }
+          },
+          {
+            "path": [
+              "roles",
+              {
+                "$arg": "role"
+              }
+            ],
+            "exists": true
+          },
+          {
+            "path": [
+              "responses",
+              {
+                "$arg": "response"
+              },
+              "owner"
+            ],
+            "equals": {
+              "$arg": "role"
+            }
+          },
+          {
+            "path": [
+              "responses",
+              {
+                "$arg": "response"
+              },
+              "state"
+            ],
+            "equals": "pending"
+          }
+        ],
+        "effects": [
+          {
+            "op": "create",
+            "path": [
+              "records",
+              {
+                "$arg": "new_record"
+              }
+            ],
+            "value": {
+              "intention": {
+                "$state": [
+                  "responses",
+                  {
+                    "$arg": "response"
+                  },
+                  "intention"
+                ]
+              },
+              "lifecycle": "running",
+              "outcome": null
+            }
+          },
+          {
+            "op": "set",
+            "path": [
+              "responses",
+              {
+                "$arg": "response"
+              },
+              "state"
+            ],
+            "value": "resolved"
+          }
+        ]
+      },
+      {
+        "id": "consider-completion",
+        "on": "consider",
+        "effects": [
+          {
+            "op": "set",
+            "path": [
+              "responses",
+              {
+                "$arg": "response"
+              },
+              "state"
+            ],
+            "value": "resolved"
+          }
+        ]
+      },
+      {
+        "id": "answer-decision",
+        "on": "answer",
+        "guards": [
+          {
+            "path": [
+              "decisions",
+              {
+                "$arg": "decision"
+              },
+              "answer"
+            ],
+            "equals": null
+          }
+        ],
+        "effects": [
+          {
+            "op": "set",
+            "path": [
+              "decisions",
+              {
+                "$arg": "decision"
+              },
+              "answer"
+            ],
+            "value": {
+              "$arg": "answer"
+            }
+          },
+          {
+            "op": "set",
+            "path": [
+              "decisions",
+              {
+                "$arg": "decision"
+              },
+              "owner"
+            ],
+            "value": "orchestrator"
+          }
+        ]
+      },
+      {
+        "id": "route-with-dial",
+        "on": "route",
+        "effects": [
+          {
+            "op": "append",
+            "path": [
+              "pulse"
+            ],
+            "value": {
+              "intention": {
+                "$arg": "intention"
+              },
+              "desk": {
+                "$state": [
+                  "config",
+                  "desk"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "events": [
+    {
+      "id": "endA",
+      "kind": "end",
+      "args": {
+        "record": "A",
+        "outcome": "failed",
+        "evidence": "synthetic failed brief"
+      }
+    },
+    {
+      "id": "next",
+      "kind": "choose",
+      "args": {
+        "response": "endA",
+        "role": "steward",
+        "new_record": "C"
+      }
+    }
+  ]
+}

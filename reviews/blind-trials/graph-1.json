@@ -1,0 +1,133 @@
+{
+  "arm": "graph",
+  "trial": 1,
+  "command": [
+    "claude",
+    "-p",
+    "--safe-mode",
+    "--tools",
+    "",
+    "--no-session-persistence",
+    "--output-format",
+    "json"
+  ],
+  "input_bytes": 5520,
+  "input_sha256": "690ff270ebef832582743563124496ef1a5c9450c0326c8d4665f6c82e60c3aa",
+  "elapsed_seconds": 17.842,
+  "retrieval_calls": 0,
+  "packet_deliveries": 1,
+  "exit_code": 0,
+  "stderr": "",
+  "scope": "Controlled cold-start on injected equivalent packet; no tool retrieval or graph authoring measured.",
+  "claude_result": {
+    "duration_api_ms": 17316,
+    "stop_reason": "end_turn",
+    "session_id": "963bddaf-8d76-489b-9f15-06bcb7dc4537",
+    "total_cost_usd": 0.17754,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 5569,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 1273,
+      "output_tokens_details": {
+        "thinking_tokens": 116
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 5569,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "not_available",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1273,
+          "cache_read_input_tokens": 0,
+          "cache_creation_input_tokens": 5569,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 5569
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard"
+    },
+    "modelUsage": {
+      "claude-haiku-4-5-20251001": {
+        "inputTokens": 2435,
+        "outputTokens": 11,
+        "cacheReadInputTokens": 0,
+        "cacheCreationInputTokens": 0,
+        "webSearchRequests": 0,
+        "costUSD": 0.00249,
+        "contextWindow": 200000,
+        "maxOutputTokens": 32000,
+        "thinkingTokens": 0,
+        "canonicalModel": "claude-haiku-4-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      },
+      "claude-fable-5-1": {
+        "inputTokens": 2,
+        "outputTokens": 1273,
+        "cacheReadInputTokens": 0,
+        "cacheCreationInputTokens": 5569,
+        "webSearchRequests": 0,
+        "costUSD": 0.17505,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 64000,
+        "thinkingTokens": 116,
+        "canonicalModel": "claude-fable-5-1",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "is_error": false,
+    "num_turns": 1,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"answers\":{\"q1\":\"Under the current design the steward chooses the subsequent work, not the orchestrator, even when the operator instructs the orchestrator to create replacement work (steward-next-work, status accepted/current, sourced from source-2; link steward-next-work governs choose-next-work; steward-role). The needed distinction is between deciding which work pursues the intention (the 'choose-next-work' operation, owned by steward) and mechanically inserting a record (choose-next-work text). The orchestrator may end the failed attempt as a 'failed' terminal result and return it to steward, or ask 'keep trying versus mark failed', but the choice of next work stays with steward (source-2; steward-next-work rationale). The operator-approved path that would let the orchestrator bypass steward is withdrawn (replacement-exception, status withdrawn/historical). Also, ending the failed attempt does not satisfy or withdraw the underlying intention, so the performance concern remains for steward to address (concern-persists, accepted/current).\",\"q2\":\"Yes. Two related historical positions were considered: (a) operator-approved orchestrator replacement could bypass steward (replacement-exception, withdrawn), with the rationale of avoiding a relay when the orchestrator already had the context (source-1; replacement-exception rationale); and (b) replacement as an atomic archive/add that would not wake steward until the new work completed (atomic-replacement, withdrawn; source-1, source-2). Both were revised by steward-next-work (links 'revises'). They changed because Blake later chose the simpler rule that the steward always chooses the work, keeping one owner of the next-work choice and a clean responsibility boundary, with the orchestrator limited to asking keep-trying-versus-mark-failed (source-2; steward-next-work rationale; atomic-replacement rationale). Evidence is session paraphrase only (limitation).\",\"q3\":\"No, the current theory does not establish a requirement for operator permission each time. Settled: steward always chooses next work after a failed attempt (steward-next-work, accepted/current), and ending a failed attempt does not satisfy or withdraw the intention (concern-persists, accepted/current). Open: whether the orchestrator must consult the operator before ending degraded work or may end autonomously within a configured threshold (consultation, status open; rationale: 'may ask' in source-2 does not establish mandatory consultation and is not settled by next-work ownership), and whether every arbitrary cancellation wakes steward beyond the agreed failed terminal result (cancellation, status open). The packet does not supply any threshold value or a decision on these, so I cannot state one.\",\"q4\":\"The supplied material can establish only what the summaries say at a high level: M1688 involved repeated useful reviews without an effective ruling, and M1689 involved planning a proposed solution instead of reassessing the original performance concern (source-3, source_kind summary). It can suggest these are failure patterns consistent with the current claims (e.g., concern-persists and the need for an effective owner of next-work choice), but it cannot establish the primary details, exact causes, timelines, participants, or any explicit ruling, because the primary postmortems are unavailable and the fixture is limited to paraphrases and summaries rather than raw primary postmortems (source-3; limitation). It also cannot resolve the open questions on consultation or cancellation (consultation, cancellation, status open). Any causal link from M1688/M1689 to the design change is not stated in the packet and would be inference.\"}}",
+    "ttft_ms": 3422,
+    "type": "result",
+    "duration_ms": 16997,
+    "uuid": "e248c178-a13f-4d6c-9523-d8f1dad91721",
+    "ttft_stream_ms": 1638,
+    "time_to_request_ms": 722,
+    "first_content_frame_ms": 2388,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

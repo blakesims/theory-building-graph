@@ -1,0 +1,221 @@
+{
+  "cases": {
+    "I01": {
+      "tests": [
+        "test_dependency.DependencyTests.test_chain_transitive_preserves_acceptance"
+      ],
+      "coverage": "full",
+      "notes": ""
+    },
+    "I02": {
+      "tests": [
+        "test_dependency.DependencyTests.test_diamond_distinct_paths"
+      ],
+      "coverage": "full",
+      "notes": ""
+    },
+    "I03": {
+      "tests": [
+        "test_dependency.DependencyTests.test_topic_and_support_not_dependencies"
+      ],
+      "coverage": "full",
+      "notes": ""
+    },
+    "I04": {
+      "tests": [
+        "test_dependency.DependencyTests.test_withdrawn_premise_remains_blocker"
+      ],
+      "coverage": "full",
+      "notes": ""
+    },
+    "I05": {
+      "tests": [
+        "test_dependency.DependencyTests.test_source_extraction_chain"
+      ],
+      "coverage": "full",
+      "notes": ""
+    },
+    "I06": {
+      "tests": [
+        "test_dependency.DependencyTests.test_presentation_no_invalidation"
+      ],
+      "coverage": "full",
+      "notes": ""
+    },
+    "I08": {
+      "tests": [
+        "test_dependency.DependencyTests.test_rereview_exact_version"
+      ],
+      "coverage": "full",
+      "notes": ""
+    },
+    "D05": {
+      "tests": [
+        "test_dependency.DependencyTests.test_enforcement_independent_axes"
+      ],
+      "coverage": "full",
+      "notes": ""
+    },
+    "R04": {
+      "tests": [
+        "test_dependency.DependencyTests.test_semantic_deletion_rejected_retire_allowed"
+      ],
+      "coverage": "full",
+      "notes": ""
+    },
+    "Q01": {
+      "tests": [
+        "test_dependency.QuestionTests.test_no_dependencies"
+      ],
+      "coverage": "full",
+      "notes": ""
+    },
+    "Q02": {
+      "tests": [
+        "test_dependency.QuestionTests.test_all_ready_answer_independent"
+      ],
+      "coverage": "full",
+      "notes": ""
+    },
+    "Q03": {
+      "tests": [
+        "test_dependency.QuestionTests.test_all_blockers"
+      ],
+      "coverage": "full",
+      "notes": ""
+    },
+    "Q04": {
+      "tests": [
+        "test_dependency.QuestionTests.test_retired_answer_not_prerequisite"
+      ],
+      "coverage": "full",
+      "notes": ""
+    },
+    "Q05": {
+      "tests": [
+        "test_dependency.QuestionTests.test_partial_remainder"
+      ],
+      "coverage": "full",
+      "notes": ""
+    },
+    "Q06": {
+      "tests": [
+        "test_dependency.QuestionTests.test_any_group"
+      ],
+      "coverage": "full",
+      "notes": ""
+    },
+    "Q07": {
+      "tests": [
+        "test_dependency.QuestionTests.test_cycles_distinct"
+      ],
+      "coverage": "full",
+      "notes": ""
+    },
+    "Q08": {
+      "tests": [
+        "test_dependency.QuestionTests.test_inventory_totals"
+      ],
+      "coverage": "full",
+      "notes": ""
+    },
+    "D01": {
+      "tests": [
+        "test_dependency.DependencyTests.test_alias_reuse_and_ambiguity"
+      ],
+      "coverage": "partial",
+      "notes": "Stable alias reuse tested; conversational extraction/acceptance requires agent replay."
+    },
+    "D02": {
+      "tests": [
+        "test_dependency.DependencyTests.test_alias_reuse_and_ambiguity"
+      ],
+      "coverage": "partial",
+      "notes": "Ambiguous IDs rejected; contextual disambiguation is an agent responsibility."
+    },
+    "D06": {
+      "tests": [
+        "test_dependency.DependencyTests.test_provenance_storage_not_execution"
+      ],
+      "coverage": "partial",
+      "notes": "Source attribution storage is covered; faithful paraphrase is an agent judgment."
+    },
+    "D07": {
+      "tests": [
+        "test_dependency.QuestionTests.test_shapes_not_interchangeable"
+      ],
+      "coverage": "partial",
+      "notes": "Explicit shape prevents yes filling a condition or exploration. Inferring shape from user language requires agent extraction."
+    },
+    "R06": {
+      "tests": [
+        "test_dependency.IntegrationTests.test_compact_json_read_keeps_semantics"
+      ],
+      "coverage": "partial",
+      "notes": "Default vs full JSON bytes tested here; root reliability tests cover history budgets."
+    },
+    "R07": {
+      "tests": [
+        "test_dependency.GapTests.test_deterministic_checks",
+        "test_dependency.CanonicalTests.test_canonical_export_and_rename"
+      ],
+      "coverage": "full",
+      "notes": ""
+    },
+    "R08": {
+      "tests": [
+        "test_dependency.DependencyTests.test_provenance_storage_not_execution"
+      ],
+      "coverage": "partial",
+      "notes": "Source ingested as inert JSON; agent prompt-injection resistance requires replay evaluation."
+    },
+    "R01": {
+      "tests": [
+        "test_graph.Tests.test_failure_atomic"
+      ],
+      "coverage": "full",
+      "notes": "Isolated fixture asserts behavior and negative controls."
+    },
+    "R03": {
+      "tests": [
+        "test_graph.Tests.test_reverse_metadata_audit"
+      ],
+      "coverage": "full",
+      "notes": "Isolated fixture asserts behavior and negative controls."
+    },
+    "R05": {
+      "tests": [
+        "test_dependency.AcceptanceIntegrationTests.test_R05_large_hub_explicit_bounds"
+      ],
+      "coverage": "full",
+      "notes": "Isolated fixture asserts behavior and negative controls."
+    },
+    "I07": {
+      "tests": [
+        "test_dependency.AcceptanceIntegrationTests.test_I07_every_semantic_input_and_unrelated_negative",
+        "test_tracecheck.FormalDispatchTests.test_authority_dispatch_and_fragment_freshness"
+      ],
+      "coverage": "full",
+      "notes": "Isolated fixture asserts behavior and negative controls."
+    },
+    "A08": {
+      "tests": [
+        "test_dependency.AcceptanceIntegrationTests.test_A08_withdrawal_clears_policy_conflict_and_preserves_receipt"
+      ],
+      "coverage": "full",
+      "notes": "Isolated fixture asserts behavior and negative controls."
+    }
+  },
+  "additional_tests": [
+    "test_dependency.GapTests.test_gaps_and_repairs",
+    "test_dependency.GapTests.test_revision_requires_explicit_retirement",
+    "test_dependency.GapTests.test_suppression_visible_and_no_answer_drift",
+    "test_dependency.IntegrationTests.test_undeclared_reference_gap_repairs",
+    "test_dependency.IntegrationTests.test_formal_model_audited_cli_shape",
+    "test_dependency.IntegrationTests.test_formal_finding_text_output",
+    "test_dependency.DependencyTests.test_path_bound_and_pagination",
+    "test_dependency.DependencyTests.test_custom_relation_semantics_explicit",
+    "test_dependency.QuestionTests.test_stale_answer_not_resolved"
+  ],
+  "notes": "All fixtures are synthetic and isolated. Live graph unchanged. Mappings identify mechanical coverage without equating storage tests with semantic interview quality."
+}

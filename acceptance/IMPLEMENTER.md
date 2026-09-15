@@ -83,7 +83,7 @@ From this package directory:
 
 ```sh
 python3 validate_suite.py
-python3 baseline_smoke.py --engine ../theory-graph
+python3 baseline_smoke.py --engine ..
 ```
 
 The first validates the spec package, not the product. The second executes a narrow set of currently supported checker behaviors on a temporary copy. Neither claims80-case compliance. Test reports must identify `passed`, `failed`, `not-implemented`, `blocked-on-semantics` or `not-run` for each target scenario; no silent skips and no count inflation by treating unsupported as success.

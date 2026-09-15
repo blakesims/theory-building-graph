@@ -1,7 +1,7 @@
 """Read the existing engine and evaluate TEMPORARY fixture copies only."""
 import argparse,json,subprocess,tempfile,hashlib
 from pathlib import Path
-p=argparse.ArgumentParser(description=__doc__);p.add_argument('--engine',type=Path,default=Path(__file__).resolve().parent.parent/'theory-graph');a=p.parse_args();engine=a.engine.resolve();original=engine/'graph.json';raw=original.read_bytes()
+p=argparse.ArgumentParser(description=__doc__);p.add_argument('--engine',type=Path,default=Path(__file__).resolve().parent.parent);a=p.parse_args();engine=a.engine.resolve();original=engine/'graph.json';raw=original.read_bytes()
 with tempfile.TemporaryDirectory() as d:
  graph=Path(d)/'graph.json';graph.write_bytes(raw)
  def run(*args):

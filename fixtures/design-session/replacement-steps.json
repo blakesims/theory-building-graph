@@ -1,0 +1,128 @@
+[
+  {
+    "source": "User proposes atomic replacement without waking steward.",
+    "ops": [
+      {
+        "op": "update",
+        "collection": "nodes",
+        "id": "atomic-replacement",
+        "value": {
+          "status": "proposed",
+          "meta": {
+            "rationale": "Avoid relaying context; proposal only."
+          }
+        }
+      }
+    ]
+  },
+  {
+    "source": "User considers always returning failed work; has not yet chosen.",
+    "ops": [
+      {
+        "op": "add",
+        "collection": "nodes",
+        "id": "return-proposal",
+        "value": {
+          "type": "claim",
+          "text": "Always return failed work to steward for choosing next.",
+          "status": "proposed",
+          "meta": {
+            "author": "assistant",
+            "sources": [
+              "source-2"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "source": "User explicitly chooses steward always selects next work.",
+    "ops": [
+      {
+        "op": "update",
+        "collection": "nodes",
+        "id": "steward-next-work",
+        "value": {
+          "text": "Steward always chooses next work after a failed attempt.",
+          "status": "accepted",
+          "meta": {
+            "review_state": "current",
+            "rationale": "User chose simpler responsibility boundary.",
+            "sources": [
+              "source-2"
+            ]
+          }
+        }
+      },
+      {
+        "op": "update",
+        "collection": "nodes",
+        "id": "replacement-exception",
+        "value": {
+          "status": "withdrawn",
+          "meta": {
+            "review_state": "historical",
+            "rationale": "Retired in favor of steward choosing all subsequent work."
+          }
+        }
+      },
+      {
+        "op": "update",
+        "collection": "nodes",
+        "id": "atomic-replacement",
+        "value": {
+          "status": "withdrawn",
+          "meta": {
+            "review_state": "historical",
+            "rationale": "Retired with replacement bypass."
+          }
+        }
+      },
+      {
+        "op": "update",
+        "collection": "nodes",
+        "id": "return-proposal",
+        "value": {
+          "status": "withdrawn",
+          "meta": {
+            "review_state": "historical",
+            "rationale": "Consolidated into accepted steward-next-work."
+          }
+        }
+      },
+      {
+        "op": "update",
+        "collection": "nodes",
+        "id": "replacement-question",
+        "value": {
+          "status": "retired",
+          "meta": {
+            "review_state": "historical",
+            "rationale": "Answered by steward-next-work."
+          }
+        }
+      },
+      {
+        "op": "add",
+        "collection": "edges",
+        "id": "revision-exception",
+        "value": {
+          "from": "steward-next-work",
+          "to": "replacement-exception",
+          "type": "revises"
+        }
+      },
+      {
+        "op": "add",
+        "collection": "edges",
+        "id": "revision-atomic",
+        "value": {
+          "from": "steward-next-work",
+          "to": "atomic-replacement",
+          "type": "revises"
+        }
+      }
+    ]
+  }
+]

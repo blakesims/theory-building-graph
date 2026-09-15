@@ -1,0 +1,45 @@
+{
+  "fixture": {
+    "nodes": 3050,
+    "edges": 5853,
+    "claims": 2500,
+    "anchors": 50,
+    "questions": 500,
+    "sha256": "37d705c3365c9a8ce7367d77602145dbd75a47b561f5b71ca15b35dd8284be00"
+  },
+  "measurements": {
+    "claim_walk": {
+      "seconds": 0.005281,
+      "compact_bytes": 1531,
+      "json_bytes": 8604,
+      "truncated": false,
+      "total_affected": null,
+      "boundary_edges": 248
+    },
+    "hub_walk": {
+      "seconds": 0.005381,
+      "compact_bytes": 2075,
+      "json_bytes": 22853,
+      "truncated": true,
+      "total_affected": null,
+      "boundary_edges": 56
+    },
+    "impact_page": {
+      "seconds": 0.005892,
+      "compact_bytes": 10755,
+      "json_bytes": 10765,
+      "truncated": true,
+      "total_affected": 2999,
+      "boundary_edges": null
+    },
+    "question_page": {
+      "seconds": 0.693977,
+      "compact_bytes": 9021,
+      "json_bytes": 9942,
+      "truncated": true,
+      "total_affected": null,
+      "boundary_edges": null
+    }
+  },
+  "scope": "Single-machine synthetic probe. No LLM token estimate or unbounded scaling claim."
+}

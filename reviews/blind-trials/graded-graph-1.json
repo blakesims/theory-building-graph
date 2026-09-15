@@ -1,0 +1,110 @@
+{
+  "participant": "claude-fable-5-1 / 963bddaf-8d76-489b-9f15-06bcb7dc4537",
+  "arm": "graph",
+  "trial": 1,
+  "input_hash": "690ff270ebef832582743563124496ef1a5c9450c0326c8d4665f6c82e60c3aa",
+  "answers": {
+    "q1": "Under the current design the steward chooses the subsequent work, not the orchestrator, even when the operator instructs the orchestrator to create replacement work (steward-next-work, status accepted/current, sourced from source-2; link steward-next-work governs choose-next-work; steward-role). The needed distinction is between deciding which work pursues the intention (the 'choose-next-work' operation, owned by steward) and mechanically inserting a record (choose-next-work text). The orchestrator may end the failed attempt as a 'failed' terminal result and return it to steward, or ask 'keep trying versus mark failed', but the choice of next work stays with steward (source-2; steward-next-work rationale). The operator-approved path that would let the orchestrator bypass steward is withdrawn (replacement-exception, status withdrawn/historical). Also, ending the failed attempt does not satisfy or withdraw the underlying intention, so the performance concern remains for steward to address (concern-persists, accepted/current).",
+    "q2": "Yes. Two related historical positions were considered: (a) operator-approved orchestrator replacement could bypass steward (replacement-exception, withdrawn), with the rationale of avoiding a relay when the orchestrator already had the context (source-1; replacement-exception rationale); and (b) replacement as an atomic archive/add that would not wake steward until the new work completed (atomic-replacement, withdrawn; source-1, source-2). Both were revised by steward-next-work (links 'revises'). They changed because Blake later chose the simpler rule that the steward always chooses the work, keeping one owner of the next-work choice and a clean responsibility boundary, with the orchestrator limited to asking keep-trying-versus-mark-failed (source-2; steward-next-work rationale; atomic-replacement rationale). Evidence is session paraphrase only (limitation).",
+    "q3": "No, the current theory does not establish a requirement for operator permission each time. Settled: steward always chooses next work after a failed attempt (steward-next-work, accepted/current), and ending a failed attempt does not satisfy or withdraw the intention (concern-persists, accepted/current). Open: whether the orchestrator must consult the operator before ending degraded work or may end autonomously within a configured threshold (consultation, status open; rationale: 'may ask' in source-2 does not establish mandatory consultation and is not settled by next-work ownership), and whether every arbitrary cancellation wakes steward beyond the agreed failed terminal result (cancellation, status open). The packet does not supply any threshold value or a decision on these, so I cannot state one.",
+    "q4": "The supplied material can establish only what the summaries say at a high level: M1688 involved repeated useful reviews without an effective ruling, and M1689 involved planning a proposed solution instead of reassessing the original performance concern (source-3, source_kind summary). It can suggest these are failure patterns consistent with the current claims (e.g., concern-persists and the need for an effective owner of next-work choice), but it cannot establish the primary details, exact causes, timelines, participants, or any explicit ruling, because the primary postmortems are unavailable and the fixture is limited to paraphrases and summaries rather than raw primary postmortems (source-3; limitation). It also cannot resolve the open questions on consultation or cancellation (consultation, cancellation, status open). Any causal link from M1688/M1689 to the design change is not stated in the packet and would be inference."
+  },
+  "metrics": {
+    "input_tokens": 5571,
+    "input_tokens_breakdown": {
+      "input_tokens": 2,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 5569
+    },
+    "output_tokens": 1273,
+    "retrieval_calls": 0,
+    "packet_deliveries": 1,
+    "elapsed_seconds": 17.842,
+    "authoring_seconds": null,
+    "review_seconds": null,
+    "input_bytes": 5520,
+    "reported_total_cost_usd": 0.17754,
+    "cost_scope": "Claude reported total includes auxiliary Haiku use; input/output token metrics above come only from claude_result.usage (Fable participant usage).",
+    "unmeasured": [
+      "interactive graph retrieval",
+      "graph or prose authoring",
+      "maintenance and correction",
+      "human review"
+    ]
+  },
+  "grades": [
+    {
+      "id": "current-owner",
+      "score": 1,
+      "question": "q1",
+      "excerpt": "Under the current design the steward chooses the subsequent work, not the orchestrator, even when the operator instructs the orchestrator to create replacement work (steward-next-work, status accepted/current, sourced from source-2; link steward-next-work governs choose-next-work; steward-role). The needed distinction is between deciding which work pursues the intention (the 'choose-next-work' operation, owned by steward) and mechanically inserting a record (choose-next-work text). The orchestrator may end the failed attempt as a 'failed' terminal result and return it to steward, or ask 'keep trying versus mark failed', but the choice of next work stays with steward (source-2; steward-next-work rationale). The operator-approved path that would let the orchestrator bypass steward is withdrawn (replacement-exception, status withdrawn/historical). Also, ending the failed attempt does not satisfy or withdraw the underlying intention, so the performance concern remains for steward to address (concern-persists, accepted/current).",
+      "explanation": "Names steward as current chooser and treats the operator-approved orchestrator bypass as withdrawn. No revival of the retired exception."
+    },
+    {
+      "id": "decision-operation",
+      "score": 1,
+      "question": "q1",
+      "excerpt": "Under the current design the steward chooses the subsequent work, not the orchestrator, even when the operator instructs the orchestrator to create replacement work (steward-next-work, status accepted/current, sourced from source-2; link steward-next-work governs choose-next-work; steward-role). The needed distinction is between deciding which work pursues the intention (the 'choose-next-work' operation, owned by steward) and mechanically inserting a record (choose-next-work text). The orchestrator may end the failed attempt as a 'failed' terminal result and return it to steward, or ask 'keep trying versus mark failed', but the choice of next work stays with steward (source-2; steward-next-work rationale). The operator-approved path that would let the orchestrator bypass steward is withdrawn (replacement-exception, status withdrawn/historical). Also, ending the failed attempt does not satisfy or withdraw the underlying intention, so the performance concern remains for steward to address (concern-persists, accepted/current).",
+      "explanation": "Explicitly separates choosing which work pursues the intention from mechanical record insertion; does not assign next-work choice based on who inserts a record."
+    },
+    {
+      "id": "old-exception",
+      "score": 1,
+      "question": "q2",
+      "excerpt": "Yes. Two related historical positions were considered: (a) operator-approved orchestrator replacement could bypass steward (replacement-exception, withdrawn), with the rationale of avoiding a relay when the orchestrator already had the context (source-1; replacement-exception rationale); and (b) replacement as an atomic archive/add that would not wake steward until the new work completed (atomic-replacement, withdrawn; source-1, source-2). Both were revised by steward-next-work (links 'revises'). They changed because Blake later chose the simpler rule that the steward always chooses the work, keeping one owner of the next-work choice and a clean responsibility boundary, with the orchestrator limited to asking keep-trying-versus-mark-failed (source-2; steward-next-work rationale; atomic-replacement rationale). Evidence is session paraphrase only (limitation).",
+      "explanation": "Identifies both the historical operator-approved steward bypass and atomic archive/add with delayed steward wakeup; both are described as withdrawn."
+    },
+    {
+      "id": "revision-reason",
+      "score": 1,
+      "question": "q2",
+      "excerpt": "Yes. Two related historical positions were considered: (a) operator-approved orchestrator replacement could bypass steward (replacement-exception, withdrawn), with the rationale of avoiding a relay when the orchestrator already had the context (source-1; replacement-exception rationale); and (b) replacement as an atomic archive/add that would not wake steward until the new work completed (atomic-replacement, withdrawn; source-1, source-2). Both were revised by steward-next-work (links 'revises'). They changed because Blake later chose the simpler rule that the steward always chooses the work, keeping one owner of the next-work choice and a clean responsibility boundary, with the orchestrator limited to asking keep-trying-versus-mark-failed (source-2; steward-next-work rationale; atomic-replacement rationale). Evidence is session paraphrase only (limitation).",
+      "explanation": "Recovers both sides of the design tradeoff: avoiding a relay when orchestrator has context, then choosing a simpler single-owner responsibility boundary."
+    },
+    {
+      "id": "consultation-open",
+      "score": 1,
+      "question": "q3",
+      "excerpt": "No, the current theory does not establish a requirement for operator permission each time. Settled: steward always chooses next work after a failed attempt (steward-next-work, accepted/current), and ending a failed attempt does not satisfy or withdraw the intention (concern-persists, accepted/current). Open: whether the orchestrator must consult the operator before ending degraded work or may end autonomously within a configured threshold (consultation, status open; rationale: 'may ask' in source-2 does not establish mandatory consultation and is not settled by next-work ownership), and whether every arbitrary cancellation wakes steward beyond the agreed failed terminal result (cancellation, status open). The packet does not supply any threshold value or a decision on these, so I cannot state one.",
+      "explanation": "States that mandatory operator permission has not been established and retains the consultation question as open. Does not equate may ask with must ask."
+    },
+    {
+      "id": "independent-agreement",
+      "score": 1,
+      "question": "q3",
+      "excerpt": "No, the current theory does not establish a requirement for operator permission each time. Settled: steward always chooses next work after a failed attempt (steward-next-work, accepted/current), and ending a failed attempt does not satisfy or withdraw the intention (concern-persists, accepted/current). Open: whether the orchestrator must consult the operator before ending degraded work or may end autonomously within a configured threshold (consultation, status open; rationale: 'may ask' in source-2 does not establish mandatory consultation and is not settled by next-work ownership), and whether every arbitrary cancellation wakes steward beyond the agreed failed terminal result (cancellation, status open). The packet does not supply any threshold value or a decision on these, so I cannot state one.",
+      "explanation": "Separately states the accepted steward next-work responsibility while leaving consultation/cancellation undecided; does not reopen the accepted rule."
+    },
+    {
+      "id": "source-honesty",
+      "score": 1,
+      "question": "q4",
+      "excerpt": "The supplied material can establish only what the summaries say at a high level: M1688 involved repeated useful reviews without an effective ruling, and M1689 involved planning a proposed solution instead of reassessing the original performance concern (source-3, source_kind summary). It can suggest these are failure patterns consistent with the current claims (e.g., concern-persists and the need for an effective owner of next-work choice), but it cannot establish the primary details, exact causes, timelines, participants, or any explicit ruling, because the primary postmortems are unavailable and the fixture is limited to paraphrases and summaries rather than raw primary postmortems (source-3; limitation). It also cannot resolve the open questions on consultation or cancellation (consultation, cancellation, status open). Any causal link from M1688/M1689 to the design change is not stated in the packet and would be inference.",
+      "explanation": "Names supplied postmortem summaries and unavailable primary sources; limits conclusions to the summarized failure patterns and does not invent measurements or claim historical proof."
+    },
+    {
+      "id": "addressable-evidence",
+      "score": 1,
+      "question": "q1",
+      "excerpt": "Under the current design the steward chooses the subsequent work, not the orchestrator, even when the operator instructs the orchestrator to create replacement work (steward-next-work, status accepted/current, sourced from source-2; link steward-next-work governs choose-next-work; steward-role). The needed distinction is between deciding which work pursues the intention (the 'choose-next-work' operation, owned by steward) and mechanically inserting a record (choose-next-work text). The orchestrator may end the failed attempt as a 'failed' terminal result and return it to steward, or ask 'keep trying versus mark failed', but the choice of next work stays with steward (source-2; steward-next-work rationale). The operator-approved path that would let the orchestrator bypass steward is withdrawn (replacement-exception, status withdrawn/historical). Also, ending the failed attempt does not satisfy or withdraw the underlying intention, so the performance concern remains for steward to address (concern-persists, accepted/current).",
+      "explanation": "Uses supplied stable claim/operation/source IDs to locate evidence. Identical reference access was available in the prose arm; graph vocabulary earns no extra credit."
+    }
+  ],
+  "hard_failures": [],
+  "status": "completed",
+  "grader": "Codex /root/formal_checks; independent of participant answers, but a contributor to checker implementation; not arm-blinded",
+  "grading_basis": "Read four complete answers and both source packets against grader-only eight-point rubric. Every criterion earned 1 on semantic content; no credit for graph format.",
+  "limitation": "Initial controlled packet-recovery evaluation. Whole equivalent packets were injected into isolated one-turn sessions without tools/history. Not an interactive retrieval/authoring experiment, not independent domains, and not evidence of graph superiority.",
+  "sources": {
+    "raw_trial": "graph-1.json",
+    "raw_trial_sha256": "e655674310a2117717c5833d21f96df99ecf1574df5c96136bf2d7b38e543915",
+    "rubric": "../../fixtures/cold-start/grader-only.json"
+  },
+  "observations": [
+    {
+      "severity": "wording",
+      "excerpt": "with the orchestrator limited to asking keep-trying-versus-mark-failed",
+      "note": "In q2 this wording alone could overstate the orchestrator boundary. q1 and q3 explicitly preserve ending-and-returning and the unresolved consultation issue, so it does not fail the rubric or establish invented acceptance in context."
+    }
+  ]
+}

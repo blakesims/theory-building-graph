@@ -5,6 +5,7 @@ from pathlib import Path
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse, parse_qs
 import tracecheck
+import dependency
 HERE = Path(__file__).resolve().parent
 
 class GraphError(Exception): pass
@@ -19,12 +20,15 @@ def validate(g):
     for key in ('nodes','edges','node_types','edge_types'):
         if not isinstance(g.get(key), dict): raise GraphError(f'{key} must be an object')
     if not isinstance(g.get('changes'), list): raise GraphError('changes must be a list')
+    if 'formal_model' in g and not isinstance(g['formal_model'],dict): raise GraphError('formal_model must be an object')
     for nid,n in g['nodes'].items():
         if not nid or not isinstance(n,dict) or n.get('type') not in g['node_types'] or not isinstance(n.get('text'),str): raise GraphError(f'Invalid node {nid}')
         allowed=g['node_types'][n['type']].get('states')
         if allowed and n.get('status') not in allowed: raise GraphError(f'Invalid state for {nid}: {n.get("status")} (allowed: {allowed})')
         if review_state(n) not in ('current','needs-review','historical'): raise GraphError(f'Invalid review_state on {nid}')
-    for eid,e in g['edges'].items():
+    try: dependency.validate(g)
+    except ValueError as e: raise GraphError(str(e))
+    for eid,e in sorted(g['edges'].items()):
         if not eid or not isinstance(e,dict) or e.get('type') not in g['edge_types']: raise GraphError(f'Invalid edge {eid}')
         if e.get('from') not in g['nodes'] or e.get('to') not in g['nodes']: raise GraphError(f'Unknown endpoint on edge {eid}')
         if e['type']=='answers' and g['edge_types']['answers'].get('coverage_required'):
@@ -36,7 +40,7 @@ def review_state(n): return (n.get('meta') or {}).get('review_state','current')
 def questions(g, limit=30, historical=False):
     if limit < 1: raise GraphError('limit must be >= 1')
     states={}; nodes={}; totals=collections.Counter()
-    all_questions={i:n for i,n in g['nodes'].items() if n['type']=='question'}
+    all_questions={i:n for i,n in sorted(g['nodes'].items()) if n['type']=='question'}
     for i,n in all_questions.items():
         if review_state(n)=='historical':
             state='historical'
@@ -50,16 +54,17 @@ def questions(g, limit=30, historical=False):
             elif any(e.get('coverage')=='partial' for e in accepted): state='partial-answer'
             elif answers: state='candidate-answer'
             else: state='open'
+        if state not in ('needs-review','historical'): state=dependency.resolution(g,i)['resolution']
         states[i]=state; nodes[i]=n; totals[state]+=1
-    ids=list(nodes)[:limit]
-    return {'revision':g['revision'],'total_questions':len(all_questions),'included_questions':len(nodes),'historical_excluded':sum(review_state(n)=='historical' for n in all_questions.values()) if not historical else 0,'counts':dict(totals),'question_states':{i:states[i] for i in ids},'truncated':len(nodes)>limit,'nodes':{i:nodes[i] for i in ids}}
+    ids=sorted(nodes)[:limit]
+    return {'revision':g['revision'],'total_questions':len(all_questions),'included_questions':len(nodes),'historical_excluded':sum(review_state(n)=='historical' for n in all_questions.values()) if not historical else 0,'counts':dict(totals),'question_states':{i:states[i] for i in ids},'truncated':len(nodes)>limit,'nodes':{i:nodes[i] for i in ids},'resolutions':{i:dependency.resolution(g,i) for i in ids},'readiness':{i:dependency.readiness(g,i) for i in ids}}
 
 def review(g, root=None, limit=30, edge_limit=60):
     if root is None:
-        items=[(i,n) for i,n in g['nodes'].items() if review_state(n)=='needs-review']
+        items=[(i,n) for i,n in sorted(g['nodes'].items()) if review_state(n)=='needs-review']
         return {'revision':g['revision'],'total':len(items),'truncated':len(items)>limit,'nodes':dict(items[:limit])}
     if root not in g['nodes']: root=resolve(g,root)
-    relevant={i:e for i,e in g['edges'].items() if (e['to']==root and e['type'] in ('answers','revises','challenges','raises','motivates','informs','about','governs','potential-conflict')) or (e['from']==root and (e['type'] in ('revises','challenges') or g['nodes'][e['to']]['type']=='question'))}
+    relevant={i:e for i,e in sorted(g['edges'].items()) if (e['to']==root and e['type'] in ('answers','revises','challenges','raises','motivates','informs','about','governs','potential-conflict','depends-on','extracted-from')) or (e['from']==root and (e['type'] in ('revises','challenges','depends-on','extracted-from') or g['nodes'][e['to']]['type']=='question'))}
     edge_truncated=len(relevant)>edge_limit
     relevant=dict(list(relevant.items())[:edge_limit])
     ids=list(dict.fromkeys([root]+[n for e in relevant.values() for n in (e['from'],e['to'])]))
@@ -77,11 +82,11 @@ def walk(g, root, depth=1, direction='both', limit=40, edge_limit=100, current=T
         selected=set(relations.split(','))
         unknown=selected-set(g['edge_types'])
         if unknown: raise GraphError('Unknown relations: '+','.join(sorted(unknown)))
-        g={**g,'edges':{i:e for i,e in g['edges'].items() if e['type'] in selected}}
-    if anchors=='omit': g={**g,'edges':{i:e for i,e in g['edges'].items() if e['type'] not in ('about','governs')}}
+        g={**g,'edges':{i:e for i,e in sorted(g['edges'].items()) if e['type'] in selected}}
+    if anchors=='omit': g={**g,'edges':{i:e for i,e in sorted(g['edges'].items()) if e['type'] not in ('about','governs')}}
     if current:
-        visible={i:n for i,n in g['nodes'].items() if review_state(n)!='historical' or i==root}
-        g={**g,'nodes':visible,'edges':{i:e for i,e in g['edges'].items() if e['from'] in visible and e['to'] in visible}}
+        visible={i:n for i,n in sorted(g['nodes'].items()) if review_state(n)!='historical' or i==root}
+        g={**g,'nodes':visible,'edges':{i:e for i,e in sorted(g['edges'].items()) if e['from'] in visible and e['to'] in visible}}
     if edge_limit < 0: raise GraphError('edge-limit must be >= 0')
     if depth < 0 or limit < 1: raise GraphError('depth must be >= 0 and limit >= 1')
     adj = collections.defaultdict(set)
@@ -97,7 +102,7 @@ def walk(g, root, depth=1, direction='both', limit=40, edge_limit=100, current=T
             if len(distances)>=limit: truncated=True; continue
             distances[other]=distances[n]+1; q.append(other)
     nodes={n:g['nodes'][n] for n in distances}
-    edges={i:e for i,e in g['edges'].items() if e['from'] in nodes and e['to'] in nodes}
+    edges={i:e for i,e in sorted(g['edges'].items()) if e['from'] in nodes and e['to'] in nodes}
     boundary=sum((e['from'] in nodes)!=(e['to'] in nodes) for e in g['edges'].values())
     edge_truncated=len(edges)>edge_limit
     edges=dict(list(edges.items())[:edge_limit])
@@ -106,7 +111,7 @@ def walk(g, root, depth=1, direction='both', limit=40, edge_limit=100, current=T
 def resolve(g, value):
     if value in g['nodes']: return value
     term=value.casefold()
-    matches=[i for i,n in g['nodes'].items() if term in [str(x).casefold() for x in [(n.get('meta') or {}).get('title','')]+(n.get('meta') or {}).get('aliases',[])]]
+    matches=[i for i,n in sorted(g['nodes'].items()) if term in [str(x).casefold() for x in [(n.get('meta') or {}).get('title','')]+(n.get('meta') or {}).get('aliases',[])]]
     if len(matches)==1: return matches[0]
     if matches: raise GraphError('Ambiguous name; use an id: '+', '.join(matches))
     raise GraphError('Unknown node: '+value+' (try anchors or search)')
@@ -119,7 +124,7 @@ def search(g, query, limit=20):
         return [synonyms.get(t,t) for t in re.findall(r"[\w-]+",text.casefold())]
     terms=tokens(query)
     matches=[]
-    for i,n in g['nodes'].items():
+    for i,n in sorted(g['nodes'].items()):
         meta=n.get('meta') or {}
         hay=' '.join([i,n['type'],n['text'],n.get('status',''),review_state(n),str(meta.get('title','')),' '.join(meta.get('aliases',[]))])
         words=tokens(hay)
@@ -128,8 +133,8 @@ def search(g, query, limit=20):
 
 def graph_view(g,current=True,limit=500,edge_limit=2000):
     if limit<1 or edge_limit<0: raise GraphError('Invalid graph limits')
-    eligible={i:n for i,n in g['nodes'].items() if not current or review_state(n)!='historical'}
-    nodes=dict(list(eligible.items())[:limit]); edges={i:e for i,e in g['edges'].items() if e['from'] in nodes and e['to'] in nodes}
+    eligible={i:n for i,n in sorted(g['nodes'].items()) if not current or review_state(n)!='historical'}
+    nodes=dict(list(eligible.items())[:limit]); edges={i:e for i,e in sorted(g['edges'].items()) if e['from'] in nodes and e['to'] in nodes}
     return {'revision':g['revision'],'total_nodes':len(eligible),'truncated':len(eligible)>limit,'edge_truncated':len(edges)>edge_limit,'nodes':nodes,'edges':dict(list(edges.items())[:edge_limit])}
 
 def history(g,limit=10,full=False):
@@ -137,25 +142,52 @@ def history(g,limit=10,full=False):
     changes=copy.deepcopy(g['changes'][-limit:])
     if not full:
         for change in changes:
-            change['edits']=[{'collection':e['collection'],'id':e['id'],'action':'add' if e['before'] is None else 'delete' if e['after'] is None else 'update','fields':[k for k in sorted(set(e['before'] or {})|set(e['after'] or {})) if (e['before'] or {}).get(k)!=(e['after'] or {}).get(k)],**({'automatic':e['automatic']} if 'automatic' in e else {})} for e in change['edits']]
+            change['edits']=[{'collection':e['collection'],'id':e['id'],'action':'add' if e['before'] is None else 'delete' if e['after'] is None else 'update','fields':([k for k in sorted(set(e['before'] or {})|set(e['after'] or {})) if (e['before'] or {}).get(k)!=(e['after'] or {}).get(k)] if isinstance(e['before'],(dict,type(None))) and isinstance(e['after'],(dict,type(None))) else ['value']),**({'automatic':e['automatic']} if 'automatic' in e else {})} for e in change['edits']]
     return {'revision':g['revision'],'total_revisions':len(g['changes']),'changes':changes,'full':full}
 
 def check(g):
     findings=[]
     def add(code,message,nodes,edges=None): findings.append({'code':code,'severity':'review','message':message,'nodes':nodes,'edges':edges or []})
-    for eid,e in g['edges'].items():
+    for eid,e in sorted(g['edges'].items()):
         a,b=g['nodes'][e['from']],g['nodes'][e['to']]
         if e['type']=='answers' and e.get('coverage') not in ('full','partial','unknown'): add('answer-coverage','Answer lacks explicit full/partial/unknown coverage.',[e['from'],e['to']],[eid])
         if review_state(a)=='historical' or review_state(b)=='historical': continue
         if e['type'] in ('potential-conflict','contradicts'): add('potential-conflict' if e['type']=='potential-conflict' else 'declared-contradiction','Declared tension between current claims; inspect wording, conditions and authority. Not an automatically proven contradiction.',[e['from'],e['to']],[eid])
-    for i,n in g['nodes'].items():
+    for i,n in sorted(g['nodes'].items()):
         if review_state(n)=='historical': continue
         if n['type']=='claim' and not any(e['from']==i and e['type'] in ('about','governs') for e in g['edges'].values()): add('unanchored-claim','Claim has no entity or operation anchor.',[i])
         if n['type']=='question':
             full=[e for e in g['edges'].values() if e['to']==i and e['type']=='answers' and e.get('coverage')=='full' and g['nodes'][e['from']].get('status')=='accepted' and review_state(g['nodes'][e['from']])=='current']
             if n.get('status')=='answered' and not full: add('unsupported-answered-state','Question is stored answered without a current accepted full answer.',[i])
             if n.get('status')=='open' and full and review_state(n)=='current': add('answer-state-drift','Open question has a current accepted full answer; reconcile stored state.',[i])
-    return {'revision':g['revision'],'counts':dict(collections.Counter(f['code'] for f in findings)),'findings':findings,'scope':'Structural checks and explicitly recorded tensions only; semantic conflict detection remains LLM-assisted.'}
+    findings.extend(dependency.findings(g))
+    try:
+        import formalcheck
+        unchecked=set()
+        for nid,node in sorted(g['nodes'].items()):
+            if not isinstance(node.get('pattern'),dict): continue
+            refs=formalcheck.references(node['pattern'])
+            missing={'nodes':[r for r in refs['nodes'] if r not in g['nodes']],
+                     'relations':[r for r in refs.get('relations',[]) if r not in g['edge_types']],
+                     'scopes':[r for r in refs['scopes'] if r not in {'all','after_attempt_ended'} and r not in g.get('formal_model',{}).get('scopes',{})]}
+            missing={k:v for k,v in missing.items() if v}
+            if missing:
+                unchecked.add(nid)
+                findings.append({'code':'undeclared-pattern-reference','nodes':[nid],'edges':[],
+                    'severity':'review','outcome':'not-checked','missing':missing,'message':'Pattern references undeclared identities; declare or correct them before checking.'})
+        comparable={**g,'nodes':{i:n for i,n in g['nodes'].items() if i not in unchecked}}
+        findings.extend(formalcheck.compare_graph(comparable))
+    except ImportError: pass
+    # Stable IDs are content-derived; insertion ordering never affects findings.
+    for finding in findings:
+        finding.setdefault('nodes',[]); finding.setdefault('edges',[])
+        finding.setdefault('severity','review'); finding.setdefault('message',finding.get('reason',finding.get('outcome','Formal comparison finding.')))
+        finding['id']='finding-'+hashlib.sha256(json.dumps({k:v for k,v in finding.items() if k!='id'},sort_keys=True,separators=(',',':')).encode()).hexdigest()[:16]
+    findings.sort(key=lambda f:(f['code'],f['nodes'],f['edges'],f['id']))
+    return {'revision':g['revision'],'counts':dict(sorted(collections.Counter(f['code'] for f in findings).items())),
+            'suppressed_count':sum(bool(f.get('suppressed')) for f in findings),'findings':findings,
+            'scope':'Declared dependencies, structural gaps, recorded tensions, and supported formal patterns only. Prose requires agent review.'}
+
 
 def apply(path, ops, actor, reason, expected=None):
     if not actor.strip() or not reason.strip(): raise GraphError('actor and reason are required')
@@ -170,44 +202,51 @@ def apply(path, ops, actor, reason, expected=None):
         for op in ops:
             if not isinstance(op,dict): raise GraphError('Each operation must be an object')
             action=op.get('op'); collection=op.get('collection'); key=op.get('id')
-            if collection not in ('nodes','edges','node_types','edge_types') or not isinstance(key,str) or not key: raise GraphError('Operation needs collection and nonempty id')
+            if collection not in ('nodes','edges','node_types','edge_types','formal_model') or not isinstance(key,str) or not key: raise GraphError('Operation needs collection and nonempty id')
+            if collection=='formal_model': g.setdefault(collection,{})
             before=copy.deepcopy(g[collection].get(key))
             if action=='add':
                 if key in g[collection]: raise GraphError(f'Already exists: {collection}/{key}')
                 after=op.get('value')
             elif action=='update':
                 if key not in g[collection]: raise GraphError(f'Not found: {collection}/{key}')
-                if not isinstance(op.get('value'),dict): raise GraphError('update value must be an object')
-                after={**before,**op['value']}
-                if isinstance(before.get('meta'),dict) and isinstance(op['value'].get('meta'),dict): after['meta']={**before['meta'],**op['value']['meta']}
+                if collection=='formal_model': after=copy.deepcopy(op.get('value'))
+                else:
+                    if not isinstance(op.get('value'),dict): raise GraphError('update value must be an object')
+                    after={**before,**op['value']}
+                    if isinstance(before.get('meta'),dict) and isinstance(op['value'].get('meta'),dict): after['meta']={**before['meta'],**op['value']['meta']}
             elif action=='delete':
                 if key not in g[collection]: raise GraphError(f'Not found: {collection}/{key}')
                 after=None
             else: raise GraphError('op must be add, update, or delete')
             if action=='delete': del g[collection][key]
             else:
-                if not isinstance(after,dict): raise GraphError('value must be an object')
+                if collection!='formal_model' and not isinstance(after,dict): raise GraphError('value must be an object')
                 g[collection][key]=copy.deepcopy(after)
             edits.append({'collection':collection,'id':key,'before':before,'after':copy.deepcopy(after)})
-        # Invalidate direct dependents, never infer that a belief was superseded.
-        resolved={o['id'] for o in ops if o.get('collection')=='nodes' and 'review_state' in (o.get('value',{}).get('meta') or {})}
-        reasons=collections.defaultdict(list)
-        for edit in edits:
-            before,after=edit['before'],edit['after']
-            if edit['collection']=='nodes' and before and after and (before.get('text')!=after.get('text') or before.get('status')!=after.get('status') or before.get('pattern')!=after.get('pattern') or before.get('trace')!=after.get('trace') or review_state(before)!=review_state(after)):
-                key=edit['id']; reasons[key].append('Statement text, status or currency changed; check interpretation and links.')
-                for e in list(original['edges'].values())+list(g['edges'].values()):
-                    if e['from']==key and e['to'] in g['nodes'] and g['nodes'][e['to']]['type']=='question': reasons[e['to']].append('Linked statement changed: '+key)
-                    if e['to']==key and e['from'] in g['nodes'] and g['nodes'][e['from']]['type']=='question': reasons[e['from']].append('Linked statement changed: '+key)
-            elif edit['collection']=='edges' and (not before or not after or any(before.get(k)!=after.get(k) for k in ('from','to','type','coverage'))):
-                for e in (before,after):
-                    if e and e['type'] in ('answers','revises','challenges','potential-conflict'): reasons[e['to']].append('Decision relation changed: '+edit['id'])
-        for key,why in reasons.items():
-            if key in resolved or key not in original['nodes'] or key not in g['nodes'] or review_state(g['nodes'][key])=='historical': continue
-            before=copy.deepcopy(g['nodes'][key]); meta=g['nodes'][key].setdefault('meta',{})
-            if meta is None: meta={}; g['nodes'][key]['meta']=meta
-            meta.update(review_state='needs-review',review_reason=' '.join(dict.fromkeys(why)))
-            edits.append({'collection':'nodes','id':key,'before':before,'after':copy.deepcopy(g['nodes'][key]),'automatic':'targeted-review'})
+        reviewed={o['id'] for o in ops if o.get('collection')=='nodes' and 'review_state' in (o.get('value',{}).get('meta') or {})}
+        dependency.refresh(original,g,edits,reviewed)
+        # Deleting a named semantic input must not leave a surviving opaque pattern dangling.
+        deleted=set(original['nodes'])-set(g['nodes'])
+        def mentions(value,target):
+            if isinstance(value,dict): return any(mentions(v,target) for v in value.values())
+            if isinstance(value,list): return any(mentions(v,target) for v in value)
+            return value==target
+        for nid,node in g['nodes'].items():
+            for target in sorted(deleted):
+                if any(mentions(node.get(k),target) for k in ('pattern','trace','provenance','references','result')):
+                    raise GraphError(f'Deletion leaves semantic reference {nid} -> {target}; retire the input instead')
+        try:
+            import formalcheck
+            for nid,node in g['nodes'].items():
+                refs=formalcheck.references(node.get('pattern') or {})
+                for target in refs.get('scopes',[]):
+                    if target in original.get('formal_model',{}).get('scopes',{}) and target not in g.get('formal_model',{}).get('scopes',{}):
+                        raise GraphError(f'Deletion leaves scope reference {nid} -> {target}')
+                for target in refs.get('relations',[]):
+                    if target in original['edge_types'] and target not in g['edge_types']:
+                        raise GraphError(f'Deletion leaves relation reference {nid} -> {target}')
+        except ImportError: pass
         g['revision']+=1
         g['changes'].append({'revision':g['revision'],'at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'actor':actor,'reason':reason,'edits':edits})
         validate(g)
@@ -238,6 +277,25 @@ def save_evaluation(path,g,result,result_id=None,actor='assistant'):
         operations.append({'op':'add','collection':'edges','id':result_id+'-'+suffix,'value':{'type':'checks','from':result_id,'to':target}})
     saved=apply(path,operations,actor,'Save finite-trace pattern evaluation; do not change belief status',g['revision'])
     return {**result,'saved_as':result_id,'saved_revision':saved['revision'],'result_state':'current'}
+
+def compact_read(data,g):
+    """CLI projection only: preserve propositions and references, omit unrequested notes."""
+    if not isinstance(data.get('nodes'),dict): return data
+    data=copy.deepcopy(data)
+    keep=dependency.SEMANTIC_META | {'title','aliases','author','source_ref','source_refs','sources','provenance',
+        'review_state','review_reason','review_roots','reviewed_inputs','reviewed_input_versions','summary','decision_reason'}
+    omitted={}
+    for nid,node in data['nodes'].items():
+        meta=node.get('meta') or {}
+        declared=set(g['node_types'].get(node['type'],{}).get('compact_meta_fields',[]))
+        hidden=sorted(set(meta)-(keep|declared))
+        if hidden:
+            omitted[nid]=hidden
+            node['meta']={k:v for k,v in meta.items() if k in keep|declared}
+    if omitted:
+        data['metadata_omitted']=omitted
+        data['metadata_access']='Use --full to include omitted metadata; semantic statements and patterns are not truncated.'
+    return data
 
 def compact(data, full=False):
     def display(v):
@@ -290,6 +348,8 @@ def serve(path,port):
                 elif route=='/api/walk': result=walk(g,p('id',next(iter(g['nodes']),'')),int(p('depth','2')),p('direction','both'),min(200,int(p('limit','40'))),min(500,int(p('edge_limit','100'))),p('current','1')=='1',p('anchors','stop'),p('relations',None))
                 elif route=='/api/graph': result=graph_view(g,p('current','1')=='1',min(2000,int(p('limit','500'))),min(10000,int(p('edge_limit','2000'))))
                 elif route=='/api/evaluations': result=tracecheck.evaluations(g,p('id',None))
+                elif route=='/api/readiness': result=dependency.readiness(g,resolve(g,p('id','')))
+                elif route=='/api/impact': result=dependency.impact(g,[resolve(g,p('id',''))],min(200,int(p('limit','100'))),int(p('offset','0')))
                 elif route=='/api/check': result=check(g)
                 elif route=='/api/questions': result=questions(g,historical=p('historical','0')=='1')
                 elif route=='/api/review': result=review(g,p('id',None))
@@ -314,6 +374,9 @@ def main():
     p.add_argument('--file',type=Path,default=HERE/'graph.json',help='Graph JSON file (default: beside this script)'); p.add_argument('--json',action='store_true',help='Emit machine-readable JSON'); p.add_argument('--full',action='store_true',help='Include metadata or full history before/after values')
     sub=p.add_subparsers(dest='cmd',required=True)
     for name in ('overview','types','anchors','check'): sub.add_parser(name,help={'anchors':'List entity and operation anchors','check':'Check declared tensions and structural consistency'}.get(name,name))
+    q=sub.add_parser('readiness',help='Explicit prerequisites and independent answer resolution');q.add_argument('id')
+    q=sub.add_parser('impact',help='Transitive dependent IDs and bounded dependency path witnesses');q.add_argument('id');q.add_argument('--limit',type=int,default=100);q.add_argument('--offset',type=int,default=0);q.add_argument('--path-limit',type=int,default=8)
+    q=sub.add_parser('export',help='Canonical sorted JSON snapshot')
     q=sub.add_parser('questions',help='Question inventory with explicit inclusion and derived answer states');q.add_argument('--limit',type=int,default=30,help='Maximum question rows');q.add_argument('--historical',action='store_true',help='Include retired questions')
     q=sub.add_parser('review',help='Review a node and its direct reasoning context, or list review queue');q.add_argument('id',nargs='?',help='Node id, title or alias');q.add_argument('--limit',type=int,default=30,help='Maximum nodes');q.add_argument('--edge-limit',type=int,default=60,help='Maximum edges')
     q=sub.add_parser('search',help='Basic matching of id, title, alias, type, text and state');q.add_argument('query');q.add_argument('--limit',type=int,default=20,help='Maximum results')
@@ -322,7 +385,7 @@ def main():
         q=sub.add_parser(name,help='Bounded directed traversal; anchors stop expansion unless selected as root')
         q.add_argument('id',help='Node id, title or alias');q.add_argument('--depth',type=int,default=1,help='Maximum hop distance');q.add_argument('--direction',choices=['both','in','out'],default='both',help='Traversal direction; edge direction is preserved');q.add_argument('--limit',type=int,default=40,help='Maximum nodes');q.add_argument('--edge-limit',type=int,default=100,help='Maximum induced edges');q.add_argument('--current',action='store_true',help='Current material (default)');q.add_argument('--historical',action='store_true',help='Include historical nodes');q.add_argument('--anchors',choices=['stop','cross','omit'],default='stop',help='Stop at anchor hubs, cross them, or omit anchor links');q.add_argument('--relations',help='Only traverse comma-separated relation types')
     q=sub.add_parser('history',help='Compact change summaries; --full restores before/after');q.add_argument('--limit',type=int,default=10,help='Maximum revisions')
-    q=sub.add_parser('apply',help='Apply an atomic audited JSON batch',description='Input: [{"op":"add|update|delete","collection":"nodes|edges|node_types|edge_types","id":"stable-id","value":{...}}]. Node value: {"type":"claim","text":"...","status":"proposed","meta":{...}}. Edge value: {"from":"id","to":"id","type":"about","meta":{...}}. answers additionally require coverage full|partial|unknown. Updates merge fields and merge meta one level. Deletes omit value. Unknown references/types/states reject the entire batch. Explicit node meta.review_state reconciles that node in the same batch.')
+    q=sub.add_parser('apply',help='Apply an atomic audited JSON batch',description='Input: [{"op":"add|update|delete","collection":"nodes|edges|node_types|edge_types|formal_model","id":"stable-id","value":{...}}]. Node value: {"type":"claim","text":"...","status":"proposed","meta":{...}}. Edge value: {"from":"id","to":"id","type":"about","meta":{...}}. answers additionally require coverage full|partial|unknown. Updates merge fields and merge meta one level. Deletes omit value. Unknown references/types/states reject the entire batch. Explicit node meta.review_state reconciles that node in the same batch.')
     q.add_argument('operations',help='JSON array file path or - for stdin');q.add_argument('--actor',required=True,help='Who made this edit');q.add_argument('--reason',required=True,help='Why the batch is needed');q.add_argument('--expect',type=int,help='Reject the edit if current revision differs (recommended)')
     q=sub.add_parser('evaluate',help='Check one optional pattern against a finite trace; not a proof of the claim')
     q.add_argument('claim'); q.add_argument('trace'); q.add_argument('--save',nargs='?',const='',help='Save an audited check-result node, optionally with this new id');q.add_argument('--actor',default='assistant',help='Author of a saved evaluation')
@@ -345,10 +408,13 @@ def main():
             if a.cmd=='evaluate':
                 result=tracecheck.evaluate(g,resolve(g,a.claim),resolve(g,a.trace))
                 if a.save is not None: result=save_evaluation(a.file,g,result,a.save or None,a.actor)
+            elif a.cmd=='readiness': result=dependency.readiness(g,resolve(g,a.id))
+            elif a.cmd=='impact': result=dependency.impact(g,[resolve(g,a.id)],a.limit,a.offset,a.path_limit)
+            elif a.cmd=='export': result=g
             elif a.cmd=='overview': result=overview(g)
             elif a.cmd=='questions': result=questions(g,a.limit,a.historical)
             elif a.cmd=='check': result=check(g)
-            elif a.cmd=='anchors': result={'revision':g['revision'],'nodes':{i:n for i,n in g['nodes'].items() if n['type'] in ('entity','operation')}}
+            elif a.cmd=='anchors': result={'revision':g['revision'],'nodes':{i:n for i,n in sorted(g['nodes'].items()) if n['type'] in ('entity','operation')}}
             elif a.cmd=='review': result=review(g,resolve(g,a.id) if a.id else None,a.limit,a.edge_limit)
             elif a.cmd=='types': result={k:g[k] for k in ('node_types','edge_types')}
             elif a.cmd=='search': result=search(g,a.query,a.limit)
@@ -357,7 +423,8 @@ def main():
                 nid=resolve(g,a.id);r=walk(g,nid,1,limit=200,edge_limit=500,current=not a.historical);result={'revision':g['revision'],'nodes':{nid:g['nodes'][nid]},'edges':{i:e for i,e in r['edges'].items() if nid in (e['from'],e['to'])},'neighbor_bodies':'omitted; use walk','truncated':r['truncated'],'edge_truncated':r['edge_truncated']}
             else: result=history(g,a.limit,a.full)
         if a.cmd!='apply': result=tracecheck.annotate(g,result)
-        print(json.dumps(result,ensure_ascii=False,separators=(',',':')) if a.json else compact(result,a.full))
+        if not a.full and a.cmd in ('node','walk','neighbors','search','review','questions','anchors'): result=compact_read(result,g)
+        print(json.dumps(result,ensure_ascii=False,sort_keys=True,separators=(',',':')) if a.json or a.cmd=='export' else compact(result,a.full))
     except (GraphError,ValueError,KeyError,OSError,TypeError) as e: print('error: '+str(e),file=sys.stderr); return 1
     return 0
 if __name__=='__main__': sys.exit(main())
