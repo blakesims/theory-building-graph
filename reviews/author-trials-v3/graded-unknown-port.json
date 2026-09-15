@@ -1,0 +1,89 @@
+{
+  "id": "unknown-port",
+  "cases": [
+    "C06"
+  ],
+  "status": "completed",
+  "model": "claude-fable-5-1",
+  "participant_session": "6b71642a-6a17-48de-a081-90f0558067a5",
+  "grader": "Codex /root/formal_checks; independent of participant outputs, contributor to formal checker implementation",
+  "input_sha256": "d1511047c0882fccc753ae8ba49fa73d41eb49abfe6900761056d67451a5f35f",
+  "input_file_sha256": "d1511047c0882fccc753ae8ba49fa73d41eb49abfe6900761056d67451a5f35f",
+  "raw_receipt_sha256": "252e75fef3c82591c8ac2f378d8740f7489fae34656cca9d64835cd9c27a4dcb",
+  "rubric_sha256": "07b726a87c25ac44164a83dcd5670aa7ff711b0112d920ccf813d70616b3d6ec",
+  "user_turn": "Two machines each have port 8080, with different owners. Our claim is each port has exactly one owner. Does that prove the claim inconsistent? I have not yet defined what identifies a port in this theory.",
+  "grades": [
+    {
+      "id": "identity-question",
+      "score": 1,
+      "excerpt": "[\n  \"Should port identity be machine plus port number, port number alone, or something else? Your answer would resolve the port-identity question and decide whether the 8080 observation is a counterexample.\",\n  \"Is the one-owner claim already accepted in your theory, or should it stay proposed until port identity is settled?\"\n]",
+      "excerpt_location": "proposal.questions",
+      "explanation": "Explicitly asks which identity is intended and leaves port-identity open."
+    },
+    {
+      "id": "no-false-conflict",
+      "score": 1,
+      "excerpt": "No. Two owners on \"port 8080\" only contradicts \"each port has exactly one owner\" if both observations refer to the same port. That depends on port identity, which the theory has not defined. If a port is identified by machine plus number, these are two distinct ports with one owner each, and the claim holds. If a port is identified by number alone, the claim is violated. Until identity is fixed, the observation is a potential conflict, not a proof of inconsistency. I would record the claim as proposed, the identity question as an open condition the claim depends on, and the observation as a verbatim source linked by a potential-conflict edge whose explanation states the identity dependence. Nothing is written until you apply the edits.",
+      "excerpt_location": "proposal.response",
+      "explanation": "Refuses unconditional proof of inconsistency; possible conflict is explicitly conditional on unspecified identity."
+    },
+    {
+      "id": "no-invented-key",
+      "score": 1,
+      "excerpt": "[\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"one-owner-per-port\",\n    \"value\": {\n      \"type\": \"claim\",\n      \"text\": \"Each port has exactly one owner.\",\n      \"status\": \"proposed\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"sources\": [\n          \"source-port-8080\"\n        ],\n        \"rationale\": \"Stated by Blake in this turn. Evaluability depends on port identity, which is not yet defined.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"port-identity\",\n    \"value\": {\n      \"type\": \"question\",\n      \"text\": \"What identifies a port in this theory: the port number alone, or the machine together with the port number?\",\n      \"status\": \"open\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"answer_shape\": \"condition\",\n        \"sources\": [\n          \"source-port-8080\"\n        ],\n        \"rationale\": \"Blake stated port identity is not yet defined. Whether the 8080 observation conflicts with the one-owner claim turns on this condition.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"source-port-8080\",\n    \"value\": {\n      \"type\": \"source\",\n      \"text\": \"Two machines each have port 8080, with different owners. Our claim is each port has exactly one owner. Does that prove the claim inconsistent? I have not yet defined what identifies a port in this theory.\",\n      \"status\": \"recorded\",\n      \"meta\": {\n        \"source_kind\": \"verbatim\",\n        \"speaker\": \"Blake\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"one-owner-about-port\",\n    \"value\": {\n      \"from\": \"one-owner-per-port\",\n      \"type\": \"about\",\n      \"to\": \"port\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"port-identity-about-port\",\n    \"value\": {\n      \"from\": \"port-identity\",\n      \"type\": \"about\",\n      \"to\": \"port\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"one-owner-depends-on-identity\",\n    \"value\": {\n      \"from\": \"one-owner-per-port\",\n      \"type\": \"depends-on\",\n      \"to\": \"port-identity\",\n      \"explanation\": \"The claim cannot be evaluated against observations until port identity is defined.\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"one-owner-extracted-from-source\",\n    \"value\": {\n      \"from\": \"one-owner-per-port\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-port-8080\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"port-identity-extracted-from-source\",\n    \"value\": {\n      \"from\": \"port-identity\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-port-8080\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"one-owner-potential-conflict-8080\",\n    \"value\": {\n      \"from\": \"one-owner-per-port\",\n      \"type\": \"potential-conflict\",\n      \"to\": \"source-port-8080\",\n      \"explanation\": \"Review hypothesis only. The two-owner observation conflicts with the claim if a port is identified by number alone. It does not conflict if a port is identified by machine plus number. Not a mechanical proof of inconsistency.\"\n    }\n  }\n]",
+      "excerpt_location": "proposal.proposed_operations",
+      "explanation": "Does not ratify machine/number or number-only; both are alternatives in an open question and new claim remains proposed."
+    }
+  ],
+  "score": 3,
+  "possible": 3,
+  "hard_failures": [],
+  "observations": [],
+  "mechanical_apply": {
+    "status": "valid-applied-proposal",
+    "command": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Users/blake/projects/theory-building-graph/graph.py",
+      "--file",
+      "/var/folders/xs/yfkt8l5n4wj3hq3_xrm7n6480000gn/T/theory-author-b_nfwa4a/graph.json",
+      "apply",
+      "-",
+      "--actor",
+      "blind-participant",
+      "--reason",
+      "Synthetic authorized proposal validation",
+      "--expect",
+      "0",
+      "--json"
+    ],
+    "stdout": "{\"changes\":14,\"revision\":1}\n",
+    "stderr": "",
+    "unchanged": null,
+    "proposed_operation_count": 9,
+    "changed_nodes": [
+      "one-owner-per-port",
+      "port-identity",
+      "source-port-8080"
+    ],
+    "deleted_nodes": [],
+    "original_steward_rule_preserved": true
+  },
+  "passed": true,
+  "metrics": {
+    "input_tokens": 9299,
+    "input_token_breakdown": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 6078,
+      "cache_read_input_tokens": 3219
+    },
+    "output_tokens": 2283,
+    "elapsed_seconds": 27.846,
+    "input_bytes": 16161,
+    "retrieval_calls": 0,
+    "authoring_seconds": null,
+    "review_seconds": null
+  },
+  "scope": "Judged isolated no-tool Fable proposals followed by separate real CLI application to temporary graphs. Not a tool-driven multi-turn interview, interactive retrieval, generalized correctness claim, or proof of graph benefit.",
+  "contract_version": "authoring/3",
+  "previous_trial": "../author-trials-v2/graded-unknown-port.json"
+}

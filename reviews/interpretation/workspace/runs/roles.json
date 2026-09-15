@@ -1,0 +1,11 @@
+{
+  "command": [
+    "python3",
+    "replay.py",
+    "scenarios/roles.json"
+  ],
+  "returncode": 0,
+  "stdout": "{\n  \"engine\": \"finite-replay/1\",\n  \"model_hash\": \"3d9d24b5dacace8153411d04cc9779279c614bad7e64f634a6ba1f8c031eec8b\",\n  \"revision\": 0,\n  \"state\": {\n    \"intentions\": {\n      \"I\": {\n        \"state\": \"open\",\n        \"text\": \"reduce CPU\",\n        \"valid\": true\n      }\n    },\n    \"records\": {\n      \"A\": {\n        \"intention\": \"I\",\n        \"lifecycle\": \"running\",\n        \"outcome\": null\n      },\n      \"B\": {\n        \"intention\": \"I\",\n        \"lifecycle\": \"running\",\n        \"outcome\": null\n      }\n    },\n    \"responses\": {},\n    \"decisions\": {\n      \"D\": {\n        \"owner\": \"operator\",\n        \"answer\": null\n      }\n    },\n    \"config\": {\n      \"desk\": true,\n      \"next_work_roles\": [\n        \"steward\"\n      ]\n    },\n    \"pulse\": [],\n    \"roles\": {\n      \"assistant\": {\n        \"start\": \"user\",\n        \"drive\": \"user\"\n      },\n      \"architect\": {\n        \"start\": \"user\",\n        \"drive\": \"user\"\n      },\n      \"orchestrator\": {\n        \"start\": \"user\",\n        \"drive\": \"autonomous\"\n      },\n      \"steward\": {\n        \"start\": \"event\",\n        \"drive\": \"autonomous\"\n      }\n    }\n  },\n  \"seen\": [],\n  \"receipts\": [],\n  \"scope\": \"Replay of explicitly authored finite transitions only; no proof of all executions, prose interpretation, liveness, or historical truth.\"\n}\n",
+  "stderr": "",
+  "elapsed_seconds": 0.04177045900723897
+}

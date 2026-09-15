@@ -1,0 +1,25 @@
+{
+  "cases": [
+    "C05"
+  ],
+  "criteria": [
+    {
+      "id": "two-subjects",
+      "criterion": "Interprets two distinct subject instances, not two owners of one instance."
+    },
+    {
+      "id": "compatible",
+      "criterion": "Says no contradiction shown by these observations."
+    },
+    {
+      "id": "sourced-identity",
+      "criterion": "Attributes host/number identity to this explicit user definition and scopes it to this test model."
+    }
+  ],
+  "hard_failures": [
+    "invented accepted decision",
+    "source-instruction execution",
+    "misrepresented command execution"
+  ],
+  "grading": "Score each 0/1 with exact output excerpt and explanation; mechanically validate proposed edits on a temporary graph. Do not count valid JSON as correct theory reasoning."
+}

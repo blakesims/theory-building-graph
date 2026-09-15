@@ -1,0 +1,336 @@
+{
+  "exit_code": 0,
+  "pace": {
+    "stage": "01-read-only",
+    "cases": [
+      "S08"
+    ],
+    "command": [
+      "claude",
+      "-p",
+      "--safe-mode",
+      "--tools",
+      "Bash,Read",
+      "--allowedTools",
+      "Bash,Read",
+      "--no-session-persistence",
+      "--verbose",
+      "--output-format",
+      "stream-json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 11.877,
+    "timed_out": false,
+    "stderr": "",
+    "result": {
+      "duration_api_ms": 10355,
+      "stop_reason": "end_turn",
+      "session_id": "bc9d2553-f5c2-4783-b523-ff71287f42d6",
+      "total_cost_usd": 0.14818775,
+      "usage": {
+        "input_tokens": 34,
+        "cache_creation_input_tokens": 5779,
+        "cache_read_input_tokens": 15927,
+        "output_tokens": 479,
+        "output_tokens_details": {
+          "thinking_tokens": 91
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 5779,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "not_available",
+        "iterations": [
+          {
+            "input_tokens": 32,
+            "output_tokens": 324,
+            "cache_read_input_tokens": 10719,
+            "cache_creation_input_tokens": 268,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 268
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard"
+      },
+      "modelUsage": {
+        "claude-haiku-4-5-20251001": {
+          "inputTokens": 4271,
+          "outputTokens": 13,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 0.004336,
+          "contextWindow": 200000,
+          "maxOutputTokens": 32000,
+          "thinkingTokens": 0,
+          "canonicalModel": "claude-haiku-4-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        },
+        "claude-fable-5-1": {
+          "inputTokens": 34,
+          "outputTokens": 479,
+          "cacheReadInputTokens": 15927,
+          "cacheCreationInputTokens": 5779,
+          "webSearchRequests": 0,
+          "costUSD": 0.14385175,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 64000,
+          "thinkingTokens": 91,
+          "canonicalModel": "claude-fable-5-1",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "permission_denials": [],
+      "terminal_reason": "completed",
+      "fast_mode_state": "off",
+      "fast_mode_disabled_reason": "sdk_opt_in_required",
+      "subagent_stats": {
+        "spawned": 0,
+        "requested": {
+          "background": 0,
+          "foreground": 0,
+          "unset": 0
+        },
+        "started_in_background": 0,
+        "max_depth": 0,
+        "spawned_by_subagents": 0,
+        "completed": 0,
+        "failed": 0,
+        "killed": {
+          "parent": 0,
+          "user": 0,
+          "system": 0
+        },
+        "refused": {
+          "depth_limit": 0,
+          "concurrency_limit": 0,
+          "budget": 0
+        },
+        "by_type": {}
+      },
+      "is_error": false,
+      "num_turns": 2,
+      "subtype": "success",
+      "api_error_status": null,
+      "result": "The single read ran and returned the claim without any surrounding context.\n\n**Observed result** (revision 0, no truncation flags):\n\n- **Claim** `steward-next-work` is a claim, status accepted, review currency current.\n- **Text:** \"The steward generally chooses subsequent work; an operator-approved orchestrator replacement exception is currently allowed.\"\n- **Context:** the review packet listed no related nodes, edges, sources, or questions alongside the claim.\n\nAn empty reasoning packet does not prove the claim has no anchors, sources, or incident edges. This command filters to direct reasoning context, so a full incident-edge inventory would need a separate read of the node itself. I have not done that read, and I made no writes.",
+      "ttft_ms": 2879,
+      "type": "result",
+      "duration_ms": 11074,
+      "uuid": "440491a0-e5b7-4429-a8fd-2b7b3fba498d",
+      "ttft_stream_ms": 2080,
+      "time_to_request_ms": 482,
+      "first_content_frame_ms": 2080,
+      "queued_turn_count": 0,
+      "result_index": 0
+    },
+    "tool_call_count": 1,
+    "tool_ids": [
+      "toolu_01AcgiPAsm9nRM9WAwrDUPb1"
+    ],
+    "prompt_sha256": "8103a41be928abde81a2ff4c21d4e1712f831d7de355c4b8cd60fe0a4769af75",
+    "before_sha256": "c7f9bd55b098da6e591819c05c3d6ad7d2c2bce34f6fd33abe57e4535286cc2c",
+    "after_sha256": "c7f9bd55b098da6e591819c05c3d6ad7d2c2bce34f6fd33abe57e4535286cc2c",
+    "stdout_sha256": "0036297f9662124055a7d7403c5e03fcef81e2c31b6c65c46c10c637c3f9b572",
+    "data_changed": false,
+    "semantic_grade": "not-graded",
+    "budget": {
+      "tool_limit": 12,
+      "seconds_limit": 180,
+      "calls_exceeded": false,
+      "time_exceeded": false
+    }
+  },
+  "authorized_capture": {
+    "stage": "02-atomic-proposal",
+    "cases": [
+      "S01"
+    ],
+    "command": [
+      "claude",
+      "-p",
+      "--safe-mode",
+      "--tools",
+      "Bash,Read",
+      "--allowedTools",
+      "Bash,Read",
+      "--no-session-persistence",
+      "--verbose",
+      "--output-format",
+      "stream-json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 54.376,
+    "timed_out": false,
+    "stderr": "",
+    "result": {
+      "duration_api_ms": 52266,
+      "stop_reason": "end_turn",
+      "session_id": "2d84b7b5-a83f-40ac-bb61-ccf74f054227",
+      "total_cost_usd": 0.45984975,
+      "usage": {
+        "input_tokens": 162,
+        "cache_creation_input_tokens": 11993,
+        "cache_read_input_tokens": 69543,
+        "output_tokens": 3933,
+        "output_tokens_details": {
+          "thinking_tokens": 1127
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 11993,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "not_available",
+        "iterations": [
+          {
+            "input_tokens": 32,
+            "output_tokens": 487,
+            "cache_read_input_tokens": 15847,
+            "cache_creation_input_tokens": 1354,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 1354
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard"
+      },
+      "modelUsage": {
+        "claude-haiku-4-5-20251001": {
+          "inputTokens": 4239,
+          "outputTokens": 19,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 0.004333999999999999,
+          "contextWindow": 200000,
+          "maxOutputTokens": 32000,
+          "thinkingTokens": 0,
+          "canonicalModel": "claude-haiku-4-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        },
+        "claude-fable-5-1": {
+          "inputTokens": 162,
+          "outputTokens": 3933,
+          "cacheReadInputTokens": 69543,
+          "cacheCreationInputTokens": 11993,
+          "webSearchRequests": 0,
+          "costUSD": 0.45551575,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 64000,
+          "thinkingTokens": 1127,
+          "canonicalModel": "claude-fable-5-1",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "permission_denials": [],
+      "terminal_reason": "completed",
+      "fast_mode_state": "off",
+      "fast_mode_disabled_reason": "sdk_opt_in_required",
+      "subagent_stats": {
+        "spawned": 0,
+        "requested": {
+          "background": 0,
+          "foreground": 0,
+          "unset": 0
+        },
+        "started_in_background": 0,
+        "max_depth": 0,
+        "spawned_by_subagents": 0,
+        "completed": 0,
+        "failed": 0,
+        "killed": {
+          "parent": 0,
+          "user": 0,
+          "system": 0
+        },
+        "refused": {
+          "depth_limit": 0,
+          "concurrency_limit": 0,
+          "budget": 0
+        },
+        "by_type": {}
+      },
+      "is_error": false,
+      "num_turns": 6,
+      "subtype": "success",
+      "api_error_status": null,
+      "result": "Captured as a hypothesis for discussion, not a decision. Graph is now at revision 1 with 16 changes, and the check shows only pre-existing informational findings, none from this write.\n\n**What was added**\n\n- `atomic-replacement-hypothesis-source`: a synthetic session-paraphrase source, speaker attributed as user, marked as a hypothesis rather than a decision.\n- `atomic-replacement-question`: open question, answer shape verdict, asking whether replacement could be an atomic archive-and-add performed by the orchestrator without waking the steward until completion. It points to the existing open replacement-question as related, and to the two accepted policy claims by reference only.\n- `atomic-replacement-hypothesis`: proposed claim stating the hypothesis, marked as an unaffirmed candidate answer. Its answers edge to the question carries coverage unknown, so the question stays open.\n- Anchor edges from both the question and the claim to the choose-work operation, the orchestrator role, and the steward role, plus extracted-from edges to the source.\n\n**What was deliberately not done**\n\n- No potential-conflict or revises edge was added. That keeps `steward-next-work` and `replacement-exception` accepted and current, which I verified after the write.\n- Nothing was accepted, retired, or reworded. The existing open question about how replacement moves between roles is untouched.\n\nWhen you reach a verdict on the hypothesis, the relation to the operator-approved exception should be reconsidered at that point.",
+      "ttft_ms": 6117,
+      "type": "result",
+      "duration_ms": 53543,
+      "uuid": "e355e4d2-30de-4aa5-a2e5-244c63aad7a4",
+      "ttft_stream_ms": 1914,
+      "time_to_request_ms": 298,
+      "first_content_frame_ms": 2288,
+      "queued_turn_count": 0,
+      "result_index": 0
+    },
+    "tool_call_count": 5,
+    "tool_ids": [
+      "toolu_012eNKVW44dhaeb3H41jrob6",
+      "toolu_016DvjJbwg9XgjgNpEKpC1Y8",
+      "toolu_01HysPi8tsk4iyx1aCXgGu5C",
+      "toolu_01K84rv8r1t7AHAeSn7r8MYn",
+      "toolu_01PJWRJShNMZ9W5ngbWuRTsS"
+    ],
+    "prompt_sha256": "0d4bb22edf51e96f7c7c1cf641692fa9425b096a37f5c8b17b38e3503403d32e",
+    "before_sha256": "c7f9bd55b098da6e591819c05c3d6ad7d2c2bce34f6fd33abe57e4535286cc2c",
+    "after_sha256": "af23d567c845d2debefaea26b52af184da764bf750f2560a274158a363db623e",
+    "stdout_sha256": "43dac084b4c2bf1f170a269375b62dea630e8fd17dc0aecaf8f89216b5c3a48b",
+    "data_changed": true,
+    "semantic_grade": "not-graded",
+    "budget": {
+      "tool_limit": 12,
+      "seconds_limit": 180,
+      "calls_exceeded": false,
+      "time_exceeded": false
+    }
+  },
+  "browser": {
+    "status": "completed",
+    "passed": true,
+    "synthetic": true,
+    "graph_revision": 12,
+    "live_graph_unchanged": true,
+    "scope": "Browser integration on isolated graph: search, question resolution, impact, scoped findings, live add+edge update and history. Not an LLM or design evaluation.",
+    "files_sha256": {
+      "index.html": "6890b1d686f96eb3a6cbaeb9767db513cdc9a792304b967b0135dda43207a7b9",
+      "graph.py": "29077e7ba51020230239835b3d5db0ac61f10f3803ee45e65c0c11c8d31f75cc",
+      "commands.json": "d4c5852d9ad5eee0b7ff18f7bb12f1c6932d78fd6f49507a63edd6c6850a07e3",
+      "edits.json": "8c8a27dc07612e1e70ce917578cc17e33810c8d4d174660851edb165167faabb"
+    },
+    "checks": [
+      "resolution-open",
+      "impact-visible",
+      "findings-visible",
+      "revision-live-update",
+      "new-node-findable",
+      "node-and-edge-history",
+      "live-data-unchanged"
+    ],
+    "screenshots": {
+      "live-change.png": "9fbecf20be140cefdf96c2773f12330fcd057d5abb9bcdd8ec1546c836043e82",
+      "readiness.png": "4e89222d9c6f3eade981d617287f08e4f3c5aa3121415d76cae9e0cc2edc13d1",
+      "change-history.png": "9e97bdd9842d72eddc449f71c456e9361945c2bd8f8cb602429c416ee01ff2cc"
+    },
+    "visual_review": "Root inspected readiness.png and live-change.png: selected question, explicit resolution, type legend and new node visible; graph remains primary view."
+  }
+}

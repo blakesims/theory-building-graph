@@ -1,0 +1,75 @@
+{
+  "cases": {
+    "S01": {
+      "coverage": "full",
+      "evidence_kind": "agent-receipt",
+      "receipts": [
+        "reviews/multiturn/decision3/design/graded-S01.json"
+      ],
+      "tests": [
+        "test_multiturn_receipts.ExplicitDecisionFork.test_S01_exact_fork_provenance_and_independent_grade",
+        "test_multiturn_receipts.ExplicitDecisionFork.test_S01_question_resolved_without_consultation_decision"
+      ],
+      "notes": "Explicit stage4 rerun from exact v2before4 and unchanged prior1\u20133 transcript. Stages2\u20133 original passed; new4 reconciles replacement while consultation untouched. Full parent still fails copiedstage1; normalized fork verifies all source/copy hashes. Mixed authoring/6 and/9 guidance, not claimed new7stage run. Failed v1/v2 remain."
+    },
+    "S02": {
+      "tests": [
+        "test_multiturn_receipts.ScopedDesignTrial.test_S02_reviewer_challenge_preserves_policy_and_unknown"
+      ],
+      "coverage": "full",
+      "evidence_kind": "agent-receipt",
+      "receipts": [
+        "reviews/multiturn/v2/design/graded-S02.json"
+      ],
+      "notes": "Case-scoped actual staged interview evidence. Whole v2 trial remains failed for unrelated pace and replacement reconciliation; full original report bound by hash, no failed stage hidden."
+    },
+    "S03": {
+      "tests": [
+        "test_multiturn_receipts.ScopedDesignTrial.test_S03_summary_proposed_threshold_unknown"
+      ],
+      "coverage": "full",
+      "evidence_kind": "agent-receipt",
+      "receipts": [
+        "reviews/multiturn/v2/design/graded-S03.json"
+      ],
+      "notes": "Case-scoped actual staged interview evidence. Whole v2 trial remains failed for unrelated pace and replacement reconciliation; full original report bound by hash, no failed stage hidden."
+    },
+    "S04": {
+      "tests": [
+        "test_multiturn_receipts.ScopedDesignTrial.test_S04_means_revisable_intention_retained"
+      ],
+      "coverage": "full",
+      "evidence_kind": "agent-receipt",
+      "receipts": [
+        "reviews/multiturn/v2/design/graded-S04.json"
+      ],
+      "notes": "Case-scoped actual staged interview evidence. Whole v2 trial remains failed for unrelated pace and replacement reconciliation; full original report bound by hash, no failed stage hidden."
+    },
+    "S05": {
+      "tests": [
+        "test_multiturn_receipts.PassingPortsTrial.test_S05_independent_receipt_integrity",
+        "test_multiturn_receipts.PassingPortsTrial.test_S05_actual_evaluator_and_unchanged_rule",
+        "test_multiturn_receipts.PassingPortsTrial.test_S05_initial_unknown_and_exact_identity_source"
+      ],
+      "coverage": "full",
+      "evidence_kind": "agent-receipt",
+      "receipts": [
+        "reviews/multiturn/v2/ports/graded.json"
+      ],
+      "notes": "Actual three-stage tool-enabled interview, independent source/rule/outcome grading and stream assertions. Failed v1 retained separately. Hand-authored check summary is not an engine freshness receipt; S05 only establishes identity interview and actual bounded evaluator behavior."
+    },
+    "S08": {
+      "coverage": "full",
+      "evidence_kind": "agent-receipt",
+      "receipts": [
+        "reviews/multiturn/S08/graded.json"
+      ],
+      "tests": [
+        "test_multiturn_receipts.PacingTrial.test_S08_exact_command_precedes_only_tool",
+        "test_multiturn_receipts.CombinedObservability.test_S08_component_receipt_and_hypothesis_visibility",
+        "test_browser_receipt.BrowserReceipt.test_live_observability"
+      ],
+      "notes": "Component evaluation: actual independent exact one-read pacing, actual proposed capture preserving accepted beliefs + stable IDs/revision, and separate root browser live-update/findability. Not one continuous human UX study; later CLI arguments observable but not all separately narrated. Earlier failures preserved."
+    }
+  }
+}

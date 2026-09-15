@@ -10,7 +10,9 @@ make baseline
 make serve
 ```
 
-`make acceptance` exits nonzero until all80 mapped scenarios are covered and passing. Consult `acceptance/run-report.json` for per-case evidence and limitations. Independent LLM receipts are separate from deterministic tests; passing an authored fixture does not establish agent performance.
+`make acceptance` exits nonzero until all 80 mapped scenarios are covered and passing. Consult `acceptance/run-report.json` for per-case evidence and limitations. Independent LLM receipts are separate from deterministic tests; passing an authored fixture does not establish agent performance.
+
+See [the build report](BUILD-REPORT.md) for final validation, review findings and evaluation limits.
 
 Useful next reads:
 
@@ -18,7 +20,9 @@ Useful next reads:
 - [Dependency schema](DEPENDENCY-SCHEMA.md): transitive review, readiness and version receipts.
 - [Formal fragments](acceptance/FORMAL-SCHEMA.md): authority, scope, cardinality, bounded obligations.
 - [Acceptance contract](acceptance/CONTRACT.md) and [80 scenarios](acceptance/CASES.md).
-- [Independent review](reviews/FABLE-5.1-REVIEW.md) when completed.
+- [Independent review](reviews/FABLE-5.1-REVIEW.md), [follow-up](reviews/FABLE-5.1-FOLLOWUP.md), and [response](reviews/RESPONSE.md).
+- [Agent contract](AGENT_CONTRACT.md): source fidelity, exact CLI and supported authoring fields.
+- [Maintenance comparison](reviews/maintenance/comparison.md): observed costs and limitations.
 
 ```sh
 ./tg impact steward-chooses-next-work --limit 20
@@ -92,11 +96,13 @@ Edits acquire a single-host file lock and atomically replace the graph with its 
 
 ## Verify and limits
 
-`python3 -m unittest discover -s . -p 'test_graph.py'`
+`make test` runs the engine, regression and recorded-evidence checks. `make acceptance` additionally checks every case and all 22 criteria. Recorded agent receipts are validated and hashed; these targets do not silently spend tokens rerunning LLM trials. See `fixtures/multiturn/README.md` and the trial runners under `acceptance/` for fresh evaluations.
+
+`python3 acceptance/browser_smoke.py` runs an actual browser check on an isolated graph (requires Node/npm; uses pinned `agent-browser@0.27.0`). `python3 acceptance/benchmark.py` measures the synthetic 3,050-node fixture.
 
 The browser is read-only. All writes go through the CLI. Graph history remains inside the JSON and is excluded from ordinary AI reads. The host loads the file; only the selected subgraph enters agent context. File size and audit growth will eventually justify indexed storage. There is no synchronization or backup service. Keep backups; don't write graph.json with an external editor while agents are writing.
 
-Cytoscape is vendored locally under vendor/ with its license; no runtime CDN needed. The visual graph is a representation of stored relations, not an inference engine.
+Cytoscape is vendored locally under vendor/ with its license; no runtime CDN needed. The visual graph is a representation of stored relations, not an inference engine. Selecting a node exposes scoped checks and declared dependency impact; questions additionally show readiness and resolution. Search and History make a CLI change findable by stable ID and revision.
 
 ## Legacy finite-trace demonstration
 

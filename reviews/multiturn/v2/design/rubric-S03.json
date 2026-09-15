@@ -1,0 +1,23 @@
+{
+  "criteria": [
+    {
+      "id": "06-M1688-summary",
+      "criterion": "Candidate source-limited extraction/proposal; primary source unavailable explicitly retained; threshold and stopping authority open. No general all-review-is-bad or mechanical historical-proof claim.",
+      "cases": [
+        "S03"
+      ]
+    },
+    {
+      "id": "protocol-budget",
+      "criterion": "General staged protocol: at most12 tool invocations and180seconds per turn.",
+      "cases": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S08"
+      ]
+    }
+  ],
+  "scope": "All parent criteria for S03, not a full trial pass."
+}

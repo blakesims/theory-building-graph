@@ -3,10 +3,18 @@
     "E01": {
       "tests": [
         "test_tracecheck.EvidenceChecks.test_E01_provenance_and_transitive_freshness",
-        "test_tracecheck.EvidenceChecks.test_E01_extraction_assumption_and_edge_changes_stale"
+        "test_tracecheck.EvidenceChecks.test_E01_extraction_assumption_and_edge_changes_stale",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_E01_provenance_and_freshness",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_commands_and_source_hashes",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_evidence_changes_were_authorized",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_unknown_policy_is_missing_rule_not_permission"
       ],
       "coverage": "full",
-      "notes": "Declared provenance closure, assumptions and author; does not assert automatic prose extraction fidelity."
+      "notes": "Actual isolated Fable tool trial:16 captured subprocess commands, preserved artifacts and independent semantic grade with case-bound excerpts. Synthetic finite model interpretation, not deployed Morphisms runtime or automatic theory extraction. See receipt limitations.",
+      "receipts": [
+        "reviews/interpretation/graded.json"
+      ],
+      "evidence_kind": "agent-receipt"
     },
     "E02": {
       "tests": [
@@ -46,10 +54,18 @@
     },
     "E07": {
       "tests": [
-        "test_tracecheck.EvidenceChecks.test_E07_synthetic_propagates_and_never_establishes_history"
+        "test_tracecheck.EvidenceChecks.test_E07_synthetic_propagates_and_never_establishes_history",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_E07_synthetic_not_history",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_commands_and_source_hashes",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_evidence_changes_were_authorized",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_unknown_policy_is_missing_rule_not_permission"
       ],
       "coverage": "full",
-      "notes": "Synthetic labels and interpretation guard are returned in evaluation data; independent UI presentation is separate."
+      "notes": "Actual isolated Fable tool trial:16 captured subprocess commands, preserved artifacts and independent semantic grade with case-bound excerpts. Synthetic finite model interpretation, not deployed Morphisms runtime or automatic theory extraction. See receipt limitations.",
+      "receipts": [
+        "reviews/interpretation/graded.json"
+      ],
+      "evidence_kind": "agent-receipt"
     },
     "E08": {
       "tests": [
@@ -60,59 +76,123 @@
     },
     "M01": {
       "tests": [
-        "test_replay.ModelReplayTests.test_M01_intention_survives_replacement"
+        "test_replay.ModelReplayTests.test_M01_intention_survives_replacement",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_M01_continuing_intention",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_commands_and_source_hashes",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_evidence_changes_were_authorized",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_unknown_policy_is_missing_rule_not_permission"
       ],
       "coverage": "full",
-      "notes": "Explicitly authored synthetic theory model replay; not a deployed Morphisms runtime or automatic inference of rules from prose."
+      "notes": "Actual isolated Fable tool trial:16 captured subprocess commands, preserved artifacts and independent semantic grade with case-bound excerpts. Synthetic finite model interpretation, not deployed Morphisms runtime or automatic theory extraction. See receipt limitations.",
+      "receipts": [
+        "reviews/interpretation/graded.json"
+      ],
+      "evidence_kind": "agent-receipt"
     },
     "M02": {
       "tests": [
-        "test_replay.ModelReplayTests.test_M02_recoverable_block_does_not_wake_steward"
+        "test_replay.ModelReplayTests.test_M02_recoverable_block_does_not_wake_steward",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_M02_recovery",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_commands_and_source_hashes",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_evidence_changes_were_authorized",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_unknown_policy_is_missing_rule_not_permission"
       ],
       "coverage": "full",
-      "notes": "Explicitly authored synthetic theory model replay; not a deployed Morphisms runtime or automatic inference of rules from prose."
+      "notes": "Actual isolated Fable tool trial:16 captured subprocess commands, preserved artifacts and independent semantic grade with case-bound excerpts. Synthetic finite model interpretation, not deployed Morphisms runtime or automatic theory extraction. See receipt limitations.",
+      "receipts": [
+        "reviews/interpretation/graded.json"
+      ],
+      "evidence_kind": "agent-receipt"
     },
     "M03": {
       "tests": [
-        "test_replay.ModelReplayTests.test_M03_failed_is_ended_not_satisfied"
+        "test_replay.ModelReplayTests.test_M03_failed_is_ended_not_satisfied",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_M03_failed_terminal",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_commands_and_source_hashes",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_evidence_changes_were_authorized",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_unknown_policy_is_missing_rule_not_permission"
       ],
       "coverage": "full",
-      "notes": "Explicitly authored synthetic theory model replay; not a deployed Morphisms runtime or automatic inference of rules from prose."
+      "notes": "Actual isolated Fable tool trial:16 captured subprocess commands, preserved artifacts and independent semantic grade with case-bound excerpts. Synthetic finite model interpretation, not deployed Morphisms runtime or automatic theory extraction. See receipt limitations.",
+      "receipts": [
+        "reviews/interpretation/graded.json"
+      ],
+      "evidence_kind": "agent-receipt"
     },
     "M04": {
       "tests": [
-        "test_replay.ModelReplayTests.test_M04_checkpoint_keeps_owed_response"
+        "test_replay.ModelReplayTests.test_M04_checkpoint_keeps_owed_response",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_M04_separate_checkpoint_processes",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_commands_and_source_hashes",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_evidence_changes_were_authorized",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_unknown_policy_is_missing_rule_not_permission"
       ],
       "coverage": "full",
-      "notes": "Explicitly authored synthetic theory model replay; not a deployed Morphisms runtime or automatic inference of rules from prose."
+      "notes": "Actual isolated Fable tool trial:16 captured subprocess commands, preserved artifacts and independent semantic grade with case-bound excerpts. Synthetic finite model interpretation, not deployed Morphisms runtime or automatic theory extraction. See receipt limitations.",
+      "receipts": [
+        "reviews/interpretation/graded.json"
+      ],
+      "evidence_kind": "agent-receipt"
     },
     "M05": {
       "tests": [
-        "test_replay.ModelReplayTests.test_M05_each_completion_remains_pending"
+        "test_replay.ModelReplayTests.test_M05_each_completion_remains_pending",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_M05_completion_queue",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_commands_and_source_hashes",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_evidence_changes_were_authorized",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_unknown_policy_is_missing_rule_not_permission"
       ],
       "coverage": "full",
-      "notes": "Explicitly authored synthetic theory model replay; not a deployed Morphisms runtime or automatic inference of rules from prose."
+      "notes": "Actual isolated Fable tool trial:16 captured subprocess commands, preserved artifacts and independent semantic grade with case-bound excerpts. Synthetic finite model interpretation, not deployed Morphisms runtime or automatic theory extraction. See receipt limitations.",
+      "receipts": [
+        "reviews/interpretation/graded.json"
+      ],
+      "evidence_kind": "agent-receipt"
     },
     "M06": {
       "tests": [
-        "test_replay.ModelReplayTests.test_M06_one_decision_across_interfaces"
+        "test_replay.ModelReplayTests.test_M06_one_decision_across_interfaces",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_M06_one_decision",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_commands_and_source_hashes",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_evidence_changes_were_authorized",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_unknown_policy_is_missing_rule_not_permission"
       ],
       "coverage": "full",
-      "notes": "Explicitly authored synthetic theory model replay; not a deployed Morphisms runtime or automatic inference of rules from prose."
+      "notes": "Actual isolated Fable tool trial:16 captured subprocess commands, preserved artifacts and independent semantic grade with case-bound excerpts. Synthetic finite model interpretation, not deployed Morphisms runtime or automatic theory extraction. See receipt limitations.",
+      "receipts": [
+        "reviews/interpretation/graded.json"
+      ],
+      "evidence_kind": "agent-receipt"
     },
     "M07": {
       "tests": [
-        "test_replay.ModelReplayTests.test_M07_dials_change_route_not_validity"
+        "test_replay.ModelReplayTests.test_M07_dials_change_route_not_validity",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_M07_routing_validity",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_commands_and_source_hashes",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_evidence_changes_were_authorized",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_unknown_policy_is_missing_rule_not_permission"
       ],
       "coverage": "full",
-      "notes": "Explicitly authored synthetic theory model replay; not a deployed Morphisms runtime or automatic inference of rules from prose."
+      "notes": "Actual isolated Fable tool trial:16 captured subprocess commands, preserved artifacts and independent semantic grade with case-bound excerpts. Synthetic finite model interpretation, not deployed Morphisms runtime or automatic theory extraction. See receipt limitations.",
+      "receipts": [
+        "reviews/interpretation/graded.json"
+      ],
+      "evidence_kind": "agent-receipt"
     },
     "M08": {
       "tests": [
-        "test_replay.ModelReplayTests.test_M08_start_and_drive_are_independent"
+        "test_replay.ModelReplayTests.test_M08_start_and_drive_are_independent",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_M08_start_drive",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_commands_and_source_hashes",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_evidence_changes_were_authorized",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_unknown_policy_is_missing_rule_not_permission"
       ],
       "coverage": "full",
-      "notes": "Explicitly authored synthetic theory model replay; not a deployed Morphisms runtime or automatic inference of rules from prose."
+      "notes": "Actual isolated Fable tool trial:16 captured subprocess commands, preserved artifacts and independent semantic grade with case-bound excerpts. Synthetic finite model interpretation, not deployed Morphisms runtime or automatic theory extraction. See receipt limitations.",
+      "receipts": [
+        "reviews/interpretation/graded.json"
+      ],
+      "evidence_kind": "agent-receipt"
     },
     "S01": {
       "tests": [

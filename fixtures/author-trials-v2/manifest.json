@@ -1,0 +1,78 @@
+[
+  {
+    "id": "identity",
+    "cases": [
+      "D01",
+      "D02"
+    ],
+    "input": "fixtures/author-trials-v2/identity/input.json",
+    "rubric": "fixtures/author-trials-v2/identity/grader-only.json",
+    "status": "not-run"
+  },
+  {
+    "id": "operation-modality",
+    "cases": [
+      "D04",
+      "D06",
+      "A07"
+    ],
+    "input": "fixtures/author-trials-v2/operation-modality/input.json",
+    "rubric": "fixtures/author-trials-v2/operation-modality/grader-only.json",
+    "status": "not-run"
+  },
+  {
+    "id": "question-shapes",
+    "cases": [
+      "D07"
+    ],
+    "input": "fixtures/author-trials-v2/question-shapes/input.json",
+    "rubric": "fixtures/author-trials-v2/question-shapes/grader-only.json",
+    "status": "not-run"
+  },
+  {
+    "id": "pattern-fidelity",
+    "cases": [
+      "D08",
+      "A15"
+    ],
+    "input": "fixtures/author-trials-v2/pattern-fidelity/input.json",
+    "rubric": "fixtures/author-trials-v2/pattern-fidelity/grader-only.json",
+    "status": "not-run"
+  },
+  {
+    "id": "unknown-port",
+    "cases": [
+      "C06"
+    ],
+    "input": "fixtures/author-trials-v2/unknown-port/input.json",
+    "rubric": "fixtures/author-trials-v2/unknown-port/grader-only.json",
+    "status": "not-run"
+  },
+  {
+    "id": "defined-port",
+    "cases": [
+      "C05"
+    ],
+    "input": "fixtures/author-trials-v2/defined-port/input.json",
+    "rubric": "fixtures/author-trials-v2/defined-port/grader-only.json",
+    "status": "not-run"
+  },
+  {
+    "id": "untrusted-source",
+    "cases": [
+      "R08"
+    ],
+    "input": "fixtures/author-trials-v2/untrusted-source/input.json",
+    "rubric": "fixtures/author-trials-v2/untrusted-source/grader-only.json",
+    "status": "not-run"
+  },
+  {
+    "id": "slow-next-step",
+    "cases": [
+      "S08"
+    ],
+    "input": "fixtures/author-trials-v2/slow-next-step/input.json",
+    "rubric": "fixtures/author-trials-v2/slow-next-step/grader-only.json",
+    "status": "not-run"
+  }
+]

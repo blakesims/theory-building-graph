@@ -1,0 +1,184 @@
+{
+  "arm": "prose",
+  "command": [
+    "claude",
+    "-p",
+    "--safe-mode",
+    "--tools",
+    "Bash,Read",
+    "--allowedTools",
+    "Bash,Read",
+    "--no-session-persistence",
+    "--verbose",
+    "--output-format",
+    "stream-json"
+  ],
+  "elapsed_seconds": 54.559,
+  "exit_code": 0,
+  "stderr": "",
+  "timed_out": false,
+  "budget": {
+    "tool_limit": 20,
+    "seconds_limit": 300,
+    "tool_limit_exceeded": false,
+    "time_limit_exceeded": false
+  },
+  "prompt_bytes": 2701,
+  "prompt_sha256": "a07321c41a03e782d5d8369da8891e0b06bc488ac57b975f6174ad8f480f04e7",
+  "usage": {
+    "input_tokens": 130,
+    "cache_creation_input_tokens": 14500,
+    "cache_read_input_tokens": 49416,
+    "output_tokens": 4175,
+    "output_tokens_details": {
+      "thinking_tokens": 762
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 14500,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 32,
+        "output_tokens": 720,
+        "cache_read_input_tokens": 16418,
+        "cache_creation_input_tokens": 494,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 494
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "tool_call_count": 4,
+  "tools": [
+    "Bash",
+    "Bash",
+    "Bash",
+    "Bash"
+  ],
+  "tool_error_ids": [],
+  "result": {
+    "duration_api_ms": 53320,
+    "stop_reason": "end_turn",
+    "session_id": "f54d634d-7370-4c2f-b4f3-e6765a2ec05a",
+    "total_cost_usd": 0.51392,
+    "usage": {
+      "input_tokens": 130,
+      "cache_creation_input_tokens": 14500,
+      "cache_read_input_tokens": 49416,
+      "output_tokens": 4175,
+      "output_tokens_details": {
+        "thinking_tokens": 762
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 14500,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "not_available",
+      "iterations": [
+        {
+          "input_tokens": 32,
+          "output_tokens": 720,
+          "cache_read_input_tokens": 16418,
+          "cache_creation_input_tokens": 494,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 494
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard"
+    },
+    "modelUsage": {
+      "claude-haiku-4-5-20251001": {
+        "inputTokens": 1456,
+        "outputTokens": 12,
+        "cacheReadInputTokens": 0,
+        "cacheCreationInputTokens": 0,
+        "webSearchRequests": 0,
+        "costUSD": 0.001516,
+        "contextWindow": 200000,
+        "maxOutputTokens": 32000,
+        "thinkingTokens": 0,
+        "canonicalModel": "claude-haiku-4-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      },
+      "claude-fable-5-1": {
+        "inputTokens": 130,
+        "outputTokens": 4175,
+        "cacheReadInputTokens": 49416,
+        "cacheCreationInputTokens": 14500,
+        "webSearchRequests": 0,
+        "costUSD": 0.512404,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 64000,
+        "thinkingTokens": 762,
+        "canonicalModel": "claude-fable-5-1",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "is_error": false,
+    "num_turns": 5,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "Maintenance pass complete. Files changed: `theory.md`, `sources.md`, `archive.md`, and a new `maintenance-report.json`.\n\n**What the revision does**\n\n- **C01 revised in place.** It now says the steward chooses subsequent work after an ended attempt, except that inside an already approved performance-investigation plan the recovery coordinator may choose replacement work after a failed attempt. The text states the permission belongs to the recovery coordinator role and is not a general orchestrator bypass. Source moved to the new S04, subjects gained recovery-role, and a Supersedes field points at the archive. ID and empty dependency list are unchanged.\n- **Old wording preserved.** The S01 text and its single-owner rationale are copied verbatim into archive.md as entry A01. S01 and S02 in sources.md are untouched. The maintenance audit is entry M01.\n- **New source S04** records the user decision as data.\n\n**Unresolved consequences**\n\nFour claims carry explicit dependency chains back to C01 and now have a Review field. Their standing, currency, text, and dependency links are unchanged, so nothing was rewritten or silently rejected.\n\n- **C02** depends on C01. Its \"belongs to the steward after a failed attempt\" wording no longer holds inside the exception.\n- **C03** depends on C02. It may survive, since S04 explicitly denies a general orchestrator bypass, but its rationale should be re-confirmed.\n- **C04** depends on C02. Whether retry exhaustion inside an approved plan still returns selection to the steward is undecided.\n- **C05** depends on C03 and C04. \"Needs a plan selected by the steward\" is in direct tension with the new exception.\n\nReplacement wording for these four is the user's call. C06 through C30 declare no dependence on the work-selection chain and were not touched. Q01 (consultation before stopping) and Q02 (arbitrary cancellation) remain open and unchanged.\n\n**Limits.** This was a single pass using four tool calls. I did not check whether the unrelated history file references C01 through C05 beyond a search that returned no hits. The theory is not claimed complete or consistent beyond the flagged review items.",
+    "ttft_ms": 2090,
+    "type": "result",
+    "duration_ms": 53848,
+    "uuid": "40046296-ebe6-42fb-afc9-9f7c8062ed02",
+    "ttft_stream_ms": 1708,
+    "time_to_request_ms": 555,
+    "first_content_frame_ms": 2012,
+    "queued_turn_count": 0,
+    "result_index": 0
+  },
+  "message_count": 28,
+  "tool_metrics_available": true,
+  "maintenance_work_observed": true,
+  "scope": "Actual participant tool calls and isolated store edits; quality still needs independent semantic grading."
+}

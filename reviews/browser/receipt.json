@@ -1,0 +1,29 @@
+{
+  "status": "completed",
+  "passed": true,
+  "synthetic": true,
+  "graph_revision": 12,
+  "live_graph_unchanged": true,
+  "scope": "Browser integration on isolated graph: search, question resolution, impact, scoped findings, live add+edge update and history. Not an LLM or design evaluation.",
+  "files_sha256": {
+    "index.html": "6890b1d686f96eb3a6cbaeb9767db513cdc9a792304b967b0135dda43207a7b9",
+    "graph.py": "29077e7ba51020230239835b3d5db0ac61f10f3803ee45e65c0c11c8d31f75cc",
+    "commands.json": "d4c5852d9ad5eee0b7ff18f7bb12f1c6932d78fd6f49507a63edd6c6850a07e3",
+    "edits.json": "8c8a27dc07612e1e70ce917578cc17e33810c8d4d174660851edb165167faabb"
+  },
+  "checks": [
+    "resolution-open",
+    "impact-visible",
+    "findings-visible",
+    "revision-live-update",
+    "new-node-findable",
+    "node-and-edge-history",
+    "live-data-unchanged"
+  ],
+  "screenshots": {
+    "live-change.png": "9fbecf20be140cefdf96c2773f12330fcd057d5abb9bcdd8ec1546c836043e82",
+    "readiness.png": "4e89222d9c6f3eade981d617287f08e4f3c5aa3121415d76cae9e0cc2edc13d1",
+    "change-history.png": "9e97bdd9842d72eddc449f71c456e9361945c2bd8f8cb602429c416ee01ff2cc"
+  },
+  "visual_review": "Root inspected readiness.png and live-change.png: selected question, explicit resolution, type legend and new node visible; graph remains primary view."
+}

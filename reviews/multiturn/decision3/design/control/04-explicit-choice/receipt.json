@@ -1,0 +1,158 @@
+{
+  "stage": "04-explicit-choice",
+  "cases": [
+    "S01",
+    "S08"
+  ],
+  "command": [
+    "claude",
+    "-p",
+    "--safe-mode",
+    "--tools",
+    "Bash,Read",
+    "--allowedTools",
+    "Bash,Read",
+    "--no-session-persistence",
+    "--verbose",
+    "--output-format",
+    "stream-json"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 151.065,
+  "timed_out": false,
+  "stderr": "",
+  "result": {
+    "duration_api_ms": 148703,
+    "stop_reason": "end_turn",
+    "session_id": "3aa5320f-fafe-4ff5-a25c-40b5d541933b",
+    "total_cost_usd": 0.99475975,
+    "usage": {
+      "input_tokens": 228,
+      "cache_creation_input_tokens": 25321,
+      "cache_read_input_tokens": 162576,
+      "output_tokens": 8406,
+      "output_tokens_details": {
+        "thinking_tokens": 2932
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 25321,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "not_available",
+      "iterations": [
+        {
+          "input_tokens": 32,
+          "output_tokens": 707,
+          "cache_read_input_tokens": 28372,
+          "cache_creation_input_tokens": 2157,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2157
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard"
+    },
+    "modelUsage": {
+      "claude-haiku-4-5-20251001": {
+        "inputTokens": 5744,
+        "outputTokens": 16,
+        "cacheReadInputTokens": 0,
+        "cacheCreationInputTokens": 0,
+        "webSearchRequests": 0,
+        "costUSD": 0.005824,
+        "contextWindow": 200000,
+        "maxOutputTokens": 32000,
+        "thinkingTokens": 0,
+        "canonicalModel": "claude-haiku-4-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      },
+      "claude-fable-5-1": {
+        "inputTokens": 260,
+        "outputTokens": 8409,
+        "cacheReadInputTokens": 184503,
+        "cacheCreationInputTokens": 25988,
+        "webSearchRequests": 0,
+        "costUSD": 0.98893575,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 64000,
+        "thinkingTokens": 2932,
+        "canonicalModel": "claude-fable-5-1",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "is_error": false,
+    "num_turns": 10,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "Decision recorded. The graph is at revision 3 with 31 changes. The check shows only informational findings, and the one new finding is the usual untested-claim note on the new accepted claim.\n\n**New**\n\n- `steward-always-chooses-decision-source`: synthetic session-paraphrase source, speaker attributed as user, modality decision.\n- `steward-always-chooses-decision`: accepted, current claim. The steward always chooses subsequent work. The orchestrator does not choose replacement work even with operator approval. It can ask whether to keep trying or mark the attempt failed, then the steward chooses next. Its metadata records that it does not decide the consultation question.\n- Edges from it: governs the choose-work and end-attempt operations, about the steward and orchestrator roles, extracted-from the new source.\n\n**Retired, with rationale and history kept**\n\n- `replacement-exception`: status superseded, review state historical. The original rationale about avoiding a relay stays on the node, plus a retirement reason and a revises edge from the decision.\n- `steward-next-work`: superseded and historical, since its text asserted the exception was allowed. The general rule continues in the decision claim. Revises edge added.\n- `atomic-replacement-hypothesis`: status retired, historical, with a retirement reason pointing to the decision.\n- `steward-always-chooses-hypothesis`: superseded and historical, noted as affirmed and restated by the decision. Revises edge added.\n\n**Questions reconciled**\n\n- `replacement-question`: answered, full coverage. The exploration answer lists three findings and is marked complete, with the consultation question named as the remaining unknown outside its scope.\n- `steward-always-chooses-question`: answered, verdict yes.\n- `atomic-replacement-question`: answered, verdict no.\n- `consultation-question`: untouched and still open, as you specified.\n\nOne thing I did not change: the existing accepted claim that the orchestrator may ask the operator whether to keep trying or mark the attempt failed. Your wording this turn did not name whom the orchestrator asks, so that claim stands as is and the new claim mirrors your wording without naming an addressee.",
+    "ttft_ms": 3535,
+    "type": "result",
+    "duration_ms": 150056,
+    "uuid": "9eff4bcc-b86d-4c32-84c8-efb47e1a14c5",
+    "ttft_stream_ms": 1903,
+    "time_to_request_ms": 309,
+    "first_content_frame_ms": 2332,
+    "queued_turn_count": 0,
+    "result_index": 0
+  },
+  "tool_call_count": 8,
+  "tool_ids": [
+    "toolu_011E6nbWVnWaNpwcdnpSS8JP",
+    "toolu_013pxVrByJkDiQMNGwHmdS2F",
+    "toolu_0146GxSruhW3nguChPQb9sjg",
+    "toolu_018Nr9vpZdGzBcGzSacY2CUs",
+    "toolu_01DLmLpqUdCVcmEz7qTtSpBk",
+    "toolu_01EPFYA6JCGtC8jCo7jMzA9h",
+    "toolu_01VzvnkRke1js62sRSairYck",
+    "toolu_01WmBErx7d873kbP3aYXraTQ"
+  ],
+  "prompt_sha256": "2e080cfd22ecd8f124046d53c1ecf58f6afc5105ec06818a3a1f812b4a50e9bb",
+  "before_sha256": "ce97106866c88fdcee3ec4410122b2b4e2e47059f612c6ead85b96eef46f0720",
+  "after_sha256": "588035f2cc74e9dfaa3b717366bab825a3c0818563d1775d535517660e4442a0",
+  "stdout_sha256": "135885548e7bfe7671ba9e5b1d1b1f5d5545bfd62cc3f662be00738287e16eb7",
+  "data_changed": true,
+  "semantic_grade": "not-graded",
+  "budget": {
+    "tool_limit": 12,
+    "seconds_limit": 180,
+    "calls_exceeded": false,
+    "time_exceeded": false
+  }
+}

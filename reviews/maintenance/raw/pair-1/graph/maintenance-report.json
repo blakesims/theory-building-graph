@@ -1,0 +1,25 @@
+{
+  "changed_claim_ids": ["C01"],
+  "needs_review_ids": ["C02", "C03", "C04", "C05"],
+  "unchanged_open_question_ids": ["Q01", "Q02"],
+  "preserved_history_locations": [
+    "graph.json#nodes/C01-superseded-r0 (verbatim prior C01 text + rationale, review_state=historical, source_ref=S01)",
+    "graph.json#nodes/C01/meta.superseded_text, meta.superseded_rationale, meta.superseded_source_ref",
+    "graph.json#edges/C01-revises-C01-superseded-r0",
+    "graph.json#changes[revision=1] (audited before/after via ./tg history --full --json)",
+    "graph.json#nodes/S01 and S02 (unchanged prior decision and withdrawn-bypass debate)"
+  ],
+  "source_locations": [
+    "graph.json#nodes/S04 (new user decision, 2026-09-15)",
+    "sources.md#S04",
+    "graph.json#nodes/C01/meta.source_ref = S04"
+  ],
+  "tool_limit_or_failure": null,
+  "notes": {
+    "dependency_flags": "C02-C05 were flagged automatically by the apply step (review_reason: 'Declared semantic prerequisite changed: C01'); their status remains accepted and their text was not altered. No replacement wording was written for them.",
+    "unresolved": "C02, C04 and C05 still state unconditional steward ownership and may conflict with the new scoped exception; C03 (no orchestrator bypass) appears consistent with S04 but is flagged via its declared dependency chain. Deciding whether each needs rewording, an exception clause, or reaffirmation is left to the steward/user. Q01 and Q02 were not settled.",
+    "additions": "S04 source node, C01-superseded-r0 archive node, revises edge, and an about edge from C01 to recovery-role. batch-r1.json retained as the applied batch.",
+    "revision": 1,
+    "tool_calls_used": 8
+  }
+}

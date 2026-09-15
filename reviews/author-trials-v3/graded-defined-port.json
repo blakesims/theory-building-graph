@@ -1,0 +1,95 @@
+{
+  "id": "defined-port",
+  "cases": [
+    "C05"
+  ],
+  "status": "completed",
+  "model": "claude-fable-5-1",
+  "participant_session": "bb131116-36b7-40b8-aa7c-f6701b2da160",
+  "grader": "Codex /root/formal_checks; independent of participant outputs, contributor to formal checker implementation",
+  "input_sha256": "68920452a3a2e41150f12ec5dd748f8f0b38708ccc81e260976945127a31d014",
+  "input_file_sha256": "68920452a3a2e41150f12ec5dd748f8f0b38708ccc81e260976945127a31d014",
+  "raw_receipt_sha256": "281c313bf4b74856d13fcb109f2a126b048a91bfbfda2e1277cf73ec6f12b5d1",
+  "rubric_sha256": "df45ce5b948620fe325a39ce3a12559b5154dcbc5f8422e147d781b8b27090f1",
+  "user_turn": "For this test model, I now define port identity as (host, number). Machine A port8080 has Alice as owner; machine B port8080 has Bob. Each port should have exactly one owner. Record that identity definition and tell me whether these observations conflict with the claim.",
+  "grades": [
+    {
+      "id": "two-subjects",
+      "score": 1,
+      "excerpt": "Under the identity you just defined, the observations do not conflict with the claim. With port identity = (host, number), machine A:8080 and machine B:8080 are two distinct ports, and each has exactly one owner (Alice, Bob). The observations would conflict only if port identity were the number alone, since 8080 would then have two owners. I would record the identity definition as an accepted claim about the existing `port` entity, cite your exact wording as a verbatim source, and store the two observations as a trace with no potential-conflict edge. The one-owner rule was stated with 'should', which I have preserved; it is proposed rather than accepted because you asked only to record the identity definition.",
+      "excerpt_location": "proposal.response",
+      "explanation": "Treats machine A:8080 and machine B:8080 as distinct under the user-defined pair, each with one owner."
+    },
+    {
+      "id": "compatible",
+      "score": 1,
+      "excerpt": "Under the identity you just defined, the observations do not conflict with the claim. With port identity = (host, number), machine A:8080 and machine B:8080 are two distinct ports, and each has exactly one owner (Alice, Bob). The observations would conflict only if port identity were the number alone, since 8080 would then have two owners. I would record the identity definition as an accepted claim about the existing `port` entity, cite your exact wording as a verbatim source, and store the two observations as a trace with no potential-conflict edge. The one-owner rule was stated with 'should', which I have preserved; it is proposed rather than accepted because you asked only to record the identity definition.",
+      "excerpt_location": "proposal.response",
+      "explanation": "States observations do not conflict under the supplied identity, without claiming all possible observations satisfy the rule."
+    },
+    {
+      "id": "sourced-identity",
+      "score": 1,
+      "excerpt": "[\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"source-4\",\n    \"value\": {\n      \"type\": \"source\",\n      \"text\": \"For this test model, I now define port identity as (host, number). Machine A port8080 has Alice as owner; machine B port8080 has Bob. Each port should have exactly one owner. Record that identity definition and tell me whether these observations conflict with the claim.\",\n      \"status\": \"recorded\",\n      \"meta\": {\n        \"source_kind\": \"verbatim\",\n        \"speaker\": \"Blake\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"port-identity\",\n    \"value\": {\n      \"type\": \"claim\",\n      \"text\": \"In the proposed test model, port identity is the pair (host, number); two ports with the same number on different hosts are distinct ports.\",\n      \"status\": \"accepted\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"rationale\": \"Explicit definition by Blake: 'I now define port identity as (host, number).'\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"one-owner-per-port\",\n    \"value\": {\n      \"type\": \"claim\",\n      \"text\": \"Each port should have exactly one owner.\",\n      \"status\": \"proposed\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"rationale\": \"Stated by Blake with 'should'; the user asked only to record the identity definition, so this rule awaits explicit affirmation as accepted.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"port-observations\",\n    \"value\": {\n      \"type\": \"trace\",\n      \"text\": \"Observation: machine A, port 8080, owner Alice. Observation: machine B, port 8080, owner Bob.\",\n      \"status\": \"recorded\",\n      \"meta\": {\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"assessment\": \"No conflict with one-owner-per-port under port-identity (host, number): (A,8080) and (B,8080) are distinct ports with one owner each. Would conflict under number-only identity.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-port-identity-about\",\n    \"value\": {\n      \"from\": \"port-identity\",\n      \"type\": \"about\",\n      \"to\": \"port\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-port-identity-0\",\n    \"value\": {\n      \"from\": \"port-identity\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-one-owner-about\",\n    \"value\": {\n      \"from\": \"one-owner-per-port\",\n      \"type\": \"about\",\n      \"to\": \"port\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-one-owner-0\",\n    \"value\": {\n      \"from\": \"one-owner-per-port\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-one-owner-depends-identity\",\n    \"value\": {\n      \"from\": \"one-owner-per-port\",\n      \"type\": \"depends-on\",\n      \"to\": \"port-identity\",\n      \"meta\": {\n        \"reason\": \"Whether 'each port' has one owner depends on what counts as one port; the verdict on the observations flips if identity is number-only.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-port-observations-about\",\n    \"value\": {\n      \"from\": \"port-observations\",\n      \"type\": \"about\",\n      \"to\": \"port\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-port-observations-0\",\n    \"value\": {\n      \"from\": \"port-observations\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  }\n]",
+      "excerpt_location": "proposal.proposed_operations",
+      "explanation": "Exact user turn is preserved; port-identity explicitly applies to the test model and cites user definition. Would record is proposal-only wording, not premature completion."
+    }
+  ],
+  "score": 3,
+  "possible": 3,
+  "hard_failures": [],
+  "observations": [
+    {
+      "code": "conservative-acceptance-friction",
+      "detail": "The user explicitly states the one-owner should rule in the test model; participant defers its acceptance again. No invented acceptance occurs, but this adds potentially unnecessary confirmation."
+    }
+  ],
+  "mechanical_apply": {
+    "status": "valid-applied-proposal",
+    "command": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Users/blake/projects/theory-building-graph/graph.py",
+      "--file",
+      "/var/folders/xs/yfkt8l5n4wj3hq3_xrm7n6480000gn/T/theory-author-myds25ko/graph.json",
+      "apply",
+      "-",
+      "--actor",
+      "blind-participant",
+      "--reason",
+      "Synthetic authorized proposal validation",
+      "--expect",
+      "0",
+      "--json"
+    ],
+    "stdout": "{\"changes\":16,\"revision\":1}\n",
+    "stderr": "",
+    "unchanged": null,
+    "proposed_operation_count": 11,
+    "changed_nodes": [
+      "one-owner-per-port",
+      "port-identity",
+      "port-observations",
+      "source-4"
+    ],
+    "deleted_nodes": [],
+    "original_steward_rule_preserved": true
+  },
+  "passed": true,
+  "metrics": {
+    "input_tokens": 9314,
+    "input_token_breakdown": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 6093,
+      "cache_read_input_tokens": 3219
+    },
+    "output_tokens": 3053,
+    "elapsed_seconds": 36.184,
+    "input_bytes": 16227,
+    "retrieval_calls": 0,
+    "authoring_seconds": null,
+    "review_seconds": null
+  },
+  "scope": "Judged isolated no-tool Fable proposals followed by separate real CLI application to temporary graphs. Not a tool-driven multi-turn interview, interactive retrieval, generalized correctness claim, or proof of graph benefit.",
+  "contract_version": "authoring/3",
+  "previous_trial": "../author-trials-v2/graded-defined-port.json"
+}

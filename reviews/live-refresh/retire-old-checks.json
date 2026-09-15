@@ -1,0 +1,35 @@
+[
+  {
+    "op": "update",
+    "collection": "nodes",
+    "id": "check-steward-next",
+    "value": {
+      "meta": {
+        "review_state": "historical",
+        "review_reason": "Preserved older checker result; superseded by audited exclusive-actor/3 evaluation."
+      }
+    }
+  },
+  {
+    "op": "update",
+    "collection": "nodes",
+    "id": "check-orchestrator-next",
+    "value": {
+      "meta": {
+        "review_state": "historical",
+        "review_reason": "Preserved older checker result; superseded by audited exclusive-actor/3 evaluation."
+      }
+    }
+  },
+  {
+    "op": "update",
+    "collection": "nodes",
+    "id": "check-missing-role",
+    "value": {
+      "meta": {
+        "review_state": "historical",
+        "review_reason": "Preserved older checker result; superseded by audited exclusive-actor/3 evaluation."
+      }
+    }
+  }
+]

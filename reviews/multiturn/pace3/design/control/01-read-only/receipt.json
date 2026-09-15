@@ -1,0 +1,150 @@
+{
+  "stage": "01-read-only",
+  "cases": [
+    "S08"
+  ],
+  "command": [
+    "claude",
+    "-p",
+    "--safe-mode",
+    "--tools",
+    "Bash,Read",
+    "--allowedTools",
+    "Bash,Read",
+    "--no-session-persistence",
+    "--verbose",
+    "--output-format",
+    "stream-json"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 18.383,
+  "timed_out": false,
+  "stderr": "",
+  "result": {
+    "duration_api_ms": 16754,
+    "stop_reason": "end_turn",
+    "session_id": "e96a7da5-5c32-4c1d-a67c-1c0597d29ac0",
+    "total_cost_usd": 0.17953625,
+    "usage": {
+      "input_tokens": 34,
+      "cache_creation_input_tokens": 6117,
+      "cache_read_input_tokens": 15685,
+      "output_tokens": 975,
+      "output_tokens_details": {
+        "thinking_tokens": 561
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6117,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "not_available",
+      "iterations": [
+        {
+          "input_tokens": 32,
+          "output_tokens": 226,
+          "cache_read_input_tokens": 10477,
+          "cache_creation_input_tokens": 848,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 848
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard"
+    },
+    "modelUsage": {
+      "claude-haiku-4-5-20251001": {
+        "inputTokens": 4105,
+        "outputTokens": 16,
+        "cacheReadInputTokens": 0,
+        "cacheCreationInputTokens": 0,
+        "webSearchRequests": 0,
+        "costUSD": 0.004185,
+        "contextWindow": 200000,
+        "maxOutputTokens": 32000,
+        "thinkingTokens": 0,
+        "canonicalModel": "claude-haiku-4-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      },
+      "claude-fable-5-1": {
+        "inputTokens": 34,
+        "outputTokens": 975,
+        "cacheReadInputTokens": 15685,
+        "cacheCreationInputTokens": 6117,
+        "webSearchRequests": 0,
+        "costUSD": 0.17535125000000001,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 64000,
+        "thinkingTokens": 561,
+        "canonicalModel": "claude-fable-5-1",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "The one read is done. It was a search, not the context read, because no stable ID had been supplied.\n\n**Observed result** (revision 0, one match, not truncated):\n\n- ID `steward-next-work` is a claim, status accepted, review state current.\n- Its text: the steward generally chooses subsequent work, and an operator-approved orchestrator replacement exception is currently allowed.\n\nThe search output shows only the node line. Its incident edges, sources, and reasoning context were not returned, so I have not observed them. Reading that recorded context would be a second read, which is outside this turn's budget. The command for it would be:\n\n```sh\n./tg review steward-next-work\n```\n\nStopping here as requested. No writes were made.",
+    "ttft_ms": 8679,
+    "type": "result",
+    "duration_ms": 17675,
+    "uuid": "bda7831f-efbc-4577-9c42-b6de55d8596f",
+    "ttft_stream_ms": 2255,
+    "time_to_request_ms": 386,
+    "first_content_frame_ms": 2758,
+    "queued_turn_count": 0,
+    "result_index": 0
+  },
+  "tool_call_count": 1,
+  "tool_ids": [
+    "toolu_019wvoq6dga2PVLXsgufvBya"
+  ],
+  "prompt_sha256": "860bb955e6327487d566e0e0206c21624a5d98089b5dddab8ab81998bfad5557",
+  "before_sha256": "c7f9bd55b098da6e591819c05c3d6ad7d2c2bce34f6fd33abe57e4535286cc2c",
+  "after_sha256": "c7f9bd55b098da6e591819c05c3d6ad7d2c2bce34f6fd33abe57e4535286cc2c",
+  "stdout_sha256": "207935d7bbc08ac5e7098818906061523390e08dd14e7f824b1be8ebcc9bee81",
+  "data_changed": false,
+  "semantic_grade": "not-graded",
+  "budget": {
+    "tool_limit": 12,
+    "seconds_limit": 180,
+    "calls_exceeded": false,
+    "time_exceeded": false
+  }
+}

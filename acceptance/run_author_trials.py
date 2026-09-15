@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Independent agent proposals, followed by isolated CLI validation. No live writes."""
+import argparse
 import concurrent.futures
 import hashlib
 import json
@@ -9,7 +10,7 @@ import tempfile
 import time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parent.parent
-OUT=ROOT/'reviews'/'author-trials';OUT.mkdir(parents=True,exist_ok=True)
+OUT=ROOT/'reviews'/'author-trials'
 
 def run(item):
     raw=(ROOT/item['input']).read_text();data=json.loads(raw)
@@ -36,7 +37,12 @@ def run(item):
     return result.returncode
 
 if __name__=='__main__':
-    manifest=json.loads((ROOT/'fixtures'/'author-trials'/'manifest.json').read_text())
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--packets',default='fixtures/author-trials')
+    parser.add_argument('--output',default='reviews/author-trials')
+    args=parser.parse_args()
+    OUT=ROOT/args.output;OUT.mkdir(parents=True,exist_ok=True)
+    manifest=json.loads((ROOT/args.packets/'manifest.json').read_text())
     with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
         codes=list(pool.map(run,manifest))
     raise SystemExit(int(any(codes)))

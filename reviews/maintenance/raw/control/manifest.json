@@ -1,0 +1,15 @@
+{
+  "arms": [
+    "graph",
+    "prose"
+  ],
+  "claim_count": 30,
+  "same_source_facts": true,
+  "same_explicit_dependencies": true,
+  "same_irrelevant_history_sha256": "4c340d315cd16d4f94158a4ed1589693093a1865194186ffba31fb0dcebc8edd",
+  "snapshot_byte_counts": {
+    "graph": 35097,
+    "prose": 27833
+  },
+  "scope": "Small paired maintenance experiment, not product superiority proof."
+}

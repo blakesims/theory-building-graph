@@ -1,0 +1,111 @@
+{
+  "arm": "prose",
+  "phase": "agent-review-only",
+  "status": "completed",
+  "semantic_grade": "not-graded",
+  "command": [
+    "claude",
+    "-p",
+    "--safe-mode",
+    "--tools",
+    "",
+    "--no-session-persistence",
+    "--verbose",
+    "--output-format",
+    "stream-json"
+  ],
+  "exit_code": 0,
+  "timed_out": false,
+  "elapsed_seconds": 44.13623091697809,
+  "agent_review_latency_seconds": 44.13623091697809,
+  "human_review_seconds": null,
+  "tool_call_count": 0,
+  "tool_ids": [],
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 19419,
+    "cache_read_input_tokens": 3219,
+    "output_tokens": 3539,
+    "output_tokens_details": {
+      "thinking_tokens": 1467
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 19419,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 3539,
+        "cache_read_input_tokens": 3219,
+        "cache_creation_input_tokens": 19419,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 19419
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "model_usage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 15031,
+      "outputTokens": 18,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.015120999999999999,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "thinkingTokens": 0,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    },
+    "claude-fable-5-1": {
+      "inputTokens": 2,
+      "outputTokens": 3539,
+      "cacheReadInputTokens": 3219,
+      "cacheCreationInputTokens": 19419,
+      "webSearchRequests": 0,
+      "costUSD": 0.5661547499999999,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "thinkingTokens": 1467,
+      "canonicalModel": "claude-fable-5-1",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "cost_usd": 0.58127575,
+  "is_error": false,
+  "stderr": "",
+  "input_sha256": "d5e63e28b9d6cb5c804a83bc03381e5daf6d23139811005a7adba45bfef98417",
+  "prompt_sha256": "2bbb4c4bba72f5392a95f003418830aa8802046f64aaf60bd4d1e6de5a975a73",
+  "raw_sha256": "ba91a25b75432b83129b2b05537cd0094e973389c240f0b23781fc5285945159",
+  "source_paths": {
+    "before": "reviews/maintenance/raw/control/prose-before.json",
+    "after": {
+      "archive.md": "reviews/maintenance/raw/prose/archive.md",
+      "sources.md": "reviews/maintenance/raw/prose/sources.md",
+      "theory.md": "reviews/maintenance/raw/prose/theory.md",
+      "unrelated-history.md": "reviews/maintenance/raw/prose/unrelated-history.md"
+    }
+  },
+  "source_hashes": {
+    "before": "7b48ba37ebb80921c999c3b94a7fcd4ca47df96f89d912faeb536b77b923f061",
+    "after": {
+      "archive.md": "66aaaf57eb7a9ef8120180d243150b6d11159309d6d74396e036be29fb644ccb",
+      "sources.md": "ac200b2c3741dee93a3625e849ef9908f47d33cf2bec2840e00fcc86fbec311e",
+      "theory.md": "6b37eb7c7f28043805ee01dcd108e23281a2cba4da4a4a63a14b687803056290",
+      "unrelated-history.md": "4c340d315cd16d4f94158a4ed1589693093a1865194186ffba31fb0dcebc8edd"
+    }
+  }
+}

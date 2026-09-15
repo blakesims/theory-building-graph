@@ -1,0 +1,144 @@
+{
+  "kind": "explicit-stage-fork",
+  "source_run": "reviews/multiturn/v2/design",
+  "continuation_stage": "04-explicit-choice",
+  "rerun_prior_stages": false,
+  "original_manifest": "reviews/multiturn/decision3/design/fork-manifest.json",
+  "original_manifest_sha256": "9874f7650e8f76ef69212dc8dfd2e9cfe0b33e94f55e73ebf878d2cecb254c7a",
+  "bindings": [
+    {
+      "source_path": "reviews/multiturn/v2/design/workspace/tg",
+      "copy_path": "reviews/multiturn/decision3/design/workspace/tg",
+      "sha256": "7a33a1e1c17057f5176c190ede761fdadf438e2ff6efd91bd4a002f68c4a70ba"
+    },
+    {
+      "source_path": "reviews/multiturn/v2/design/workspace/graph.py",
+      "copy_path": "reviews/multiturn/decision3/design/workspace/graph.py",
+      "sha256": "29077e7ba51020230239835b3d5db0ac61f10f3803ee45e65c0c11c8d31f75cc"
+    },
+    {
+      "source_path": "reviews/multiturn/v2/design/workspace/dependency.py",
+      "copy_path": "reviews/multiturn/decision3/design/workspace/dependency.py",
+      "sha256": "78e16cfc8516b78b80f3a5850b58064b57f1eeae0f4b094d622d0f8c29f4d6a7"
+    },
+    {
+      "source_path": "reviews/multiturn/v2/design/workspace/formalcheck.py",
+      "copy_path": "reviews/multiturn/decision3/design/workspace/formalcheck.py",
+      "sha256": "18ae4fa53fb37dfaa1c656fb98a6f04a8f872bb700b8778a888e24c652d02574"
+    },
+    {
+      "source_path": "reviews/multiturn/v2/design/workspace/tracecheck.py",
+      "copy_path": "reviews/multiturn/decision3/design/workspace/tracecheck.py",
+      "sha256": "5d83313e15c1714b684427c035fddef7add55898ec1ce3d024e89c72521f0ce9"
+    },
+    {
+      "source_path": "reviews/multiturn/v2/design/workspace/DEPENDENCY-SCHEMA.md",
+      "copy_path": "reviews/multiturn/decision3/design/workspace/DEPENDENCY-SCHEMA.md",
+      "sha256": "6f352a27a58c2ba3e5efee1456121639eb264b4a0d01c300d7cddf3549efa83f"
+    },
+    {
+      "source_path": "reviews/multiturn/v2/design/workspace/FORMAL-SCHEMA.md",
+      "copy_path": "reviews/multiturn/decision3/design/workspace/FORMAL-SCHEMA.md",
+      "sha256": "6e7ca163a5f4a250457a4463e3de5afd98102cd65b98e5e4414df7b143bc2f85"
+    },
+    {
+      "source_path": "reviews/multiturn/v2/design/control/initial.graph.json",
+      "copy_path": "reviews/multiturn/decision3/design/control/initial.graph.json",
+      "sha256": "c7f9bd55b098da6e591819c05c3d6ad7d2c2bce34f6fd33abe57e4535286cc2c"
+    },
+    {
+      "source_path": "reviews/multiturn/v2/design/control/future-turns.json",
+      "copy_path": "reviews/multiturn/decision3/design/control/future-turns.json",
+      "sha256": "5cb9b6d89192c1ec505cf185f5e51f2e807e42648c4589087e62f504cebda461"
+    },
+    {
+      "source_path": "reviews/multiturn/v2/design/control/grader-only.json",
+      "copy_path": "reviews/multiturn/decision3/design/control/grader-only.json",
+      "sha256": "036b3369064d46d4368735213f577cb463fdd55b78edf3b09f2832b0fa83a5cc"
+    },
+    {
+      "source_path": "reviews/multiturn/v2/design/control/04-explicit-choice/before.graph.json",
+      "copy_path": "reviews/multiturn/decision3/design/control/04-explicit-choice/before.graph.json",
+      "sha256": "ce97106866c88fdcee3ec4410122b2b4e2e47059f612c6ead85b96eef46f0720"
+    },
+    {
+      "source_path": "reviews/multiturn/v2/design/control/01-read-only/prompt.txt",
+      "copy_path": "reviews/multiturn/decision3/design/control/01-read-only/prompt.txt",
+      "sha256": "aaf1e8bd56093cfa9502ada058240042a0e4ba893440db1208937962ce011672"
+    },
+    {
+      "source_path": "reviews/multiturn/v2/design/control/01-read-only/before.graph.json",
+      "copy_path": "reviews/multiturn/decision3/design/control/01-read-only/before.graph.json",
+      "sha256": "c7f9bd55b098da6e591819c05c3d6ad7d2c2bce34f6fd33abe57e4535286cc2c"
+    },
+    {
+      "source_path": "reviews/multiturn/v2/design/control/01-read-only/after.graph.json",
+      "copy_path": "reviews/multiturn/decision3/design/control/01-read-only/after.graph.json",
+      "sha256": "c7f9bd55b098da6e591819c05c3d6ad7d2c2bce34f6fd33abe57e4535286cc2c"
+    },
+    {
+      "source_path": "reviews/multiturn/v2/design/control/01-read-only/stdout.jsonl",
+      "copy_path": "reviews/multiturn/decision3/design/control/01-read-only/stdout.jsonl",
+      "sha256": "7ba7d198e52cb5dadb4314a6a3795f2c1ed0ae774d8ff2004607211f519afa53"
+    },
+    {
+      "source_path": "reviews/multiturn/v2/design/control/01-read-only/receipt.json",
+      "copy_path": "reviews/multiturn/decision3/design/control/01-read-only/receipt.json",
+      "sha256": "c72a940f8e871051599206742dfcebd4a0b32f521829d061a8d6d3a8ebd30abe"
+    },
+    {
+      "source_path": "reviews/multiturn/v2/design/control/02-atomic-proposal/prompt.txt",
+      "copy_path": "reviews/multiturn/decision3/design/control/02-atomic-proposal/prompt.txt",
+      "sha256": "0d4bb22edf51e96f7c7c1cf641692fa9425b096a37f5c8b17b38e3503403d32e"
+    },
+    {
+      "source_path": "reviews/multiturn/v2/design/control/02-atomic-proposal/before.graph.json",
+      "copy_path": "reviews/multiturn/decision3/design/control/02-atomic-proposal/before.graph.json",
+      "sha256": "c7f9bd55b098da6e591819c05c3d6ad7d2c2bce34f6fd33abe57e4535286cc2c"
+    },
+    {
+      "source_path": "reviews/multiturn/v2/design/control/02-atomic-proposal/after.graph.json",
+      "copy_path": "reviews/multiturn/decision3/design/control/02-atomic-proposal/after.graph.json",
+      "sha256": "af23d567c845d2debefaea26b52af184da764bf750f2560a274158a363db623e"
+    },
+    {
+      "source_path": "reviews/multiturn/v2/design/control/02-atomic-proposal/stdout.jsonl",
+      "copy_path": "reviews/multiturn/decision3/design/control/02-atomic-proposal/stdout.jsonl",
+      "sha256": "43dac084b4c2bf1f170a269375b62dea630e8fd17dc0aecaf8f89216b5c3a48b"
+    },
+    {
+      "source_path": "reviews/multiturn/v2/design/control/02-atomic-proposal/receipt.json",
+      "copy_path": "reviews/multiturn/decision3/design/control/02-atomic-proposal/receipt.json",
+      "sha256": "485abd7db5881c8be8088ba97933e4864b122ddbceb9675dd6cf8b91918603fb"
+    },
+    {
+      "source_path": "reviews/multiturn/v2/design/control/03-reconsider-and-recall/prompt.txt",
+      "copy_path": "reviews/multiturn/decision3/design/control/03-reconsider-and-recall/prompt.txt",
+      "sha256": "d0fce6070d5ac351da61ba12f3b14558c98358a7c0db1bc6c1c4942f0ff1c16b"
+    },
+    {
+      "source_path": "reviews/multiturn/v2/design/control/03-reconsider-and-recall/before.graph.json",
+      "copy_path": "reviews/multiturn/decision3/design/control/03-reconsider-and-recall/before.graph.json",
+      "sha256": "af23d567c845d2debefaea26b52af184da764bf750f2560a274158a363db623e"
+    },
+    {
+      "source_path": "reviews/multiturn/v2/design/control/03-reconsider-and-recall/after.graph.json",
+      "copy_path": "reviews/multiturn/decision3/design/control/03-reconsider-and-recall/after.graph.json",
+      "sha256": "ce97106866c88fdcee3ec4410122b2b4e2e47059f612c6ead85b96eef46f0720"
+    },
+    {
+      "source_path": "reviews/multiturn/v2/design/control/03-reconsider-and-recall/stdout.jsonl",
+      "copy_path": "reviews/multiturn/decision3/design/control/03-reconsider-and-recall/stdout.jsonl",
+      "sha256": "99ba5437b0fab5bee275c16cf4cd4585e12f28f3fdcc5c265ceef7a10e9aaf89"
+    },
+    {
+      "source_path": "reviews/multiturn/v2/design/control/03-reconsider-and-recall/receipt.json",
+      "copy_path": "reviews/multiturn/decision3/design/control/03-reconsider-and-recall/receipt.json",
+      "sha256": "9b2d6bc8c98277a3eb42659205b504e600405f720a315e93e01c944defb21264"
+    }
+  ],
+  "contract_version": "authoring/9",
+  "contract_sha256": "30425daccf1292a20da77f7415e7be6280edaf5a905a51a7570873a5465f0fdb",
+  "fork_stage": "04-explicit-choice",
+  "source_trial": "reviews/multiturn/v2/design"
+}

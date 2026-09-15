@@ -1,0 +1,51 @@
+{
+  "criteria": [
+    {
+      "id": "paced-read",
+      "criterion": "Display next read command, run exactly one read and explain only observed result.",
+      "cases": [
+        "S08"
+      ]
+    },
+    {
+      "id": "proposed-hypothetical",
+      "criterion": "Explicit proposed/synthetic hypothetical preserves accepted beliefs.",
+      "cases": [
+        "S08"
+      ]
+    },
+    {
+      "id": "authorized-visible-change",
+      "criterion": "Authorized change identifies changed nodes/edges and revision; graph change findable with existing UI evidence.",
+      "cases": [
+        "S08"
+      ]
+    }
+  ],
+  "scope": "Component evaluation across isolated pace4, actual staged proposal/write, and root browser integration, not one single continuous human UX trial.",
+  "required_evidence_slots": {
+    "paced-read": {
+      "component": "pace",
+      "criteria": [
+        "01-read-only"
+      ]
+    },
+    "proposed-hypothetical": {
+      "component": "proposal",
+      "criteria": [
+        "02-atomic-proposal",
+        "protocol-budget"
+      ]
+    },
+    "authorized-visible-change": {
+      "component": "proposal",
+      "criteria": [
+        "02-atomic-proposal"
+      ],
+      "artifacts": [
+        "reviews/browser/receipt.json",
+        "reviews/browser/commands.json"
+      ]
+    }
+  }
+}

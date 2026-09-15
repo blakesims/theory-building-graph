@@ -1,0 +1,14 @@
+[
+  {
+    "id": "pattern-fidelity",
+    "cases": [
+      "D08",
+      "A15"
+    ],
+    "input": "fixtures/author-trials-v5/pattern-fidelity/input.json",
+    "rubric": "fixtures/author-trials-v5/pattern-fidelity/grader-only.json",
+    "status": "not-run",
+    "contract_version": "authoring/5",
+    "added_regression": "pattern-trace-distinction"
+  }
+]

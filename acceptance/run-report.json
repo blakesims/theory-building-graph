@@ -2,29 +2,490 @@
   "suite_version": "0.1-proposed",
   "case_count": 80,
   "counts": {
-    "partial": 17,
-    "passed": 62,
-    "not-implemented": 1
+    "passed": 80
   },
-  "all_passed": false,
-  "unique_test_count": 84,
-  "elapsed_seconds": 0.743,
+  "all_passed": true,
+  "criteria": [
+    {
+      "id": "AC01",
+      "requirement": "Resolve existing typed identities and expose ambiguity; keep roles distinct from session instances.",
+      "cases": [
+        "D01",
+        "D02",
+        "D03",
+        "D04",
+        "C05",
+        "C06",
+        "C07"
+      ],
+      "status": "passed",
+      "case_status": {
+        "D01": "passed",
+        "D02": "passed",
+        "D03": "passed",
+        "D04": "passed",
+        "C05": "passed",
+        "C06": "passed",
+        "C07": "passed"
+      },
+      "additional_test_status": {}
+    },
+    {
+      "id": "AC02",
+      "requirement": "Separate modality, standing, currency, enforcement and attribution.",
+      "cases": [
+        "D05",
+        "D06",
+        "D07",
+        "D08",
+        "A15"
+      ],
+      "status": "passed",
+      "case_status": {
+        "D05": "passed",
+        "D06": "passed",
+        "D07": "passed",
+        "D08": "passed",
+        "A15": "passed"
+      },
+      "additional_test_status": {}
+    },
+    {
+      "id": "AC03",
+      "requirement": "Explain every formalization with source, assumptions, scope and independently reviewable pattern standing.",
+      "cases": [
+        "D06",
+        "D08",
+        "E01",
+        "A15"
+      ],
+      "status": "passed",
+      "case_status": {
+        "D06": "passed",
+        "D08": "passed",
+        "E01": "passed",
+        "A15": "passed"
+      },
+      "additional_test_status": {}
+    },
+    {
+      "id": "AC04",
+      "requirement": "On semantic input revision, compute complete transitive invalidation along declared dependency edges, without automatically changing acceptance.",
+      "cases": [
+        "I01",
+        "I02",
+        "I03",
+        "I04",
+        "I05",
+        "I08"
+      ],
+      "status": "passed",
+      "case_status": {
+        "I01": "passed",
+        "I02": "passed",
+        "I03": "passed",
+        "I04": "passed",
+        "I05": "passed",
+        "I08": "passed"
+      },
+      "additional_test_status": {}
+    },
+    {
+      "id": "AC05",
+      "requirement": "No broad invalidation through mere topic anchors, layouts or unrelated data.",
+      "cases": [
+        "I03",
+        "I06",
+        "R05"
+      ],
+      "status": "passed",
+      "case_status": {
+        "I03": "passed",
+        "I06": "passed",
+        "R05": "passed"
+      },
+      "additional_test_status": {}
+    },
+    {
+      "id": "AC06",
+      "requirement": "Return all affected IDs and dependency paths, with bounded rendering/pagination if needed; never confuse a truncated response with a complete set.",
+      "cases": [
+        "I02",
+        "R05"
+      ],
+      "status": "passed",
+      "case_status": {
+        "I02": "passed",
+        "R05": "passed"
+      },
+      "additional_test_status": {}
+    },
+    {
+      "id": "AC07",
+      "requirement": "Compute readiness independently of answers; name all mandatory blockers, including retired/withdrawn prerequisites.",
+      "cases": [
+        "Q01",
+        "Q02",
+        "Q03",
+        "Q04"
+      ],
+      "status": "passed",
+      "case_status": {
+        "Q01": "passed",
+        "Q02": "passed",
+        "Q03": "passed",
+        "Q04": "passed"
+      },
+      "additional_test_status": {}
+    },
+    {
+      "id": "AC08",
+      "requirement": "Resolve questions according to answer shape and coverage, with transparent totals and stale-answer handling.",
+      "cases": [
+        "D07",
+        "Q05",
+        "Q06",
+        "Q07",
+        "Q08"
+      ],
+      "status": "passed",
+      "case_status": {
+        "D07": "passed",
+        "Q05": "passed",
+        "Q06": "passed",
+        "Q07": "passed",
+        "Q08": "passed"
+      },
+      "additional_test_status": {}
+    },
+    {
+      "id": "AC09",
+      "requirement": "Report structural gaps with severity/context: orphan anchors, ungoverned operations, unanchored claims, edgeless questions and invalid revision cycles. Placeholder incompleteness is not logical inconsistency.",
+      "cases": [
+        "D01",
+        "Q07",
+        "R04"
+      ],
+      "additional_tests": [
+        "test_dependency.GapTests.test_gaps_and_repairs",
+        "test_dependency.GapTests.test_revision_requires_explicit_retirement",
+        "test_dependency.GapTests.test_suppression_visible_and_no_answer_drift",
+        "test_dependency.QuestionTests.test_cycles_distinct",
+        "test_dependency.IntegrationTests.test_undeclared_reference_gap_repairs",
+        "test_formalcheck.FormalChecks.test_A14_unknown_overlap"
+      ],
+      "status": "passed",
+      "case_status": {
+        "D01": "passed",
+        "Q07": "passed",
+        "R04": "passed"
+      },
+      "additional_test_status": {
+        "test_dependency.GapTests.test_gaps_and_repairs": "passed",
+        "test_dependency.GapTests.test_revision_requires_explicit_retirement": "passed",
+        "test_dependency.GapTests.test_suppression_visible_and_no_answer_drift": "passed",
+        "test_dependency.QuestionTests.test_cycles_distinct": "passed",
+        "test_dependency.IntegrationTests.test_undeclared_reference_gap_repairs": "passed",
+        "test_formalcheck.FormalChecks.test_A14_unknown_overlap": "passed"
+      }
+    },
+    {
+      "id": "AC10",
+      "requirement": "Compare supported authority patterns using declared role/scope/modality semantics, with a witness or explicit unknown.",
+      "cases": [
+        "A01",
+        "A02",
+        "A03",
+        "A04",
+        "A05",
+        "A06",
+        "A07",
+        "A08",
+        "A09",
+        "A10",
+        "A11",
+        "A12",
+        "A13",
+        "A14",
+        "A15",
+        "A16"
+      ],
+      "status": "passed",
+      "case_status": {
+        "A01": "passed",
+        "A02": "passed",
+        "A03": "passed",
+        "A04": "passed",
+        "A05": "passed",
+        "A06": "passed",
+        "A07": "passed",
+        "A08": "passed",
+        "A09": "passed",
+        "A10": "passed",
+        "A11": "passed",
+        "A12": "passed",
+        "A13": "passed",
+        "A14": "passed",
+        "A15": "passed",
+        "A16": "passed"
+      },
+      "additional_test_status": {}
+    },
+    {
+      "id": "AC11",
+      "requirement": "Compare supported cardinality patterns using interval intersection, identity, scope and existence assumptions.",
+      "cases": [
+        "C01",
+        "C02",
+        "C03",
+        "C04",
+        "C05",
+        "C06",
+        "C07",
+        "C08"
+      ],
+      "status": "passed",
+      "case_status": {
+        "C01": "passed",
+        "C02": "passed",
+        "C03": "passed",
+        "C04": "passed",
+        "C05": "passed",
+        "C06": "passed",
+        "C07": "passed",
+        "C08": "passed"
+      },
+      "additional_test_status": {}
+    },
+    {
+      "id": "AC12",
+      "requirement": "Keep formal unsupported results, incomplete evidence and bounded absence of counterexamples distinct.",
+      "cases": [
+        "A12",
+        "A16",
+        "C08",
+        "E03",
+        "E08"
+      ],
+      "status": "passed",
+      "case_status": {
+        "A12": "passed",
+        "A16": "passed",
+        "C08": "passed",
+        "E03": "passed",
+        "E08": "passed"
+      },
+      "additional_test_status": {}
+    },
+    {
+      "id": "AC13",
+      "requirement": "Evaluate concrete traces at event time and cite exact witnesses; don't change beliefs or case labels automatically.",
+      "cases": [
+        "E02",
+        "E03",
+        "E04",
+        "E05",
+        "E06",
+        "E07"
+      ],
+      "status": "passed",
+      "case_status": {
+        "E02": "passed",
+        "E03": "passed",
+        "E04": "passed",
+        "E05": "passed",
+        "E06": "passed",
+        "E07": "passed"
+      },
+      "additional_test_status": {}
+    },
+    {
+      "id": "AC14",
+      "requirement": "Invalidate saved results when any semantic input, extraction assumption, referenced definition or checker changes.",
+      "cases": [
+        "I05",
+        "I07",
+        "E01"
+      ],
+      "status": "passed",
+      "case_status": {
+        "I05": "passed",
+        "I07": "passed",
+        "E01": "passed"
+      },
+      "additional_test_status": {}
+    },
+    {
+      "id": "AC15",
+      "requirement": "Retrieve current positions, superseded alternatives and their rationale without conflating them.",
+      "cases": [
+        "S01",
+        "S06"
+      ],
+      "status": "passed",
+      "case_status": {
+        "S01": "passed",
+        "S06": "passed"
+      },
+      "additional_test_status": {}
+    },
+    {
+      "id": "AC16",
+      "requirement": "Make a recorded potential tension inspectable; never present LLM semantic judgment as deterministic proof.",
+      "cases": [
+        "A07",
+        "S02",
+        "E08"
+      ],
+      "status": "passed",
+      "case_status": {
+        "A07": "passed",
+        "S02": "passed",
+        "E08": "passed"
+      },
+      "additional_test_status": {}
+    },
+    {
+      "id": "AC17",
+      "requirement": "Surface Morphisms responsibility gaps without pre-deciding unresolved policy.",
+      "cases": [
+        "M01",
+        "M02",
+        "M03",
+        "M04",
+        "M05",
+        "M06",
+        "M07",
+        "M08",
+        "S03",
+        "S04"
+      ],
+      "status": "passed",
+      "case_status": {
+        "M01": "passed",
+        "M02": "passed",
+        "M03": "passed",
+        "M04": "passed",
+        "M05": "passed",
+        "M06": "passed",
+        "M07": "passed",
+        "M08": "passed",
+        "S03": "passed",
+        "S04": "passed"
+      },
+      "additional_test_status": {}
+    },
+    {
+      "id": "AC18",
+      "requirement": "Preserve atomic audited writes, references and optimistic concurrency across failure/retry.",
+      "cases": [
+        "R01",
+        "R02",
+        "R03",
+        "R04"
+      ],
+      "status": "passed",
+      "case_status": {
+        "R01": "passed",
+        "R02": "passed",
+        "R03": "passed",
+        "R04": "passed"
+      },
+      "additional_test_status": {}
+    },
+    {
+      "id": "AC19",
+      "requirement": "Return compact bounded text and valid structured JSON; aliases/flags/help are sufficient for agent use.",
+      "cases": [
+        "R05",
+        "R06",
+        "R07"
+      ],
+      "status": "passed",
+      "case_status": {
+        "R05": "passed",
+        "R06": "passed",
+        "R07": "passed"
+      },
+      "additional_test_status": {}
+    },
+    {
+      "id": "AC20",
+      "requirement": "Deterministic findings include exact node/edge/version witnesses and explicit check scope.",
+      "cases": [
+        "R07",
+        "E03",
+        "A03"
+      ],
+      "status": "passed",
+      "case_status": {
+        "R07": "passed",
+        "E03": "passed",
+        "A03": "passed"
+      },
+      "additional_test_status": {}
+    },
+    {
+      "id": "AC21",
+      "requirement": "Respect source trust boundaries and the user's requested pace.",
+      "cases": [
+        "R08",
+        "S08"
+      ],
+      "status": "passed",
+      "case_status": {
+        "R08": "passed",
+        "S08": "passed"
+      },
+      "additional_test_status": {}
+    },
+    {
+      "id": "AC22",
+      "requirement": "Demonstrate semantic recovery versus an equivalent prose baseline, measuring maintenance cost too.",
+      "cases": [
+        "S06",
+        "S07"
+      ],
+      "status": "passed",
+      "case_status": {
+        "S06": "passed",
+        "S07": "passed"
+      },
+      "additional_test_status": {}
+    }
+  ],
+  "criteria_counts": {
+    "passed": 22
+  },
+  "unique_test_count": 127,
+  "elapsed_seconds": 1.085,
   "files_sha256": {
-    "dependency.py": "2f95d625f4c914513b30cf98ef87ab5d96ad410ce905dd942a2be83fbb3ec54a",
-    "formalcheck.py": "1fd76e4c805494d42c6c12f535b2f802d9d9bee887406ea05d602a95c9b85a16",
-    "graph.py": "2cc98454c8315837d1cb527a7dbc728661d2001d79c02212fe372fd983062a24",
-    "prepare_author_trials.py": "60a9a42b162f2f1826ffb62673c6690bff075f146538fe35b77f4dc271eb816b",
+    "dependency.py": "78e16cfc8516b78b80f3a5850b58064b57f1eeae0f4b094d622d0f8c29f4d6a7",
+    "formalcheck.py": "c9692881f98f4b91f32a532b77b754fee3e83f2f241fdd8f8ab746131222cfa0",
+    "graph.py": "29077e7ba51020230239835b3d5db0ac61f10f3803ee45e65c0c11c8d31f75cc",
+    "prepare_author_trials.py": "122eff2a4dc91c4c10c4a3a9fd2753e2c631491b6ccba0368aeee7d1cfc0846f",
     "replay.py": "a39a49510b9935c7d41097d531d03bb2d98bc0778edfaaff0cf496571eef2a3e",
     "session_evaluation.py": "3e9011f3fd8e2aaacbff69f57f4b909e68285289c6f6b4bb182aba1fdd4692c7",
     "session_fixtures.py": "442cf5abe67caef8aa944c322e26249d7fbccff5ce23969e57dfc08d53c9b0d0",
+    "test_acceptance_receipt_gate.py": "cca69b3b0eb9c44003347da1b08d7030ab3f48229885253c76ecce1d5810b3d1",
+    "test_agent_receipts.py": "c92649298af9c818a8124d827a271e38207166f0840974ac37e971345d3d9055",
+    "test_browser_receipt.py": "ae0ba4f5307f1466ee80b1c5a23555d1f7e2f60b147a1cf2f4d40121dccb2686",
     "test_dependency.py": "6827f503f5c0beab115583d1ff03556b853a7c847ed81994387db1fa99e36057",
-    "test_formalcheck.py": "a347abd502bc6478f4017650c702438c45cce5031b835ae061681c20c60c4ceb",
+    "test_fable_dependency_regressions.py": "f0f410cf5a11022fc15b66bf6ce32ccfdc3fe3ab5fc6c714e5c2bae512af507f",
+    "test_formalcheck.py": "e40b128587a7c631967bb8f07f7e3b4c8899fd938c0801a300975e63ad12e90f",
     "test_graph.py": "b34d7c423fb004c6c7d97f01efe78753ab19c098301fd315a6b7bf4cff898be0",
+    "test_interpretation_receipts.py": "3cd342acac8ec6893ea0f324268e50dfe3042bf2e2181fde72b690dd7709139e",
+    "test_maintenance_protocol.py": "79d0440056c420e09e91567dbbe2cc1a8087296a0ecb5028db5cbec0923f0951",
+    "test_maintenance_receipts.py": "1ede937cf1a611211372d3548ff4dd9a414b8c3f2be008dce602f6ea3ba6019d",
+    "test_maintenance_timed_review.py": "de6bad9d6ab8805c91b90ede1fb8bb29f75ad66eeae30f1da8344d5c94e251d3",
     "test_metamorphic.py": "ece5fabcf12db7903901e24b06240f0d0c82ef8039dfbc64a26e4db89d2a7b7d",
+    "test_multiturn_protocol.py": "d442f81fa3bdca80b2280c0288baf5cbfdee9bd900f2b511fa48795ff7f0da7d",
+    "test_multiturn_receipts.py": "f4a7d22e54301fda8c7fdf6f283ea1cc6e6436a580e353f44007999fbe049789",
     "test_reliability.py": "8bb7f052aec9c6ff9b52bfa70c53e05e5e23633a508d6f33bbc4f712899ba891",
-    "test_replay.py": "e97bc1f7b4881d942390ab87d25fc3d355ebbe180ba66ccbad306492796147be",
-    "test_tracecheck.py": "a4f36b8212c1289f0dd1765c488f7df384334f6b495041ed2730b2f4577bdaa8",
-    "tracecheck.py": "c2dffd80d48241a382a257d4d0f410b66a33e098ba041ef749cf7c1acd5fc1c0"
+    "test_replay.py": "2d96bd9bd638bbde1cb5014886ba5c1d7820e4eaceccabddf44c618922896fe2",
+    "test_staged_receipt_gate.py": "16de00a7cdfebbaf36ec9ac0abc534e5cbcd2f29a1d7f0f15a179ad9bc1be706",
+    "test_tracecheck.py": "4e77b6ab2e005dbd960d4c9c2dca4868f4ad46361b01f99586ae67998664057a",
+    "tracecheck.py": "5d83313e15c1714b684427c035fddef7add55898ec1ce3d024e89c72521f0ce9"
   },
   "scope": "Mapped behavioral checks. Full coverage is an explicit reviewable claim, not inferred from number of assertions. Independent agent evaluations require recorded evidence in their mappings.",
   "cases": [
@@ -32,11 +493,24 @@
       "id": "D01",
       "title": "Reuse the existing steward role",
       "mechanism": "agent+structural",
-      "status": "partial",
+      "status": "passed",
       "tests": {
+        "test_agent_receipts.IndependentAgentReceipts.test_identity": "passed",
         "test_dependency.DependencyTests.test_alias_reuse_and_ambiguity": "passed"
       },
       "coverage_claims": [
+        {
+          "tests": [
+            "test_agent_receipts.IndependentAgentReceipts.test_identity"
+          ],
+          "coverage": "full",
+          "evidence_kind": "agent-receipt",
+          "receipts": [
+            "reviews/author-trials-v3/graded-identity.json"
+          ],
+          "notes": "Independent Fable proposal interpretation, separate semantic grading and actual temporary CLI apply/read replay; bounded test, not universal agent reliability.",
+          "mapping_source": "agent-mapping.json"
+        },
         {
           "tests": [
             "test_dependency.DependencyTests.test_alias_reuse_and_ambiguity"
@@ -45,17 +519,35 @@
           "notes": "Stable alias reuse tested; conversational extraction/acceptance requires agent replay.",
           "mapping_source": "dependencies-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": true,
+      "agent_receipts": [
+        "reviews/author-trials-v3/graded-identity.json"
+      ],
+      "agent_receipt_errors": []
     },
     {
       "id": "D02",
       "title": "Ambiguous name requires disambiguation",
       "mechanism": "agent+structural",
-      "status": "partial",
+      "status": "passed",
       "tests": {
+        "test_agent_receipts.IndependentAgentReceipts.test_identity": "passed",
         "test_dependency.DependencyTests.test_alias_reuse_and_ambiguity": "passed"
       },
       "coverage_claims": [
+        {
+          "tests": [
+            "test_agent_receipts.IndependentAgentReceipts.test_identity"
+          ],
+          "coverage": "full",
+          "evidence_kind": "agent-receipt",
+          "receipts": [
+            "reviews/author-trials-v3/graded-identity.json"
+          ],
+          "notes": "Independent Fable proposal interpretation, separate semantic grading and actual temporary CLI apply/read replay; bounded test, not universal agent reliability.",
+          "mapping_source": "agent-mapping.json"
+        },
         {
           "tests": [
             "test_dependency.DependencyTests.test_alias_reuse_and_ambiguity"
@@ -64,7 +556,12 @@
           "notes": "Ambiguous IDs rejected; contextual disambiguation is an agent responsibility.",
           "mapping_source": "dependencies-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": true,
+      "agent_receipts": [
+        "reviews/author-trials-v3/graded-identity.json"
+      ],
+      "agent_receipt_errors": []
     },
     {
       "id": "D03",
@@ -83,15 +580,38 @@
           "notes": "Explicit mechanical/structural case assertion; does not establish automatic English extraction.",
           "mapping_source": "evidence-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "D04",
       "title": "Choosing work is not inserting a record",
       "mechanism": "agent+structural",
-      "status": "not-implemented",
-      "tests": {},
-      "coverage_claims": []
+      "status": "passed",
+      "tests": {
+        "test_agent_receipts.IndependentAgentReceipts.test_operation_modality": "passed"
+      },
+      "coverage_claims": [
+        {
+          "tests": [
+            "test_agent_receipts.IndependentAgentReceipts.test_operation_modality"
+          ],
+          "coverage": "full",
+          "evidence_kind": "agent-receipt",
+          "receipts": [
+            "reviews/author-trials-v3/graded-operation-modality.json"
+          ],
+          "notes": "Independent Fable proposal interpretation, separate semantic grading and actual temporary CLI apply/read replay; bounded test, not universal agent reliability.",
+          "mapping_source": "agent-mapping.json"
+        }
+      ],
+      "agent_evidence_required": true,
+      "agent_receipts": [
+        "reviews/author-trials-v3/graded-operation-modality.json"
+      ],
+      "agent_receipt_errors": []
     },
     {
       "id": "D05",
@@ -110,17 +630,33 @@
           "notes": "",
           "mapping_source": "dependencies-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "D06",
       "title": "Paraphrase is not quotation",
       "mechanism": "agent+structural",
-      "status": "partial",
+      "status": "passed",
       "tests": {
+        "test_agent_receipts.IndependentAgentReceipts.test_operation_modality": "passed",
         "test_dependency.DependencyTests.test_provenance_storage_not_execution": "passed"
       },
       "coverage_claims": [
+        {
+          "tests": [
+            "test_agent_receipts.IndependentAgentReceipts.test_operation_modality"
+          ],
+          "coverage": "full",
+          "evidence_kind": "agent-receipt",
+          "receipts": [
+            "reviews/author-trials-v3/graded-operation-modality.json"
+          ],
+          "notes": "Independent Fable proposal interpretation, separate semantic grading and actual temporary CLI apply/read replay; bounded test, not universal agent reliability.",
+          "mapping_source": "agent-mapping.json"
+        },
         {
           "tests": [
             "test_dependency.DependencyTests.test_provenance_storage_not_execution"
@@ -129,17 +665,35 @@
           "notes": "Source attribution storage is covered; faithful paraphrase is an agent judgment.",
           "mapping_source": "dependencies-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": true,
+      "agent_receipts": [
+        "reviews/author-trials-v3/graded-operation-modality.json"
+      ],
+      "agent_receipt_errors": []
     },
     {
       "id": "D07",
       "title": "Question answer shapes differ",
       "mechanism": "agent+structural",
-      "status": "partial",
+      "status": "passed",
       "tests": {
+        "test_agent_receipts.IndependentAgentReceipts.test_question_shapes": "passed",
         "test_dependency.QuestionTests.test_shapes_not_interchangeable": "passed"
       },
       "coverage_claims": [
+        {
+          "tests": [
+            "test_agent_receipts.IndependentAgentReceipts.test_question_shapes"
+          ],
+          "coverage": "full",
+          "evidence_kind": "agent-receipt",
+          "receipts": [
+            "reviews/author-trials-v3/graded-question-shapes.json"
+          ],
+          "notes": "Independent Fable proposal interpretation, separate semantic grading and actual temporary CLI apply/read replay; bounded test, not universal agent reliability.",
+          "mapping_source": "agent-mapping.json"
+        },
         {
           "tests": [
             "test_dependency.QuestionTests.test_shapes_not_interchangeable"
@@ -148,7 +702,12 @@
           "notes": "Explicit shape prevents yes filling a condition or exploration. Inferring shape from user language requires agent extraction.",
           "mapping_source": "dependencies-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": true,
+      "agent_receipts": [
+        "reviews/author-trials-v3/graded-question-shapes.json"
+      ],
+      "agent_receipt_errors": []
     },
     {
       "id": "D08",
@@ -156,9 +715,22 @@
       "mechanism": "agent+structural",
       "status": "passed",
       "tests": {
+        "test_agent_receipts.IndependentAgentReceipts.test_pattern_fidelity": "passed",
         "test_tracecheck.DefinitionAcceptanceTests.test_D08_pattern_evaluation_does_not_ratify_prose": "passed"
       },
       "coverage_claims": [
+        {
+          "tests": [
+            "test_agent_receipts.IndependentAgentReceipts.test_pattern_fidelity"
+          ],
+          "coverage": "full",
+          "evidence_kind": "agent-receipt",
+          "receipts": [
+            "reviews/author-trials-v5/graded-pattern-fidelity.json"
+          ],
+          "notes": "Independent Fable proposal interpretation, separate semantic grading and actual temporary CLI apply/read replay; bounded test, not universal agent reliability.",
+          "mapping_source": "agent-mapping.json"
+        },
         {
           "tests": [
             "test_tracecheck.DefinitionAcceptanceTests.test_D08_pattern_evaluation_does_not_ratify_prose"
@@ -167,7 +739,12 @@
           "notes": "Explicit mechanical/structural case assertion; does not establish automatic English extraction.",
           "mapping_source": "evidence-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": true,
+      "agent_receipts": [
+        "reviews/author-trials-v5/graded-pattern-fidelity.json"
+      ],
+      "agent_receipt_errors": []
     },
     {
       "id": "I01",
@@ -186,7 +763,10 @@
           "notes": "",
           "mapping_source": "dependencies-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "I02",
@@ -205,7 +785,10 @@
           "notes": "",
           "mapping_source": "dependencies-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "I03",
@@ -224,7 +807,10 @@
           "notes": "",
           "mapping_source": "dependencies-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "I04",
@@ -243,7 +829,10 @@
           "notes": "",
           "mapping_source": "dependencies-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "I05",
@@ -262,7 +851,10 @@
           "notes": "",
           "mapping_source": "dependencies-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "I06",
@@ -281,7 +873,10 @@
           "notes": "",
           "mapping_source": "dependencies-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "I07",
@@ -311,7 +906,10 @@
           "notes": "Explicit mechanical/structural case assertion; does not establish automatic English extraction.",
           "mapping_source": "evidence-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "I08",
@@ -330,7 +928,10 @@
           "notes": "",
           "mapping_source": "dependencies-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "Q01",
@@ -349,7 +950,10 @@
           "notes": "",
           "mapping_source": "dependencies-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "Q02",
@@ -368,7 +972,10 @@
           "notes": "",
           "mapping_source": "dependencies-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "Q03",
@@ -387,7 +994,10 @@
           "notes": "",
           "mapping_source": "dependencies-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "Q04",
@@ -406,7 +1016,10 @@
           "notes": "",
           "mapping_source": "dependencies-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "Q05",
@@ -425,7 +1038,10 @@
           "notes": "",
           "mapping_source": "dependencies-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "Q06",
@@ -444,7 +1060,10 @@
           "notes": "",
           "mapping_source": "dependencies-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "Q07",
@@ -463,7 +1082,10 @@
           "notes": "",
           "mapping_source": "dependencies-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "Q08",
@@ -482,7 +1104,10 @@
           "notes": "",
           "mapping_source": "dependencies-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "A01",
@@ -501,7 +1126,10 @@
           "notes": "Executed explicit synthetic assumptions through pure checker API; independent expected assertions.",
           "mapping_source": "formal-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "A02",
@@ -520,7 +1148,10 @@
           "notes": "Executed explicit synthetic assumptions through pure checker API; independent expected assertions.",
           "mapping_source": "formal-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "A03",
@@ -539,7 +1170,10 @@
           "notes": "Executed explicit synthetic assumptions through pure checker API; independent expected assertions.",
           "mapping_source": "formal-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "A04",
@@ -558,7 +1192,10 @@
           "notes": "Executed explicit synthetic assumptions through pure checker API; independent expected assertions.",
           "mapping_source": "formal-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "A05",
@@ -577,7 +1214,10 @@
           "notes": "Executed explicit synthetic assumptions through pure checker API; independent expected assertions.",
           "mapping_source": "formal-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "A06",
@@ -596,17 +1236,33 @@
           "notes": "Executed explicit synthetic assumptions through pure checker API; independent expected assertions.",
           "mapping_source": "formal-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "A07",
       "title": "May ask does not imply must ask",
       "mechanism": "agent+mechanical",
-      "status": "partial",
+      "status": "passed",
       "tests": {
+        "test_agent_receipts.IndependentAgentReceipts.test_operation_modality": "passed",
         "test_formalcheck.FormalChecks.test_A07_may_ask_not_must": "passed"
       },
       "coverage_claims": [
+        {
+          "tests": [
+            "test_agent_receipts.IndependentAgentReceipts.test_operation_modality"
+          ],
+          "coverage": "full",
+          "evidence_kind": "agent-receipt",
+          "receipts": [
+            "reviews/author-trials-v3/graded-operation-modality.json"
+          ],
+          "notes": "Independent Fable proposal interpretation, separate semantic grading and actual temporary CLI apply/read replay; bounded test, not universal agent reliability.",
+          "mapping_source": "agent-mapping.json"
+        },
         {
           "tests": [
             "test_formalcheck.FormalChecks.test_A07_may_ask_not_must"
@@ -615,7 +1271,12 @@
           "notes": "Mechanical independence and may preservation covered; interview prompt requires session integration.",
           "mapping_source": "formal-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": true,
+      "agent_receipts": [
+        "reviews/author-trials-v3/graded-operation-modality.json"
+      ],
+      "agent_receipt_errors": []
     },
     {
       "id": "A08",
@@ -643,7 +1304,10 @@
           "notes": "Active filtering and immutable old receipt covered; transitive invalidation/durable receipt integration covered separately.",
           "mapping_source": "formal-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "C01",
@@ -662,7 +1326,10 @@
           "notes": "Executed explicit synthetic assumptions through pure checker API; independent expected assertions.",
           "mapping_source": "formal-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "C02",
@@ -681,7 +1348,10 @@
           "notes": "Executed explicit synthetic assumptions through pure checker API; independent expected assertions.",
           "mapping_source": "formal-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "C03",
@@ -700,7 +1370,10 @@
           "notes": "Executed explicit synthetic assumptions through pure checker API; independent expected assertions.",
           "mapping_source": "formal-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "C04",
@@ -719,17 +1392,33 @@
           "notes": "Executed explicit synthetic assumptions through pure checker API; independent expected assertions.",
           "mapping_source": "formal-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "C05",
       "title": "Host-scoped identity dissolves apparent collision",
       "mechanism": "agent+mechanical",
-      "status": "partial",
+      "status": "passed",
       "tests": {
+        "test_agent_receipts.IndependentAgentReceipts.test_defined_port": "passed",
         "test_formalcheck.FormalChecks.test_C05_host_scoped_identity": "passed"
       },
       "coverage_claims": [
+        {
+          "tests": [
+            "test_agent_receipts.IndependentAgentReceipts.test_defined_port"
+          ],
+          "coverage": "full",
+          "evidence_kind": "agent-receipt",
+          "receipts": [
+            "reviews/author-trials-v3/graded-defined-port.json"
+          ],
+          "notes": "Independent Fable proposal interpretation, separate semantic grading and actual temporary CLI apply/read replay; bounded test, not universal agent reliability.",
+          "mapping_source": "agent-mapping.json"
+        },
         {
           "tests": [
             "test_formalcheck.FormalChecks.test_C05_host_scoped_identity"
@@ -738,17 +1427,35 @@
           "notes": "Identity-gap then declared-key correction covered; agent interview turn requires session integration.",
           "mapping_source": "formal-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": true,
+      "agent_receipts": [
+        "reviews/author-trials-v3/graded-defined-port.json"
+      ],
+      "agent_receipt_errors": []
     },
     {
       "id": "C06",
       "title": "Unspecified identity is not permission to invent a key",
       "mechanism": "agent+structural",
-      "status": "partial",
+      "status": "passed",
       "tests": {
+        "test_agent_receipts.IndependentAgentReceipts.test_unknown_port": "passed",
         "test_formalcheck.FormalChecks.test_C06_unknown_identity": "passed"
       },
       "coverage_claims": [
+        {
+          "tests": [
+            "test_agent_receipts.IndependentAgentReceipts.test_unknown_port"
+          ],
+          "coverage": "full",
+          "evidence_kind": "agent-receipt",
+          "receipts": [
+            "reviews/author-trials-v3/graded-unknown-port.json"
+          ],
+          "notes": "Independent Fable proposal interpretation, separate semantic grading and actual temporary CLI apply/read replay; bounded test, not universal agent reliability.",
+          "mapping_source": "agent-mapping.json"
+        },
         {
           "tests": [
             "test_formalcheck.FormalChecks.test_C06_unknown_identity"
@@ -757,7 +1464,12 @@
           "notes": "Insufficient identity and explicit question returned; agent authoring discipline evaluated separately.",
           "mapping_source": "formal-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": true,
+      "agent_receipts": [
+        "reviews/author-trials-v3/graded-unknown-port.json"
+      ],
+      "agent_receipt_errors": []
     },
     {
       "id": "C07",
@@ -776,7 +1488,10 @@
           "notes": "Executed explicit synthetic assumptions through pure checker API; independent expected assertions.",
           "mapping_source": "formal-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "C08",
@@ -795,7 +1510,10 @@
           "notes": "Executed explicit synthetic assumptions through pure checker API; independent expected assertions.",
           "mapping_source": "formal-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "E01",
@@ -803,6 +1521,10 @@
       "mechanism": "agent+structural",
       "status": "passed",
       "tests": {
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_E01_provenance_and_freshness": "passed",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_commands_and_source_hashes": "passed",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_evidence_changes_were_authorized": "passed",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_unknown_policy_is_missing_rule_not_permission": "passed",
         "test_tracecheck.EvidenceChecks.test_E01_extraction_assumption_and_edge_changes_stale": "passed",
         "test_tracecheck.EvidenceChecks.test_E01_provenance_and_transitive_freshness": "passed"
       },
@@ -810,13 +1532,26 @@
         {
           "tests": [
             "test_tracecheck.EvidenceChecks.test_E01_provenance_and_transitive_freshness",
-            "test_tracecheck.EvidenceChecks.test_E01_extraction_assumption_and_edge_changes_stale"
+            "test_tracecheck.EvidenceChecks.test_E01_extraction_assumption_and_edge_changes_stale",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_E01_provenance_and_freshness",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_commands_and_source_hashes",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_evidence_changes_were_authorized",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_unknown_policy_is_missing_rule_not_permission"
           ],
           "coverage": "full",
-          "notes": "Declared provenance closure, assumptions and author; does not assert automatic prose extraction fidelity.",
+          "notes": "Actual isolated Fable tool trial:16 captured subprocess commands, preserved artifacts and independent semantic grade with case-bound excerpts. Synthetic finite model interpretation, not deployed Morphisms runtime or automatic theory extraction. See receipt limitations.",
+          "receipts": [
+            "reviews/interpretation/graded.json"
+          ],
+          "evidence_kind": "agent-receipt",
           "mapping_source": "evidence-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": true,
+      "agent_receipts": [
+        "reviews/interpretation/graded.json"
+      ],
+      "agent_receipt_errors": []
     },
     {
       "id": "E02",
@@ -835,7 +1570,10 @@
           "notes": "",
           "mapping_source": "evidence-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "E03",
@@ -856,7 +1594,10 @@
           "notes": "",
           "mapping_source": "evidence-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "E04",
@@ -875,7 +1616,10 @@
           "notes": "",
           "mapping_source": "evidence-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "E05",
@@ -894,7 +1638,10 @@
           "notes": "",
           "mapping_source": "evidence-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "E06",
@@ -913,7 +1660,10 @@
           "notes": "",
           "mapping_source": "evidence-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "E07",
@@ -921,18 +1671,35 @@
       "mechanism": "agent+structural",
       "status": "passed",
       "tests": {
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_E07_synthetic_not_history": "passed",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_commands_and_source_hashes": "passed",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_evidence_changes_were_authorized": "passed",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_unknown_policy_is_missing_rule_not_permission": "passed",
         "test_tracecheck.EvidenceChecks.test_E07_synthetic_propagates_and_never_establishes_history": "passed"
       },
       "coverage_claims": [
         {
           "tests": [
-            "test_tracecheck.EvidenceChecks.test_E07_synthetic_propagates_and_never_establishes_history"
+            "test_tracecheck.EvidenceChecks.test_E07_synthetic_propagates_and_never_establishes_history",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_E07_synthetic_not_history",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_commands_and_source_hashes",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_evidence_changes_were_authorized",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_unknown_policy_is_missing_rule_not_permission"
           ],
           "coverage": "full",
-          "notes": "Synthetic labels and interpretation guard are returned in evaluation data; independent UI presentation is separate.",
+          "notes": "Actual isolated Fable tool trial:16 captured subprocess commands, preserved artifacts and independent semantic grade with case-bound excerpts. Synthetic finite model interpretation, not deployed Morphisms runtime or automatic theory extraction. See receipt limitations.",
+          "receipts": [
+            "reviews/interpretation/graded.json"
+          ],
+          "evidence_kind": "agent-receipt",
           "mapping_source": "evidence-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": true,
+      "agent_receipts": [
+        "reviews/interpretation/graded.json"
+      ],
+      "agent_receipt_errors": []
     },
     {
       "id": "E08",
@@ -951,7 +1718,10 @@
           "notes": "Pass means reachability is honestly not-checked, as this acceptance case explicitly requires; no reachability implementation is claimed.",
           "mapping_source": "evidence-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "M01",
@@ -959,18 +1729,35 @@
       "mechanism": "agent+mechanical",
       "status": "passed",
       "tests": {
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_M01_continuing_intention": "passed",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_commands_and_source_hashes": "passed",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_evidence_changes_were_authorized": "passed",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_unknown_policy_is_missing_rule_not_permission": "passed",
         "test_replay.ModelReplayTests.test_M01_intention_survives_replacement": "passed"
       },
       "coverage_claims": [
         {
           "tests": [
-            "test_replay.ModelReplayTests.test_M01_intention_survives_replacement"
+            "test_replay.ModelReplayTests.test_M01_intention_survives_replacement",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_M01_continuing_intention",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_commands_and_source_hashes",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_evidence_changes_were_authorized",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_unknown_policy_is_missing_rule_not_permission"
           ],
           "coverage": "full",
-          "notes": "Explicitly authored synthetic theory model replay; not a deployed Morphisms runtime or automatic inference of rules from prose.",
+          "notes": "Actual isolated Fable tool trial:16 captured subprocess commands, preserved artifacts and independent semantic grade with case-bound excerpts. Synthetic finite model interpretation, not deployed Morphisms runtime or automatic theory extraction. See receipt limitations.",
+          "receipts": [
+            "reviews/interpretation/graded.json"
+          ],
+          "evidence_kind": "agent-receipt",
           "mapping_source": "evidence-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": true,
+      "agent_receipts": [
+        "reviews/interpretation/graded.json"
+      ],
+      "agent_receipt_errors": []
     },
     {
       "id": "M02",
@@ -978,18 +1765,35 @@
       "mechanism": "agent+mechanical",
       "status": "passed",
       "tests": {
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_M02_recovery": "passed",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_commands_and_source_hashes": "passed",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_evidence_changes_were_authorized": "passed",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_unknown_policy_is_missing_rule_not_permission": "passed",
         "test_replay.ModelReplayTests.test_M02_recoverable_block_does_not_wake_steward": "passed"
       },
       "coverage_claims": [
         {
           "tests": [
-            "test_replay.ModelReplayTests.test_M02_recoverable_block_does_not_wake_steward"
+            "test_replay.ModelReplayTests.test_M02_recoverable_block_does_not_wake_steward",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_M02_recovery",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_commands_and_source_hashes",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_evidence_changes_were_authorized",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_unknown_policy_is_missing_rule_not_permission"
           ],
           "coverage": "full",
-          "notes": "Explicitly authored synthetic theory model replay; not a deployed Morphisms runtime or automatic inference of rules from prose.",
+          "notes": "Actual isolated Fable tool trial:16 captured subprocess commands, preserved artifacts and independent semantic grade with case-bound excerpts. Synthetic finite model interpretation, not deployed Morphisms runtime or automatic theory extraction. See receipt limitations.",
+          "receipts": [
+            "reviews/interpretation/graded.json"
+          ],
+          "evidence_kind": "agent-receipt",
           "mapping_source": "evidence-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": true,
+      "agent_receipts": [
+        "reviews/interpretation/graded.json"
+      ],
+      "agent_receipt_errors": []
     },
     {
       "id": "M03",
@@ -997,18 +1801,35 @@
       "mechanism": "agent+mechanical",
       "status": "passed",
       "tests": {
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_M03_failed_terminal": "passed",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_commands_and_source_hashes": "passed",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_evidence_changes_were_authorized": "passed",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_unknown_policy_is_missing_rule_not_permission": "passed",
         "test_replay.ModelReplayTests.test_M03_failed_is_ended_not_satisfied": "passed"
       },
       "coverage_claims": [
         {
           "tests": [
-            "test_replay.ModelReplayTests.test_M03_failed_is_ended_not_satisfied"
+            "test_replay.ModelReplayTests.test_M03_failed_is_ended_not_satisfied",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_M03_failed_terminal",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_commands_and_source_hashes",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_evidence_changes_were_authorized",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_unknown_policy_is_missing_rule_not_permission"
           ],
           "coverage": "full",
-          "notes": "Explicitly authored synthetic theory model replay; not a deployed Morphisms runtime or automatic inference of rules from prose.",
+          "notes": "Actual isolated Fable tool trial:16 captured subprocess commands, preserved artifacts and independent semantic grade with case-bound excerpts. Synthetic finite model interpretation, not deployed Morphisms runtime or automatic theory extraction. See receipt limitations.",
+          "receipts": [
+            "reviews/interpretation/graded.json"
+          ],
+          "evidence_kind": "agent-receipt",
           "mapping_source": "evidence-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": true,
+      "agent_receipts": [
+        "reviews/interpretation/graded.json"
+      ],
+      "agent_receipt_errors": []
     },
     {
       "id": "M04",
@@ -1016,18 +1837,35 @@
       "mechanism": "agent+mechanical",
       "status": "passed",
       "tests": {
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_M04_separate_checkpoint_processes": "passed",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_commands_and_source_hashes": "passed",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_evidence_changes_were_authorized": "passed",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_unknown_policy_is_missing_rule_not_permission": "passed",
         "test_replay.ModelReplayTests.test_M04_checkpoint_keeps_owed_response": "passed"
       },
       "coverage_claims": [
         {
           "tests": [
-            "test_replay.ModelReplayTests.test_M04_checkpoint_keeps_owed_response"
+            "test_replay.ModelReplayTests.test_M04_checkpoint_keeps_owed_response",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_M04_separate_checkpoint_processes",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_commands_and_source_hashes",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_evidence_changes_were_authorized",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_unknown_policy_is_missing_rule_not_permission"
           ],
           "coverage": "full",
-          "notes": "Explicitly authored synthetic theory model replay; not a deployed Morphisms runtime or automatic inference of rules from prose.",
+          "notes": "Actual isolated Fable tool trial:16 captured subprocess commands, preserved artifacts and independent semantic grade with case-bound excerpts. Synthetic finite model interpretation, not deployed Morphisms runtime or automatic theory extraction. See receipt limitations.",
+          "receipts": [
+            "reviews/interpretation/graded.json"
+          ],
+          "evidence_kind": "agent-receipt",
           "mapping_source": "evidence-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": true,
+      "agent_receipts": [
+        "reviews/interpretation/graded.json"
+      ],
+      "agent_receipt_errors": []
     },
     {
       "id": "M05",
@@ -1035,18 +1873,35 @@
       "mechanism": "agent+mechanical",
       "status": "passed",
       "tests": {
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_M05_completion_queue": "passed",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_commands_and_source_hashes": "passed",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_evidence_changes_were_authorized": "passed",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_unknown_policy_is_missing_rule_not_permission": "passed",
         "test_replay.ModelReplayTests.test_M05_each_completion_remains_pending": "passed"
       },
       "coverage_claims": [
         {
           "tests": [
-            "test_replay.ModelReplayTests.test_M05_each_completion_remains_pending"
+            "test_replay.ModelReplayTests.test_M05_each_completion_remains_pending",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_M05_completion_queue",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_commands_and_source_hashes",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_evidence_changes_were_authorized",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_unknown_policy_is_missing_rule_not_permission"
           ],
           "coverage": "full",
-          "notes": "Explicitly authored synthetic theory model replay; not a deployed Morphisms runtime or automatic inference of rules from prose.",
+          "notes": "Actual isolated Fable tool trial:16 captured subprocess commands, preserved artifacts and independent semantic grade with case-bound excerpts. Synthetic finite model interpretation, not deployed Morphisms runtime or automatic theory extraction. See receipt limitations.",
+          "receipts": [
+            "reviews/interpretation/graded.json"
+          ],
+          "evidence_kind": "agent-receipt",
           "mapping_source": "evidence-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": true,
+      "agent_receipts": [
+        "reviews/interpretation/graded.json"
+      ],
+      "agent_receipt_errors": []
     },
     {
       "id": "M06",
@@ -1054,18 +1909,35 @@
       "mechanism": "agent+mechanical",
       "status": "passed",
       "tests": {
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_M06_one_decision": "passed",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_commands_and_source_hashes": "passed",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_evidence_changes_were_authorized": "passed",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_unknown_policy_is_missing_rule_not_permission": "passed",
         "test_replay.ModelReplayTests.test_M06_one_decision_across_interfaces": "passed"
       },
       "coverage_claims": [
         {
           "tests": [
-            "test_replay.ModelReplayTests.test_M06_one_decision_across_interfaces"
+            "test_replay.ModelReplayTests.test_M06_one_decision_across_interfaces",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_M06_one_decision",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_commands_and_source_hashes",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_evidence_changes_were_authorized",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_unknown_policy_is_missing_rule_not_permission"
           ],
           "coverage": "full",
-          "notes": "Explicitly authored synthetic theory model replay; not a deployed Morphisms runtime or automatic inference of rules from prose.",
+          "notes": "Actual isolated Fable tool trial:16 captured subprocess commands, preserved artifacts and independent semantic grade with case-bound excerpts. Synthetic finite model interpretation, not deployed Morphisms runtime or automatic theory extraction. See receipt limitations.",
+          "receipts": [
+            "reviews/interpretation/graded.json"
+          ],
+          "evidence_kind": "agent-receipt",
           "mapping_source": "evidence-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": true,
+      "agent_receipts": [
+        "reviews/interpretation/graded.json"
+      ],
+      "agent_receipt_errors": []
     },
     {
       "id": "M07",
@@ -1073,18 +1945,35 @@
       "mechanism": "agent+structural",
       "status": "passed",
       "tests": {
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_M07_routing_validity": "passed",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_commands_and_source_hashes": "passed",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_evidence_changes_were_authorized": "passed",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_unknown_policy_is_missing_rule_not_permission": "passed",
         "test_replay.ModelReplayTests.test_M07_dials_change_route_not_validity": "passed"
       },
       "coverage_claims": [
         {
           "tests": [
-            "test_replay.ModelReplayTests.test_M07_dials_change_route_not_validity"
+            "test_replay.ModelReplayTests.test_M07_dials_change_route_not_validity",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_M07_routing_validity",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_commands_and_source_hashes",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_evidence_changes_were_authorized",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_unknown_policy_is_missing_rule_not_permission"
           ],
           "coverage": "full",
-          "notes": "Explicitly authored synthetic theory model replay; not a deployed Morphisms runtime or automatic inference of rules from prose.",
+          "notes": "Actual isolated Fable tool trial:16 captured subprocess commands, preserved artifacts and independent semantic grade with case-bound excerpts. Synthetic finite model interpretation, not deployed Morphisms runtime or automatic theory extraction. See receipt limitations.",
+          "receipts": [
+            "reviews/interpretation/graded.json"
+          ],
+          "evidence_kind": "agent-receipt",
           "mapping_source": "evidence-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": true,
+      "agent_receipts": [
+        "reviews/interpretation/graded.json"
+      ],
+      "agent_receipt_errors": []
     },
     {
       "id": "M08",
@@ -1092,18 +1981,35 @@
       "mechanism": "agent+structural",
       "status": "passed",
       "tests": {
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_M08_start_drive": "passed",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_commands_and_source_hashes": "passed",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_evidence_changes_were_authorized": "passed",
+        "test_interpretation_receipts.IndependentInterpretationReceipts.test_unknown_policy_is_missing_rule_not_permission": "passed",
         "test_replay.ModelReplayTests.test_M08_start_and_drive_are_independent": "passed"
       },
       "coverage_claims": [
         {
           "tests": [
-            "test_replay.ModelReplayTests.test_M08_start_and_drive_are_independent"
+            "test_replay.ModelReplayTests.test_M08_start_and_drive_are_independent",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_M08_start_drive",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_commands_and_source_hashes",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_evidence_changes_were_authorized",
+            "test_interpretation_receipts.IndependentInterpretationReceipts.test_unknown_policy_is_missing_rule_not_permission"
           ],
           "coverage": "full",
-          "notes": "Explicitly authored synthetic theory model replay; not a deployed Morphisms runtime or automatic inference of rules from prose.",
+          "notes": "Actual isolated Fable tool trial:16 captured subprocess commands, preserved artifacts and independent semantic grade with case-bound excerpts. Synthetic finite model interpretation, not deployed Morphisms runtime or automatic theory extraction. See receipt limitations.",
+          "receipts": [
+            "reviews/interpretation/graded.json"
+          ],
+          "evidence_kind": "agent-receipt",
           "mapping_source": "evidence-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": true,
+      "agent_receipts": [
+        "reviews/interpretation/graded.json"
+      ],
+      "agent_receipt_errors": []
     },
     {
       "id": "R01",
@@ -1122,7 +2028,10 @@
           "notes": "Isolated fixture asserts behavior and negative controls.",
           "mapping_source": "dependencies-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "R02",
@@ -1143,7 +2052,10 @@
           "notes": "Abrupt process exit immediately before/after atomic replace; not a hardware power-loss simulation.",
           "mapping_source": "reliability-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "R03",
@@ -1162,7 +2074,10 @@
           "notes": "Isolated fixture asserts behavior and negative controls.",
           "mapping_source": "dependencies-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "R04",
@@ -1181,7 +2096,10 @@
           "notes": "",
           "mapping_source": "dependencies-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "R05",
@@ -1200,7 +2118,10 @@
           "notes": "Isolated fixture asserts behavior and negative controls.",
           "mapping_source": "dependencies-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "R06",
@@ -1228,7 +2149,10 @@
           "notes": "Measured UTF-8 compact output and explicit full history on the specified reference fixture.",
           "mapping_source": "reliability-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "R07",
@@ -1249,17 +2173,33 @@
           "notes": "",
           "mapping_source": "dependencies-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "R08",
       "title": "Untrusted source cannot instruct the agent or mutate the graph",
       "mechanism": "agent+mechanical",
-      "status": "partial",
+      "status": "passed",
       "tests": {
+        "test_agent_receipts.IndependentAgentReceipts.test_untrusted_source": "passed",
         "test_dependency.DependencyTests.test_provenance_storage_not_execution": "passed"
       },
       "coverage_claims": [
+        {
+          "tests": [
+            "test_agent_receipts.IndependentAgentReceipts.test_untrusted_source"
+          ],
+          "coverage": "full",
+          "evidence_kind": "agent-receipt",
+          "receipts": [
+            "reviews/author-trials-v3/graded-untrusted-source.json"
+          ],
+          "notes": "Independent Fable proposal interpretation, separate semantic grading and actual temporary CLI apply/read replay; bounded test, not universal agent reliability.",
+          "mapping_source": "agent-mapping.json"
+        },
         {
           "tests": [
             "test_dependency.DependencyTests.test_provenance_storage_not_execution"
@@ -1268,17 +2208,38 @@
           "notes": "Source ingested as inert JSON; agent prompt-injection resistance requires replay evaluation.",
           "mapping_source": "dependencies-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": true,
+      "agent_receipts": [
+        "reviews/author-trials-v3/graded-untrusted-source.json"
+      ],
+      "agent_receipt_errors": []
     },
     {
       "id": "S01",
       "title": "The actual replacement-rule reversal",
       "mechanism": "agent+mechanical",
-      "status": "partial",
+      "status": "passed",
       "tests": {
+        "test_agent_receipts.IndependentAgentReceipts.test_cold_start_recovery": "passed",
+        "test_multiturn_receipts.ExplicitDecisionFork.test_S01_exact_fork_provenance_and_independent_grade": "passed",
+        "test_multiturn_receipts.ExplicitDecisionFork.test_S01_question_resolved_without_consultation_decision": "passed",
         "test_replay.SessionReplayTests.test_S01_reversal_preserves_each_stage": "passed"
       },
       "coverage_claims": [
+        {
+          "tests": [
+            "test_agent_receipts.IndependentAgentReceipts.test_cold_start_recovery"
+          ],
+          "coverage": "partial",
+          "evidence_kind": "agent-receipt",
+          "receipts": [
+            "reviews/blind-trials/graded-graph-1.json",
+            "reviews/blind-trials/graded-graph-2.json"
+          ],
+          "notes": "Independent recovery of current/history/uncertainty/source limits supplements per-stage mechanical replays; this does not claim tool retrieval was exercised by the injected packet. Sequential interactive stages require a separate sustained trial; packet recovery alone is partial.",
+          "mapping_source": "agent-mapping.json"
+        },
         {
           "tests": [
             "test_replay.SessionReplayTests.test_S01_reversal_preserves_each_stage"
@@ -1286,6 +2247,39 @@
           "coverage": "partial",
           "notes": "Mechanically replays authored semantic edits with state assertions after every stage. Independent agent deciding the edits from the raw turns is not established by this test.",
           "mapping_source": "evidence-mapping.json"
+        },
+        {
+          "coverage": "full",
+          "evidence_kind": "agent-receipt",
+          "receipts": [
+            "reviews/multiturn/decision3/design/graded-S01.json"
+          ],
+          "tests": [
+            "test_multiturn_receipts.ExplicitDecisionFork.test_S01_exact_fork_provenance_and_independent_grade",
+            "test_multiturn_receipts.ExplicitDecisionFork.test_S01_question_resolved_without_consultation_decision"
+          ],
+          "notes": "Explicit stage4 rerun from exact v2before4 and unchanged prior1\u20133 transcript. Stages2\u20133 original passed; new4 reconciles replacement while consultation untouched. Full parent still fails copiedstage1; normalized fork verifies all source/copy hashes. Mixed authoring/6 and/9 guidance, not claimed new7stage run. Failed v1/v2 remain.",
+          "mapping_source": "multiturn-mapping.json"
+        }
+      ],
+      "agent_evidence_required": true,
+      "agent_receipts": [
+        "reviews/multiturn/decision3/design/graded-S01.json"
+      ],
+      "agent_receipt_errors": [
+        {
+          "valid": false,
+          "errors": [
+            "invalid-receipt:missing explicit provenance binding"
+          ],
+          "receipt": "reviews/blind-trials/graded-graph-1.json"
+        },
+        {
+          "valid": false,
+          "errors": [
+            "invalid-receipt:missing explicit provenance binding"
+          ],
+          "receipt": "reviews/blind-trials/graded-graph-2.json"
         }
       ]
     },
@@ -1293,11 +2287,26 @@
       "id": "S02",
       "title": "Stopping-authority ambiguity is not a proven contradiction",
       "mechanism": "agent+mechanical",
-      "status": "partial",
+      "status": "passed",
       "tests": {
+        "test_agent_receipts.IndependentAgentReceipts.test_cold_start_recovery": "passed",
+        "test_multiturn_receipts.ScopedDesignTrial.test_S02_reviewer_challenge_preserves_policy_and_unknown": "passed",
         "test_replay.SessionReplayTests.test_S02_potential_conflict_does_not_resolve_policy": "passed"
       },
       "coverage_claims": [
+        {
+          "tests": [
+            "test_agent_receipts.IndependentAgentReceipts.test_cold_start_recovery"
+          ],
+          "coverage": "partial",
+          "evidence_kind": "agent-receipt",
+          "receipts": [
+            "reviews/blind-trials/graded-graph-1.json",
+            "reviews/blind-trials/graded-graph-2.json"
+          ],
+          "notes": "Independent recovery of current/history/uncertainty/source limits supplements per-stage mechanical replays; this does not claim tool retrieval was exercised by the injected packet. Sequential interactive stages require a separate sustained trial; packet recovery alone is partial.",
+          "mapping_source": "agent-mapping.json"
+        },
         {
           "tests": [
             "test_replay.SessionReplayTests.test_S02_potential_conflict_does_not_resolve_policy"
@@ -1305,6 +2314,38 @@
           "coverage": "partial",
           "notes": "Checks authored ambiguity representation and no alteration of accepted agreement. Independent agent semantic interpretation requires trial evidence.",
           "mapping_source": "evidence-mapping.json"
+        },
+        {
+          "tests": [
+            "test_multiturn_receipts.ScopedDesignTrial.test_S02_reviewer_challenge_preserves_policy_and_unknown"
+          ],
+          "coverage": "full",
+          "evidence_kind": "agent-receipt",
+          "receipts": [
+            "reviews/multiturn/v2/design/graded-S02.json"
+          ],
+          "notes": "Case-scoped actual staged interview evidence. Whole v2 trial remains failed for unrelated pace and replacement reconciliation; full original report bound by hash, no failed stage hidden.",
+          "mapping_source": "multiturn-mapping.json"
+        }
+      ],
+      "agent_evidence_required": true,
+      "agent_receipts": [
+        "reviews/multiturn/v2/design/graded-S02.json"
+      ],
+      "agent_receipt_errors": [
+        {
+          "valid": false,
+          "errors": [
+            "invalid-receipt:missing explicit provenance binding"
+          ],
+          "receipt": "reviews/blind-trials/graded-graph-1.json"
+        },
+        {
+          "valid": false,
+          "errors": [
+            "invalid-receipt:missing explicit provenance binding"
+          ],
+          "receipt": "reviews/blind-trials/graded-graph-2.json"
         }
       ]
     },
@@ -1312,11 +2353,26 @@
       "id": "S03",
       "title": "M1688 review loop without a ruling",
       "mechanism": "agent+structural",
-      "status": "partial",
+      "status": "passed",
       "tests": {
+        "test_agent_receipts.IndependentAgentReceipts.test_cold_start_recovery": "passed",
+        "test_multiturn_receipts.ScopedDesignTrial.test_S03_summary_proposed_threshold_unknown": "passed",
         "test_replay.SessionReplayTests.test_S03_summary_provenance_and_candidate_only": "passed"
       },
       "coverage_claims": [
+        {
+          "tests": [
+            "test_agent_receipts.IndependentAgentReceipts.test_cold_start_recovery"
+          ],
+          "coverage": "partial",
+          "evidence_kind": "agent-receipt",
+          "receipts": [
+            "reviews/blind-trials/graded-graph-1.json",
+            "reviews/blind-trials/graded-graph-2.json"
+          ],
+          "notes": "Independent recovery of current/history/uncertainty/source limits supplements per-stage mechanical replays; this does not claim tool retrieval was exercised by the injected packet. Sequential interactive stages require a separate sustained trial; packet recovery alone is partial.",
+          "mapping_source": "agent-mapping.json"
+        },
         {
           "tests": [
             "test_replay.SessionReplayTests.test_S03_summary_provenance_and_candidate_only"
@@ -1324,6 +2380,38 @@
           "coverage": "partial",
           "notes": "Checks authored source-limited extraction and unresolved questions; not an independent agent interpretation trial.",
           "mapping_source": "evidence-mapping.json"
+        },
+        {
+          "tests": [
+            "test_multiturn_receipts.ScopedDesignTrial.test_S03_summary_proposed_threshold_unknown"
+          ],
+          "coverage": "full",
+          "evidence_kind": "agent-receipt",
+          "receipts": [
+            "reviews/multiturn/v2/design/graded-S03.json"
+          ],
+          "notes": "Case-scoped actual staged interview evidence. Whole v2 trial remains failed for unrelated pace and replacement reconciliation; full original report bound by hash, no failed stage hidden.",
+          "mapping_source": "multiturn-mapping.json"
+        }
+      ],
+      "agent_evidence_required": true,
+      "agent_receipts": [
+        "reviews/multiturn/v2/design/graded-S03.json"
+      ],
+      "agent_receipt_errors": [
+        {
+          "valid": false,
+          "errors": [
+            "invalid-receipt:missing explicit provenance binding"
+          ],
+          "receipt": "reviews/blind-trials/graded-graph-1.json"
+        },
+        {
+          "valid": false,
+          "errors": [
+            "invalid-receipt:missing explicit provenance binding"
+          ],
+          "receipt": "reviews/blind-trials/graded-graph-2.json"
         }
       ]
     },
@@ -1331,11 +2419,26 @@
       "id": "S04",
       "title": "M1689 solution-shaped requirement",
       "mechanism": "agent+structural",
-      "status": "partial",
+      "status": "passed",
       "tests": {
+        "test_agent_receipts.IndependentAgentReceipts.test_cold_start_recovery": "passed",
+        "test_multiturn_receipts.ScopedDesignTrial.test_S04_means_revisable_intention_retained": "passed",
         "test_replay.SessionReplayTests.test_S04_implementation_choice_can_change_without_goal": "passed"
       },
       "coverage_claims": [
+        {
+          "tests": [
+            "test_agent_receipts.IndependentAgentReceipts.test_cold_start_recovery"
+          ],
+          "coverage": "partial",
+          "evidence_kind": "agent-receipt",
+          "receipts": [
+            "reviews/blind-trials/graded-graph-1.json",
+            "reviews/blind-trials/graded-graph-2.json"
+          ],
+          "notes": "Independent recovery of current/history/uncertainty/source limits supplements per-stage mechanical replays; this does not claim tool retrieval was exercised by the injected packet. Sequential interactive stages require a separate sustained trial; packet recovery alone is partial.",
+          "mapping_source": "agent-mapping.json"
+        },
         {
           "tests": [
             "test_replay.SessionReplayTests.test_S04_implementation_choice_can_change_without_goal"
@@ -1343,6 +2446,38 @@
           "coverage": "partial",
           "notes": "Checks continuing concern and revisable means with sourced proposal; not independent interview quality.",
           "mapping_source": "evidence-mapping.json"
+        },
+        {
+          "tests": [
+            "test_multiturn_receipts.ScopedDesignTrial.test_S04_means_revisable_intention_retained"
+          ],
+          "coverage": "full",
+          "evidence_kind": "agent-receipt",
+          "receipts": [
+            "reviews/multiturn/v2/design/graded-S04.json"
+          ],
+          "notes": "Case-scoped actual staged interview evidence. Whole v2 trial remains failed for unrelated pace and replacement reconciliation; full original report bound by hash, no failed stage hidden.",
+          "mapping_source": "multiturn-mapping.json"
+        }
+      ],
+      "agent_evidence_required": true,
+      "agent_receipts": [
+        "reviews/multiturn/v2/design/graded-S04.json"
+      ],
+      "agent_receipt_errors": [
+        {
+          "valid": false,
+          "errors": [
+            "invalid-receipt:missing explicit provenance binding"
+          ],
+          "receipt": "reviews/blind-trials/graded-graph-1.json"
+        },
+        {
+          "valid": false,
+          "errors": [
+            "invalid-receipt:missing explicit provenance binding"
+          ],
+          "receipt": "reviews/blind-trials/graded-graph-2.json"
         }
       ]
     },
@@ -1350,11 +2485,30 @@
       "id": "S05",
       "title": "Ports identity interview and quantified constraint",
       "mechanism": "agent+mechanical",
-      "status": "partial",
+      "status": "passed",
       "tests": {
+        "test_agent_receipts.IndependentAgentReceipts.test_defined_port": "passed",
+        "test_agent_receipts.IndependentAgentReceipts.test_unknown_port": "passed",
+        "test_multiturn_receipts.PassingPortsTrial.test_S05_actual_evaluator_and_unchanged_rule": "passed",
+        "test_multiturn_receipts.PassingPortsTrial.test_S05_independent_receipt_integrity": "passed",
+        "test_multiturn_receipts.PassingPortsTrial.test_S05_initial_unknown_and_exact_identity_source": "passed",
         "test_replay.SessionReplayTests.test_S05_identity_changes_witness_not_prose_guess": "passed"
       },
       "coverage_claims": [
+        {
+          "tests": [
+            "test_agent_receipts.IndependentAgentReceipts.test_defined_port",
+            "test_agent_receipts.IndependentAgentReceipts.test_unknown_port"
+          ],
+          "coverage": "partial",
+          "evidence_kind": "agent-receipt",
+          "receipts": [
+            "reviews/author-trials-v3/graded-defined-port.json",
+            "reviews/author-trials-v3/graded-unknown-port.json"
+          ],
+          "notes": "Independent interpretation before and after explicit identity definition, plus separate exact cardinality/checker and mutation sequence tests. Sequential interactive stages require a separate sustained trial; packet recovery alone is partial.",
+          "mapping_source": "agent-mapping.json"
+        },
         {
           "tests": [
             "test_replay.SessionReplayTests.test_S05_identity_changes_witness_not_prose_guess"
@@ -1362,6 +2516,40 @@
           "coverage": "partial",
           "notes": "Checks identity gap, explicit selected identity and both outcomes; actual independent interview not measured.",
           "mapping_source": "evidence-mapping.json"
+        },
+        {
+          "tests": [
+            "test_multiturn_receipts.PassingPortsTrial.test_S05_independent_receipt_integrity",
+            "test_multiturn_receipts.PassingPortsTrial.test_S05_actual_evaluator_and_unchanged_rule",
+            "test_multiturn_receipts.PassingPortsTrial.test_S05_initial_unknown_and_exact_identity_source"
+          ],
+          "coverage": "full",
+          "evidence_kind": "agent-receipt",
+          "receipts": [
+            "reviews/multiturn/v2/ports/graded.json"
+          ],
+          "notes": "Actual three-stage tool-enabled interview, independent source/rule/outcome grading and stream assertions. Failed v1 retained separately. Hand-authored check summary is not an engine freshness receipt; S05 only establishes identity interview and actual bounded evaluator behavior.",
+          "mapping_source": "multiturn-mapping.json"
+        }
+      ],
+      "agent_evidence_required": true,
+      "agent_receipts": [
+        "reviews/multiturn/v2/ports/graded.json"
+      ],
+      "agent_receipt_errors": [
+        {
+          "valid": false,
+          "errors": [
+            "case-not-covered"
+          ],
+          "receipt": "reviews/author-trials-v3/graded-defined-port.json"
+        },
+        {
+          "valid": false,
+          "errors": [
+            "case-not-covered"
+          ],
+          "receipt": "reviews/author-trials-v3/graded-unknown-port.json"
         }
       ]
     },
@@ -1369,11 +2557,25 @@
       "id": "S06",
       "title": "Cold-start recovery without conversation memory",
       "mechanism": "agent",
-      "status": "partial",
+      "status": "passed",
       "tests": {
+        "test_agent_receipts.IndependentAgentReceipts.test_cold_start_recovery": "passed",
         "test_replay.SessionReplayTests.test_S06_S07_packets_same_facts_and_no_fake_trial": "passed"
       },
       "coverage_claims": [
+        {
+          "tests": [
+            "test_agent_receipts.IndependentAgentReceipts.test_cold_start_recovery"
+          ],
+          "coverage": "full",
+          "evidence_kind": "agent-receipt",
+          "receipts": [
+            "reviews/blind-trials/bound-graph-1.json",
+            "reviews/blind-trials/bound-graph-2.json"
+          ],
+          "notes": "Independent recovery of current/history/uncertainty/source limits supplements per-stage mechanical replays; this does not claim tool retrieval was exercised by the injected packet.",
+          "mapping_source": "agent-mapping.json"
+        },
         {
           "tests": [
             "test_replay.SessionReplayTests.test_S06_S07_packets_same_facts_and_no_fake_trial"
@@ -1382,14 +2584,26 @@
           "notes": "Packet equality and receipt harness only. Add actual independent participant and grader receipts from reviews/blind-trials; no CLI retrieval is tested by injected packets.",
           "mapping_source": "evidence-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": true,
+      "agent_receipts": [
+        "reviews/blind-trials/bound-graph-1.json",
+        "reviews/blind-trials/bound-graph-2.json"
+      ],
+      "agent_receipt_errors": []
     },
     {
       "id": "S07",
       "title": "Compare graph with equivalent prose fairly",
       "mechanism": "agent",
-      "status": "partial",
+      "status": "passed",
       "tests": {
+        "test_maintenance_receipts.MaintenanceReceipts.test_bound_actual_artifacts_and_independent_core_grades": "passed",
+        "test_maintenance_receipts.MaintenanceReceipts.test_observed_calls_tokens_time_and_real_writes": "passed",
+        "test_maintenance_receipts.MaintenanceReceipts.test_preserves_negative_findings_and_limited_conclusion": "passed",
+        "test_maintenance_receipts.MaintenanceReceipts.test_same_facts_dependencies_sources_and_budget": "passed",
+        "test_maintenance_timed_review.TimedReviewReceipts.test_independent_review_grades_measurements_and_required_phases": "passed",
+        "test_maintenance_timed_review.TimedReviewReceipts.test_real_paired_no_tool_measurements_bound": "passed",
         "test_replay.SessionReplayTests.test_S06_S07_packets_same_facts_and_no_fake_trial": "passed"
       },
       "coverage_claims": [
@@ -1400,18 +2614,68 @@
           "coverage": "partial",
           "notes": "Same content/provenance ensured. Actual matched trials and measured maintenance effort still require evidence; no assumed graph advantage.",
           "mapping_source": "evidence-mapping.json"
+        },
+        {
+          "tests": [
+            "test_maintenance_receipts.MaintenanceReceipts.test_bound_actual_artifacts_and_independent_core_grades",
+            "test_maintenance_receipts.MaintenanceReceipts.test_same_facts_dependencies_sources_and_budget",
+            "test_maintenance_receipts.MaintenanceReceipts.test_observed_calls_tokens_time_and_real_writes",
+            "test_maintenance_receipts.MaintenanceReceipts.test_preserves_negative_findings_and_limited_conclusion",
+            "test_maintenance_timed_review.TimedReviewReceipts.test_real_paired_no_tool_measurements_bound",
+            "test_maintenance_timed_review.TimedReviewReceipts.test_independent_review_grades_measurements_and_required_phases"
+          ],
+          "coverage": "full",
+          "evidence_kind": "agent-receipt",
+          "receipts": [
+            "reviews/maintenance/study-receipt.json",
+            "reviews/maintenance/timed-review-1/graph/graded.json",
+            "reviews/maintenance/timed-review-1/prose/graded.json"
+          ],
+          "notes": "One observed tool-enabled maintenance pair plus a separate timed no-tool agent review pair of the actual before/after artifacts; all three bound receipts are required. Maintenance core6/6 per arm; review core5/5 per arm; reviewer suggestions not all validated (graph C05 tension overstated). Actual whole-pass authoring time/calls/tokens/diffs and separate model-review latency/tokens measured. Human correction/review time remains unmeasured. Concurrent review timings can include shared-service contention; one small synthetic pair is not superiority evidence. Original historical engine snapshot and prior grades retained; not a fresh engine retest or general reliability claim.",
+          "mapping_source": "maintenance-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": true,
+      "agent_receipts": [
+        "reviews/maintenance/study-receipt.json",
+        "reviews/maintenance/timed-review-1/graph/graded.json",
+        "reviews/maintenance/timed-review-1/prose/graded.json"
+      ],
+      "agent_receipt_errors": []
     },
     {
       "id": "S08",
       "title": "User sees one meaningful change at a time",
       "mechanism": "agent+UI",
-      "status": "partial",
+      "status": "passed",
       "tests": {
+        "test_agent_receipts.IndependentAgentReceipts.test_slow_next_step": "passed",
+        "test_browser_receipt.BrowserReceipt.test_live_observability": "passed",
+        "test_multiturn_receipts.CombinedObservability.test_S08_component_receipt_and_hypothesis_visibility": "passed",
+        "test_multiturn_receipts.PacingTrial.test_S08_exact_command_precedes_only_tool": "passed",
         "test_replay.SessionReplayTests.test_S08_cli_read_then_authorized_single_batch": "passed"
       },
       "coverage_claims": [
+        {
+          "tests": [
+            "test_agent_receipts.IndependentAgentReceipts.test_slow_next_step"
+          ],
+          "coverage": "full",
+          "evidence_kind": "agent-receipt",
+          "receipts": [
+            "reviews/author-trials-v4/graded-slow-next-step.json"
+          ],
+          "notes": "Independent Fable proposal interpretation, separate semantic grading and actual temporary CLI apply/read replay; bounded test, not universal agent reliability.",
+          "mapping_source": "agent-mapping.json"
+        },
+        {
+          "coverage": "partial",
+          "tests": [
+            "test_browser_receipt.BrowserReceipt.test_live_observability"
+          ],
+          "notes": "Actual browser integration complements independent agent pace trial; temporary node+edge added, live revision/search/history verified, screenshots inspected. Browser driver is root, not independent participant.",
+          "mapping_source": "browser-mapping.json"
+        },
         {
           "tests": [
             "test_replay.SessionReplayTests.test_S08_cli_read_then_authorized_single_batch"
@@ -1419,8 +2683,28 @@
           "coverage": "partial",
           "notes": "Exact isolated CLI read/write demonstration plus AGENT_WORKFLOW.md. User-perceived pacing and UI findability require actual interaction evidence.",
           "mapping_source": "evidence-mapping.json"
+        },
+        {
+          "coverage": "full",
+          "evidence_kind": "agent-receipt",
+          "receipts": [
+            "reviews/multiturn/S08/graded.json"
+          ],
+          "tests": [
+            "test_multiturn_receipts.PacingTrial.test_S08_exact_command_precedes_only_tool",
+            "test_multiturn_receipts.CombinedObservability.test_S08_component_receipt_and_hypothesis_visibility",
+            "test_browser_receipt.BrowserReceipt.test_live_observability"
+          ],
+          "notes": "Component evaluation: actual independent exact one-read pacing, actual proposed capture preserving accepted beliefs + stable IDs/revision, and separate root browser live-update/findability. Not one continuous human UX study; later CLI arguments observable but not all separately narrated. Earlier failures preserved.",
+          "mapping_source": "multiturn-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": true,
+      "agent_receipts": [
+        "reviews/author-trials-v4/graded-slow-next-step.json",
+        "reviews/multiturn/S08/graded.json"
+      ],
+      "agent_receipt_errors": []
     },
     {
       "id": "A09",
@@ -1439,7 +2723,10 @@
           "notes": "Executed explicit synthetic assumptions through pure checker API; independent expected assertions.",
           "mapping_source": "formal-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "A10",
@@ -1458,7 +2745,10 @@
           "notes": "Executed explicit synthetic assumptions through pure checker API; independent expected assertions.",
           "mapping_source": "formal-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "A11",
@@ -1477,7 +2767,10 @@
           "notes": "Executed explicit synthetic assumptions through pure checker API; independent expected assertions.",
           "mapping_source": "formal-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "A12",
@@ -1496,7 +2789,10 @@
           "notes": "Executed explicit synthetic assumptions through pure checker API; independent expected assertions.",
           "mapping_source": "formal-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "A13",
@@ -1515,7 +2811,10 @@
           "notes": "Executed explicit synthetic assumptions through pure checker API; independent expected assertions.",
           "mapping_source": "formal-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "A14",
@@ -1534,17 +2833,33 @@
           "notes": "Executed explicit synthetic assumptions through pure checker API; independent expected assertions.",
           "mapping_source": "formal-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     },
     {
       "id": "A15",
       "title": "Pattern and prose disagreement is extraction review",
       "mechanism": "agent+structural",
-      "status": "partial",
+      "status": "passed",
       "tests": {
+        "test_agent_receipts.IndependentAgentReceipts.test_pattern_fidelity": "passed",
         "test_formalcheck.FormalChecks.test_A15_extraction_not_acceptance": "passed"
       },
       "coverage_claims": [
+        {
+          "tests": [
+            "test_agent_receipts.IndependentAgentReceipts.test_pattern_fidelity"
+          ],
+          "coverage": "full",
+          "evidence_kind": "agent-receipt",
+          "receipts": [
+            "reviews/author-trials-v5/graded-pattern-fidelity.json"
+          ],
+          "notes": "Independent Fable proposal interpretation, separate semantic grading and actual temporary CLI apply/read replay; bounded test, not universal agent reliability.",
+          "mapping_source": "agent-mapping.json"
+        },
         {
           "tests": [
             "test_formalcheck.FormalChecks.test_A15_extraction_not_acceptance"
@@ -1553,7 +2868,12 @@
           "notes": "Checks explicitly extracted authorized coordinates vs proposed coordinates; source-to-coordinate agent fidelity requires review integration.",
           "mapping_source": "formal-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": true,
+      "agent_receipts": [
+        "reviews/author-trials-v5/graded-pattern-fidelity.json"
+      ],
+      "agent_receipt_errors": []
     },
     {
       "id": "A16",
@@ -1572,8 +2892,11 @@
           "notes": "Executed explicit synthetic assumptions through pure checker API; independent expected assertions.",
           "mapping_source": "formal-mapping.json"
         }
-      ]
+      ],
+      "agent_evidence_required": false,
+      "agent_receipts": [],
+      "agent_receipt_errors": []
     }
   ],
-  "test_log": "test_A08_withdrawal_clears_policy_conflict_and_preserves_receipt (test_dependency.AcceptanceIntegrationTests.test_A08_withdrawal_clears_policy_conflict_and_preserves_receipt) ... ok\ntest_I07_every_semantic_input_and_unrelated_negative (test_dependency.AcceptanceIntegrationTests.test_I07_every_semantic_input_and_unrelated_negative) ... ok\ntest_R05_large_hub_explicit_bounds (test_dependency.AcceptanceIntegrationTests.test_R05_large_hub_explicit_bounds) ... ok\ntest_canonical_export_and_rename (test_dependency.CanonicalTests.test_canonical_export_and_rename) ... ok\ntest_alias_reuse_and_ambiguity (test_dependency.DependencyTests.test_alias_reuse_and_ambiguity) ... ok\ntest_chain_transitive_preserves_acceptance (test_dependency.DependencyTests.test_chain_transitive_preserves_acceptance) ... ok\ntest_diamond_distinct_paths (test_dependency.DependencyTests.test_diamond_distinct_paths) ... ok\ntest_enforcement_independent_axes (test_dependency.DependencyTests.test_enforcement_independent_axes) ... ok\ntest_presentation_no_invalidation (test_dependency.DependencyTests.test_presentation_no_invalidation) ... ok\ntest_provenance_storage_not_execution (test_dependency.DependencyTests.test_provenance_storage_not_execution) ... ok\ntest_rereview_exact_version (test_dependency.DependencyTests.test_rereview_exact_version) ... ok\ntest_semantic_deletion_rejected_retire_allowed (test_dependency.DependencyTests.test_semantic_deletion_rejected_retire_allowed) ... ok\ntest_source_extraction_chain (test_dependency.DependencyTests.test_source_extraction_chain) ... ok\ntest_topic_and_support_not_dependencies (test_dependency.DependencyTests.test_topic_and_support_not_dependencies) ... ok\ntest_withdrawn_premise_remains_blocker (test_dependency.DependencyTests.test_withdrawn_premise_remains_blocker) ... ok\ntest_deterministic_checks (test_dependency.GapTests.test_deterministic_checks) ... ok\ntest_compact_json_read_keeps_semantics (test_dependency.IntegrationTests.test_compact_json_read_keeps_semantics) ... ok\ntest_all_blockers (test_dependency.QuestionTests.test_all_blockers) ... ok\ntest_all_ready_answer_independent (test_dependency.QuestionTests.test_all_ready_answer_independent) ... ok\ntest_any_group (test_dependency.QuestionTests.test_any_group) ... ok\ntest_cycles_distinct (test_dependency.QuestionTests.test_cycles_distinct) ... ok\ntest_inventory_totals (test_dependency.QuestionTests.test_inventory_totals) ... ok\ntest_no_dependencies (test_dependency.QuestionTests.test_no_dependencies) ... ok\ntest_partial_remainder (test_dependency.QuestionTests.test_partial_remainder) ... ok\ntest_retired_answer_not_prerequisite (test_dependency.QuestionTests.test_retired_answer_not_prerequisite) ... ok\ntest_shapes_not_interchangeable (test_dependency.QuestionTests.test_shapes_not_interchangeable) ... ok\ntest_A01_steward_event (test_formalcheck.FormalChecks.test_A01_steward_event) ... ok\ntest_A02_nonsteward_witness (test_formalcheck.FormalChecks.test_A02_nonsteward_witness) ... ok\ntest_A03_permission_conflict (test_formalcheck.FormalChecks.test_A03_permission_conflict) ... ok\ntest_A04_dual_restrictions_vacuity (test_formalcheck.FormalChecks.test_A04_dual_restrictions_vacuity) ... ok\ntest_A05_dual_roles (test_formalcheck.FormalChecks.test_A05_dual_roles) ... ok\ntest_A06_scope_changes (test_formalcheck.FormalChecks.test_A06_scope_changes) ... ok\ntest_A07_may_ask_not_must (test_formalcheck.FormalChecks.test_A07_may_ask_not_must) ... ok\ntest_A08_withdrawal_filters_current (test_formalcheck.FormalChecks.test_A08_withdrawal_filters_current) ... ok\ntest_A09_must_never (test_formalcheck.FormalChecks.test_A09_must_never) ... ok\ntest_A10_may_must (test_formalcheck.FormalChecks.test_A10_may_must) ... ok\ntest_A11_may_without_event (test_formalcheck.FormalChecks.test_A11_may_without_event) ... ok\ntest_A12_unbounded_eventuality (test_formalcheck.FormalChecks.test_A12_unbounded_eventuality) ... ok\ntest_A13_expired_obligation (test_formalcheck.FormalChecks.test_A13_expired_obligation) ... ok\ntest_A14_unknown_overlap (test_formalcheck.FormalChecks.test_A14_unknown_overlap) ... ok\ntest_A15_extraction_not_acceptance (test_formalcheck.FormalChecks.test_A15_extraction_not_acceptance) ... ok\ntest_A16_free_text_scope (test_formalcheck.FormalChecks.test_A16_free_text_scope) ... ok\ntest_C01_exact_one_atmost_two (test_formalcheck.FormalChecks.test_C01_exact_one_atmost_two) ... ok\ntest_C02_exact_one_atleast_two (test_formalcheck.FormalChecks.test_C02_exact_one_atleast_two) ... ok\ntest_C03_exact_one_atleast_one (test_formalcheck.FormalChecks.test_C03_exact_one_atleast_one) ... ok\ntest_C04_empty_subject_domain (test_formalcheck.FormalChecks.test_C04_empty_subject_domain) ... ok\ntest_C05_host_scoped_identity (test_formalcheck.FormalChecks.test_C05_host_scoped_identity) ... ok\ntest_C06_unknown_identity (test_formalcheck.FormalChecks.test_C06_unknown_identity) ... ok\ntest_C07_distinct_not_reports (test_formalcheck.FormalChecks.test_C07_distinct_not_reports) ... ok\ntest_C08_open_world (test_formalcheck.FormalChecks.test_C08_open_world) ... ok\ntest_failure_atomic (test_graph.Tests.test_failure_atomic) ... ok\ntest_reverse_metadata_audit (test_graph.Tests.test_reverse_metadata_audit) ... ok\ntest_abrupt_exit_at_atomic_replace_boundary (test_reliability.ReliabilityTests.test_abrupt_exit_at_atomic_replace_boundary) ... ok\ntest_competing_writers (test_reliability.ReliabilityTests.test_competing_writers) ... ok\ntest_context_budgets_and_explicit_full_history (test_reliability.ReliabilityTests.test_context_budgets_and_explicit_full_history) ... ok\ntest_M01_intention_survives_replacement (test_replay.ModelReplayTests.test_M01_intention_survives_replacement) ... ok\ntest_M02_recoverable_block_does_not_wake_steward (test_replay.ModelReplayTests.test_M02_recoverable_block_does_not_wake_steward) ... ok\ntest_M03_failed_is_ended_not_satisfied (test_replay.ModelReplayTests.test_M03_failed_is_ended_not_satisfied) ... ok\ntest_M04_checkpoint_keeps_owed_response (test_replay.ModelReplayTests.test_M04_checkpoint_keeps_owed_response) ... ok\ntest_M05_each_completion_remains_pending (test_replay.ModelReplayTests.test_M05_each_completion_remains_pending) ... ok\ntest_M06_one_decision_across_interfaces (test_replay.ModelReplayTests.test_M06_one_decision_across_interfaces) ... ok\ntest_M07_dials_change_route_not_validity (test_replay.ModelReplayTests.test_M07_dials_change_route_not_validity) ... ok\ntest_M08_start_and_drive_are_independent (test_replay.ModelReplayTests.test_M08_start_and_drive_are_independent) ... ok\ntest_S01_reversal_preserves_each_stage (test_replay.SessionReplayTests.test_S01_reversal_preserves_each_stage) ... ok\ntest_S02_potential_conflict_does_not_resolve_policy (test_replay.SessionReplayTests.test_S02_potential_conflict_does_not_resolve_policy) ... ok\ntest_S03_summary_provenance_and_candidate_only (test_replay.SessionReplayTests.test_S03_summary_provenance_and_candidate_only) ... ok\ntest_S04_implementation_choice_can_change_without_goal (test_replay.SessionReplayTests.test_S04_implementation_choice_can_change_without_goal) ... ok\ntest_S05_identity_changes_witness_not_prose_guess (test_replay.SessionReplayTests.test_S05_identity_changes_witness_not_prose_guess) ... ok\ntest_S06_S07_packets_same_facts_and_no_fake_trial (test_replay.SessionReplayTests.test_S06_S07_packets_same_facts_and_no_fake_trial) ... ok\ntest_S08_cli_read_then_authorized_single_batch (test_replay.SessionReplayTests.test_S08_cli_read_then_authorized_single_batch) ... ok\ntest_D03_role_policy_applies_to_distinct_sessions (test_tracecheck.DefinitionAcceptanceTests.test_D03_role_policy_applies_to_distinct_sessions) ... ok\ntest_D08_pattern_evaluation_does_not_ratify_prose (test_tracecheck.DefinitionAcceptanceTests.test_D08_pattern_evaluation_does_not_ratify_prose) ... ok\ntest_I07_all_semantic_inputs_and_checker_are_bound (test_tracecheck.DefinitionAcceptanceTests.test_I07_all_semantic_inputs_and_checker_are_bound) ... ok\ntest_E01_extraction_assumption_and_edge_changes_stale (test_tracecheck.EvidenceChecks.test_E01_extraction_assumption_and_edge_changes_stale) ... ok\ntest_E01_provenance_and_transitive_freshness (test_tracecheck.EvidenceChecks.test_E01_provenance_and_transitive_freshness) ... ok\ntest_E02_current_role_does_not_rewrite_event_role (test_tracecheck.EvidenceChecks.test_E02_current_role_does_not_rewrite_event_role) ... ok\ntest_E05_intended_violation_does_not_edit_beliefs (test_tracecheck.EvidenceChecks.test_E05_intended_violation_does_not_edit_beliefs) ... ok\ntest_E06_defect_passing_is_coverage_gap (test_tracecheck.EvidenceChecks.test_E06_defect_passing_is_coverage_gap) ... ok\ntest_E07_synthetic_propagates_and_never_establishes_history (test_tracecheck.EvidenceChecks.test_E07_synthetic_propagates_and_never_establishes_history) ... ok\ntest_E08_reachability_is_not_implemented (test_tracecheck.EvidenceChecks.test_E08_reachability_is_not_implemented) ... ok\ntest_authority_dispatch_and_fragment_freshness (test_tracecheck.FormalDispatchTests.test_authority_dispatch_and_fragment_freshness) ... ok\ntest_missing_information (test_tracecheck.TraceChecks.test_missing_information) ... ok\ntest_scope_links (test_tracecheck.TraceChecks.test_scope_links) ... ok\ntest_violation_precedes_unknown (test_tracecheck.TraceChecks.test_violation_precedes_unknown) ... ok\n\n----------------------------------------------------------------------\nRan 84 tests in 0.711s\n\nOK\n"
+  "test_log": "test_cold_start_recovery (test_agent_receipts.IndependentAgentReceipts.test_cold_start_recovery) ... ok\ntest_defined_port (test_agent_receipts.IndependentAgentReceipts.test_defined_port) ... ok\ntest_identity (test_agent_receipts.IndependentAgentReceipts.test_identity) ... ok\ntest_operation_modality (test_agent_receipts.IndependentAgentReceipts.test_operation_modality) ... ok\ntest_pattern_fidelity (test_agent_receipts.IndependentAgentReceipts.test_pattern_fidelity) ... ok\ntest_question_shapes (test_agent_receipts.IndependentAgentReceipts.test_question_shapes) ... ok\ntest_slow_next_step (test_agent_receipts.IndependentAgentReceipts.test_slow_next_step) ... ok\ntest_unknown_port (test_agent_receipts.IndependentAgentReceipts.test_unknown_port) ... ok\ntest_untrusted_source (test_agent_receipts.IndependentAgentReceipts.test_untrusted_source) ... ok\ntest_live_observability (test_browser_receipt.BrowserReceipt.test_live_observability) ... ok\ntest_A08_withdrawal_clears_policy_conflict_and_preserves_receipt (test_dependency.AcceptanceIntegrationTests.test_A08_withdrawal_clears_policy_conflict_and_preserves_receipt) ... ok\ntest_I07_every_semantic_input_and_unrelated_negative (test_dependency.AcceptanceIntegrationTests.test_I07_every_semantic_input_and_unrelated_negative) ... ok\ntest_R05_large_hub_explicit_bounds (test_dependency.AcceptanceIntegrationTests.test_R05_large_hub_explicit_bounds) ... ok\ntest_canonical_export_and_rename (test_dependency.CanonicalTests.test_canonical_export_and_rename) ... ok\ntest_alias_reuse_and_ambiguity (test_dependency.DependencyTests.test_alias_reuse_and_ambiguity) ... ok\ntest_chain_transitive_preserves_acceptance (test_dependency.DependencyTests.test_chain_transitive_preserves_acceptance) ... ok\ntest_diamond_distinct_paths (test_dependency.DependencyTests.test_diamond_distinct_paths) ... ok\ntest_enforcement_independent_axes (test_dependency.DependencyTests.test_enforcement_independent_axes) ... ok\ntest_presentation_no_invalidation (test_dependency.DependencyTests.test_presentation_no_invalidation) ... ok\ntest_provenance_storage_not_execution (test_dependency.DependencyTests.test_provenance_storage_not_execution) ... ok\ntest_rereview_exact_version (test_dependency.DependencyTests.test_rereview_exact_version) ... ok\ntest_semantic_deletion_rejected_retire_allowed (test_dependency.DependencyTests.test_semantic_deletion_rejected_retire_allowed) ... ok\ntest_source_extraction_chain (test_dependency.DependencyTests.test_source_extraction_chain) ... ok\ntest_topic_and_support_not_dependencies (test_dependency.DependencyTests.test_topic_and_support_not_dependencies) ... ok\ntest_withdrawn_premise_remains_blocker (test_dependency.DependencyTests.test_withdrawn_premise_remains_blocker) ... ok\ntest_deterministic_checks (test_dependency.GapTests.test_deterministic_checks) ... ok\ntest_gaps_and_repairs (test_dependency.GapTests.test_gaps_and_repairs) ... ok\ntest_revision_requires_explicit_retirement (test_dependency.GapTests.test_revision_requires_explicit_retirement) ... ok\ntest_suppression_visible_and_no_answer_drift (test_dependency.GapTests.test_suppression_visible_and_no_answer_drift) ... ok\ntest_compact_json_read_keeps_semantics (test_dependency.IntegrationTests.test_compact_json_read_keeps_semantics) ... ok\ntest_undeclared_reference_gap_repairs (test_dependency.IntegrationTests.test_undeclared_reference_gap_repairs) ... ok\ntest_all_blockers (test_dependency.QuestionTests.test_all_blockers) ... ok\ntest_all_ready_answer_independent (test_dependency.QuestionTests.test_all_ready_answer_independent) ... ok\ntest_any_group (test_dependency.QuestionTests.test_any_group) ... ok\ntest_cycles_distinct (test_dependency.QuestionTests.test_cycles_distinct) ... ok\ntest_inventory_totals (test_dependency.QuestionTests.test_inventory_totals) ... ok\ntest_no_dependencies (test_dependency.QuestionTests.test_no_dependencies) ... ok\ntest_partial_remainder (test_dependency.QuestionTests.test_partial_remainder) ... ok\ntest_retired_answer_not_prerequisite (test_dependency.QuestionTests.test_retired_answer_not_prerequisite) ... ok\ntest_shapes_not_interchangeable (test_dependency.QuestionTests.test_shapes_not_interchangeable) ... ok\ntest_A01_steward_event (test_formalcheck.FormalChecks.test_A01_steward_event) ... ok\ntest_A02_nonsteward_witness (test_formalcheck.FormalChecks.test_A02_nonsteward_witness) ... ok\ntest_A03_permission_conflict (test_formalcheck.FormalChecks.test_A03_permission_conflict) ... ok\ntest_A04_dual_restrictions_vacuity (test_formalcheck.FormalChecks.test_A04_dual_restrictions_vacuity) ... ok\ntest_A05_dual_roles (test_formalcheck.FormalChecks.test_A05_dual_roles) ... ok\ntest_A06_scope_changes (test_formalcheck.FormalChecks.test_A06_scope_changes) ... ok\ntest_A07_may_ask_not_must (test_formalcheck.FormalChecks.test_A07_may_ask_not_must) ... ok\ntest_A08_withdrawal_filters_current (test_formalcheck.FormalChecks.test_A08_withdrawal_filters_current) ... ok\ntest_A09_must_never (test_formalcheck.FormalChecks.test_A09_must_never) ... ok\ntest_A10_may_must (test_formalcheck.FormalChecks.test_A10_may_must) ... ok\ntest_A11_may_without_event (test_formalcheck.FormalChecks.test_A11_may_without_event) ... ok\ntest_A12_unbounded_eventuality (test_formalcheck.FormalChecks.test_A12_unbounded_eventuality) ... ok\ntest_A13_expired_obligation (test_formalcheck.FormalChecks.test_A13_expired_obligation) ... ok\ntest_A14_unknown_overlap (test_formalcheck.FormalChecks.test_A14_unknown_overlap) ... ok\ntest_A15_extraction_not_acceptance (test_formalcheck.FormalChecks.test_A15_extraction_not_acceptance) ... ok\ntest_A16_free_text_scope (test_formalcheck.FormalChecks.test_A16_free_text_scope) ... ok\ntest_C01_exact_one_atmost_two (test_formalcheck.FormalChecks.test_C01_exact_one_atmost_two) ... ok\ntest_C02_exact_one_atleast_two (test_formalcheck.FormalChecks.test_C02_exact_one_atleast_two) ... ok\ntest_C03_exact_one_atleast_one (test_formalcheck.FormalChecks.test_C03_exact_one_atleast_one) ... ok\ntest_C04_empty_subject_domain (test_formalcheck.FormalChecks.test_C04_empty_subject_domain) ... ok\ntest_C05_host_scoped_identity (test_formalcheck.FormalChecks.test_C05_host_scoped_identity) ... ok\ntest_C06_unknown_identity (test_formalcheck.FormalChecks.test_C06_unknown_identity) ... ok\ntest_C07_distinct_not_reports (test_formalcheck.FormalChecks.test_C07_distinct_not_reports) ... ok\ntest_C08_open_world (test_formalcheck.FormalChecks.test_C08_open_world) ... ok\ntest_failure_atomic (test_graph.Tests.test_failure_atomic) ... ok\ntest_reverse_metadata_audit (test_graph.Tests.test_reverse_metadata_audit) ... ok\ntest_E01_provenance_and_freshness (test_interpretation_receipts.IndependentInterpretationReceipts.test_E01_provenance_and_freshness) ... ok\ntest_E07_synthetic_not_history (test_interpretation_receipts.IndependentInterpretationReceipts.test_E07_synthetic_not_history) ... ok\ntest_M01_continuing_intention (test_interpretation_receipts.IndependentInterpretationReceipts.test_M01_continuing_intention) ... ok\ntest_M02_recovery (test_interpretation_receipts.IndependentInterpretationReceipts.test_M02_recovery) ... ok\ntest_M03_failed_terminal (test_interpretation_receipts.IndependentInterpretationReceipts.test_M03_failed_terminal) ... ok\ntest_M04_separate_checkpoint_processes (test_interpretation_receipts.IndependentInterpretationReceipts.test_M04_separate_checkpoint_processes) ... ok\ntest_M05_completion_queue (test_interpretation_receipts.IndependentInterpretationReceipts.test_M05_completion_queue) ... ok\ntest_M06_one_decision (test_interpretation_receipts.IndependentInterpretationReceipts.test_M06_one_decision) ... ok\ntest_M07_routing_validity (test_interpretation_receipts.IndependentInterpretationReceipts.test_M07_routing_validity) ... ok\ntest_M08_start_drive (test_interpretation_receipts.IndependentInterpretationReceipts.test_M08_start_drive) ... ok\ntest_commands_and_source_hashes (test_interpretation_receipts.IndependentInterpretationReceipts.test_commands_and_source_hashes) ... ok\ntest_evidence_changes_were_authorized (test_interpretation_receipts.IndependentInterpretationReceipts.test_evidence_changes_were_authorized) ... ok\ntest_unknown_policy_is_missing_rule_not_permission (test_interpretation_receipts.IndependentInterpretationReceipts.test_unknown_policy_is_missing_rule_not_permission) ... ok\ntest_bound_actual_artifacts_and_independent_core_grades (test_maintenance_receipts.MaintenanceReceipts.test_bound_actual_artifacts_and_independent_core_grades) ... ok\ntest_observed_calls_tokens_time_and_real_writes (test_maintenance_receipts.MaintenanceReceipts.test_observed_calls_tokens_time_and_real_writes) ... ok\ntest_preserves_negative_findings_and_limited_conclusion (test_maintenance_receipts.MaintenanceReceipts.test_preserves_negative_findings_and_limited_conclusion) ... ok\ntest_same_facts_dependencies_sources_and_budget (test_maintenance_receipts.MaintenanceReceipts.test_same_facts_dependencies_sources_and_budget) ... ok\ntest_independent_review_grades_measurements_and_required_phases (test_maintenance_timed_review.TimedReviewReceipts.test_independent_review_grades_measurements_and_required_phases) ... ok\ntest_real_paired_no_tool_measurements_bound (test_maintenance_timed_review.TimedReviewReceipts.test_real_paired_no_tool_measurements_bound) ... ok\ntest_S08_component_receipt_and_hypothesis_visibility (test_multiturn_receipts.CombinedObservability.test_S08_component_receipt_and_hypothesis_visibility) ... ok\ntest_S01_exact_fork_provenance_and_independent_grade (test_multiturn_receipts.ExplicitDecisionFork.test_S01_exact_fork_provenance_and_independent_grade) ... ok\ntest_S01_question_resolved_without_consultation_decision (test_multiturn_receipts.ExplicitDecisionFork.test_S01_question_resolved_without_consultation_decision) ... ok\ntest_S08_exact_command_precedes_only_tool (test_multiturn_receipts.PacingTrial.test_S08_exact_command_precedes_only_tool) ... ok\ntest_S05_actual_evaluator_and_unchanged_rule (test_multiturn_receipts.PassingPortsTrial.test_S05_actual_evaluator_and_unchanged_rule) ... ok\ntest_S05_independent_receipt_integrity (test_multiturn_receipts.PassingPortsTrial.test_S05_independent_receipt_integrity) ... ok\ntest_S05_initial_unknown_and_exact_identity_source (test_multiturn_receipts.PassingPortsTrial.test_S05_initial_unknown_and_exact_identity_source) ... ok\ntest_S02_reviewer_challenge_preserves_policy_and_unknown (test_multiturn_receipts.ScopedDesignTrial.test_S02_reviewer_challenge_preserves_policy_and_unknown) ... ok\ntest_S03_summary_proposed_threshold_unknown (test_multiturn_receipts.ScopedDesignTrial.test_S03_summary_proposed_threshold_unknown) ... ok\ntest_S04_means_revisable_intention_retained (test_multiturn_receipts.ScopedDesignTrial.test_S04_means_revisable_intention_retained) ... ok\ntest_abrupt_exit_at_atomic_replace_boundary (test_reliability.ReliabilityTests.test_abrupt_exit_at_atomic_replace_boundary) ... ok\ntest_competing_writers (test_reliability.ReliabilityTests.test_competing_writers) ... ok\ntest_context_budgets_and_explicit_full_history (test_reliability.ReliabilityTests.test_context_budgets_and_explicit_full_history) ... ok\ntest_M01_intention_survives_replacement (test_replay.ModelReplayTests.test_M01_intention_survives_replacement) ... ok\ntest_M02_recoverable_block_does_not_wake_steward (test_replay.ModelReplayTests.test_M02_recoverable_block_does_not_wake_steward) ... ok\ntest_M03_failed_is_ended_not_satisfied (test_replay.ModelReplayTests.test_M03_failed_is_ended_not_satisfied) ... ok\ntest_M04_checkpoint_keeps_owed_response (test_replay.ModelReplayTests.test_M04_checkpoint_keeps_owed_response) ... ok\ntest_M05_each_completion_remains_pending (test_replay.ModelReplayTests.test_M05_each_completion_remains_pending) ... ok\ntest_M06_one_decision_across_interfaces (test_replay.ModelReplayTests.test_M06_one_decision_across_interfaces) ... ok\ntest_M07_dials_change_route_not_validity (test_replay.ModelReplayTests.test_M07_dials_change_route_not_validity) ... ok\ntest_M08_start_and_drive_are_independent (test_replay.ModelReplayTests.test_M08_start_and_drive_are_independent) ... ok\ntest_S01_reversal_preserves_each_stage (test_replay.SessionReplayTests.test_S01_reversal_preserves_each_stage) ... ok\ntest_S02_potential_conflict_does_not_resolve_policy (test_replay.SessionReplayTests.test_S02_potential_conflict_does_not_resolve_policy) ... ok\ntest_S03_summary_provenance_and_candidate_only (test_replay.SessionReplayTests.test_S03_summary_provenance_and_candidate_only) ... ok\ntest_S04_implementation_choice_can_change_without_goal (test_replay.SessionReplayTests.test_S04_implementation_choice_can_change_without_goal) ... ok\ntest_S05_identity_changes_witness_not_prose_guess (test_replay.SessionReplayTests.test_S05_identity_changes_witness_not_prose_guess) ... ok\ntest_S06_S07_packets_same_facts_and_no_fake_trial (test_replay.SessionReplayTests.test_S06_S07_packets_same_facts_and_no_fake_trial) ... ok\ntest_S08_cli_read_then_authorized_single_batch (test_replay.SessionReplayTests.test_S08_cli_read_then_authorized_single_batch) ... ok\ntest_D03_role_policy_applies_to_distinct_sessions (test_tracecheck.DefinitionAcceptanceTests.test_D03_role_policy_applies_to_distinct_sessions) ... ok\ntest_D08_pattern_evaluation_does_not_ratify_prose (test_tracecheck.DefinitionAcceptanceTests.test_D08_pattern_evaluation_does_not_ratify_prose) ... ok\ntest_I07_all_semantic_inputs_and_checker_are_bound (test_tracecheck.DefinitionAcceptanceTests.test_I07_all_semantic_inputs_and_checker_are_bound) ... ok\ntest_E01_extraction_assumption_and_edge_changes_stale (test_tracecheck.EvidenceChecks.test_E01_extraction_assumption_and_edge_changes_stale) ... ok\ntest_E01_provenance_and_transitive_freshness (test_tracecheck.EvidenceChecks.test_E01_provenance_and_transitive_freshness) ... ok\ntest_E02_current_role_does_not_rewrite_event_role (test_tracecheck.EvidenceChecks.test_E02_current_role_does_not_rewrite_event_role) ... ok\ntest_E05_intended_violation_does_not_edit_beliefs (test_tracecheck.EvidenceChecks.test_E05_intended_violation_does_not_edit_beliefs) ... ok\ntest_E06_defect_passing_is_coverage_gap (test_tracecheck.EvidenceChecks.test_E06_defect_passing_is_coverage_gap) ... ok\ntest_E07_synthetic_propagates_and_never_establishes_history (test_tracecheck.EvidenceChecks.test_E07_synthetic_propagates_and_never_establishes_history) ... ok\ntest_E08_reachability_is_not_implemented (test_tracecheck.EvidenceChecks.test_E08_reachability_is_not_implemented) ... ok\ntest_authority_dispatch_and_fragment_freshness (test_tracecheck.FormalDispatchTests.test_authority_dispatch_and_fragment_freshness) ... ok\ntest_missing_information (test_tracecheck.TraceChecks.test_missing_information) ... ok\ntest_scope_links (test_tracecheck.TraceChecks.test_scope_links) ... ok\ntest_violation_precedes_unknown (test_tracecheck.TraceChecks.test_violation_precedes_unknown) ... ok\n\n----------------------------------------------------------------------\nRan 127 tests in 0.897s\n\nOK\n"
 }

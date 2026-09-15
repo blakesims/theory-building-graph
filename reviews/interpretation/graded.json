@@ -1,0 +1,966 @@
+{
+  "status": "completed",
+  "passed": true,
+  "cases": [
+    "M01",
+    "M02",
+    "M03",
+    "M04",
+    "M05",
+    "M06",
+    "M07",
+    "M08",
+    "E01",
+    "E07"
+  ],
+  "grades": [
+    {
+      "id": "continuing-intention",
+      "case": "M01",
+      "score": 1,
+      "excerpt": "Intention I is the stable identity; records are attempts under it. Event endA ends record A with outcome failed and creates a pending response owned by steward. The response carries the intention id copied from records.A.intention. Event next consumes that response (state pending -> resolved) and creates record C whose intention is copied from responses.endA.intention. So continuation is a chain records.A.intention -> responses.endA.intention -> records.C.intention; C is a new record, not a resumption of A, and A's failed outcome persists. The chooser role is supplied by the event argument 'role' and checked against config.next_work_roles and the response owner; the engine does not authenticate who emitted the event. Model assessment (not observed): choose-subsequent-work has no guard on intentions.I.state or intentions.I.valid, so the rules would allow continuation under a closed or invalid intention.",
+      "explanation": "Explicitly identifies continuing I, failed historical A and new linked C; the record failure does not close the intention. Distinguishes untested model assessments from observed receipt states.",
+      "output_witnesses": [
+        {
+          "receipt": "reviews/interpretation/workspace/runs/continuation.json",
+          "command": [
+            "python3",
+            "replay.py",
+            "scenarios/continuation.json"
+          ],
+          "returncode": 0,
+          "observations": [
+            "runs/continuation.json: returncode 0; revision 2; seen [endA, next]"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "block-recovery",
+      "case": "M02",
+      "score": 1,
+      "excerpt": "Blockage is not terminal: record A keeps its identity and null outcome, its lifecycle flips to blocked, and a pending response is created owned by orchestrator (contrast: end creates a steward-owned response). Recovery resolves that response and returns the same record to running; no continuation record is created. Model assessment: the recovery rule only guards the response owner. It does not require records[record].lifecycle == blocked, responses[response].state == pending, or responses[response].record == record, so as authored it could 'recover' an unrelated record or re-resolve an already resolved response. That is a rule gap, not an observed behavior.",
+      "explanation": "Uses first/second receipt states to distinguish blocked orchestrator-owned recovery from the steward terminal handoff. Same record recovers, no replacement created.",
+      "output_witnesses": [
+        {
+          "receipt": "reviews/interpretation/workspace/runs/recovery.json",
+          "command": [
+            "python3",
+            "replay.py",
+            "scenarios/recovery.json"
+          ],
+          "returncode": 0,
+          "observations": [
+            "runs/recovery.json: returncode 0; revision 2; seen [blockA, recovered]"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "failed-terminal",
+      "case": "M03",
+      "score": 1,
+      "excerpt": "Terminal failure of a record is recorded as lifecycle ended plus outcome failed, and it is handled identically to success: one terminal-result rule, one steward-owned pending response. Failure of a record does not fail or close the intention; intentions.I stays open and valid, and record B continues running. The outcome value is stored but never consulted by any rule, so the model records terminal failure without giving it distinct consequences. Model assessment: the not_equals ended guard means a blocked record could be ended directly; whether that is intended is not stated in the data.",
+      "explanation": "Separates lifecycle ended, outcome failed, still-open I and steward response owner; it does not equate failed attempt with satisfied concern.",
+      "output_witnesses": [
+        {
+          "receipt": "reviews/interpretation/workspace/runs/continuation.json",
+          "command": [
+            "python3",
+            "replay.py",
+            "scenarios/continuation.json"
+          ],
+          "returncode": 0,
+          "observations": [
+            "runs/continuation.json event endA args outcome=failed: rule terminal-result; state.records.A.lifecycle = ended; state.records.A.outcome = failed; state.responses.endA.owner = steward"
+          ]
+        },
+        {
+          "receipt": "reviews/interpretation/workspace/runs/completions.json",
+          "command": [
+            "python3",
+            "replay.py",
+            "scenarios/completions.json"
+          ],
+          "returncode": 0,
+          "observations": [
+            "runs/completions.json events endA/endB args outcome=succeeded: same rule terminal-result; state.responses.endA.owner = steward and state.responses.endB.owner = steward"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "restart-obligation",
+      "case": "M04",
+      "score": 1,
+      "excerpt": "A fresh process recovers the exact state, revision, and seen-event set: the pending orchestrator-owned response for record A survives the restart as data, and duplicate-event protection survives via 'seen'. This shows that responsibility is represented as persisted state (an owner label on a response), not as something held in a live session. It does not show that any orchestrator picks the response up after restart: resume replayed zero events, the model has no liveness rules, and the owner field is a string with no session or process identity attached. Resumption is also guarded by the model hash, so state is only portable to the same model.",
+      "explanation": "Two actual subprocess command receipts save/resume the same state/model hash. Answer correctly limits this to persistent data, not demonstrated post-restart work pickup or real Morphisms durability.",
+      "output_witnesses": [
+        {
+          "receipt": "reviews/interpretation/workspace/runs/checkpoint-save.json",
+          "command": [
+            "python3",
+            "checkpoint.py",
+            "save",
+            "scenarios/checkpoint.json",
+            "checkpoint.json"
+          ],
+          "returncode": 0,
+          "observations": [
+            "runs/checkpoint-save.json: returncode 0; revision 1; seen [blockA]; receipts [blockA applied, rule blocked-report]; checkpoint.json written with keys engine, model_hash, revision, state, seen, receipts, scope"
+          ]
+        },
+        {
+          "receipt": "reviews/interpretation/workspace/runs/checkpoint-resume.json",
+          "command": [
+            "python3",
+            "checkpoint.py",
+            "resume",
+            "scenarios/checkpoint.json",
+            "checkpoint.json"
+          ],
+          "returncode": 0,
+          "observations": [
+            "runs/checkpoint-resume.json: separate process; returncode 0; revision 1; seen [blockA]; receipts [] (no events replayed)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pending-completions",
+      "case": "M05",
+      "score": 1,
+      "excerpt": "Two records under the same intention both end succeeded, each producing its own steward-owned response. Only endA was considered, so responses.endB remains pending work and intention I stays open; the model has no rule that closes an intention or reconciles two completions. Ordering matters because consider-completion uses a 'set' effect: a consider event arriving before the matching end would be rejected with missing-update-target since the response key would not exist. Model assessment: consider-completion has no guards on owner or pending state, so as authored it can re-resolve an already resolved response or one owned by orchestrator.",
+      "explanation": "Explains separate completion responses and endB pending after reviewA. Combined observations show B continues until endB; no all-record barrier is invented. A counterfactual error-code label is inaccurate, noted separately.",
+      "output_witnesses": [
+        {
+          "receipt": "reviews/interpretation/workspace/runs/completions.json",
+          "command": [
+            "python3",
+            "replay.py",
+            "scenarios/completions.json"
+          ],
+          "returncode": 0,
+          "observations": [
+            "runs/completions.json: returncode 0; revision 3; seen [endA, endB, reviewA]; no rejected receipts"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "same-decision",
+      "case": "M06",
+      "score": 1,
+      "excerpt": "Both interfaces submitted an answer against revision 0. The first (chat) applied and set the answer; the second (desk) was rejected before any rule ran because its expected revision was stale. Had it carried no expect_revision it would still have been rejected, this time by the guard answer == null with reason no-enabled-rule. Either way the first-arriving answer wins and the state is untouched by the loser, so ordering, not interface, decides the outcome. The authored rule also moves the decision owner from operator to orchestrator upon answering; the data does not say what that transfer means. Model assessment: the state does not record the answering interface, so the fact that chat answered is recoverable only from receipts.",
+      "explanation": "Correctly identifies committed chat answer, orchestrator ownership and stale desk rejection without changing state. Does not mistake intentional replay rejection for task failure.",
+      "output_witnesses": [
+        {
+          "receipt": "reviews/interpretation/workspace/runs/decision.json",
+          "command": [
+            "python3",
+            "replay.py",
+            "scenarios/decision.json"
+          ],
+          "returncode": 1,
+          "observations": [
+            "runs/decision.json: returncode 1 (one rejected receipt); revision 1; seen [chat]"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "routing-validity",
+      "case": "M07",
+      "score": 1,
+      "excerpt": "The dial changes only what is recorded on the pulse entry. The same rule fires, the same revision results, and nothing else in state differs. The model gives desk=false no behavioral consequence: no alternate target, no rejection, no owner change. So in this model routing configuration is a recorded flag, not a switch that alters transitions. Model assessment: route-with-dial does not check that the intention exists, so it would append a pulse for an unknown intention.",
+      "explanation": "Both configurations are actually run and cite the same I with differing pulse desk flags. Interpretation correctly says the model only records routing; it does not claim validity depends on desk visitation. Literal wording about no other state difference should exclude the already noted config.desk change.",
+      "output_witnesses": [
+        {
+          "receipt": "reviews/interpretation/workspace/runs/route-on.json",
+          "command": [
+            "python3",
+            "replay.py",
+            "scenarios/route-on.json"
+          ],
+          "returncode": 0,
+          "observations": [
+            "runs/route-on.json: event route applied, rule route-with-dial; state.pulse = [{intention: I, desk: true}]; revision 1"
+          ]
+        },
+        {
+          "receipt": "reviews/interpretation/workspace/runs/route-off.json",
+          "command": [
+            "python3",
+            "replay.py",
+            "scenarios/route-off.json"
+          ],
+          "returncode": 0,
+          "observations": [
+            "runs/route-off.json: event route applied, rule route-with-dial; state.pulse = [{intention: I, desk: false}]; revision 1"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "start-drive",
+      "case": "M08",
+      "score": 1,
+      "excerpt": "The roles table separates who starts an agent from what drives its later actions. Assistant and architect are user-started and user-driven; orchestrator is user-started but autonomous afterwards; steward is started by an event and runs autonomously. The roles scenario is static: it replays no events and so demonstrates only the declared table. Nothing in the rules enforces start or drive; the only runtime use of roles is an existence check in choose-subsequent-work. The launch/drive distinction is therefore authored documentation inside the state, and the continuation run is merely consistent with it.",
+      "explanation": "Names the four declared start/drive pairs and explicitly notes these are configuration data, not enforced agent scheduling in this replay.",
+      "output_witnesses": [
+        {
+          "receipt": "reviews/interpretation/workspace/runs/roles.json",
+          "command": [
+            "python3",
+            "replay.py",
+            "scenarios/roles.json"
+          ],
+          "returncode": 0,
+          "observations": [
+            "runs/roles.json: fixture has zero events; revision 0; receipts []; returncode 0"
+          ]
+        },
+        {
+          "receipt": "reviews/interpretation/workspace/runs/continuation.json",
+          "command": [
+            "python3",
+            "replay.py",
+            "scenarios/continuation.json"
+          ],
+          "returncode": 0,
+          "observations": [
+            "runs/continuation.json: the steward-owned response is created by event endA and consumed by event next with role=steward, consistent with steward.start = event but not enforced by it"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "provenance-freshness",
+      "case": "E01",
+      "score": 1,
+      "excerpt": "The check's inputs are claim c (exclusive_actor pattern: only steward-role may choose-work after an attempt ended), trace t (events end by o1/orchestrator-role, then choose by s1/steward-role with after: end), and the declared provenance chain t -> extract -> source. The result 'satisfies' means the one checked event has the allowed role; the end event is out of scope. Applying the assumption edit changed only the extraction's provenance text, but the checker fingerprints extract as an input, so the saved result is now reported stale by tracecheck. The software also flagged extract and its dependent t as needs-review. It does not re-run the evaluation, change the outcome, revise the trace's 'after: end' ordering that the new assumption undermines, alter the claim status, or update the saved node's own meta.review_state. Deciding whether trace t still stands and re-evaluating is a human step.\nExtraction author observation (E07): runs/node-extract.json: nodes.extract.text = 'Interpretation of the synthetic sequence, not the source itself.'; status proposed; author fixture-author",
+      "explanation": "Recovers c/t/extract/source chain, changed assumption and stale saved result without pretending automatic correction. Extraction author is additionally identified in E07 and node-extract observation. Claim and trace meanings are not silently changed.",
+      "output_witnesses": [
+        {
+          "receipt": "reviews/interpretation/workspace/runs/node-source.json",
+          "command": [
+            "./tg",
+            "--file",
+            "evidence.graph.json",
+            "node",
+            "source",
+            "--json"
+          ],
+          "returncode": 0,
+          "observations": [
+            "runs/evaluate.json: outcome satisfies; checked_events [choose]; out_of_scope_events [end]; computed_revision 0; saved_as evidence-check; saved_revision 1; result_state current; checker_version exclusive-actor/3",
+            "evaluate provenance.nodes [c, extract, source, t]; provenance.edges trace-edge, source-edge; input_fingerprints for c, t, extract, source, steward-role, orchestrator-role, choose-work, end-attempt"
+          ]
+        },
+        {
+          "receipt": "reviews/interpretation/workspace/runs/node-extract.json",
+          "command": [
+            "./tg",
+            "--file",
+            "evidence.graph.json",
+            "node",
+            "extract",
+            "--json"
+          ],
+          "returncode": 0,
+          "observations": [
+            "runs/evaluate.json: outcome satisfies; checked_events [choose]; out_of_scope_events [end]; computed_revision 0; saved_as evidence-check; saved_revision 1; result_state current; checker_version exclusive-actor/3",
+            "evaluate provenance.nodes [c, extract, source, t]; provenance.edges trace-edge, source-edge; input_fingerprints for c, t, extract, source, steward-role, orchestrator-role, choose-work, end-attempt"
+          ]
+        },
+        {
+          "receipt": "reviews/interpretation/workspace/runs/evaluate.json",
+          "command": [
+            "./tg",
+            "--file",
+            "evidence.graph.json",
+            "evaluate",
+            "c",
+            "t",
+            "--save",
+            "evidence-check",
+            "--actor",
+            "participant",
+            "--json"
+          ],
+          "returncode": 0,
+          "observations": [
+            "runs/evaluate.json: outcome satisfies; checked_events [choose]; out_of_scope_events [end]; computed_revision 0; saved_as evidence-check; saved_revision 1; result_state current; checker_version exclusive-actor/3"
+          ]
+        },
+        {
+          "receipt": "reviews/interpretation/workspace/runs/inspect-before.json",
+          "command": [
+            "python3",
+            "inspect_evidence.py"
+          ],
+          "returncode": 0,
+          "observations": [
+            "runs/inspect-before.json: graph revision 1; results[0].id evidence-check; result_state current"
+          ]
+        },
+        {
+          "receipt": "reviews/interpretation/workspace/runs/apply-assumption.json",
+          "command": [
+            "./tg",
+            "--file",
+            "evidence.graph.json",
+            "apply",
+            "assumption-edit.json",
+            "--actor",
+            "participant",
+            "--reason",
+            "Inspect changed synthetic extraction assumption",
+            "--expect",
+            "1",
+            "--json"
+          ],
+          "returncode": 0,
+          "observations": [
+            "runs/apply-assumption.json: {changes: 4, revision: 2}; revision-2 edits: nodes.extract.provenance.assumptions[0] 'Ordering reflects the described sequence.' -> 'Ordering is not established by the original source.'; nodes.extract.semantic_version = 2; nodes.extract.meta.review_state = needs-review; nodes.t.meta.review_state = needs-review (reason: declared semantic prerequisite changed: extract)"
+          ]
+        },
+        {
+          "receipt": "reviews/interpretation/workspace/runs/inspect-after.json",
+          "command": [
+            "python3",
+            "inspect_evidence.py"
+          ],
+          "returncode": 0,
+          "observations": [
+            "runs/inspect-after.json: graph revision 2; result_state stale; outcome still satisfies; computed_revision still 0; input_fingerprints.extract still c7d13c54... while current fingerprint of extract is 587ec076..."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-limits",
+      "case": "E07",
+      "score": 1,
+      "excerpt": "The source is a synthetic fixture, not historical evidence. It says so in its own metadata and text, and the checker propagated that: the result is marked synthetic, empirical support is false, and historical behavior is not-established. The 'satisfies' outcome therefore shows only that an authored trace is consistent with an authored pattern, a self-consistency check, and it changed no belief status; claim c remains proposed.",
+      "explanation": "Explicitly identifies propagated synthetic/not-established labels, proposed claim/pattern, and bounded fixture-only significance.",
+      "output_witnesses": [
+        {
+          "receipt": "reviews/interpretation/workspace/runs/node-source.json",
+          "command": [
+            "./tg",
+            "--file",
+            "evidence.graph.json",
+            "node",
+            "source",
+            "--json"
+          ],
+          "returncode": 0,
+          "observations": [
+            "runs/node-source.json: nodes.source.meta.synthetic = true; nodes.source.meta.source_kind = synthetic-fixture; text: 'Synthetic illustration: operator ended attempt; steward chose next. No actual historical incident is supplied.'"
+          ]
+        },
+        {
+          "receipt": "reviews/interpretation/workspace/runs/evaluate.json",
+          "command": [
+            "./tg",
+            "--file",
+            "evidence.graph.json",
+            "evaluate",
+            "c",
+            "t",
+            "--save",
+            "evidence-check",
+            "--actor",
+            "participant",
+            "--json"
+          ],
+          "returncode": 0,
+          "observations": [
+            "runs/evaluate.json: synthetic true; assessment.empirical_support false; assessment.historical_behavior not-established; assessment.evidence_basis recorded-events; claim_standing proposed; pattern_standing proposed"
+          ]
+        },
+        {
+          "receipt": "reviews/interpretation/workspace/runs/inspect-after.json",
+          "command": [
+            "python3",
+            "inspect_evidence.py"
+          ],
+          "returncode": 0,
+          "observations": [
+            "runs/node-source.json: nodes.source.meta.synthetic = true; nodes.source.meta.source_kind = synthetic-fixture; text: 'Synthetic illustration: operator ended attempt; steward chose next. No actual historical incident is supplied.'",
+            "runs/node-extract.json: nodes.extract.text = 'Interpretation of the synthetic sequence, not the source itself.'; status proposed; author fixture-author"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "executed-not-guessed",
+      "score": 1,
+      "excerpt": "The answer sections cite all sixteen retained runs/*.json receipts, including distinct checkpoint-save/checkpoint-resume and inspect-before/inspect-after.",
+      "explanation": "Raw tool stream includes each capture invocation. Command outputs/return codes agree with cited state transitions and saved-result freshness; source/scenario/helper input hashes are unchanged except authorized evidence graph changes.",
+      "output_witnesses": [
+        {
+          "receipt": "reviews/interpretation/workspace/runs/apply-assumption.json",
+          "command": [
+            "./tg",
+            "--file",
+            "evidence.graph.json",
+            "apply",
+            "assumption-edit.json",
+            "--actor",
+            "participant",
+            "--reason",
+            "Inspect changed synthetic extraction assumption",
+            "--expect",
+            "1",
+            "--json"
+          ],
+          "returncode": 0
+        },
+        {
+          "receipt": "reviews/interpretation/workspace/runs/checkpoint-resume.json",
+          "command": [
+            "python3",
+            "checkpoint.py",
+            "resume",
+            "scenarios/checkpoint.json",
+            "checkpoint.json"
+          ],
+          "returncode": 0
+        },
+        {
+          "receipt": "reviews/interpretation/workspace/runs/checkpoint-save.json",
+          "command": [
+            "python3",
+            "checkpoint.py",
+            "save",
+            "scenarios/checkpoint.json",
+            "checkpoint.json"
+          ],
+          "returncode": 0
+        },
+        {
+          "receipt": "reviews/interpretation/workspace/runs/completions.json",
+          "command": [
+            "python3",
+            "replay.py",
+            "scenarios/completions.json"
+          ],
+          "returncode": 0
+        },
+        {
+          "receipt": "reviews/interpretation/workspace/runs/continuation.json",
+          "command": [
+            "python3",
+            "replay.py",
+            "scenarios/continuation.json"
+          ],
+          "returncode": 0
+        },
+        {
+          "receipt": "reviews/interpretation/workspace/runs/decision.json",
+          "command": [
+            "python3",
+            "replay.py",
+            "scenarios/decision.json"
+          ],
+          "returncode": 1
+        },
+        {
+          "receipt": "reviews/interpretation/workspace/runs/evaluate.json",
+          "command": [
+            "./tg",
+            "--file",
+            "evidence.graph.json",
+            "evaluate",
+            "c",
+            "t",
+            "--save",
+            "evidence-check",
+            "--actor",
+            "participant",
+            "--json"
+          ],
+          "returncode": 0
+        },
+        {
+          "receipt": "reviews/interpretation/workspace/runs/inspect-after.json",
+          "command": [
+            "python3",
+            "inspect_evidence.py"
+          ],
+          "returncode": 0
+        },
+        {
+          "receipt": "reviews/interpretation/workspace/runs/inspect-before.json",
+          "command": [
+            "python3",
+            "inspect_evidence.py"
+          ],
+          "returncode": 0
+        },
+        {
+          "receipt": "reviews/interpretation/workspace/runs/node-extract.json",
+          "command": [
+            "./tg",
+            "--file",
+            "evidence.graph.json",
+            "node",
+            "extract",
+            "--json"
+          ],
+          "returncode": 0
+        },
+        {
+          "receipt": "reviews/interpretation/workspace/runs/node-source.json",
+          "command": [
+            "./tg",
+            "--file",
+            "evidence.graph.json",
+            "node",
+            "source",
+            "--json"
+          ],
+          "returncode": 0
+        },
+        {
+          "receipt": "reviews/interpretation/workspace/runs/recovery.json",
+          "command": [
+            "python3",
+            "replay.py",
+            "scenarios/recovery.json"
+          ],
+          "returncode": 0
+        },
+        {
+          "receipt": "reviews/interpretation/workspace/runs/roles.json",
+          "command": [
+            "python3",
+            "replay.py",
+            "scenarios/roles.json"
+          ],
+          "returncode": 0
+        },
+        {
+          "receipt": "reviews/interpretation/workspace/runs/route-off.json",
+          "command": [
+            "python3",
+            "replay.py",
+            "scenarios/route-off.json"
+          ],
+          "returncode": 0
+        },
+        {
+          "receipt": "reviews/interpretation/workspace/runs/route-on.json",
+          "command": [
+            "python3",
+            "replay.py",
+            "scenarios/route-on.json"
+          ],
+          "returncode": 0
+        },
+        {
+          "receipt": "reviews/interpretation/workspace/runs/unsettled.json",
+          "command": [
+            "python3",
+            "replay.py",
+            "scenarios/unsettled.json"
+          ],
+          "returncode": 1
+        }
+      ]
+    },
+    {
+      "id": "unknown-policy",
+      "score": 1,
+      "excerpt": "Both events were rejected because no rule matches their kind, so the model does not cover threshold-based stopping or cancellation. The engine behaved correctly; the rejection is a coverage result, not an engine or task failure. Design discussion is needed on whether a threshold ends a record (and with what outcome and response owner), whether cancel is distinct from end with a cancelled outcome, who may cancel (user-driven versus autonomous roles), and whether either should touch the intention. Because rejection happened at rule matching, the run says nothing about whether record A would have qualified.",
+      "explanation": "No-enabled-rule is interpreted as absent authored behavior requiring discussion, not a ratified prohibition, permission or operator-consultation rule.",
+      "output_witnesses": [
+        {
+          "receipt": "reviews/interpretation/workspace/runs/unsettled.json",
+          "observations": [
+            "runs/unsettled.json: returncode 1; revision 0; seen []",
+            "event threshold (kind threshold-reached): rejected, reason no-enabled-rule; before_hash == after_hash (fb12129e...)",
+            "event cancel (kind cancel): rejected, reason no-enabled-rule; state unchanged",
+            "model rules only handle kinds: blocked, recover, end, choose, consider, answer, route"
+          ]
+        }
+      ]
+    }
+  ],
+  "score": 12,
+  "possible": 12,
+  "hard_failures": [],
+  "grader": "/root/evidence_sessions; did not produce participant answers; involved in underlying tool/fixture mechanisms, not blinded to model expectations",
+  "raw_path": "reviews/interpretation/participant.json",
+  "raw_sha256": "6110b7b9decd849c7289cf3ff0e12b44faebfdb992127550ff3d956cefc57b8f",
+  "input_path": "reviews/interpretation/workspace/TASK.md",
+  "input_sha256": "f85fe3b1e22da17c084e4ba0f9b672c6490b85805147c38d750cc84c6b77cf3a",
+  "rubric_path": "reviews/interpretation/grader-only.json",
+  "rubric_sha256": "540baea6498bfdb9bf6ae70cf166414a7b516cd64ba302e55121f2f6d086172f",
+  "artifact_hashes": {
+    "workspace/TASK.md": "f85fe3b1e22da17c084e4ba0f9b672c6490b85805147c38d750cc84c6b77cf3a",
+    "workspace/answers.json": "08dc9fcafc067bbea9085e55e4eb7e5a69ea828e2480c020537ec712206b2323",
+    "workspace/assumption-edit.json": "5311f05444f320e849b8e8f1a5d8caabd0bbc9f070f4ff26d24aa26ff4fb164a",
+    "workspace/capture.py": "e617c1fe1d46ee79440817c70b7e090c50f17d31825b866d3a41b9fc50bb59f6",
+    "workspace/checkpoint.json": "f60facbef7008c1d75e04d40c217db8046006dd644203aa48fe99d5bfacdc84f",
+    "workspace/checkpoint.py": "8567f77d5179bd03a545586c5c1afdd088dc70b13bba1b98a7b01d27220d5f47",
+    "workspace/dependency.py": "2b3997745b3eb9ec2c25775e98ea5968452179f58558ccc9363462659f3cd2e8",
+    "workspace/evidence.graph.json": "73d2240756092de61270f5c80b10bd2eddd94589e8e9224bd93bf5eff62ccf94",
+    "workspace/evidence.graph.json.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "workspace/formalcheck.py": "8dc31f1d0a6d69ead420166af4412e9e08b09a96a9300051e5acc487418982a3",
+    "workspace/graph.py": "3cbabe4ffc28b483408f371435056dfd4fd346ccc7220f03d2e05b53bf8e8321",
+    "workspace/input-manifest.json": "c1d2ee5e3f7f099e7c726368abe4e4fdb76683be81798e6573042be61bd8e2cc",
+    "workspace/inspect_evidence.py": "949ea2981d1d118ae9248dc6187c19d213e0df1471f13cb2b758a37d8bdf046f",
+    "workspace/interpretation.md": "c7539bc5e1c09a657871de081dce09e7b210d1560117e8fb58d530de00da732c",
+    "workspace/replay.py": "a39a49510b9935c7d41097d531d03bb2d98bc0778edfaaff0cf496571eef2a3e",
+    "workspace/runs/apply-assumption.json": "e8518eddacdaa4aafc1e3013dfcd568a8fe447434877032499f2457fb50b72bb",
+    "workspace/runs/checkpoint-resume.json": "e9d3094efa565780967ae308eec2effae4288e2c605a61e79f60991be3a5d435",
+    "workspace/runs/checkpoint-save.json": "12282a95b09815c7f91a5d127da5823dd7f0e67df360c60ff67510cec39ac950",
+    "workspace/runs/completions.json": "f60d87983c0f1edab7ca5c1a83a5518f745b68a4aa523f7544da0b4e792c9cef",
+    "workspace/runs/continuation.json": "597648a9fff88e640ea7ef435ab728199513f7a0ccb55110f05840367dad701c",
+    "workspace/runs/decision.json": "780e8df76129d641362c54c34dc1c292d854319d98c51b2bc3e41ad06bada1b3",
+    "workspace/runs/evaluate.json": "f178f6c32d043978825ae51c8e3c74df152fc29c6c580b86ccace86bdecbcdd0",
+    "workspace/runs/inspect-after.json": "c16ed1375f6364b6f92c918de613732cc5e3a80508c641032ae61372f19511c5",
+    "workspace/runs/inspect-before.json": "68ce4d20cf14b0d9c45acea3c29735df805dd205c9b7efdeeffef87622ff70da",
+    "workspace/runs/node-extract.json": "8d5c721073271feb910a1d02a77e0a0bcd1896986fef462d3a14d1d791d6cf69",
+    "workspace/runs/node-source.json": "f6ba2b9a49c7fabd5b0d8266668fc931006c7449222db40a104db943f44c0096",
+    "workspace/runs/recovery.json": "7d012b2202267294c56668ce9cb2c1f0c68c727f1adb5ae37bd35c582b889197",
+    "workspace/runs/roles.json": "f2b745ada97c8c3de1fbd04089181e2166d1cfd4ed5511df7863a30a27928d5e",
+    "workspace/runs/route-off.json": "a1937c6618293444b2d7c5402a76dfc8cb765aaf95a58f5b3ab16359d10b4ecb",
+    "workspace/runs/route-on.json": "edff90fdbab51e10bc6a3711477acc927b5b355d6064b7d6fa978a49d6b58420",
+    "workspace/runs/unsettled.json": "47c43886ae7cc5506f623c7d443dadb72666e5b656cb04fb4232a6a6e7101f50",
+    "workspace/scenarios/checkpoint.json": "3ef5ffc469b5c9d03cd4781310ff36757f8f20251f052fee9bf9b5c34300f7d3",
+    "workspace/scenarios/completions.json": "15f87daaa5f3b5e7f3384945bdb5f21915174df7aec4b8b223e6dee6d61b008c",
+    "workspace/scenarios/continuation.json": "f398e3e77b8150e3cf414f90e57e65f96f00a925fec9dfd83bd321f9b2ddcdd5",
+    "workspace/scenarios/decision.json": "d20a929fcddc4e84d3b446910d9d8579ea5aa2b3d3ea82983e6684e3df4772c5",
+    "workspace/scenarios/recovery.json": "82b453333320bc0e9efb7071488b01524a7ae6cb8cc751ac54c4d922fde55090",
+    "workspace/scenarios/roles.json": "0251a9a73903280f2fd448b1d672e2ad4bdae8b2531c1e5ff670bf2780dab020",
+    "workspace/scenarios/route-off.json": "83fa9e8b8c4e479b618b638e5f58f3ca70aacc157d4bf787327f1ea1c50243cf",
+    "workspace/scenarios/route-on.json": "07b3b9d653e8a71de1576f0353d404622d0845066690087aa24a7ed67899102c",
+    "workspace/scenarios/unsettled.json": "f97243d4e04b89aa04389d814019f469eca4fc7b872f4baef83e60da9bf1a5c6",
+    "workspace/tg": "7a33a1e1c17057f5176c190ede761fdadf438e2ff6efd91bd4a002f68c4a70ba",
+    "workspace/tracecheck.py": "5d83313e15c1714b684427c035fddef7add55898ec1ce3d024e89c72521f0ce9",
+    "raw-stream.jsonl": "61ffe169e44fa34ed279a8c4b48ae40a2d0c4cd9daba84162bcc7e061c1b4685",
+    "run.json": "ef3dfb2d4498068e453a3f70440a0010952fbd159dc9aa9d5c4fb4ace68d1e05",
+    "original-evidence.graph.json": "46fa0cd7847b0608f766e900f7666b7eb0dca28a7d66fec29ee3a626f4372790",
+    "grader-only.json": "540baea6498bfdb9bf6ae70cf166414a7b516cd64ba302e55121f2f6d086172f",
+    "participant.json": "6110b7b9decd849c7289cf3ff0e12b44faebfdb992127550ff3d956cefc57b8f"
+  },
+  "command_receipts": {
+    "apply-assumption": {
+      "path": "reviews/interpretation/workspace/runs/apply-assumption.json",
+      "sha256": "e8518eddacdaa4aafc1e3013dfcd568a8fe447434877032499f2457fb50b72bb",
+      "command": [
+        "./tg",
+        "--file",
+        "evidence.graph.json",
+        "apply",
+        "assumption-edit.json",
+        "--actor",
+        "participant",
+        "--reason",
+        "Inspect changed synthetic extraction assumption",
+        "--expect",
+        "1",
+        "--json"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.06963170800008811
+    },
+    "checkpoint-resume": {
+      "path": "reviews/interpretation/workspace/runs/checkpoint-resume.json",
+      "sha256": "e9d3094efa565780967ae308eec2effae4288e2c605a61e79f60991be3a5d435",
+      "command": [
+        "python3",
+        "checkpoint.py",
+        "resume",
+        "scenarios/checkpoint.json",
+        "checkpoint.json"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.03508812500513159
+    },
+    "checkpoint-save": {
+      "path": "reviews/interpretation/workspace/runs/checkpoint-save.json",
+      "sha256": "12282a95b09815c7f91a5d127da5823dd7f0e67df360c60ff67510cec39ac950",
+      "command": [
+        "python3",
+        "checkpoint.py",
+        "save",
+        "scenarios/checkpoint.json",
+        "checkpoint.json"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.03815591600141488
+    },
+    "completions": {
+      "path": "reviews/interpretation/workspace/runs/completions.json",
+      "sha256": "f60d87983c0f1edab7ca5c1a83a5518f745b68a4aa523f7544da0b4e792c9cef",
+      "command": [
+        "python3",
+        "replay.py",
+        "scenarios/completions.json"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.04381204099627212
+    },
+    "continuation": {
+      "path": "reviews/interpretation/workspace/runs/continuation.json",
+      "sha256": "597648a9fff88e640ea7ef435ab728199513f7a0ccb55110f05840367dad701c",
+      "command": [
+        "python3",
+        "replay.py",
+        "scenarios/continuation.json"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.043607500003417954
+    },
+    "decision": {
+      "path": "reviews/interpretation/workspace/runs/decision.json",
+      "sha256": "780e8df76129d641362c54c34dc1c292d854319d98c51b2bc3e41ad06bada1b3",
+      "command": [
+        "python3",
+        "replay.py",
+        "scenarios/decision.json"
+      ],
+      "returncode": 1,
+      "elapsed_seconds": 0.040213000000221655
+    },
+    "evaluate": {
+      "path": "reviews/interpretation/workspace/runs/evaluate.json",
+      "sha256": "f178f6c32d043978825ae51c8e3c74df152fc29c6c580b86ccace86bdecbcdd0",
+      "command": [
+        "./tg",
+        "--file",
+        "evidence.graph.json",
+        "evaluate",
+        "c",
+        "t",
+        "--save",
+        "evidence-check",
+        "--actor",
+        "participant",
+        "--json"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.07163024999317713
+    },
+    "inspect-after": {
+      "path": "reviews/interpretation/workspace/runs/inspect-after.json",
+      "sha256": "c16ed1375f6364b6f92c918de613732cc5e3a80508c641032ae61372f19511c5",
+      "command": [
+        "python3",
+        "inspect_evidence.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.06983662498532794
+    },
+    "inspect-before": {
+      "path": "reviews/interpretation/workspace/runs/inspect-before.json",
+      "sha256": "68ce4d20cf14b0d9c45acea3c29735df805dd205c9b7efdeeffef87622ff70da",
+      "command": [
+        "python3",
+        "inspect_evidence.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.06940574999316595
+    },
+    "node-extract": {
+      "path": "reviews/interpretation/workspace/runs/node-extract.json",
+      "sha256": "8d5c721073271feb910a1d02a77e0a0bcd1896986fef462d3a14d1d791d6cf69",
+      "command": [
+        "./tg",
+        "--file",
+        "evidence.graph.json",
+        "node",
+        "extract",
+        "--json"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.06503695898572914
+    },
+    "node-source": {
+      "path": "reviews/interpretation/workspace/runs/node-source.json",
+      "sha256": "f6ba2b9a49c7fabd5b0d8266668fc931006c7449222db40a104db943f44c0096",
+      "command": [
+        "./tg",
+        "--file",
+        "evidence.graph.json",
+        "node",
+        "source",
+        "--json"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.7590839159965981
+    },
+    "recovery": {
+      "path": "reviews/interpretation/workspace/runs/recovery.json",
+      "sha256": "7d012b2202267294c56668ce9cb2c1f0c68c727f1adb5ae37bd35c582b889197",
+      "command": [
+        "python3",
+        "replay.py",
+        "scenarios/recovery.json"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.04017554200254381
+    },
+    "roles": {
+      "path": "reviews/interpretation/workspace/runs/roles.json",
+      "sha256": "f2b745ada97c8c3de1fbd04089181e2166d1cfd4ed5511df7863a30a27928d5e",
+      "command": [
+        "python3",
+        "replay.py",
+        "scenarios/roles.json"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.04177045900723897
+    },
+    "route-off": {
+      "path": "reviews/interpretation/workspace/runs/route-off.json",
+      "sha256": "a1937c6618293444b2d7c5402a76dfc8cb765aaf95a58f5b3ab16359d10b4ecb",
+      "command": [
+        "python3",
+        "replay.py",
+        "scenarios/route-off.json"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.04038249998120591
+    },
+    "route-on": {
+      "path": "reviews/interpretation/workspace/runs/route-on.json",
+      "sha256": "edff90fdbab51e10bc6a3711477acc927b5b355d6064b7d6fa978a49d6b58420",
+      "command": [
+        "python3",
+        "replay.py",
+        "scenarios/route-on.json"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.06628683299641125
+    },
+    "unsettled": {
+      "path": "reviews/interpretation/workspace/runs/unsettled.json",
+      "sha256": "47c43886ae7cc5506f623c7d443dadb72666e5b656cb04fb4232a6a6e7101f50",
+      "command": [
+        "python3",
+        "replay.py",
+        "scenarios/unsettled.json"
+      ],
+      "returncode": 1,
+      "elapsed_seconds": 0.03810475001228042
+    }
+  },
+  "input_integrity": {
+    "formalcheck.py": true,
+    "checkpoint.py": true,
+    "graph.py": true,
+    "assumption-edit.json": true,
+    "tracecheck.py": true,
+    "capture.py": true,
+    "replay.py": true,
+    "dependency.py": true,
+    "TASK.md": true,
+    "inspect_evidence.py": true,
+    "tg": true,
+    "scenarios/route-off.json": true,
+    "scenarios/roles.json": true,
+    "scenarios/unsettled.json": true,
+    "scenarios/checkpoint.json": true,
+    "scenarios/decision.json": true,
+    "scenarios/completions.json": true,
+    "scenarios/recovery.json": true,
+    "scenarios/route-on.json": true,
+    "scenarios/continuation.json": true
+  },
+  "metrics": {
+    "wall_seconds": 263.6906887500081,
+    "actual_tool_calls": 32,
+    "captured_subprocess_commands": 16,
+    "tool_errors": [
+      {
+        "id": "toolu_01TpbsBw2VeyujfvnXfpPoAJ",
+        "excerpt": "{\n    \"op\": \"append\",\n    \"path\": [\n     \"pulse\"\n    ],\n    \"value\": {\n     \"intention\": {\n      \"$arg\": \"intention\"\n     },\n     \"desk\": {\n      \"$state\": [\n       \"config\",\n       \"desk\"\n      ]\n     }\n    }\n   }\n  ]\n }\n]\n(eval):2: ==DIFF not found"
+      }
+    ],
+    "primary_usage": {
+      "input_tokens": 450,
+      "cache_creation_input_tokens": 59126,
+      "cache_read_input_tokens": 455332,
+      "output_tokens": 21221,
+      "output_tokens_details": {
+        "thinking_tokens": 5495
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 59126,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "not_available",
+      "iterations": [
+        {
+          "input_tokens": 32,
+          "output_tokens": 877,
+          "cache_read_input_tokens": 61771,
+          "cache_creation_input_tokens": 2563,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2563
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard"
+    },
+    "total_accounted_primary_tokens": 536129,
+    "model_usage": {
+      "claude-haiku-4-5-20251001": {
+        "inputTokens": 1783,
+        "outputTokens": 13,
+        "cacheReadInputTokens": 0,
+        "cacheCreationInputTokens": 0,
+        "webSearchRequests": 0,
+        "costUSD": 0.001848,
+        "contextWindow": 200000,
+        "maxOutputTokens": 32000,
+        "thinkingTokens": 0,
+        "canonicalModel": "claude-haiku-4-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      },
+      "claude-fable-5-1": {
+        "inputTokens": 450,
+        "outputTokens": 21221,
+        "cacheReadInputTokens": 455332,
+        "cacheCreationInputTokens": 59126,
+        "webSearchRequests": 0,
+        "costUSD": 2.361903,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 64000,
+        "thinkingTokens": 5495,
+        "canonicalModel": "claude-fable-5-1",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "reported_total_cost_usd": 2.363751,
+    "human_correction_time": null
+  },
+  "limitations": [
+    "Single tool-enabled synthetic interpretation trial, not a runtime integration test or universal proof.",
+    "Grader is independent of participant output but belongs to the tool-building team; not a blinded external panel.",
+    "Successful observations do not ratify additional scheduling, authentication or missing-rule policies.",
+    "Artifacts were copied after process completion without correcting participant answers.",
+    "One exploratory shell command failed on ==DIFF marker syntax; participant recovered. The sixteen required captured commands are present; decision/unsettled return1 deliberately report rejected events."
+  ],
+  "nonblocking_notes": [
+    "M05 names missing-update-target for a hypothetical consider event before response creation; this engine would return missing-parent. Actual tested completion ordering and pending result are described correctly.",
+    "M07 says nothing else in state differs after already documenting config.desk changes. Read this as no additional modeled behavioral effects; configuration itself also differs.",
+    "E01 calls follow-up review a human step. The evidence establishes no automatic repair by the checker; it does not establish that a future agent could not perform the review.",
+    "The participant uncovered plausible additional unguarded transitions in the authored replay model. These are candidate theory questions, not observed failures of Morphisms."
+  ]
+}

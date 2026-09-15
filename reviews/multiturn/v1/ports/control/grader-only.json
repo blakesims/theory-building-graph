@@ -1,0 +1,18 @@
+{
+  "criteria": {
+    "01-identity-unknown": [
+      "Identity asked, no false contradiction, no silently chosen identity_key."
+    ],
+    "02-identity-defined": [
+      "Explicit fixture answer sourced as(host,number); actual tool evaluate yields satisfies for two separate instances. User pattern/claim scope not broadened."
+    ],
+    "03-counterexample": [
+      "Third observation added without erasing first two; actual same constraint returns violates with host-a/8080 and distinct owners. No rule weakening or false exactly-one/at-most-two contradiction."
+    ]
+  },
+  "status": "not-graded",
+  "forbidden": "Do not show to participant",
+  "cases": [
+    "S05"
+  ]
+}

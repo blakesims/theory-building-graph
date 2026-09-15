@@ -1,0 +1,153 @@
+{
+  "stage": "02-atomic-proposal",
+  "cases": [
+    "S01"
+  ],
+  "command": [
+    "claude",
+    "-p",
+    "--safe-mode",
+    "--tools",
+    "Bash,Read",
+    "--allowedTools",
+    "Bash,Read",
+    "--no-session-persistence",
+    "--verbose",
+    "--output-format",
+    "stream-json"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 47.052,
+  "timed_out": false,
+  "stderr": "",
+  "result": {
+    "duration_api_ms": 45149,
+    "stop_reason": "end_turn",
+    "session_id": "267c70b7-e83f-4d46-ac77-8271825a464c",
+    "total_cost_usd": 0.42131975,
+    "usage": {
+      "input_tokens": 130,
+      "cache_creation_input_tokens": 11777,
+      "cache_read_input_tokens": 49351,
+      "output_tokens": 3412,
+      "output_tokens_details": {
+        "thinking_tokens": 1169
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 11777,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "not_available",
+      "iterations": [
+        {
+          "input_tokens": 32,
+          "output_tokens": 508,
+          "cache_read_input_tokens": 13860,
+          "cache_creation_input_tokens": 3125,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 3125
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard"
+    },
+    "modelUsage": {
+      "claude-haiku-4-5-20251001": {
+        "inputTokens": 1467,
+        "outputTokens": 15,
+        "cacheReadInputTokens": 0,
+        "cacheCreationInputTokens": 0,
+        "webSearchRequests": 0,
+        "costUSD": 0.001542,
+        "contextWindow": 200000,
+        "maxOutputTokens": 32000,
+        "thinkingTokens": 0,
+        "canonicalModel": "claude-haiku-4-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      },
+      "claude-fable-5-1": {
+        "inputTokens": 130,
+        "outputTokens": 3412,
+        "cacheReadInputTokens": 49351,
+        "cacheCreationInputTokens": 11777,
+        "webSearchRequests": 0,
+        "costUSD": 0.41977775,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 64000,
+        "thinkingTokens": 1169,
+        "canonicalModel": "claude-fable-5-1",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "is_error": false,
+    "num_turns": 5,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "Captured as a proposed hypothesis. Graph revision moved from 0 to 1 with 8 changes.\n\n**What was written** (applied via `./tg apply` with the batch shown above):\n\n- **`atomic-replacement-hypothesis-source`**, a synthetic verbatim source holding your exact wording, so the \"hypothesis, not a decision\" framing is preserved at the provenance level.\n- **`atomic-replacement-hypothesis`**, a claim with status proposed and review state needs-review. Its text is prefixed \"Hypothesis (not decided)\". Metadata records the open points: whether operator approval still applies, whether the steward is informed after completion, and whether archive-and-add is actually atomic in the record store.\n- **Edges:** `about` to the choose-work operation, `extracted-from` to the new source, a partial `answers` edge to the open replacement question, and a `potential-conflict` edge to `replacement-exception` with an explanation that this is a review tension, not a proven contradiction.\n\n**What was not touched:** `replacement-exception` and `steward-next-work` remain accepted and current. The replacement question stays open. The tool marks the question's review state as needs-review only because a new candidate answer was attached.\n\n**One observation from the reads:** the earlier review of steward-next-work showed no context, but a direct node read now shows it has a `governs` edge to choose-work. The review verb appears to omit anchor edges rather than the claim being unlinked.\n\n`./tg check` reports the expected new review finding for the declared tension and no structural errors.",
+    "ttft_ms": 2708,
+    "type": "result",
+    "duration_ms": 46268,
+    "uuid": "a87af5dd-11a9-4de3-87ca-64ba1e97f364",
+    "ttft_stream_ms": 1496,
+    "time_to_request_ms": 339,
+    "first_content_frame_ms": 2172,
+    "queued_turn_count": 0,
+    "result_index": 0
+  },
+  "tool_call_count": 4,
+  "tool_ids": [
+    "toolu_015s4g115R19mZiNMJUDsoSo",
+    "toolu_01TnvLXQgMicRxHfDZSJBfPa",
+    "toolu_01VUcwd5ozF2JZFHJL4YXuNB",
+    "toolu_01WweheBZTfRB7iteoYSimkx"
+  ],
+  "prompt_sha256": "83269ff06906a90113e68d4bd77a2a237956c9a5d1608e250d4febc134fa3a30",
+  "before_sha256": "c7f9bd55b098da6e591819c05c3d6ad7d2c2bce34f6fd33abe57e4535286cc2c",
+  "after_sha256": "f82cff1525fa5733b0eb21421f835411cec4f18eec4a41ec7c18d1193a786969",
+  "stdout_sha256": "c2e7b6c339bc5165f6599aa1683ff1a8a5b3a94b6831cd53c3246be06ae3b83d",
+  "data_changed": true,
+  "semantic_grade": "not-graded",
+  "budget": {
+    "tool_limit": 12,
+    "seconds_limit": 180,
+    "calls_exceeded": false,
+    "time_exceeded": false
+  }
+}

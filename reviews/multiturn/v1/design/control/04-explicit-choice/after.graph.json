@@ -1,0 +1,1367 @@
+{
+  "version": 1,
+  "revision": 3,
+  "node_types": {
+    "entity": {},
+    "operation": {},
+    "claim": {},
+    "question": {},
+    "source": {},
+    "extraction": {},
+    "trace": {},
+    "check-result": {}
+  },
+  "edge_types": {
+    "about": {},
+    "governs": {},
+    "answers": {},
+    "depends-on": {},
+    "extracted-from": {},
+    "revises": {},
+    "potential-conflict": {},
+    "supports": {},
+    "tests": {}
+  },
+  "nodes": {
+    "steward-role": {
+      "type": "entity",
+      "text": "Steward role",
+      "status": "declared",
+      "meta": {
+        "kind": "agent-role",
+        "aliases": [
+          "steward"
+        ]
+      }
+    },
+    "orchestrator-role": {
+      "type": "entity",
+      "text": "Orchestrator role",
+      "status": "declared",
+      "meta": {
+        "kind": "agent-role",
+        "aliases": [
+          "orchestrator"
+        ]
+      }
+    },
+    "operator-role": {
+      "type": "entity",
+      "text": "Operator role",
+      "status": "declared",
+      "meta": {
+        "kind": "agent-role",
+        "aliases": [
+          "operator"
+        ]
+      }
+    },
+    "choose-work": {
+      "type": "operation",
+      "text": "Select subsequent work for an intention.",
+      "status": "declared"
+    },
+    "end-attempt": {
+      "type": "operation",
+      "text": "End the current work attempt.",
+      "status": "declared"
+    },
+    "create-record": {
+      "type": "operation",
+      "text": "Mechanically insert a work record.",
+      "status": "declared"
+    },
+    "initial-decision": {
+      "type": "source",
+      "text": "SYNTHETIC prior decision: the steward generally selects work. For replacement after failure, operator-approved orchestrator replacement is currently allowed to avoid a relay when the orchestrator already holds the failure context.",
+      "status": "recorded",
+      "meta": {
+        "synthetic": true,
+        "source_kind": "synthetic-fixture"
+      }
+    },
+    "steward-next-work": {
+      "type": "claim",
+      "text": "The steward generally chooses subsequent work; an operator-approved orchestrator replacement exception is currently allowed.",
+      "status": "superseded",
+      "meta": {
+        "review_state": "historical",
+        "source_ref": "initial-decision",
+        "retired_reason": "Superseded by steward-always-chooses-decision: the operator-approved exception it mentioned is no longer allowed.",
+        "retired_by": "steward-always-chooses-decision"
+      },
+      "semantic_version": 2
+    },
+    "replacement-exception": {
+      "type": "claim",
+      "text": "The orchestrator may choose replacement work with explicit operator approval without going through the steward.",
+      "status": "superseded",
+      "meta": {
+        "review_state": "historical",
+        "source_ref": "initial-decision",
+        "rationale": "Avoid an unnecessary relay when the orchestrator has the failure context.",
+        "review_reason": "Decision relation changed: steward-always-chooses-hypothesis-potential-conflict-replacement-exception",
+        "review_roots": [
+          "steward-always-chooses-hypothesis"
+        ],
+        "retired_reason": "User decided the steward always chooses subsequent work. Rationale retained: avoid an unnecessary relay when the orchestrator has the failure context.",
+        "retired_by": "steward-always-chooses-decision"
+      },
+      "semantic_version": 2
+    },
+    "replacement-question": {
+      "type": "question",
+      "text": "How should replacement work move between orchestrator, operator and steward?",
+      "status": "answered",
+      "meta": {
+        "answer_shape": "exploration",
+        "review_state": "current",
+        "review_reason": "Decision relation changed: steward-always-chooses-hypothesis-answers-replacement-question Answer changed: steward-always-chooses-hypothesis",
+        "review_roots": [
+          "steward-always-chooses-hypothesis"
+        ],
+        "resolution_note": "Answered by steward-always-chooses-decision. The consultation modality is not part of this answer; see consultation-question, which stays open."
+      },
+      "semantic_version": 2
+    },
+    "consultation-question": {
+      "type": "question",
+      "text": "Is operator consultation before stopping a degraded attempt mandatory, optional, or conditional?",
+      "status": "open",
+      "meta": {
+        "answer_shape": "condition",
+        "review_state": "current"
+      }
+    },
+    "threshold-ending": {
+      "type": "claim",
+      "text": "The orchestrator can end unproductive work when a configured threshold is reached.",
+      "status": "accepted",
+      "meta": {
+        "review_state": "current",
+        "source_ref": "initial-decision",
+        "enforcement": "guidance"
+      }
+    },
+    "may-ask": {
+      "type": "claim",
+      "text": "The orchestrator may ask the operator whether to keep trying or mark an attempt failed.",
+      "status": "accepted",
+      "meta": {
+        "review_state": "current",
+        "source_ref": "initial-decision",
+        "enforcement": "guidance"
+      }
+    },
+    "cpu-intention": {
+      "type": "entity",
+      "text": "Continuing intention: reduce Morphisms CPU usage.",
+      "status": "declared"
+    },
+    "chosen-mechanism": {
+      "type": "claim",
+      "text": "A notification mechanism is the currently selected implementation hypothesis for reducing CPU.",
+      "status": "proposed",
+      "meta": {
+        "review_state": "current",
+        "source_ref": "initial-decision"
+      }
+    },
+    "atomic-replacement-hypothesis-source": {
+      "type": "source",
+      "status": "recorded",
+      "text": "Could replacement be an atomic archive-and-add operation performed by the orchestrator, without waking the steward until the replacement completes? This is a hypothesis, not a decision. Please capture it for discussion, keeping the existing operator-approved exception current for now.",
+      "meta": {
+        "source_kind": "verbatim",
+        "synthetic": true,
+        "speaker": "user",
+        "session_note": "SYNTHETIC session utterance captured for discussion; explicitly a hypothesis, not a decision."
+      }
+    },
+    "atomic-replacement-hypothesis": {
+      "type": "claim",
+      "status": "rejected",
+      "text": "Hypothesis (not decided): replacement could be an atomic archive-and-add operation performed by the orchestrator, without waking the steward until the replacement completes.",
+      "meta": {
+        "review_state": "historical",
+        "modality": "hypothesis",
+        "decision_status": "not-decided",
+        "source_ref": "atomic-replacement-hypothesis-source",
+        "open_points": "Does explicit operator approval still apply? Is the steward informed after completion? Is archive-and-add actually atomic in the record store?",
+        "review_reason": "Decision relation changed: steward-always-chooses-hypothesis-potential-conflict-atomic-replacement-hypothesis",
+        "review_roots": [
+          "steward-always-chooses-hypothesis"
+        ],
+        "retired_reason": "User decided the steward always chooses subsequent work; the orchestrator does not perform replacement. Hypothesis and its open points kept for history.",
+        "retired_by": "steward-always-chooses-decision"
+      },
+      "semantic_version": 2
+    },
+    "steward-always-chooses-hypothesis-source": {
+      "type": "source",
+      "status": "recorded",
+      "text": "Maybe the orchestrator should always end failed work and let the steward choose what comes next. I have forgotten why we allowed that earlier exception. Remind me of it and its reason, and capture this alternative, but I am not deciding between them yet.",
+      "meta": {
+        "source_kind": "verbatim",
+        "synthetic": true,
+        "speaker": "user",
+        "session_note": "SYNTHETIC session utterance. An alternative offered for discussion; the user explicitly is not deciding between this and the atomic-replacement hypothesis or the accepted exception."
+      }
+    },
+    "steward-always-chooses-hypothesis": {
+      "type": "claim",
+      "status": "superseded",
+      "text": "Alternative (not decided): the orchestrator should always end failed work and let the steward choose what comes next, removing the operator-approved orchestrator replacement exception.",
+      "meta": {
+        "modality": "hypothesis",
+        "decision_status": "not-decided",
+        "review_state": "historical",
+        "source_ref": "steward-always-chooses-hypothesis-source",
+        "alternative_to": [
+          "replacement-exception",
+          "atomic-replacement-hypothesis"
+        ],
+        "open_points": "Does the relay cost that motivated the exception (orchestrator already holds the failure context) still matter? How does failure context reach the steward if the orchestrator only ends work? Is operator approval still needed anywhere?",
+        "retired_reason": "Adopted and restated as steward-always-chooses-decision.",
+        "retired_by": "steward-always-chooses-decision"
+      },
+      "semantic_version": 2
+    },
+    "steward-always-chooses-decision-source": {
+      "type": "source",
+      "status": "recorded",
+      "text": "I have decided: the steward always chooses subsequent work. Retire both the operator-approved bypass and the atomic replacement proposal as current alternatives, keeping their rationale and history. The orchestrator can ask whether to keep trying or mark the attempt failed, then the steward chooses next. This does not decide whether consultation before ending is mandatory. Reconcile the replacement question and show me the changed IDs and revision.",
+      "meta": {
+        "source_kind": "verbatim",
+        "synthetic": true,
+        "speaker": "user",
+        "session_note": "SYNTHETIC session utterance. An explicit decision by the user; it also explicitly leaves the consultation modality undecided."
+      }
+    },
+    "steward-always-chooses-decision": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "Decision: the steward always chooses subsequent work. The orchestrator does not choose replacement work; the operator-approved orchestrator bypass is retired. The orchestrator can ask whether to keep trying or mark the attempt failed, and once the attempt ends the steward chooses what comes next. Whether consultation before ending an attempt is mandatory is not decided by this claim.",
+      "meta": {
+        "review_state": "current",
+        "modality": "decision",
+        "decision_status": "decided",
+        "decided_by": "user",
+        "source_ref": "steward-always-chooses-decision-source",
+        "supersedes": [
+          "steward-next-work",
+          "replacement-exception",
+          "atomic-replacement-hypothesis",
+          "steward-always-chooses-hypothesis"
+        ],
+        "leaves_open": [
+          "consultation-question"
+        ],
+        "extraction_note": "The source does not name whom the orchestrator asks whether to keep trying; no addressee has been assigned. The retired exception's rationale (avoid an unnecessary relay when the orchestrator holds the failure context) is preserved on replacement-exception and was not adopted.",
+        "reviewed_inputs": {
+          "steward-always-chooses-decision-source": "eebb3c42fdd2cc3f2455bd3718fd87188e8f1144926d7966629465f5cb106bd8"
+        },
+        "reviewed_input_versions": {
+          "steward-always-chooses-decision-source": 1
+        }
+      }
+    }
+  },
+  "edges": {
+    "steward-next-work-governs-choose-work": {
+      "type": "governs",
+      "from": "steward-next-work",
+      "to": "choose-work"
+    },
+    "replacement-exception-governs-choose-work": {
+      "type": "governs",
+      "from": "replacement-exception",
+      "to": "choose-work"
+    },
+    "replacement-question-about-choose-work": {
+      "type": "about",
+      "from": "replacement-question",
+      "to": "choose-work"
+    },
+    "consultation-question-about-end-attempt": {
+      "type": "about",
+      "from": "consultation-question",
+      "to": "end-attempt"
+    },
+    "threshold-ending-governs-end-attempt": {
+      "type": "governs",
+      "from": "threshold-ending",
+      "to": "end-attempt"
+    },
+    "may-ask-governs-end-attempt": {
+      "type": "governs",
+      "from": "may-ask",
+      "to": "end-attempt"
+    },
+    "chosen-mechanism-about-cpu-intention": {
+      "type": "about",
+      "from": "chosen-mechanism",
+      "to": "cpu-intention"
+    },
+    "atomic-replacement-hypothesis-about-choose-work": {
+      "from": "atomic-replacement-hypothesis",
+      "to": "choose-work",
+      "type": "about"
+    },
+    "atomic-replacement-hypothesis-extracted-from-source": {
+      "from": "atomic-replacement-hypothesis",
+      "to": "atomic-replacement-hypothesis-source",
+      "type": "extracted-from"
+    },
+    "atomic-replacement-hypothesis-answers-replacement-question": {
+      "from": "atomic-replacement-hypothesis",
+      "to": "replacement-question",
+      "type": "answers",
+      "coverage": "partial",
+      "meta": {
+        "note": "Candidate answer under discussion; proposed, not accepted. Does not resolve the question."
+      }
+    },
+    "atomic-replacement-hypothesis-potential-conflict-replacement-exception": {
+      "from": "atomic-replacement-hypothesis",
+      "to": "replacement-exception",
+      "type": "potential-conflict",
+      "meta": {
+        "explanation": "Review hypothesis only. The accepted exception requires explicit operator approval; the hypothesis is silent on approval and adds a deferred steward wake-up. Whether this is a revision or an unresolved condition is undecided. The exception stays accepted and current."
+      }
+    },
+    "steward-always-chooses-hypothesis-about-choose-work": {
+      "from": "steward-always-chooses-hypothesis",
+      "to": "choose-work",
+      "type": "about"
+    },
+    "steward-always-chooses-hypothesis-extracted-from-source": {
+      "from": "steward-always-chooses-hypothesis",
+      "to": "steward-always-chooses-hypothesis-source",
+      "type": "extracted-from"
+    },
+    "steward-always-chooses-hypothesis-answers-replacement-question": {
+      "from": "steward-always-chooses-hypothesis",
+      "to": "replacement-question",
+      "type": "answers",
+      "coverage": "partial",
+      "meta": {
+        "note": "Second candidate answer under discussion alongside atomic-replacement-hypothesis. Proposed, not accepted. Does not resolve the question."
+      }
+    },
+    "steward-always-chooses-hypothesis-potential-conflict-replacement-exception": {
+      "from": "steward-always-chooses-hypothesis",
+      "to": "replacement-exception",
+      "type": "potential-conflict",
+      "meta": {
+        "explanation": "Undecided alternative. If adopted it would remove the exception, whose recorded rationale is avoiding an unnecessary relay when the orchestrator already holds the failure context. The exception stays accepted; no choice has been made."
+      }
+    },
+    "steward-always-chooses-hypothesis-potential-conflict-atomic-replacement-hypothesis": {
+      "from": "steward-always-chooses-hypothesis",
+      "to": "atomic-replacement-hypothesis",
+      "type": "potential-conflict",
+      "meta": {
+        "explanation": "Two competing undecided hypotheses for the same question: orchestrator performs replacement atomically versus orchestrator never chooses replacement. Recorded so both stay visible side by side; neither is preferred."
+      }
+    },
+    "steward-always-chooses-decision-extracted-from-source": {
+      "from": "steward-always-chooses-decision",
+      "to": "steward-always-chooses-decision-source",
+      "type": "extracted-from",
+      "input_fingerprint": "eebb3c42fdd2cc3f2455bd3718fd87188e8f1144926d7966629465f5cb106bd8",
+      "input_version": 1
+    },
+    "steward-always-chooses-decision-governs-choose-work": {
+      "from": "steward-always-chooses-decision",
+      "to": "choose-work",
+      "type": "governs"
+    },
+    "steward-always-chooses-decision-about-end-attempt": {
+      "from": "steward-always-chooses-decision",
+      "to": "end-attempt",
+      "type": "about",
+      "meta": {
+        "note": "The decision touches ending an attempt only in that the orchestrator can ask whether to keep trying or mark it failed; consultation modality stays with consultation-question."
+      }
+    },
+    "steward-always-chooses-decision-answers-replacement-question": {
+      "from": "steward-always-chooses-decision",
+      "to": "replacement-question",
+      "type": "answers",
+      "coverage": "full",
+      "answer": {
+        "complete": true,
+        "findings": [
+          "Replacement work is chosen by the steward in every case.",
+          "The orchestrator can ask whether to keep trying or mark the attempt failed; it does not choose replacement work.",
+          "The operator-approved orchestrator bypass and the atomic archive-and-add proposal are retired as current alternatives, with rationale and history kept.",
+          "Whether consultation before ending is mandatory is out of scope here and remains with consultation-question."
+        ]
+      },
+      "meta": {
+        "note": "Accepted decision from the user; resolves the flow question. The consultation modality is deliberately excluded and stays open on consultation-question."
+      }
+    },
+    "steward-always-chooses-decision-revises-steward-next-work": {
+      "from": "steward-always-chooses-decision",
+      "to": "steward-next-work",
+      "type": "revises",
+      "meta": {
+        "reason": "The old formulation said the exception is currently allowed; the decision removes it."
+      }
+    },
+    "steward-always-chooses-decision-revises-replacement-exception": {
+      "from": "steward-always-chooses-decision",
+      "to": "replacement-exception",
+      "type": "revises",
+      "meta": {
+        "reason": "Retired by user decision. Its rationale (avoid an unnecessary relay when the orchestrator has the failure context) is kept on the retired node and was not adopted."
+      }
+    },
+    "steward-always-chooses-decision-revises-atomic-replacement-hypothesis": {
+      "from": "steward-always-chooses-decision",
+      "to": "atomic-replacement-hypothesis",
+      "type": "revises",
+      "meta": {
+        "reason": "Retired as a current alternative by user decision; kept for history."
+      }
+    },
+    "steward-always-chooses-decision-revises-steward-always-chooses-hypothesis": {
+      "from": "steward-always-chooses-decision",
+      "to": "steward-always-chooses-hypothesis",
+      "type": "revises",
+      "meta": {
+        "reason": "The undecided alternative was adopted and restated as a decision with the keep-trying-or-fail step and the explicit consultation carve-out."
+      }
+    }
+  },
+  "changes": [
+    {
+      "revision": 1,
+      "at": "2026-09-15T10:42:18.150292+00:00",
+      "actor": "assistant",
+      "reason": "Capture user hypothesis on atomic orchestrator replacement as a proposed claim for discussion; existing exception unchanged",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "atomic-replacement-hypothesis-source",
+          "before": null,
+          "after": {
+            "type": "source",
+            "status": "recorded",
+            "text": "Could replacement be an atomic archive-and-add operation performed by the orchestrator, without waking the steward until the replacement completes? This is a hypothesis, not a decision. Please capture it for discussion, keeping the existing operator-approved exception current for now.",
+            "meta": {
+              "source_kind": "verbatim",
+              "synthetic": true,
+              "speaker": "user",
+              "session_note": "SYNTHETIC session utterance captured for discussion; explicitly a hypothesis, not a decision."
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "atomic-replacement-hypothesis",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "Hypothesis (not decided): replacement could be an atomic archive-and-add operation performed by the orchestrator, without waking the steward until the replacement completes.",
+            "meta": {
+              "review_state": "needs-review",
+              "modality": "hypothesis",
+              "decision_status": "not-decided",
+              "source_ref": "atomic-replacement-hypothesis-source",
+              "open_points": "Does explicit operator approval still apply? Is the steward informed after completion? Is archive-and-add actually atomic in the record store?"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "atomic-replacement-hypothesis-about-choose-work",
+          "before": null,
+          "after": {
+            "from": "atomic-replacement-hypothesis",
+            "to": "choose-work",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "atomic-replacement-hypothesis-extracted-from-source",
+          "before": null,
+          "after": {
+            "from": "atomic-replacement-hypothesis",
+            "to": "atomic-replacement-hypothesis-source",
+            "type": "extracted-from"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "atomic-replacement-hypothesis-answers-replacement-question",
+          "before": null,
+          "after": {
+            "from": "atomic-replacement-hypothesis",
+            "to": "replacement-question",
+            "type": "answers",
+            "coverage": "partial",
+            "meta": {
+              "note": "Candidate answer under discussion; proposed, not accepted. Does not resolve the question."
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "atomic-replacement-hypothesis-potential-conflict-replacement-exception",
+          "before": null,
+          "after": {
+            "from": "atomic-replacement-hypothesis",
+            "to": "replacement-exception",
+            "type": "potential-conflict",
+            "meta": {
+              "explanation": "Review hypothesis only. The accepted exception requires explicit operator approval; the hypothesis is silent on approval and adds a deferred steward wake-up. Whether this is a revision or an unresolved condition is undecided. The exception stays accepted and current."
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "replacement-exception",
+          "before": {
+            "type": "claim",
+            "text": "The orchestrator may choose replacement work with explicit operator approval without going through the steward.",
+            "status": "accepted",
+            "meta": {
+              "review_state": "current",
+              "source_ref": "initial-decision",
+              "rationale": "Avoid an unnecessary relay when the orchestrator has the failure context."
+            }
+          },
+          "after": {
+            "type": "claim",
+            "text": "The orchestrator may choose replacement work with explicit operator approval without going through the steward.",
+            "status": "accepted",
+            "meta": {
+              "review_state": "needs-review",
+              "source_ref": "initial-decision",
+              "rationale": "Avoid an unnecessary relay when the orchestrator has the failure context.",
+              "review_reason": "Decision relation changed: atomic-replacement-hypothesis-potential-conflict-replacement-exception",
+              "review_roots": [
+                "atomic-replacement-hypothesis"
+              ]
+            }
+          },
+          "automatic": "dependency-review"
+        },
+        {
+          "collection": "nodes",
+          "id": "replacement-question",
+          "before": {
+            "type": "question",
+            "text": "How should replacement work move between orchestrator, operator and steward?",
+            "status": "open",
+            "meta": {
+              "answer_shape": "exploration",
+              "review_state": "current"
+            }
+          },
+          "after": {
+            "type": "question",
+            "text": "How should replacement work move between orchestrator, operator and steward?",
+            "status": "open",
+            "meta": {
+              "answer_shape": "exploration",
+              "review_state": "needs-review",
+              "review_reason": "Decision relation changed: atomic-replacement-hypothesis-answers-replacement-question Answer changed: atomic-replacement-hypothesis",
+              "review_roots": [
+                "atomic-replacement-hypothesis"
+              ]
+            }
+          },
+          "automatic": "dependency-review"
+        }
+      ]
+    },
+    {
+      "revision": 2,
+      "at": "2026-09-15T10:43:22.101016+00:00",
+      "actor": "assistant",
+      "reason": "Capture the steward-always-chooses alternative as an undecided hypothesis beside the existing exception and the atomic-replacement hypothesis; no decision made",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "steward-always-chooses-hypothesis-source",
+          "before": null,
+          "after": {
+            "type": "source",
+            "status": "recorded",
+            "text": "Maybe the orchestrator should always end failed work and let the steward choose what comes next. I have forgotten why we allowed that earlier exception. Remind me of it and its reason, and capture this alternative, but I am not deciding between them yet.",
+            "meta": {
+              "source_kind": "verbatim",
+              "synthetic": true,
+              "speaker": "user",
+              "session_note": "SYNTHETIC session utterance. An alternative offered for discussion; the user explicitly is not deciding between this and the atomic-replacement hypothesis or the accepted exception."
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "steward-always-chooses-hypothesis",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "Alternative (not decided): the orchestrator should always end failed work and let the steward choose what comes next, removing the operator-approved orchestrator replacement exception.",
+            "meta": {
+              "modality": "hypothesis",
+              "decision_status": "not-decided",
+              "review_state": "needs-review",
+              "source_ref": "steward-always-chooses-hypothesis-source",
+              "alternative_to": [
+                "replacement-exception",
+                "atomic-replacement-hypothesis"
+              ],
+              "open_points": "Does the relay cost that motivated the exception (orchestrator already holds the failure context) still matter? How does failure context reach the steward if the orchestrator only ends work? Is operator approval still needed anywhere?"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "steward-always-chooses-hypothesis-about-choose-work",
+          "before": null,
+          "after": {
+            "from": "steward-always-chooses-hypothesis",
+            "to": "choose-work",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "steward-always-chooses-hypothesis-extracted-from-source",
+          "before": null,
+          "after": {
+            "from": "steward-always-chooses-hypothesis",
+            "to": "steward-always-chooses-hypothesis-source",
+            "type": "extracted-from"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "steward-always-chooses-hypothesis-answers-replacement-question",
+          "before": null,
+          "after": {
+            "from": "steward-always-chooses-hypothesis",
+            "to": "replacement-question",
+            "type": "answers",
+            "coverage": "partial",
+            "meta": {
+              "note": "Second candidate answer under discussion alongside atomic-replacement-hypothesis. Proposed, not accepted. Does not resolve the question."
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "steward-always-chooses-hypothesis-potential-conflict-replacement-exception",
+          "before": null,
+          "after": {
+            "from": "steward-always-chooses-hypothesis",
+            "to": "replacement-exception",
+            "type": "potential-conflict",
+            "meta": {
+              "explanation": "Undecided alternative. If adopted it would remove the exception, whose recorded rationale is avoiding an unnecessary relay when the orchestrator already holds the failure context. The exception stays accepted; no choice has been made."
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "steward-always-chooses-hypothesis-potential-conflict-atomic-replacement-hypothesis",
+          "before": null,
+          "after": {
+            "from": "steward-always-chooses-hypothesis",
+            "to": "atomic-replacement-hypothesis",
+            "type": "potential-conflict",
+            "meta": {
+              "explanation": "Two competing undecided hypotheses for the same question: orchestrator performs replacement atomically versus orchestrator never chooses replacement. Recorded so both stay visible side by side; neither is preferred."
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "atomic-replacement-hypothesis",
+          "before": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "Hypothesis (not decided): replacement could be an atomic archive-and-add operation performed by the orchestrator, without waking the steward until the replacement completes.",
+            "meta": {
+              "review_state": "needs-review",
+              "modality": "hypothesis",
+              "decision_status": "not-decided",
+              "source_ref": "atomic-replacement-hypothesis-source",
+              "open_points": "Does explicit operator approval still apply? Is the steward informed after completion? Is archive-and-add actually atomic in the record store?"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "Hypothesis (not decided): replacement could be an atomic archive-and-add operation performed by the orchestrator, without waking the steward until the replacement completes.",
+            "meta": {
+              "review_state": "needs-review",
+              "modality": "hypothesis",
+              "decision_status": "not-decided",
+              "source_ref": "atomic-replacement-hypothesis-source",
+              "open_points": "Does explicit operator approval still apply? Is the steward informed after completion? Is archive-and-add actually atomic in the record store?",
+              "review_reason": "Decision relation changed: steward-always-chooses-hypothesis-potential-conflict-atomic-replacement-hypothesis",
+              "review_roots": [
+                "steward-always-chooses-hypothesis"
+              ]
+            }
+          },
+          "automatic": "dependency-review"
+        },
+        {
+          "collection": "nodes",
+          "id": "replacement-exception",
+          "before": {
+            "type": "claim",
+            "text": "The orchestrator may choose replacement work with explicit operator approval without going through the steward.",
+            "status": "accepted",
+            "meta": {
+              "review_state": "needs-review",
+              "source_ref": "initial-decision",
+              "rationale": "Avoid an unnecessary relay when the orchestrator has the failure context.",
+              "review_reason": "Decision relation changed: atomic-replacement-hypothesis-potential-conflict-replacement-exception",
+              "review_roots": [
+                "atomic-replacement-hypothesis"
+              ]
+            }
+          },
+          "after": {
+            "type": "claim",
+            "text": "The orchestrator may choose replacement work with explicit operator approval without going through the steward.",
+            "status": "accepted",
+            "meta": {
+              "review_state": "needs-review",
+              "source_ref": "initial-decision",
+              "rationale": "Avoid an unnecessary relay when the orchestrator has the failure context.",
+              "review_reason": "Decision relation changed: steward-always-chooses-hypothesis-potential-conflict-replacement-exception",
+              "review_roots": [
+                "steward-always-chooses-hypothesis"
+              ]
+            }
+          },
+          "automatic": "dependency-review"
+        },
+        {
+          "collection": "nodes",
+          "id": "replacement-question",
+          "before": {
+            "type": "question",
+            "text": "How should replacement work move between orchestrator, operator and steward?",
+            "status": "open",
+            "meta": {
+              "answer_shape": "exploration",
+              "review_state": "needs-review",
+              "review_reason": "Decision relation changed: atomic-replacement-hypothesis-answers-replacement-question Answer changed: atomic-replacement-hypothesis",
+              "review_roots": [
+                "atomic-replacement-hypothesis"
+              ]
+            }
+          },
+          "after": {
+            "type": "question",
+            "text": "How should replacement work move between orchestrator, operator and steward?",
+            "status": "open",
+            "meta": {
+              "answer_shape": "exploration",
+              "review_state": "needs-review",
+              "review_reason": "Decision relation changed: steward-always-chooses-hypothesis-answers-replacement-question Answer changed: steward-always-chooses-hypothesis",
+              "review_roots": [
+                "steward-always-chooses-hypothesis"
+              ]
+            }
+          },
+          "automatic": "dependency-review"
+        }
+      ]
+    },
+    {
+      "revision": 3,
+      "at": "2026-09-15T10:45:05.654094+00:00",
+      "actor": "assistant",
+      "reason": "Record user decision that the steward always chooses subsequent work; retire the operator-approved bypass, the atomic-replacement proposal and the undecided alternative with reasons kept; reconcile replacement-question; consultation-question left open",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "steward-always-chooses-decision-source",
+          "before": null,
+          "after": {
+            "type": "source",
+            "status": "recorded",
+            "text": "I have decided: the steward always chooses subsequent work. Retire both the operator-approved bypass and the atomic replacement proposal as current alternatives, keeping their rationale and history. The orchestrator can ask whether to keep trying or mark the attempt failed, then the steward chooses next. This does not decide whether consultation before ending is mandatory. Reconcile the replacement question and show me the changed IDs and revision.",
+            "meta": {
+              "source_kind": "verbatim",
+              "synthetic": true,
+              "speaker": "user",
+              "session_note": "SYNTHETIC session utterance. An explicit decision by the user; it also explicitly leaves the consultation modality undecided."
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "steward-always-chooses-decision",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "Decision: the steward always chooses subsequent work. The orchestrator does not choose replacement work; the operator-approved orchestrator bypass is retired. The orchestrator can ask whether to keep trying or mark the attempt failed, and once the attempt ends the steward chooses what comes next. Whether consultation before ending an attempt is mandatory is not decided by this claim.",
+            "meta": {
+              "review_state": "current",
+              "modality": "decision",
+              "decision_status": "decided",
+              "decided_by": "user",
+              "source_ref": "steward-always-chooses-decision-source",
+              "supersedes": [
+                "steward-next-work",
+                "replacement-exception",
+                "atomic-replacement-hypothesis",
+                "steward-always-chooses-hypothesis"
+              ],
+              "leaves_open": [
+                "consultation-question"
+              ],
+              "extraction_note": "The source does not name whom the orchestrator asks whether to keep trying; no addressee has been assigned. The retired exception's rationale (avoid an unnecessary relay when the orchestrator holds the failure context) is preserved on replacement-exception and was not adopted."
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "steward-always-chooses-decision-extracted-from-source",
+          "before": null,
+          "after": {
+            "from": "steward-always-chooses-decision",
+            "to": "steward-always-chooses-decision-source",
+            "type": "extracted-from"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "steward-always-chooses-decision-governs-choose-work",
+          "before": null,
+          "after": {
+            "from": "steward-always-chooses-decision",
+            "to": "choose-work",
+            "type": "governs"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "steward-always-chooses-decision-about-end-attempt",
+          "before": null,
+          "after": {
+            "from": "steward-always-chooses-decision",
+            "to": "end-attempt",
+            "type": "about",
+            "meta": {
+              "note": "The decision touches ending an attempt only in that the orchestrator can ask whether to keep trying or mark it failed; consultation modality stays with consultation-question."
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "steward-always-chooses-decision-answers-replacement-question",
+          "before": null,
+          "after": {
+            "from": "steward-always-chooses-decision",
+            "to": "replacement-question",
+            "type": "answers",
+            "coverage": "full",
+            "answer": {
+              "complete": true,
+              "findings": [
+                "Replacement work is chosen by the steward in every case.",
+                "The orchestrator can ask whether to keep trying or mark the attempt failed; it does not choose replacement work.",
+                "The operator-approved orchestrator bypass and the atomic archive-and-add proposal are retired as current alternatives, with rationale and history kept.",
+                "Whether consultation before ending is mandatory is out of scope here and remains with consultation-question."
+              ]
+            },
+            "meta": {
+              "note": "Accepted decision from the user; resolves the flow question. The consultation modality is deliberately excluded and stays open on consultation-question."
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "steward-always-chooses-decision-revises-steward-next-work",
+          "before": null,
+          "after": {
+            "from": "steward-always-chooses-decision",
+            "to": "steward-next-work",
+            "type": "revises",
+            "meta": {
+              "reason": "The old formulation said the exception is currently allowed; the decision removes it."
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "steward-always-chooses-decision-revises-replacement-exception",
+          "before": null,
+          "after": {
+            "from": "steward-always-chooses-decision",
+            "to": "replacement-exception",
+            "type": "revises",
+            "meta": {
+              "reason": "Retired by user decision. Its rationale (avoid an unnecessary relay when the orchestrator has the failure context) is kept on the retired node and was not adopted."
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "steward-always-chooses-decision-revises-atomic-replacement-hypothesis",
+          "before": null,
+          "after": {
+            "from": "steward-always-chooses-decision",
+            "to": "atomic-replacement-hypothesis",
+            "type": "revises",
+            "meta": {
+              "reason": "Retired as a current alternative by user decision; kept for history."
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "steward-always-chooses-decision-revises-steward-always-chooses-hypothesis",
+          "before": null,
+          "after": {
+            "from": "steward-always-chooses-decision",
+            "to": "steward-always-chooses-hypothesis",
+            "type": "revises",
+            "meta": {
+              "reason": "The undecided alternative was adopted and restated as a decision with the keep-trying-or-fail step and the explicit consultation carve-out."
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "steward-next-work",
+          "before": {
+            "type": "claim",
+            "text": "The steward generally chooses subsequent work; an operator-approved orchestrator replacement exception is currently allowed.",
+            "status": "accepted",
+            "meta": {
+              "review_state": "current",
+              "source_ref": "initial-decision"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "text": "The steward generally chooses subsequent work; an operator-approved orchestrator replacement exception is currently allowed.",
+            "status": "superseded",
+            "meta": {
+              "review_state": "historical",
+              "source_ref": "initial-decision",
+              "retired_reason": "Superseded by steward-always-chooses-decision: the operator-approved exception it mentioned is no longer allowed.",
+              "retired_by": "steward-always-chooses-decision"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "replacement-exception",
+          "before": {
+            "type": "claim",
+            "text": "The orchestrator may choose replacement work with explicit operator approval without going through the steward.",
+            "status": "accepted",
+            "meta": {
+              "review_state": "needs-review",
+              "source_ref": "initial-decision",
+              "rationale": "Avoid an unnecessary relay when the orchestrator has the failure context.",
+              "review_reason": "Decision relation changed: steward-always-chooses-hypothesis-potential-conflict-replacement-exception",
+              "review_roots": [
+                "steward-always-chooses-hypothesis"
+              ]
+            }
+          },
+          "after": {
+            "type": "claim",
+            "text": "The orchestrator may choose replacement work with explicit operator approval without going through the steward.",
+            "status": "superseded",
+            "meta": {
+              "review_state": "historical",
+              "source_ref": "initial-decision",
+              "rationale": "Avoid an unnecessary relay when the orchestrator has the failure context.",
+              "review_reason": "Decision relation changed: steward-always-chooses-hypothesis-potential-conflict-replacement-exception",
+              "review_roots": [
+                "steward-always-chooses-hypothesis"
+              ],
+              "retired_reason": "User decided the steward always chooses subsequent work. Rationale retained: avoid an unnecessary relay when the orchestrator has the failure context.",
+              "retired_by": "steward-always-chooses-decision"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "atomic-replacement-hypothesis",
+          "before": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "Hypothesis (not decided): replacement could be an atomic archive-and-add operation performed by the orchestrator, without waking the steward until the replacement completes.",
+            "meta": {
+              "review_state": "needs-review",
+              "modality": "hypothesis",
+              "decision_status": "not-decided",
+              "source_ref": "atomic-replacement-hypothesis-source",
+              "open_points": "Does explicit operator approval still apply? Is the steward informed after completion? Is archive-and-add actually atomic in the record store?",
+              "review_reason": "Decision relation changed: steward-always-chooses-hypothesis-potential-conflict-atomic-replacement-hypothesis",
+              "review_roots": [
+                "steward-always-chooses-hypothesis"
+              ]
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "rejected",
+            "text": "Hypothesis (not decided): replacement could be an atomic archive-and-add operation performed by the orchestrator, without waking the steward until the replacement completes.",
+            "meta": {
+              "review_state": "historical",
+              "modality": "hypothesis",
+              "decision_status": "not-decided",
+              "source_ref": "atomic-replacement-hypothesis-source",
+              "open_points": "Does explicit operator approval still apply? Is the steward informed after completion? Is archive-and-add actually atomic in the record store?",
+              "review_reason": "Decision relation changed: steward-always-chooses-hypothesis-potential-conflict-atomic-replacement-hypothesis",
+              "review_roots": [
+                "steward-always-chooses-hypothesis"
+              ],
+              "retired_reason": "User decided the steward always chooses subsequent work; the orchestrator does not perform replacement. Hypothesis and its open points kept for history.",
+              "retired_by": "steward-always-chooses-decision"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "steward-always-chooses-hypothesis",
+          "before": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "Alternative (not decided): the orchestrator should always end failed work and let the steward choose what comes next, removing the operator-approved orchestrator replacement exception.",
+            "meta": {
+              "modality": "hypothesis",
+              "decision_status": "not-decided",
+              "review_state": "needs-review",
+              "source_ref": "steward-always-chooses-hypothesis-source",
+              "alternative_to": [
+                "replacement-exception",
+                "atomic-replacement-hypothesis"
+              ],
+              "open_points": "Does the relay cost that motivated the exception (orchestrator already holds the failure context) still matter? How does failure context reach the steward if the orchestrator only ends work? Is operator approval still needed anywhere?"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "superseded",
+            "text": "Alternative (not decided): the orchestrator should always end failed work and let the steward choose what comes next, removing the operator-approved orchestrator replacement exception.",
+            "meta": {
+              "modality": "hypothesis",
+              "decision_status": "not-decided",
+              "review_state": "historical",
+              "source_ref": "steward-always-chooses-hypothesis-source",
+              "alternative_to": [
+                "replacement-exception",
+                "atomic-replacement-hypothesis"
+              ],
+              "open_points": "Does the relay cost that motivated the exception (orchestrator already holds the failure context) still matter? How does failure context reach the steward if the orchestrator only ends work? Is operator approval still needed anywhere?",
+              "retired_reason": "Adopted and restated as steward-always-chooses-decision.",
+              "retired_by": "steward-always-chooses-decision"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "replacement-question",
+          "before": {
+            "type": "question",
+            "text": "How should replacement work move between orchestrator, operator and steward?",
+            "status": "open",
+            "meta": {
+              "answer_shape": "exploration",
+              "review_state": "needs-review",
+              "review_reason": "Decision relation changed: steward-always-chooses-hypothesis-answers-replacement-question Answer changed: steward-always-chooses-hypothesis",
+              "review_roots": [
+                "steward-always-chooses-hypothesis"
+              ]
+            }
+          },
+          "after": {
+            "type": "question",
+            "text": "How should replacement work move between orchestrator, operator and steward?",
+            "status": "answered",
+            "meta": {
+              "answer_shape": "exploration",
+              "review_state": "current",
+              "review_reason": "Decision relation changed: steward-always-chooses-hypothesis-answers-replacement-question Answer changed: steward-always-chooses-hypothesis",
+              "review_roots": [
+                "steward-always-chooses-hypothesis"
+              ],
+              "resolution_note": "Answered by steward-always-chooses-decision. The consultation modality is not part of this answer; see consultation-question, which stays open."
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "steward-next-work",
+          "before": {
+            "type": "claim",
+            "text": "The steward generally chooses subsequent work; an operator-approved orchestrator replacement exception is currently allowed.",
+            "status": "superseded",
+            "meta": {
+              "review_state": "historical",
+              "source_ref": "initial-decision",
+              "retired_reason": "Superseded by steward-always-chooses-decision: the operator-approved exception it mentioned is no longer allowed.",
+              "retired_by": "steward-always-chooses-decision"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "text": "The steward generally chooses subsequent work; an operator-approved orchestrator replacement exception is currently allowed.",
+            "status": "superseded",
+            "meta": {
+              "review_state": "historical",
+              "source_ref": "initial-decision",
+              "retired_reason": "Superseded by steward-always-chooses-decision: the operator-approved exception it mentioned is no longer allowed.",
+              "retired_by": "steward-always-chooses-decision"
+            },
+            "semantic_version": 2
+          },
+          "automatic": "semantic-version"
+        },
+        {
+          "collection": "nodes",
+          "id": "replacement-exception",
+          "before": {
+            "type": "claim",
+            "text": "The orchestrator may choose replacement work with explicit operator approval without going through the steward.",
+            "status": "superseded",
+            "meta": {
+              "review_state": "historical",
+              "source_ref": "initial-decision",
+              "rationale": "Avoid an unnecessary relay when the orchestrator has the failure context.",
+              "review_reason": "Decision relation changed: steward-always-chooses-hypothesis-potential-conflict-replacement-exception",
+              "review_roots": [
+                "steward-always-chooses-hypothesis"
+              ],
+              "retired_reason": "User decided the steward always chooses subsequent work. Rationale retained: avoid an unnecessary relay when the orchestrator has the failure context.",
+              "retired_by": "steward-always-chooses-decision"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "text": "The orchestrator may choose replacement work with explicit operator approval without going through the steward.",
+            "status": "superseded",
+            "meta": {
+              "review_state": "historical",
+              "source_ref": "initial-decision",
+              "rationale": "Avoid an unnecessary relay when the orchestrator has the failure context.",
+              "review_reason": "Decision relation changed: steward-always-chooses-hypothesis-potential-conflict-replacement-exception",
+              "review_roots": [
+                "steward-always-chooses-hypothesis"
+              ],
+              "retired_reason": "User decided the steward always chooses subsequent work. Rationale retained: avoid an unnecessary relay when the orchestrator has the failure context.",
+              "retired_by": "steward-always-chooses-decision"
+            },
+            "semantic_version": 2
+          },
+          "automatic": "semantic-version"
+        },
+        {
+          "collection": "nodes",
+          "id": "atomic-replacement-hypothesis",
+          "before": {
+            "type": "claim",
+            "status": "rejected",
+            "text": "Hypothesis (not decided): replacement could be an atomic archive-and-add operation performed by the orchestrator, without waking the steward until the replacement completes.",
+            "meta": {
+              "review_state": "historical",
+              "modality": "hypothesis",
+              "decision_status": "not-decided",
+              "source_ref": "atomic-replacement-hypothesis-source",
+              "open_points": "Does explicit operator approval still apply? Is the steward informed after completion? Is archive-and-add actually atomic in the record store?",
+              "review_reason": "Decision relation changed: steward-always-chooses-hypothesis-potential-conflict-atomic-replacement-hypothesis",
+              "review_roots": [
+                "steward-always-chooses-hypothesis"
+              ],
+              "retired_reason": "User decided the steward always chooses subsequent work; the orchestrator does not perform replacement. Hypothesis and its open points kept for history.",
+              "retired_by": "steward-always-chooses-decision"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "rejected",
+            "text": "Hypothesis (not decided): replacement could be an atomic archive-and-add operation performed by the orchestrator, without waking the steward until the replacement completes.",
+            "meta": {
+              "review_state": "historical",
+              "modality": "hypothesis",
+              "decision_status": "not-decided",
+              "source_ref": "atomic-replacement-hypothesis-source",
+              "open_points": "Does explicit operator approval still apply? Is the steward informed after completion? Is archive-and-add actually atomic in the record store?",
+              "review_reason": "Decision relation changed: steward-always-chooses-hypothesis-potential-conflict-atomic-replacement-hypothesis",
+              "review_roots": [
+                "steward-always-chooses-hypothesis"
+              ],
+              "retired_reason": "User decided the steward always chooses subsequent work; the orchestrator does not perform replacement. Hypothesis and its open points kept for history.",
+              "retired_by": "steward-always-chooses-decision"
+            },
+            "semantic_version": 2
+          },
+          "automatic": "semantic-version"
+        },
+        {
+          "collection": "nodes",
+          "id": "steward-always-chooses-hypothesis",
+          "before": {
+            "type": "claim",
+            "status": "superseded",
+            "text": "Alternative (not decided): the orchestrator should always end failed work and let the steward choose what comes next, removing the operator-approved orchestrator replacement exception.",
+            "meta": {
+              "modality": "hypothesis",
+              "decision_status": "not-decided",
+              "review_state": "historical",
+              "source_ref": "steward-always-chooses-hypothesis-source",
+              "alternative_to": [
+                "replacement-exception",
+                "atomic-replacement-hypothesis"
+              ],
+              "open_points": "Does the relay cost that motivated the exception (orchestrator already holds the failure context) still matter? How does failure context reach the steward if the orchestrator only ends work? Is operator approval still needed anywhere?",
+              "retired_reason": "Adopted and restated as steward-always-chooses-decision.",
+              "retired_by": "steward-always-chooses-decision"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "superseded",
+            "text": "Alternative (not decided): the orchestrator should always end failed work and let the steward choose what comes next, removing the operator-approved orchestrator replacement exception.",
+            "meta": {
+              "modality": "hypothesis",
+              "decision_status": "not-decided",
+              "review_state": "historical",
+              "source_ref": "steward-always-chooses-hypothesis-source",
+              "alternative_to": [
+                "replacement-exception",
+                "atomic-replacement-hypothesis"
+              ],
+              "open_points": "Does the relay cost that motivated the exception (orchestrator already holds the failure context) still matter? How does failure context reach the steward if the orchestrator only ends work? Is operator approval still needed anywhere?",
+              "retired_reason": "Adopted and restated as steward-always-chooses-decision.",
+              "retired_by": "steward-always-chooses-decision"
+            },
+            "semantic_version": 2
+          },
+          "automatic": "semantic-version"
+        },
+        {
+          "collection": "nodes",
+          "id": "replacement-question",
+          "before": {
+            "type": "question",
+            "text": "How should replacement work move between orchestrator, operator and steward?",
+            "status": "answered",
+            "meta": {
+              "answer_shape": "exploration",
+              "review_state": "current",
+              "review_reason": "Decision relation changed: steward-always-chooses-hypothesis-answers-replacement-question Answer changed: steward-always-chooses-hypothesis",
+              "review_roots": [
+                "steward-always-chooses-hypothesis"
+              ],
+              "resolution_note": "Answered by steward-always-chooses-decision. The consultation modality is not part of this answer; see consultation-question, which stays open."
+            }
+          },
+          "after": {
+            "type": "question",
+            "text": "How should replacement work move between orchestrator, operator and steward?",
+            "status": "answered",
+            "meta": {
+              "answer_shape": "exploration",
+              "review_state": "current",
+              "review_reason": "Decision relation changed: steward-always-chooses-hypothesis-answers-replacement-question Answer changed: steward-always-chooses-hypothesis",
+              "review_roots": [
+                "steward-always-chooses-hypothesis"
+              ],
+              "resolution_note": "Answered by steward-always-chooses-decision. The consultation modality is not part of this answer; see consultation-question, which stays open."
+            },
+            "semantic_version": 2
+          },
+          "automatic": "semantic-version"
+        },
+        {
+          "collection": "edges",
+          "id": "steward-always-chooses-decision-extracted-from-source",
+          "before": {
+            "from": "steward-always-chooses-decision",
+            "to": "steward-always-chooses-decision-source",
+            "type": "extracted-from"
+          },
+          "after": {
+            "from": "steward-always-chooses-decision",
+            "to": "steward-always-chooses-decision-source",
+            "type": "extracted-from",
+            "input_fingerprint": "eebb3c42fdd2cc3f2455bd3718fd87188e8f1144926d7966629465f5cb106bd8",
+            "input_version": 1
+          },
+          "automatic": "review-receipt"
+        },
+        {
+          "collection": "nodes",
+          "id": "steward-always-chooses-decision",
+          "before": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "Decision: the steward always chooses subsequent work. The orchestrator does not choose replacement work; the operator-approved orchestrator bypass is retired. The orchestrator can ask whether to keep trying or mark the attempt failed, and once the attempt ends the steward chooses what comes next. Whether consultation before ending an attempt is mandatory is not decided by this claim.",
+            "meta": {
+              "review_state": "current",
+              "modality": "decision",
+              "decision_status": "decided",
+              "decided_by": "user",
+              "source_ref": "steward-always-chooses-decision-source",
+              "supersedes": [
+                "steward-next-work",
+                "replacement-exception",
+                "atomic-replacement-hypothesis",
+                "steward-always-chooses-hypothesis"
+              ],
+              "leaves_open": [
+                "consultation-question"
+              ],
+              "extraction_note": "The source does not name whom the orchestrator asks whether to keep trying; no addressee has been assigned. The retired exception's rationale (avoid an unnecessary relay when the orchestrator holds the failure context) is preserved on replacement-exception and was not adopted."
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "Decision: the steward always chooses subsequent work. The orchestrator does not choose replacement work; the operator-approved orchestrator bypass is retired. The orchestrator can ask whether to keep trying or mark the attempt failed, and once the attempt ends the steward chooses what comes next. Whether consultation before ending an attempt is mandatory is not decided by this claim.",
+            "meta": {
+              "review_state": "current",
+              "modality": "decision",
+              "decision_status": "decided",
+              "decided_by": "user",
+              "source_ref": "steward-always-chooses-decision-source",
+              "supersedes": [
+                "steward-next-work",
+                "replacement-exception",
+                "atomic-replacement-hypothesis",
+                "steward-always-chooses-hypothesis"
+              ],
+              "leaves_open": [
+                "consultation-question"
+              ],
+              "extraction_note": "The source does not name whom the orchestrator asks whether to keep trying; no addressee has been assigned. The retired exception's rationale (avoid an unnecessary relay when the orchestrator holds the failure context) is preserved on replacement-exception and was not adopted.",
+              "reviewed_inputs": {
+                "steward-always-chooses-decision-source": "eebb3c42fdd2cc3f2455bd3718fd87188e8f1144926d7966629465f5cb106bd8"
+              },
+              "reviewed_input_versions": {
+                "steward-always-chooses-decision-source": 1
+              }
+            }
+          },
+          "automatic": "review-receipt"
+        }
+      ]
+    }
+  ]
+}

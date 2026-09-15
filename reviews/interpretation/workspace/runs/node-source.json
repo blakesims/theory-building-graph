@@ -1,0 +1,14 @@
+{
+  "command": [
+    "./tg",
+    "--file",
+    "evidence.graph.json",
+    "node",
+    "source",
+    "--json"
+  ],
+  "returncode": 0,
+  "stdout": "{\"edge_truncated\":false,\"edges\":{\"source-edge\":{\"from\":\"extract\",\"to\":\"source\",\"type\":\"extracted-from\"}},\"neighbor_bodies\":\"omitted; use walk\",\"nodes\":{\"source\":{\"meta\":{\"source_kind\":\"synthetic-fixture\",\"synthetic\":true},\"text\":\"Synthetic illustration: operator ended attempt; steward chose next. No actual historical incident is supplied.\",\"type\":\"source\"}},\"revision\":0,\"truncated\":false}\n",
+  "stderr": "",
+  "elapsed_seconds": 0.7590839159965981
+}

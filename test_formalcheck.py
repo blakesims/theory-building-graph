@@ -16,6 +16,16 @@ class FormalChecks(unittest.TestCase):
     def event_trace(self,roles):
         return {'complete':True,'events':[{'id':'end','operation':'end-attempt','attempt':'a'},
             {'id':'choose','operation':'choose','attempt':'a','after':'end','actor':'person','actor_roles':roles}]}
+    def test_missing_scope_pair_names_ids_and_remedy_without_inventing_overlap(self):
+        p={**self.only,'scope':'undeclared-left'}
+        q={**self.may,'scope':'undeclared-right'}
+        outcome=self.compare(p,q)
+        self.assertEqual(outcome['outcome'],'not-checked')
+        self.assertEqual(outcome['missing_scopes'],['undeclared-left','undeclared-right'])
+        self.assertIn('formal_model.scopes',outcome['reason'])
+        self.assertIn('justified nonempty evidence',outcome['reason'])
+        self.assertNotIn('witnesses',outcome)
+        self.assertEqual(self.compare(q,p),outcome)
     def test_A01_steward_event(self):
         p={**self.only,'scope':'after_attempt_ended'}
         self.assertEqual(evaluate_authority(p,self.event_trace(['steward']))['outcome'],'satisfies')
@@ -46,7 +56,25 @@ class FormalChecks(unittest.TestCase):
     def test_A07_may_ask_not_must(self):
         ask={**self.may,'operation':'ask'}
         self.assertEqual(self.compare(ask,{**self.may,'operation':'end'})['outcome'],'independent')
-        self.assertEqual(ask['modality'],'may')
+        empty={'events': [], 'complete': True, 'complete_through_tick': 6}
+        permission=evaluate_authority(ask,empty)
+        self.assertEqual(permission['outcome'],'satisfies')
+        self.assertTrue(permission['permission_only'])
+        obligation={'kind':'bounded_obligation','trigger':'blocked','response':'ask',
+                    'role':'orchestrator','within_ticks':5}
+        empty['events']=[{'id':'b','operation':'blocked','tick':0}]
+        required=evaluate_obligation(obligation,empty)
+        self.assertEqual(required['outcome'],'violates')
+        self.assertEqual(required['witnesses'][0]['event'],'b')
+
+    def test_only_and_never_same_role_exposes_overconstraint(self):
+        never={**self.only,'modality':'never'}
+        for a,b in [(self.only,never),(never,self.only)]:
+            checked=self.compare(a,b)
+            self.assertEqual(checked['outcome'],'no-inconsistency-established')
+            self.assertTrue(checked['possible_overconstraint'])
+        self.assertEqual(self.compare(self.only,{**never,'role':'orchestrator'})['outcome'],'compatible')
+
     def test_A08_withdrawal_filters_current(self):
         g={'revision':1,'formal_model':self.model,'nodes':{'a':{'type':'claim','status':'accepted','pattern':self.only},'b':{'type':'claim','status':'accepted','pattern':self.may}}}
         receipt=compare_graph(g)

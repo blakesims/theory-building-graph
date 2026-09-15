@@ -1,0 +1,7 @@
+# Archived inputs and command outputs are retained byte-for-byte for receipt hashes.
+reviews/fixtures/fable-5.1/pre-fix-output.txt -whitespace
+reviews/fixtures/fable-5.1/post-fix-output.txt -whitespace
+reviews/maintenance/raw/graph/unrelated-history.md -whitespace
+reviews/maintenance/raw/prose/unrelated-history.md -whitespace
+reviews/maintenance/raw/pair-1/graph/unrelated-history.md -whitespace
+reviews/maintenance/raw/pair-1/prose/unrelated-history.md -whitespace

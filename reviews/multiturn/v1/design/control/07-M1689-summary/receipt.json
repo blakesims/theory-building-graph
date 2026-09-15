@@ -1,0 +1,157 @@
+{
+  "stage": "07-M1689-summary",
+  "cases": [
+    "S04"
+  ],
+  "command": [
+    "claude",
+    "-p",
+    "--safe-mode",
+    "--tools",
+    "Bash,Read",
+    "--allowedTools",
+    "Bash,Read",
+    "--no-session-persistence",
+    "--verbose",
+    "--output-format",
+    "stream-json"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 124.798,
+  "timed_out": false,
+  "stderr": "",
+  "result": {
+    "duration_api_ms": 121765,
+    "stop_reason": "end_turn",
+    "session_id": "ba49ceeb-a6e0-43b0-a9d0-14876e6632d2",
+    "total_cost_usd": 0.9619862499999999,
+    "usage": {
+      "input_tokens": 258,
+      "cache_creation_input_tokens": 22250,
+      "cache_read_input_tokens": 150221,
+      "output_tokens": 9448,
+      "output_tokens_details": {
+        "thinking_tokens": 3312
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 22250,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "not_available",
+      "iterations": [
+        {
+          "input_tokens": 32,
+          "output_tokens": 875,
+          "cache_read_input_tokens": 25439,
+          "cache_creation_input_tokens": 2019,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2019
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard"
+    },
+    "modelUsage": {
+      "claude-haiku-4-5-20251001": {
+        "inputTokens": 4366,
+        "outputTokens": 17,
+        "cacheReadInputTokens": 0,
+        "cacheCreationInputTokens": 0,
+        "webSearchRequests": 0,
+        "costUSD": 0.004451,
+        "contextWindow": 200000,
+        "maxOutputTokens": 32000,
+        "thinkingTokens": 0,
+        "canonicalModel": "claude-haiku-4-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      },
+      "claude-fable-5-1": {
+        "inputTokens": 258,
+        "outputTokens": 9448,
+        "cacheReadInputTokens": 150221,
+        "cacheCreationInputTokens": 22250,
+        "webSearchRequests": 0,
+        "costUSD": 0.95753525,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 64000,
+        "thinkingTokens": 3312,
+        "canonicalModel": "claude-fable-5-1",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "is_error": false,
+    "num_turns": 9,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "Captured, with nothing accepted and no performance result asserted. Graph revision moved from 4 to 5 with 22 changes, applied through `./tg apply` with the batch shown above. The first attempt was rejected because the tool does not accept \"decision\" as an answer shape, so the question uses \"condition\" like the other open questions.\n\n**How M1689 relates to the model**\n\n- **The original concern is kept.** The entity `cpu-intention` is untouched and still declared and current. Every new node anchors to it.\n- **Implementation is not satisfaction.** A new claim, `implementation-vs-intention-distinction`, says a fully implemented mechanism is an implementation success only. The intention is satisfied when CPU usage is measurably reduced. It is proposed and needs review, since you asked for the distinction rather than a rule.\n- **The failure mode is goal substitution.** The claim `m1689-goal-substitution-failure-mode` records that the notification mechanism displaced the concern as the objective. It contrasts with M1688, where the attempt never stopped. Here the attempt drifted away from what it was for.\n- **The alternative is recorded as unmeasured.** The claim `m1689-cheaper-requests-alternative` holds the \"later evidence\" suggestion. Its text states that no measurements exist and that it does not displace the selected mechanism.\n\n**The reconsideration question and its owner**\n\n`m1689-mechanism-reconsideration-question` asks whether the notification mechanism should remain the selected hypothesis, or whether cheaper requests should be pursued instead or first, and what CPU evidence is needed before ruling. Its metadata names `steward-role` as owner. The derivation is that the accepted decision gives the steward the choice of subsequent work for an intention, and choosing which mechanism to pursue next is such a choice. A `depends-on` edge to that decision records that the owner must be re-derived if the decision changes. One residual interpretation is flagged: the decision does not say whether reconsidering a mechanism inside a still-running attempt counts as subsequent work.\n\n**Other effects**\n\n- `chosen-mechanism` stays proposed and is now marked needs-review, because of the declared tension with the alternative and its new partial answer edge to the question. It remains the incumbent.\n- The M1688 questions and the consultation question are untouched and open.\n- `./tg check` reports the one new declared tension between the alternative and the incumbent, no structural errors, and the same pre-existing coverage gaps.\n\nThe M1689 source is graded as a synthetic secondary summary with the primary postmortem unavailable and no measurements, so nothing in the graph claims either approach reduces CPU.",
+    "ttft_ms": 3642,
+    "type": "result",
+    "duration_ms": 124020,
+    "uuid": "a795b6b0-42df-40ce-ae81-228ac3283979",
+    "ttft_stream_ms": 2197,
+    "time_to_request_ms": 577,
+    "first_content_frame_ms": 2523,
+    "queued_turn_count": 0,
+    "result_index": 0
+  },
+  "tool_call_count": 8,
+  "tool_ids": [
+    "toolu_013A5RW3Jgz33fwWgMTNVX3K",
+    "toolu_014RibX5AXRKT6vYBEtbRfyr",
+    "toolu_017fUobriJHDBZNpB4njHLU2",
+    "toolu_01FYo6CehQUbKvRFPx3YBEUY",
+    "toolu_01Gev8pkQUzNtarxfDPM9yCc",
+    "toolu_01M8PsqozKR34b4Yo2SYFNut",
+    "toolu_01MPwKwXJPTKGHBUqDMYBYtt",
+    "toolu_01XPGuupJSr9ex9XofXZhWCo"
+  ],
+  "prompt_sha256": "b5005c4b08cd723edc42390a829d61d8433e1dafc3fcf76ad537e29078e3b1e1",
+  "before_sha256": "33bd503fc4424474425c1a211f86fccf06684882252f5c53a65c45f275ccb7d3",
+  "after_sha256": "5f802f2631b1b7eba54313b5f3c25e95847cfbd47094b7d5ff8ac23ca5c9e911",
+  "stdout_sha256": "755b4514236d956c8d213ec94f301193e3a19453b291163720f758e0228c46ad",
+  "data_changed": true,
+  "semantic_grade": "not-graded",
+  "budget": {
+    "tool_limit": 12,
+    "seconds_limit": 180,
+    "calls_exceeded": false,
+    "time_exceeded": false
+  }
+}

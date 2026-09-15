@@ -1,0 +1,21 @@
+[
+ {"op":"delete","collection":"edges","id":"orchestrator-may-ask-governs-choose-work"},
+ {"op":"delete","collection":"edges","id":"orchestrator-may-ask-about-orchestrator-role"},
+ {"op":"delete","collection":"edges","id":"orchestrator-may-ask-about-steward-role"},
+ {"op":"delete","collection":"edges","id":"orchestrator-may-ask-extracted-from-source"},
+ {"op":"delete","collection":"edges","id":"consultation-mandatory-question-about-choose-work"},
+ {"op":"delete","collection":"edges","id":"consultation-mandatory-question-about-orchestrator-role"},
+ {"op":"delete","collection":"edges","id":"consultation-mandatory-question-about-steward-role"},
+ {"op":"delete","collection":"edges","id":"consultation-mandatory-question-extracted-from-source"},
+ {"op":"delete","collection":"nodes","id":"orchestrator-may-ask-before-ending"},
+ {"op":"delete","collection":"nodes","id":"consultation-mandatory-question"},
+ {"op":"update","collection":"nodes","id":"may-ask","value":{"meta":{"review_state":"current","reaffirmed_by":"steward-always-chooses-decision-source","reaffirmed_on":"2026-09-15","note":"Reaffirmed in the 2026-09-15 decision: the orchestrator can ask whether to keep trying or mark the attempt failed, then the steward chooses next. The user did not restate the addressee; the existing text (the operator) is retained unchanged."}}},
+ {"op":"update","collection":"nodes","id":"consultation-question","value":{"meta":{"review_state":"current","note":"Explicitly left undecided by the user in the 2026-09-15 decision adopting steward-always-chooses-policy; remains open.","references":["steward-always-chooses-policy","may-ask","steward-always-chooses-decision-source"]}}},
+ {"op":"add","collection":"edges","id":"may-ask-extracted-from-decision-source","value":{"from":"may-ask","to":"steward-always-chooses-decision-source","type":"extracted-from","meta":{"note":"Reaffirmation, not original provenance."}}},
+ {"op":"add","collection":"edges","id":"consultation-question-extracted-from-decision-source","value":{"from":"consultation-question","to":"steward-always-chooses-decision-source","type":"extracted-from","meta":{"note":"The decision source records that this question was deliberately left open."}}},
+ {"op":"update","collection":"nodes","id":"steward-always-chooses-policy","value":{"meta":{"review_state":"current","note":"Explicit user decision. Replaces the general rule plus exception with an unconditional rule. The orchestrator's option to ask whether to keep trying or mark the attempt failed is the existing accepted claim may-ask. Whether that consultation is mandatory is left open in the existing consultation-question."}}},
+ {"op":"update","collection":"edges","id":"steward-always-chooses-policy-answers-replacement-question","value":{"meta":{"note":"Partial: whether consultation before ending is mandatory is still open (consultation-question), and the user gave no completion criteria for this exploration.","related":["may-ask","consultation-question"]}}},
+ {"op":"update","collection":"nodes","id":"replacement-question","value":{"meta":{"review_state":"current","review_note":"Reviewed 2026-09-15 after the steward-always-chooses decision: now partially answered by steward-always-chooses-policy; remains open pending consultation-question."}}},
+ {"op":"update","collection":"nodes","id":"atomic-replacement-question","value":{"meta":{"review_state":"current","review_note":"Reviewed 2026-09-15: resolved negatively by the user's policy decision; the atomic replacement hypothesis is retired as history."}}},
+ {"op":"update","collection":"nodes","id":"steward-always-chooses-question","value":{"meta":{"review_state":"current","review_note":"Reviewed 2026-09-15: resolved affirmatively by the user's decision, recorded as steward-always-chooses-policy."}}}
+]

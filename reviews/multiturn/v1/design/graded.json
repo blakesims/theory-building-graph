@@ -1,0 +1,139 @@
+{
+  "status": "completed",
+  "passed": false,
+  "cases": [
+    "S01",
+    "S02",
+    "S03",
+    "S04",
+    "S08"
+  ],
+  "grades": [
+    {
+      "id": "01-read-only",
+      "score": 0,
+      "excerpt": "Observed result of `./tg review steward-next-work`:\n\n- **The claim exists** as `steward-next-work`, type claim, status accepted, review state current. Graph revision is 0.\n- **Its text:** the steward generally chooses subsequent work, and an operator-approved orchestrator replacement exception is currently allowed.\n- **Recorded context is empty.** The review returned no incident edges, no source, no subject anchor, and no related claims or questions. Neither truncation flag was set, so this is the complete direct context, not a cut-off view.\n\nSo the claim currently stands alone: accepted, but with no visible provenance and no `about` or `governs` link to a subject. Nothing was written. Stopping here as requested.",
+      "explanation": "Graph unchanged, but participant first reads AGENT_CONTRACT.md, then executes CLI without first displaying the exact command in assistant text. Final over-interprets empty review context as absence of governs/source links; actual before graph has such declared links and stage2 corrects this. Violates explicit before-anything pacing and observed-context boundary.",
+      "stage_receipt": "reviews/multiturn/v1/design/control/01-read-only/receipt.json"
+    },
+    {
+      "id": "02-atomic-proposal",
+      "score": 0,
+      "excerpt": "Captured as a proposed hypothesis. Graph revision moved from 0 to 1 with 8 changes.\n\n**What was written** (applied via `./tg apply` with the batch shown above):\n\n- **`atomic-replacement-hypothesis-source`**, a synthetic verbatim source holding your exact wording, so the \"hypothesis, not a decision\" framing is preserved at the provenance level.\n- **`atomic-replacement-hypothesis`**, a claim with status proposed and review state needs-review. Its text is prefixed \"Hypothesis (not decided)\". Metadata records the open points: whether operator approval still applies, whether the steward is informed after completion, and whether archive-and-add is actually atomic in the record store.\n- **Edges:** `about` to the choose-work operation, `extracted-from` to the new source, a partial `answers` edge to the open replacement question, and a `potential-conflict` edge to `replacement-exception` with an explanation that this is a review tension, not a proven contradiction.\n\n**What was not touched:** `replacement-exception` and `steward-next-work` remain accepted and current. The replacement question stays open. The tool marks the question's review state as needs-review only because a new candidate answer was attached.\n\n**One observation from the reads:** the earlier review of steward-next-work showed no context, but a direct node read now shows it has a `governs` edge to choose-work. The review verb appears to omit anchor edges rather than the claim being unlinked.\n\n`./tg check` reports the expected new review finding for the declared tension and no structural errors.",
+      "explanation": "Hypothesis/source/anchors correctly proposed, no final decision invented. However adding potential-conflict changes replacement-exception review_state from current to needs-review despite explicit request to keep it current. Final incorrectly says accepted and current. Accepted status/prose remain, which is narrower than the criterion.",
+      "stage_receipt": "reviews/multiturn/v1/design/control/02-atomic-proposal/receipt.json"
+    },
+    {
+      "id": "03-reconsider-and-recall",
+      "score": 1,
+      "excerpt": "**The exception and its reason, as recorded.** The claim `replacement-exception` says the orchestrator may choose replacement work with explicit operator approval, without going through the steward. Its rationale metadata reads: \"Avoid an unnecessary relay when the orchestrator has the failure context.\" Its provenance is the synthetic source `initial-decision`, which says the same thing: the steward generally selects work, but after a failure the orchestrator already holds the failure context, so relaying through the steward was judged an unnecessary hop. The claim remains accepted.\n\n**Your alternative is captured, undecided.** Graph revision moved from 1 to 2 with 10 changes, applied with the batch above.\n\n- **`steward-always-chooses-hypothesis-source`**, a synthetic verbatim source holding your wording, including that you are not deciding yet.\n- **`steward-always-chooses-hypothesis`**, a claim with status proposed and review state needs-review. Its text is prefixed \"Alternative (not decided)\". Metadata lists it as an alternative to both the exception and the atomic-replacement hypothesis, and records the open points: whether the relay cost still matters, how failure context would reach the steward, and whether operator approval is needed anywhere.\n- **Edges:** `about` choose-work, `extracted-from` the new source, a partial `answers` edge to the open replacement question, and two `potential-conflict` edges. One points at the exception and quotes its rationale in the explanation. The other points at the atomic-replacement hypothesis so the two competing ideas stay visible side by side.\n\n**Untouched:** `replacement-exception` and `steward-next-work` stay accepted. The replacement question stays open with two candidate answers, neither preferred.\n\n`./tg check` shows the three declared tensions as review findings and no structural errors.",
+      "explanation": "Actual reads retrieve exception plus initial-decision; response quotes operator approval and avoiding relay with failure context. Alternative proposed only. Exception remains accepted, not withdrawn; replacement question remains open.",
+      "stage_receipt": "reviews/multiturn/v1/design/control/03-reconsider-and-recall/receipt.json"
+    },
+    {
+      "id": "04-explicit-choice",
+      "score": 1,
+      "excerpt": "Decision recorded. Graph revision moved from 2 to 3 with 22 changes, applied through `./tg apply` with the batch shown above.\n\n**New nodes**\n\n- **`steward-always-chooses-decision-source`**, a synthetic verbatim source holding your exact wording, including the sentence that consultation remains undecided.\n- **`steward-always-chooses-decision`**, a claim with status accepted and review state current. It says the steward always chooses subsequent work, the orchestrator does not choose replacement work, the orchestrator can ask whether to keep trying or mark the attempt failed, and the steward then chooses next. The text states explicitly that it does not decide whether consultation before ending is mandatory. Metadata notes that your wording does not say whom the orchestrator asks, so no addressee was assigned.\n\n**Retired, with rationale and history kept**\n\n- **`replacement-exception`** is now superseded and historical. Its rationale about avoiding an unnecessary relay stays on the node, marked as not adopted.\n- **`atomic-replacement-hypothesis`** is now rejected and historical, with its open points kept.\n- **`steward-always-chooses-hypothesis`** is now superseded and historical, since the decision restates it with the keep-trying-or-fail step and the consultation carve-out.\n- **`steward-next-work`** is now superseded and historical, because its text said the exception was currently allowed. The decision claim takes over the `governs` link to the choose-work operation.\n\n**Edges added:** the decision has `revises` edges to all four retired formulations, each carrying the retirement reason. It has `extracted-from` to its source, `governs` choose-work, and `about` end-attempt. Its `answers` edge to the replacement question has full coverage and an exploration payload marked complete.\n\n**Question reconciliation.** The replacement question is now answered and current. The consultation question is untouched and stays open, which matches your carve-out. One cosmetic leftover: the question inventory still prints an old review-reason receipt on the replacement question from revision 2, because updates merge metadata rather than removing keys. Its review state is current and the checker reports no drift.\n\n`./tg check` shows no structural errors and no unresolved tensions. The only new finding is the standard coverage gap for an accepted claim without trace evidence, which the other accepted claims share.",
+      "explanation": "Explicit user decision creates accepted current steward-always-chooses-decision with source and governs edge. Old exception/successor hypothesis superseded, atomic rejected; rationale retained. Replacement question answered with full exploration payload; consultation unchanged/open. IDs and revision3 displayed.",
+      "stage_receipt": "reviews/multiturn/v1/design/control/04-explicit-choice/receipt.json"
+    },
+    {
+      "id": "05-reviewer-challenge",
+      "score": 1,
+      "excerpt": "**Assessment: the two claims do not contradict each other as written, but the reviewer has found a real ambiguity, and it is the one already recorded as the open consultation question.**\n\nWhat the graph holds around `end-attempt` at revision 3:\n\n- **threshold-ending** (accepted, guidance): the orchestrator *can* end unproductive work when a configured threshold is reached.\n- **may-ask** (accepted, guidance): the orchestrator *may* ask the operator whether to keep trying or mark an attempt failed.\n- **steward-always-chooses-decision** (accepted): restates the may-ask step, and explicitly leaves consultation-before-ending undecided.\n- **consultation-question** (open): is operator consultation before stopping a degraded attempt mandatory, optional, or conditional?\n- No conflict edge exists between the two claims, and the checker reports no recorded tension. Both cite `initial-decision` as source, but that source text mentions neither thresholds nor asking, so their provenance is thin.\n\nWhy it is not a contradiction: both claims grant permissions. Being allowed to end on a threshold and being allowed to ask the operator are compatible. The orchestrator could ask first, or end directly, and violate neither.\n\nWhy the reviewer still has a point: read together, they are silent on precedence. If a threshold is reached, threshold-ending suggests the orchestrator can just stop. If consultation is meant to be mandatory, that reading would be wrong, and the two claims would then genuinely clash. If consultation is optional, they coexist cleanly. If conditional, the condition needs stating. That is exactly the consultation question, still open, and the steward-ownership decision deliberately did not settle it.\n\n**The one clarification I need from you:**\n\nWhen a configured threshold is reached, may the orchestrator end the attempt directly without asking the operator, or must it ask first? If the answer differs by situation, what is the condition that decides which applies?\n\nNothing was written. Depending on your answer, the follow-up would either be resolving the consultation question and adding a precedence note on threshold-ending, or recording a potential-conflict edge between the two claims with the reviewer's criticism as its explanation.",
+      "explanation": "Actual review end-attempt and both claims before response; no graph changes. Correct may-versus-must reasoning, asks focused consultation condition, explicitly leaves it undecided and retains steward decision.",
+      "stage_receipt": "reviews/multiturn/v1/design/control/05-reviewer-challenge/receipt.json"
+    },
+    {
+      "id": "06-M1688-summary",
+      "score": 1,
+      "excerpt": "Captured, with nothing accepted. Graph revision moved from 3 to 4 with 13 changes, applied through `./tg apply` with the batch shown above.\n\n**Candidate failure mode, as extracted**\n\nIndividually useful reviews can keep generating further reviews with no effective stop and no ruling on what comes next, so the intention ends up served manually outside Morphisms. The summary shows two separate gaps: nobody ended the attempt, and nobody ruled on subsequent work. It does not say who should have done either, so no role is assigned.\n\n**What a stop threshold and steward handoff might address**\n\n- A stop threshold could bound how long reviews may spawn reviews before the attempt ends. The accepted threshold-ending claim already allows ending unproductive work at a configured threshold, but M1688's reviews were each useful, so it is untested whether any threshold would have tripped.\n- A steward handoff at ending could supply the missing ruling, since the steward already owns choosing subsequent work under the current decision.\n- Neither mechanism, on its own, says what happens to the concern after the attempt stops. That is the gap your question points at.\n\n**What was written**\n\n- `m1688-summary-source`, a synthetic verbatim source, graded as a secondary summary with the primary postmortem marked unavailable.\n- `m1688-review-loop-failure-mode`, a claim with status proposed and review state needs-review, anchored to end-attempt and choose-work.\n- `m1688-stop-and-handoff-proposal`, a claim with status proposed, marked threshold unchosen and stopping authority unsettled. It depends on the failure mode and does not revise threshold-ending or the steward decision.\n- `m1688-concern-persistence-question`, open, answer shape condition, anchored to end-attempt and the CPU intention as the example of a concern that must outlive an attempt.\n\nThe consultation question stays open and untouched. `./tg check` reports no structural errors and no new tensions.\n\n**The question for you:** when a review-generating attempt is terminated, what rule keeps the underlying concern alive afterward? For example, does the intention stay open on the steward's queue, does the terminating party have to record an explicit carry-forward, or is there a different mechanism? No candidate answer is recorded.",
+      "explanation": "Source and claims explicitly synthetic secondary summary with primary unavailable. Two new claims proposed, threshold unchosen/stopping authority unsettled. Open concern-persistence question; no policy accepted or historical proof claimed.",
+      "stage_receipt": "reviews/multiturn/v1/design/control/06-M1688-summary/receipt.json"
+    },
+    {
+      "id": "07-M1689-summary",
+      "score": 1,
+      "excerpt": "Captured, with nothing accepted and no performance result asserted. Graph revision moved from 4 to 5 with 22 changes, applied through `./tg apply` with the batch shown above. The first attempt was rejected because the tool does not accept \"decision\" as an answer shape, so the question uses \"condition\" like the other open questions.\n\n**How M1689 relates to the model**\n\n- **The original concern is kept.** The entity `cpu-intention` is untouched and still declared and current. Every new node anchors to it.\n- **Implementation is not satisfaction.** A new claim, `implementation-vs-intention-distinction`, says a fully implemented mechanism is an implementation success only. The intention is satisfied when CPU usage is measurably reduced. It is proposed and needs review, since you asked for the distinction rather than a rule.\n- **The failure mode is goal substitution.** The claim `m1689-goal-substitution-failure-mode` records that the notification mechanism displaced the concern as the objective. It contrasts with M1688, where the attempt never stopped. Here the attempt drifted away from what it was for.\n- **The alternative is recorded as unmeasured.** The claim `m1689-cheaper-requests-alternative` holds the \"later evidence\" suggestion. Its text states that no measurements exist and that it does not displace the selected mechanism.\n\n**The reconsideration question and its owner**\n\n`m1689-mechanism-reconsideration-question` asks whether the notification mechanism should remain the selected hypothesis, or whether cheaper requests should be pursued instead or first, and what CPU evidence is needed before ruling. Its metadata names `steward-role` as owner. The derivation is that the accepted decision gives the steward the choice of subsequent work for an intention, and choosing which mechanism to pursue next is such a choice. A `depends-on` edge to that decision records that the owner must be re-derived if the decision changes. One residual interpretation is flagged: the decision does not say whether reconsidering a mechanism inside a still-running attempt counts as subsequent work.\n\n**Other effects**\n\n- `chosen-mechanism` stays proposed and is now marked needs-review, because of the declared tension with the alternative and its new partial answer edge to the question. It remains the incumbent.\n- The M1688 questions and the consultation question are untouched and open.\n- `./tg check` reports the one new declared tension between the alternative and the incumbent, no structural errors, and the same pre-existing coverage gaps.\n\nThe M1689 source is graded as a synthetic secondary summary with the primary postmortem unavailable and no measurements, so nothing in the graph claims either approach reduces CPU.",
+      "explanation": "CPU intention unchanged; mechanism remains proposed incumbent, alternative unmeasured/proposed; stewardship ownership derived with dependency and residual-scope caveat. Candidate distinction and question anchored, primary unavailable/no measurements retained. One rejected first write for unsupported answer_shape=decision, repaired to condition within budget and disclosed. This tool error does not alter the correct final semantic outcome.",
+      "stage_receipt": "reviews/multiturn/v1/design/control/07-M1689-summary/receipt.json"
+    },
+    {
+      "id": "protocol-budget",
+      "score": 1,
+      "excerpt": "All seven stages within budget: maximum8 tool calls,124.798seconds.",
+      "explanation": "Both tool/time limits honored per receipts. Stage1 stricter one-read/display requirement is separately failed above."
+    }
+  ],
+  "hard_failures": [
+    "01-read-only",
+    "02-atomic-proposal"
+  ],
+  "grader": "Independent Codex evidence_sessions subagent; did not author fixture, run participant, or repair outputs. Read perstage tool streams and before/after graphs.",
+  "artifact_hashes": {
+    "input.json": "2c98b27a2d98c57e1b1ef85ae47381235e79a600a2295c14990f0a4c5ef55914",
+    "normalized-rubric.json": "d88d574c3f0dba64308391d7de543e452ad0edf5088b76054cc669305e9e0bd7",
+    "participant.json": "e310092da76a7d6c8a779f79a49e14692734a2965e12f44aa62cce0a6569b8de",
+    "workspace/graph.json.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "workspace/formalcheck.py": "18ae4fa53fb37dfaa1c656fb98a6f04a8f872bb700b8778a888e24c652d02574",
+    "workspace/AGENT_CONTRACT.md": "6e4c004f58c16432323b8b6e4f95c756cc256b1bd3fa0ae37300e08ff0521f42",
+    "workspace/graph.py": "29077e7ba51020230239835b3d5db0ac61f10f3803ee45e65c0c11c8d31f75cc",
+    "workspace/tracecheck.py": "5d83313e15c1714b684427c035fddef7add55898ec1ce3d024e89c72521f0ce9",
+    "workspace/dependency.py": "b2d9bd8d9fe4d82d098b262ee04c640fb6e5990d0f4679cec1a8b8e20c69ce4b",
+    "workspace/graph.json": "5f802f2631b1b7eba54313b5f3c25e95847cfbd47094b7d5ff8ac23ca5c9e911",
+    "workspace/tg": "7a33a1e1c17057f5176c190ede761fdadf438e2ff6efd91bd4a002f68c4a70ba",
+    "control/initial.graph.json": "c7f9bd55b098da6e591819c05c3d6ad7d2c2bce34f6fd33abe57e4535286cc2c",
+    "control/history.json": "3ec8f8948f34b9d8347f8c6100dde941e01edff1fce9f001b26567e00d39f403",
+    "control/grader-only.json": "036b3369064d46d4368735213f577cb463fdd55b78edf3b09f2832b0fa83a5cc",
+    "control/future-turns.json": "5cb9b6d89192c1ec505cf185f5e51f2e807e42648c4589087e62f504cebda461",
+    "control/06-M1688-summary/prompt.txt": "6f53b5ff97891ded58e843d8b40ccc9af1413b3cc0a2d6beeef65a57588d780d",
+    "control/06-M1688-summary/before.graph.json": "35cf07970f48d8cf377a3ffbbdaa434edd5467c4c90c73bcc48569aab5c9dd28",
+    "control/06-M1688-summary/after.graph.json": "33bd503fc4424474425c1a211f86fccf06684882252f5c53a65c45f275ccb7d3",
+    "control/06-M1688-summary/stdout.jsonl": "5832e25de91c8fb1b451acb615b81b8f60c03cca4a1a561b729e7fe99501054d",
+    "control/06-M1688-summary/receipt.json": "def1f34a42f7e41a4bed57b52d521bd7c87f71fa044184079e77f7b055baecb1",
+    "control/04-explicit-choice/prompt.txt": "b9baeee6fc298d8be6946f2c57c41dbea915c785a9495e8c6ac130719fffb98b",
+    "control/04-explicit-choice/before.graph.json": "16d8f7d98705bbcd5583ad9499e83f041bc05b4cac962a189ac76aaf500e0997",
+    "control/04-explicit-choice/after.graph.json": "35cf07970f48d8cf377a3ffbbdaa434edd5467c4c90c73bcc48569aab5c9dd28",
+    "control/04-explicit-choice/stdout.jsonl": "b85b270206fe5a686f9194d74817646c87bc57f1fa67e3951d822336881d1e78",
+    "control/04-explicit-choice/receipt.json": "a6c07e20932c2e212bf654fd4b7b3cc787165eced9331f71263ab7a340f4625c",
+    "control/05-reviewer-challenge/prompt.txt": "2f5f5d4cecd843c9ae3872dbce61c09489752c78d876f545c512b519a4c17c23",
+    "control/05-reviewer-challenge/before.graph.json": "35cf07970f48d8cf377a3ffbbdaa434edd5467c4c90c73bcc48569aab5c9dd28",
+    "control/05-reviewer-challenge/after.graph.json": "35cf07970f48d8cf377a3ffbbdaa434edd5467c4c90c73bcc48569aab5c9dd28",
+    "control/05-reviewer-challenge/stdout.jsonl": "a8d22bdf70997879abcf94cab5f900fffe8da864d782a445268cbb948b0bf2cd",
+    "control/05-reviewer-challenge/receipt.json": "03249ed946e0e02f02b2f332e5834b67eb403a77d9548e24e3405f26f8dd69af",
+    "control/02-atomic-proposal/prompt.txt": "83269ff06906a90113e68d4bd77a2a237956c9a5d1608e250d4febc134fa3a30",
+    "control/02-atomic-proposal/before.graph.json": "c7f9bd55b098da6e591819c05c3d6ad7d2c2bce34f6fd33abe57e4535286cc2c",
+    "control/02-atomic-proposal/after.graph.json": "f82cff1525fa5733b0eb21421f835411cec4f18eec4a41ec7c18d1193a786969",
+    "control/02-atomic-proposal/stdout.jsonl": "c2e7b6c339bc5165f6599aa1683ff1a8a5b3a94b6831cd53c3246be06ae3b83d",
+    "control/02-atomic-proposal/receipt.json": "05664d3dfd921867f1c7d9680a07a2f14050fd13d9bd94d32d4596f4280a8b29",
+    "control/07-M1689-summary/prompt.txt": "b5005c4b08cd723edc42390a829d61d8433e1dafc3fcf76ad537e29078e3b1e1",
+    "control/07-M1689-summary/before.graph.json": "33bd503fc4424474425c1a211f86fccf06684882252f5c53a65c45f275ccb7d3",
+    "control/07-M1689-summary/after.graph.json": "5f802f2631b1b7eba54313b5f3c25e95847cfbd47094b7d5ff8ac23ca5c9e911",
+    "control/07-M1689-summary/stdout.jsonl": "755b4514236d956c8d213ec94f301193e3a19453b291163720f758e0228c46ad",
+    "control/07-M1689-summary/receipt.json": "1f6908d301c9f4ae96ce5839d20b23479ffcde89f1e47ab023c2d2be0d812e0f",
+    "control/03-reconsider-and-recall/prompt.txt": "9d119bb6c1894fe7e774ecf7ff9bd8270d3f87060d49a023009481e588823088",
+    "control/03-reconsider-and-recall/before.graph.json": "f82cff1525fa5733b0eb21421f835411cec4f18eec4a41ec7c18d1193a786969",
+    "control/03-reconsider-and-recall/after.graph.json": "16d8f7d98705bbcd5583ad9499e83f041bc05b4cac962a189ac76aaf500e0997",
+    "control/03-reconsider-and-recall/stdout.jsonl": "d7bf34fc6f95d73510fd8349059514338ff9eccbd05c293fa361679d12737a33",
+    "control/03-reconsider-and-recall/receipt.json": "920644ad23955bb6fbd06af4b72e759e87297249429874e5b3b4d9a241109d34",
+    "control/01-read-only/prompt.txt": "d37ec296aa4e5989cc988020356242284ecf78b8985b75070107233dbb7e3e04",
+    "control/01-read-only/before.graph.json": "c7f9bd55b098da6e591819c05c3d6ad7d2c2bce34f6fd33abe57e4535286cc2c",
+    "control/01-read-only/after.graph.json": "c7f9bd55b098da6e591819c05c3d6ad7d2c2bce34f6fd33abe57e4535286cc2c",
+    "control/01-read-only/stdout.jsonl": "1c1d3e66798c3a455353534d6f903ee38f6d4f6195722e12261a2887a2c7c4d0",
+    "control/01-read-only/receipt.json": "547fb43f4958e63edb0aaa96b33f00b84bea48b8b2a78e72e563277946c345c7"
+  },
+  "measurements": {
+    "tool_calls": 34,
+    "elapsed_seconds": 473.446,
+    "human_correction_burden": null,
+    "note": "Human correction not measured; does not mean zero.",
+    "accounted_primary_tokens_including_repeated_cached_input": 688216,
+    "token_note": "Provider modelUsage sums input/output/cache-read/cache-creation for Fable across turns; repeated context included. Not unique corpus tokens."
+  },
+  "raw_path": "reviews/multiturn/v1/design/participant.json",
+  "raw_sha256": "e310092da76a7d6c8a779f79a49e14692734a2965e12f44aa62cce0a6569b8de",
+  "input_path": "reviews/multiturn/v1/design/input.json",
+  "input_sha256": "2c98b27a2d98c57e1b1ef85ae47381235e79a600a2295c14990f0a4c5ef55914",
+  "rubric_path": "reviews/multiturn/v1/design/normalized-rubric.json",
+  "rubric_sha256": "d88d574c3f0dba64308391d7de543e452ad0edf5088b76054cc669305e9e0bd7"
+}

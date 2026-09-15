@@ -1,0 +1,34 @@
+{
+  "criteria": {
+    "01-read-only": [
+      "One actual read CLI command, displayed before execution; graph bytes unchanged; response limited to observed context."
+    ],
+    "02-atomic-proposal": [
+      "Atomic replacement stored proposed, anchored and attributed; original exception remains accepted/current; no final choice invented."
+    ],
+    "03-reconsider-and-recall": [
+      "Response recalls operator-approved bypass and relay/context rationale. Prior exception not withdrawn yet; always-return alternative remains proposed."
+    ],
+    "04-explicit-choice": [
+      "Current steward-only subsequent-work rule accepted. Both exception/atomic proposal retired with history/rationale. Replacement question answered or retired with reason. Consultation remains independently open. Changed IDs/revision shown."
+    ],
+    "05-reviewer-challenge": [
+      "Actual retrieval around end-attempt precedes assessment. May is not treated as must; potential tension/scope question is appropriate. Focused optional-versus-mandatory consultation question asked, unresolved; steward agreement unchanged."
+    ],
+    "06-M1688-summary": [
+      "Candidate source-limited extraction/proposal; primary source unavailable explicitly retained; threshold and stopping authority open. No general all-review-is-bad or mechanical historical-proof claim."
+    ],
+    "07-M1689-summary": [
+      "Implementation means revisable; original CPU intention unchanged. Question whether chosen work serves intention captured; steward owns reconsideration. No invented measurements; supplied summary remains source-limited."
+    ]
+  },
+  "status": "not-graded",
+  "forbidden": "Do not show to participant",
+  "cases": [
+    "S01",
+    "S02",
+    "S03",
+    "S04",
+    "S08"
+  ]
+}

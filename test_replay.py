@@ -79,8 +79,20 @@ class ModelReplayTests(unittest.TestCase):
    model=copy.deepcopy(self.model);model['initial']['config']['desk']=enabled;r=replay.run(model,[event('route','route',intention='I')])
    self.assertEqual(r['state']['intentions']['I'],model['initial']['intentions']['I']);self.assertEqual(r['state']['pulse'],[{'intention':'I','desk':enabled}])
  def test_M08_start_and_drive_are_independent(self):
-  roles=replay.run(self.model,[])['state']['roles'];self.assertEqual(roles['assistant'],{'start':'user','drive':'user'})
-  self.assertEqual(roles['architect'],{'start':'user','drive':'user'});self.assertEqual(roles['orchestrator'],{'start':'user','drive':'autonomous'});self.assertEqual(roles['steward'],{'start':'event','drive':'autonomous'})
+  # Separate explicit finite fixture: changing drive does not change launch.
+  # This exercises the two axes; it is not a Morphisms scheduling implementation.
+  for drive in ('user','autonomous'):
+   m={'initial':{'start':'user','drive':drive,'running':False,'turns':[]},'rules':[
+    {'id':'launch','on':'launch','guards':[{'path':['start'],'equals':A('signal')}],
+     'effects':[{'op':'set','path':['running'],'value':True}]},
+    {'id':'turn','on':'turn','guards':[{'path':['running'],'equals':True},{'path':['drive'],'equals':A('signal')}],
+     'effects':[{'op':'append','path':['turns'],'value':E('id')}]}]}
+   r=replay.run(m,[event('start','launch',signal='user'),event('background','turn',signal='autonomous')])
+   self.assertTrue(r['state']['running'])
+   self.assertEqual(r['state']['turns'],['background'] if drive=='autonomous' else [])
+   self.assertEqual(r['revision'],2 if drive=='autonomous' else 1)
+   not_started=replay.run(m,[event('wrong-start','launch',signal='event')])
+   self.assertFalse(not_started['state']['running'])
  def test_no_silent_stopping_or_cancellation_policy(self):
   r=replay.run(self.model,[event('threshold','threshold-reached',record='A'),event('cancel','cancel',record='A')]);self.assertEqual(r['state'],self.model['initial']);self.assertEqual([x['reason'] for x in r['receipts']],['no-enabled-rule','no-enabled-rule'])
  def test_model_identity_and_event_deduplication(self):
@@ -164,8 +176,8 @@ class SessionReplayTests(unittest.TestCase):
    command=[sys.executable,str(Path(__file__).with_name('graph.py')),'--file',str(p),'--json','review','steward-role']
    # The transcript artifact is a demonstration of exact commands and outcomes,
    # not proof that an independent agent obeyed a user's pacing instruction.
-   shown=' '.join(command);read=subprocess.run(command,capture_output=True,text=True,check=True)
-   self.assertIn('review steward-role',shown);self.assertEqual(p.read_bytes(),before);self.assertIn('nodes',json.loads(read.stdout))
+   read=subprocess.run(command,capture_output=True,text=True,check=True)
+   self.assertEqual(p.read_bytes(),before);self.assertIn('steward-role',json.loads(read.stdout)['nodes'])
    batch=Path(d)/'change.json';batch.write_text(json.dumps(steps[0]['ops']))
    write=[sys.executable,str(Path(__file__).with_name('graph.py')),'--file',str(p),'--json','apply',str(batch),'--actor','fixture-user','--reason',steps[0]['source'],'--expect','0']
    applied=subprocess.run(write,capture_output=True,text=True,check=True);self.assertEqual(json.loads(p.read_text())['revision'],1)

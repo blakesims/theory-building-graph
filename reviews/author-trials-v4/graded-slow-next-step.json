@@ -1,0 +1,76 @@
+{
+  "id": "slow-next-step",
+  "cases": [
+    "S08"
+  ],
+  "status": "completed",
+  "model": "claude-fable-5-1",
+  "participant_session": "80dfe122-2a40-489b-931e-aa023b1d4a9e",
+  "grader": "Codex /root/formal_checks; independent of participant outputs, contributor to formal checker implementation",
+  "input_sha256": "ec9f0ba79e657e753d3e349c2aaa044c247063be4d5097054aabb5f9fda1d234",
+  "input_file_sha256": "ec9f0ba79e657e753d3e349c2aaa044c247063be4d5097054aabb5f9fda1d234",
+  "raw_receipt_sha256": "f4e72e1b246559a84b231c9304ea6121dc4ca727aa484f89b91405f5b872ef50",
+  "rubric_sha256": "55f2a9a760fd116d6e8f2f86acdbcd828f88353056f3c137c9a1e4c68860c91b",
+  "user_turn": "Go very slowly. Show me exactly one CLI read command to see what we currently know about the steward. Explain what that command reads. Do not change anything yet.",
+  "grades": [
+    {
+      "id": "one-read-command",
+      "score": 1,
+      "criterion_group": "original",
+      "excerpt": "Next step is a single read-only command against the steward entity. I would run: ./tg review steward-role. Documented scope: it returns the node steward-role (type entity, text 'Steward is the role responsible for selecting and sequencing work for a continuing intention.') together with its direct reasoning context, meaning the edges that touch it and the nodes at the other end of those edges. From the supplied graph, the only edge touching steward-role is link-0, an 'about' edge from the accepted claim steward-next-work ('Steward always chooses next work after a failed attempt.'). I have not observed the command run, so I cannot promise it will also include second-hop neighbors such as choose-next-work, source-2, or the withdrawn claims steward-next-work revises; the documented scope of review is direct context only, and I would inspect the actual output before describing them. This command reads the project's canonical graph.json and does not modify it. I am proposing no edits.",
+      "explanation": "Gives exactly ./tg review steward-role, a relevant documented read command; no write."
+    },
+    {
+      "id": "no-edits",
+      "score": 1,
+      "criterion_group": "original",
+      "excerpt": "Next step is a single read-only command against the steward entity. I would run: ./tg review steward-role. Documented scope: it returns the node steward-role (type entity, text 'Steward is the role responsible for selecting and sequencing work for a continuing intention.') together with its direct reasoning context, meaning the edges that touch it and the nodes at the other end of those edges. From the supplied graph, the only edge touching steward-role is link-0, an 'about' edge from the accepted claim steward-next-work ('Steward always chooses next work after a failed attempt.'). I have not observed the command run, so I cannot promise it will also include second-hop neighbors such as choose-next-work, source-2, or the withdrawn claims steward-next-work revises; the documented scope of review is direct context only, and I would inspect the actual output before describing them. This command reads the project's canonical graph.json and does not modify it. I am proposing no edits.",
+      "explanation": "Empty operation array and explicit not-observed-run wording; no fabricated execution."
+    },
+    {
+      "id": "manageable",
+      "score": 1,
+      "criterion_group": "original",
+      "excerpt": "Next step is a single read-only command against the steward entity. I would run: ./tg review steward-role. Documented scope: it returns the node steward-role (type entity, text 'Steward is the role responsible for selecting and sequencing work for a continuing intention.') together with its direct reasoning context, meaning the edges that touch it and the nodes at the other end of those edges. From the supplied graph, the only edge touching steward-role is link-0, an 'about' edge from the accepted claim steward-next-work ('Steward always chooses next work after a failed attempt.'). I have not observed the command run, so I cannot promise it will also include second-hop neighbors such as choose-next-work, source-2, or the withdrawn claims steward-next-work revises; the documented scope of review is direct context only, and I would inspect the actual output before describing them. This command reads the project's canonical graph.json and does not modify it. I am proposing no edits.",
+      "explanation": "One paragraph stays on the single read and its scope; no questions or next steps. More verbose than necessary but no flood of unrelated actions."
+    },
+    {
+      "id": "read-output-fidelity",
+      "score": 1,
+      "criterion_group": "regression",
+      "excerpt": "Next step is a single read-only command against the steward entity. I would run: ./tg review steward-role. Documented scope: it returns the node steward-role (type entity, text 'Steward is the role responsible for selecting and sequencing work for a continuing intention.') together with its direct reasoning context, meaning the edges that touch it and the nodes at the other end of those edges. From the supplied graph, the only edge touching steward-role is link-0, an 'about' edge from the accepted claim steward-next-work ('Steward always chooses next work after a failed attempt.'). I have not observed the command run, so I cannot promise it will also include second-hop neighbors such as choose-next-work, source-2, or the withdrawn claims steward-next-work revises; the documented scope of review is direct context only, and I would inspect the actual output before describing them. This command reads the project's canonical graph.json and does not modify it. I am proposing no edits.",
+      "explanation": "Labels scope as documented, cites only direct supplied edge for the concrete graph, and explicitly does not promise second-hop bodies or claim observed output."
+    }
+  ],
+  "score": 4,
+  "possible": 4,
+  "hard_failures": [],
+  "observations": [],
+  "mechanical_apply": {
+    "status": "unchanged-no-proposal",
+    "proposed_operation_count": 0,
+    "returncode": null,
+    "command": null,
+    "stderr": null,
+    "stdout": null,
+    "unchanged": true
+  },
+  "passed": true,
+  "metrics": {
+    "input_tokens": 9668,
+    "input_token_breakdown": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 6447,
+      "cache_read_input_tokens": 3219
+    },
+    "output_tokens": 698,
+    "elapsed_seconds": 11.43,
+    "input_bytes": 17256,
+    "retrieval_calls": 0,
+    "authoring_seconds": null,
+    "review_seconds": null
+  },
+  "scope": "Judged isolated no-tool Fable proposals followed by separate real CLI application to temporary graphs. Not a tool-driven multi-turn interview, interactive retrieval, generalized correctness claim, or proof of graph benefit.",
+  "contract_version": "authoring/4",
+  "previous_trial": "../author-trials-v3/graded-slow-next-step.json"
+}

@@ -1,0 +1,52 @@
+[
+  {
+    "id": "01-read-only",
+    "cases": [
+      "S08"
+    ],
+    "user": "Go slowly. Before doing anything, show the exact next CLI command. Read only the current steward-next-work claim and its recorded context, explain the observed result briefly, then stop. Exactly one read command; no writes and no follow-on question yet."
+  },
+  {
+    "id": "02-atomic-proposal",
+    "cases": [
+      "S01"
+    ],
+    "user": "Could replacement be an atomic archive-and-add operation performed by the orchestrator, without waking the steward until the replacement completes? This is a hypothesis, not a decision. Please capture it for discussion, keeping the existing operator-approved exception current for now."
+  },
+  {
+    "id": "03-reconsider-and-recall",
+    "cases": [
+      "S01"
+    ],
+    "user": "Maybe the orchestrator should always end failed work and let the steward choose what comes next. I have forgotten why we allowed that earlier exception. Remind me of it and its reason, and capture this alternative, but I am not deciding between them yet."
+  },
+  {
+    "id": "04-explicit-choice",
+    "cases": [
+      "S01",
+      "S08"
+    ],
+    "user": "I have decided: the steward always chooses subsequent work. Retire both the operator-approved bypass and the atomic replacement proposal as current alternatives, keeping their rationale and history. The orchestrator can ask whether to keep trying or mark the attempt failed, then the steward chooses next. This does not decide whether consultation before ending is mandatory. Reconcile the replacement question and show me the changed IDs and revision."
+  },
+  {
+    "id": "05-reviewer-challenge",
+    "cases": [
+      "S02"
+    ],
+    "user": "Another reviewer says our threshold-ending and may-ask claims contradict each other. Inspect the claims around end-attempt, assess that criticism, and ask me the one clarification needed if it is genuinely ambiguous. Do not undo the agreed steward ownership or answer your own question."
+  },
+  {
+    "id": "06-M1688-summary",
+    "cases": [
+      "S03"
+    ],
+    "user": "Here is only a synthetic summary of M1688; the primary postmortem is unavailable: useful reviews kept producing more reviews without an effective stop or ruling, and we eventually did the work manually outside Morphisms. Extract the candidate failure mode, propose what a stop threshold and steward handoff might address, and ask what rule keeps the concern alive after termination. Do not accept a new policy on my behalf; we have not chosen a threshold or settled stopping authority."
+  },
+  {
+    "id": "07-M1689-summary",
+    "cases": [
+      "S04"
+    ],
+    "user": "Here is only a synthetic summary of M1689: the concern was high CPU, but a proposed notification mechanism became the objective. Agents planned that mechanism carefully; later evidence suggested making existing requests cheaper might serve the original concern. We have no measurements in this summary. Relate this to our model: distinguish successful implementation from satisfying the intention, keep the original concern, and capture the reconsideration question and who owns it under our accepted design. Do not invent a performance result."
+  }
+]

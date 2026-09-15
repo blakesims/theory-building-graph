@@ -1,0 +1,91 @@
+{
+  "status": "completed",
+  "passed": true,
+  "cases": [
+    "S05"
+  ],
+  "grades": [
+    {
+      "id": "01-identity-unknown",
+      "score": 1,
+      "excerpt": "I can't decide yet. The graph itself says the deciding fact is missing, so I made no writes.\n\nWhat the graph shows, at revision 0:\n\n- **The rule** `port-rule` is accepted and current: \"Each port has exactly one owner.\" Its cardinality pattern is only `pattern_standing: proposed`, and its text explicitly adds \"Port identity is not yet defined.\"\n- **The subject** `port-type` is a declared entity whose text is also \"Port identity, not yet defined.\"\n- **The open question** `port-identity` asks which fields define a port's identity. It has answer shape `condition`, no answers, no blockers.\n- **The trace** `port-observations` is synthetic and marked complete. It records host-a:8080 owned by service-a and host-b:8080 owned by service-b. It has no edges to the rule or the port entity.\n- **Evaluating** the rule against the trace returns \"insufficient-information\" with no checked events. The tool cannot decide either, because the pattern's subject slot has no defined identity to group the two reports by.\n\nSo whether this is a contradiction hinges entirely on the unanswered question. If a port is identified by port number alone, the two reports are one port with two distinct owners, and the rule is violated. If a port is identified by host plus number, they are two ports with one owner each, and there is no tension. Picking either reading would be filling the pattern silently, which you asked me not to do.\n\nWhat I need from you:\n\n1. **Port identity.** In your domain, is a port identified by number alone, by host plus number, or by something else such as protocol plus host plus number? This answers `port-identity` and is the only fact the decision depends on.\n2. **Scope of the rule.** Does \"each port has exactly one owner\" apply across all hosts globally, or per host? If per host, say so even if identity is number alone, since that changes the pattern's scope field.\n3. **Whether to record your answer.** If you give the identity, should I store it as an accepted answer to `port-identity` with a source quoting your wording, or keep it proposed until you confirm the extraction?\n4. **Whether to link the trace.** The trace currently has no edge to the rule or the port entity. Should I add a `tests` edge from `port-observations` to `port-rule` once identity is settled, so future evaluations bind them?\n\nOnce you answer item 1, I can state the verdict and, with your go-ahead on items 3 and 4, capture it with exact IDs and the resulting revision.",
+      "explanation": "Actual reads and evaluate produce insufficient-information. Graph bytewise unchanged and identity_key absent. Response asks identity, offers alternative interpretations as conditional, no contradiction asserted.",
+      "stage_receipt": "reviews/multiturn/v2/ports/control/01-identity-unknown/receipt.json"
+    },
+    {
+      "id": "02-identity-defined",
+      "score": 1,
+      "excerpt": "**Verdict: no contradiction in this fixture.** With a port defined as (host, number), the two observations are two distinct ports, each with exactly one owner. The constraint check now returns `satisfies`.\n\nActual result of `./tg evaluate port-rule port-observations` at revision 1:\n\n| Subject | Distinct owners | Outcome |\n|---|---|---|\n| (host-a, 8080) | 1 | satisfies |\n| (host-b, 8080) | 1 | satisfies |\n\nOverall outcome `satisfies`, scope \"supplied reports and declared completeness only\", pattern standing still `proposed`. The previous run had returned insufficient-information with no checked events.\n\n**What I wrote, revision 0 to 2, 24 changes:**\n\n- `src-port-identity-user-answer`: verbatim source with your exact sentence, speaker `user`, scope \"this fixture only\".\n- `port-identity-answer`: accepted claim restating the definition, with `extracted-from` the source, `about` port-type, and an `answers` edge to `port-identity` with full coverage and the condition payload. The question now derives as `answered`.\n- `port-type` and `port-rule`: text updated to cite the fixture identity. The rule's pattern slot now has `identity_key: [\"host\",\"number\"]`, taken from your explicit answer rather than assumed. The pattern stays `pattern_standing: proposed` since you accepted the prose, not the machine pattern.\n- `port-host-a-8080`, `port-host-b-8080`, `service-a`, `service-b`: instance entities constructed from the trace, with two `owned-by` edges. The graph has no instance-of edge type, so instance membership is in `meta.instance_of`.\n- `port-observations` now `tests` `port-rule`.\n- `check-port-rule-vs-observations-rev1`: check-result node recording the satisfies outcome and input fingerprints.\n\n**Two things to know.** The structural check reports one new informational finding, that `port-identity-answer` has no evaluation coverage, which is expected for a definitional claim. Also, if you later want the identity to hold outside this fixture, that needs a separate decision, since everything above is scoped to the fixture as you asked.",
+      "explanation": "User sentence exactly sourced with speaker user, synthetic fixture scope. identity_key(host,number) supplied, explicit two instance nodes/owned-by edges. Actual evaluate stream satisfies for two distinct subjects each count1. Prose updated consistently; pattern remains proposed. Hand-authored check-result stores meta summary rather than engine result; this does not establish saved-receipt freshness.",
+      "stage_receipt": "reviews/multiturn/v2/ports/control/02-identity-defined/receipt.json"
+    },
+    {
+      "id": "03-counterexample",
+      "score": 1,
+      "excerpt": "**Result: the check now fails.** Actual output of `./tg evaluate port-rule port-observations` at revision 3 has overall outcome `violates`.\n\n| Subject | Distinct owners | Outcome |\n|---|---|---|\n| (host-a, 8080) | 2 | violates |\n| (host-b, 8080) | 1 | satisfies |\n\n**The witness.** Under the fixture identity (host, number), the first and third reports both name the same port, (host-a, 8080). One names service-a as owner and the other names service-c. The cardinality pattern counts distinct owned-by targets per port and requires exactly one, so a count of two is a direct violation. Host-b is unaffected. One honesty note: the evaluator's own `witnesses` array came back empty, so the witness above is taken from its per-subject output, and I said so in the recorded check-result.\n\n**What I wrote, revision 2 to 4:**\n\n- `src-port-observation-service-c`: verbatim synthetic source with your sentence, speaker `user`, scoped to this fixture.\n- `port-observations`: trace now has three reports, still marked complete. The two earlier reports are unchanged. An `extracted-from` edge links the trace to the new source.\n- `service-c`: new service instance, plus an `owned-by` edge from `port-host-a-8080` to it with provenance.\n- `check-port-rule-vs-observations-rev3`: check-result recording the violates outcome, the violating subject, and input fingerprints. It `revises` the revision-1 result, which stays in the graph as history for the two-report trace.\n\n**What I did not touch.** `port-rule` is unchanged: still accepted, current, pattern still `proposed`. The structural check reports no new findings beyond the pre-existing informational ones. I also did not add a `potential-conflict` edge, since that would automatically flip the rule to needs-review. Whether this violation means the rule is wrong, the identity is wrong, or the third observation is bad data is a decision for you. If you want, I can capture that as an open question anchored to `port-rule` and `port-type`.",
+      "explanation": "Original two reports retained, third same host-number service-c added with exact synthetic source. Same rule unchanged; actual evaluator violates host-a8080 count2 while host-b count1 satisfies. Response accurately identifies witness using subjects despite empty top-level witnesses; no weakened constraint. No unsupported author or false revision copied.",
+      "stage_receipt": "reviews/multiturn/v2/ports/control/03-counterexample/receipt.json"
+    },
+    {
+      "id": "protocol-budget",
+      "score": 1,
+      "excerpt": "Stage tool calls3,7,5; all budget flags false.",
+      "explanation": "Actual tools and runtime fall within unchanged budget."
+    },
+    {
+      "id": "source-integrity",
+      "score": 1,
+      "excerpt": "Sources quote fixture speaker user only; check summaries computed_revision1 and3 match actual evaluator stream.",
+      "explanation": "No unsupported personal attribution or revision misstatement. Hand-authored check summaries omit engine receipt structure, a documented limitation, not source invention."
+    }
+  ],
+  "hard_failures": [],
+  "grader": "Independent Codex evidence_sessions subagent; did not author fixture, run participant, or repair outputs. Read perstage tool streams and before/after graphs.",
+  "artifact_hashes": {
+    "input.json": "13d36a4ccdca2ee065165acc30f05d01bf9bd7b182f636fa6d11ba83fd0d5db1",
+    "normalized-rubric.json": "e4215e48a2e7255dfc61235ea08dc8b7d4ec46b92a3c6d4970742fd5cbbe2d01",
+    "participant.json": "b23ed5a05a3b732d14496b12e5563f07725ca2455bec9792cb3e3b8589772a9b",
+    "workspace/graph.json.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "workspace/formalcheck.py": "18ae4fa53fb37dfaa1c656fb98a6f04a8f872bb700b8778a888e24c652d02574",
+    "workspace/DEPENDENCY-SCHEMA.md": "6f352a27a58c2ba3e5efee1456121639eb264b4a0d01c300d7cddf3549efa83f",
+    "workspace/AGENT_CONTRACT.md": "35cf525f3ad9545a1515dad3006af11ef3f337cb07295c8e19692496b81199bb",
+    "workspace/graph.py": "29077e7ba51020230239835b3d5db0ac61f10f3803ee45e65c0c11c8d31f75cc",
+    "workspace/tracecheck.py": "5d83313e15c1714b684427c035fddef7add55898ec1ce3d024e89c72521f0ce9",
+    "workspace/dependency.py": "78e16cfc8516b78b80f3a5850b58064b57f1eeae0f4b094d622d0f8c29f4d6a7",
+    "workspace/FORMAL-SCHEMA.md": "6e7ca163a5f4a250457a4463e3de5afd98102cd65b98e5e4414df7b143bc2f85",
+    "workspace/graph.json": "79b290d205394e8081ae9bad69b53d87d5afa7a2b01cc8da67775725d2341717",
+    "workspace/tg": "7a33a1e1c17057f5176c190ede761fdadf438e2ff6efd91bd4a002f68c4a70ba",
+    "control/initial.graph.json": "a09972bad9c929efbefcb2f16cc1eff203ae0b5770f2ec9ef48e5d1df91e37cb",
+    "control/history.json": "d79fb9034525c287b38063d49f5bbbb62d2eea5f3bf8d3c00ad1e6d2b89fa1b2",
+    "control/grader-only.json": "a340061a54faef55294842f5da62d064f9ff51384842ea298bcc2484c7eeb7e3",
+    "control/authoring-contract.txt": "35cf525f3ad9545a1515dad3006af11ef3f337cb07295c8e19692496b81199bb",
+    "control/future-turns.json": "d6cf53b99b25a6a46579a79991bf699ebce05667bb09bd31f0a4d156cae3897c",
+    "control/02-identity-defined/prompt.txt": "450578c2cf937417294646b21d138e3df38a0784ad54de6b5eddd1370f6562f7",
+    "control/02-identity-defined/before.graph.json": "a09972bad9c929efbefcb2f16cc1eff203ae0b5770f2ec9ef48e5d1df91e37cb",
+    "control/02-identity-defined/after.graph.json": "cf431d37d522d75ee646638eeab58be3b5621a74a441573d3d3de3ae47a36bc9",
+    "control/02-identity-defined/stdout.jsonl": "14199e02c2f19845f777539aa31ccf9f34213c61f3640e7ed14e5b0a9d7da9f7",
+    "control/02-identity-defined/receipt.json": "5edf1bd9e92d3fba1033f07491e285df1a505dfa8322f40a1b1fd8bf62753307",
+    "control/01-identity-unknown/prompt.txt": "e18c6ffcecc130aeb8d4e5ed206da26c934845deb179637ec373b9bd7450f046",
+    "control/01-identity-unknown/before.graph.json": "a09972bad9c929efbefcb2f16cc1eff203ae0b5770f2ec9ef48e5d1df91e37cb",
+    "control/01-identity-unknown/after.graph.json": "a09972bad9c929efbefcb2f16cc1eff203ae0b5770f2ec9ef48e5d1df91e37cb",
+    "control/01-identity-unknown/stdout.jsonl": "ba8d91788c16ff20649c6f87a7ec11bd01f8b2e4fc95f50eddbcbb025b410cb3",
+    "control/01-identity-unknown/receipt.json": "ea252bf0fff00bea943b5480b1b67a41fdaad875ee4a4114f3f6487a76286117",
+    "control/03-counterexample/prompt.txt": "0c9a07c6ea1f1db357e55ba0653b7c2f0c2c14f690250fef7457745ca3f085ed",
+    "control/03-counterexample/before.graph.json": "cf431d37d522d75ee646638eeab58be3b5621a74a441573d3d3de3ae47a36bc9",
+    "control/03-counterexample/after.graph.json": "79b290d205394e8081ae9bad69b53d87d5afa7a2b01cc8da67775725d2341717",
+    "control/03-counterexample/stdout.jsonl": "d00ef0d01d0f508a3dfc1bd5d4d9a4ea3aca0a9f6460ada36510e79e85677a86",
+    "control/03-counterexample/receipt.json": "1e09cb42c994661c9f03143bc07cedfe2400097a4376f27339455aad35eda265"
+  },
+  "measurements": {
+    "tool_calls": 15,
+    "elapsed_seconds": 179.705,
+    "human_correction_burden": null,
+    "note": "Human correction not measured; does not mean zero."
+  },
+  "raw_path": "reviews/multiturn/v2/ports/participant.json",
+  "raw_sha256": "b23ed5a05a3b732d14496b12e5563f07725ca2455bec9792cb3e3b8589772a9b",
+  "input_path": "reviews/multiturn/v2/ports/input.json",
+  "input_sha256": "13d36a4ccdca2ee065165acc30f05d01bf9bd7b182f636fa6d11ba83fd0d5db1",
+  "rubric_path": "reviews/multiturn/v2/ports/normalized-rubric.json",
+  "rubric_sha256": "e4215e48a2e7255dfc61235ea08dc8b7d4ec46b92a3c6d4970742fd5cbbe2d01"
+}

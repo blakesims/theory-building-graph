@@ -1,0 +1,26 @@
+[
+  {
+    "op": "add",
+    "collection": "nodes",
+    "id": "ui-observability-fixture",
+    "value": {
+      "type": "question",
+      "status": "open",
+      "text": "SYNTHETIC: can the user see this new question?",
+      "meta": {
+        "synthetic": true,
+        "answer_shape": "verdict"
+      }
+    }
+  },
+  {
+    "op": "add",
+    "collection": "edges",
+    "id": "ui-fixture-about",
+    "value": {
+      "type": "about",
+      "from": "ui-observability-fixture",
+      "to": "steward-role"
+    }
+  }
+]

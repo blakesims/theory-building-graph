@@ -1,0 +1,64 @@
+
+===== P1 re-review of an unchanged prerequisite re-invalidates already-reviewed dependents
+after A edit   : {'A': 'needs-review', 'B': 'needs-review', 'Q': 'needs-review'}
+after Q review : {'A': 'needs-review', 'B': 'needs-review', 'Q': 'current'} Q receipt on B = c6a49a63a331
+after B review : {'A': 'needs-review', 'B': 'current', 'Q': 'needs-review'} | B semantic_version unchanged: True
+Q review_reason: Declared semantic prerequisite changed: B
+
+===== P2 custom dependency edge type: node edits propagate, but adding/removing the edge does not flag the dependent
+B (custom edge added): current | C (depends-on added): needs-review
+readiness B dependencies: ['B-derived-A']
+
+===== P3 a question prerequisite is judged by stored status, not derived resolution
+Q2 readiness: ready blockers: []
+Q1 resolution: open
+check findings for Q1: [('answer-state-drift', ['Q1']), ('unsupported-answered-state', ['Q1'])]
+
+===== P4 authority patterns with the exempt scope "all" cannot be compared: check emits not-checked findings
+with scope "all" undeclared : [('not-checked', ['may-o', 'only-s'], 'unsupported scope semantics'), ('orphan-anchor', ['orch'], None), ('orphan-anchor', ['steward'], None)]
+after declaring "all"        : [('orphan-anchor', ['orch']), ('orphan-anchor', ['steward'])]
+trace evaluation of scope all pattern is all -> allowed by evaluate_authority; comparison needed a declaration
+
+===== P5 malformed formal_model section (null scopes) is accepted by apply and then crashes check
+apply: {'code': 1, 'out': '', 'err': "error: argument of type 'NoneType' is not a container or iterable"}
+formal_model now: {'scopes': {'all': {'members': ['w']}}}
+check exit 0 | 
+
+===== P9 generic authority checker: complete trace with zero matching events reports "satisfies" with nothing visible in text output
+Pattern satisfies · only-s × T
+supplied finite trace only; may does not imply liveness
+SYNTHETIC FIXTURE — not observed runtime evidence
+
+checked_events: [] | assessment findings: ['known-defect-unexplained']
+modality may -> satisfies | assessment: ['known-defect-unexplained']
+
+===== P11 authority path: a role referenced only by trace events is not a fingerprinted input (demo path fingerprints it)
+Pattern violates · only-s × T
+receipt after redefining orch: current
+receipt after redefining steward: stale
+
+===== P20 untested-claim ignores saved check-results; any edge to a trace counts as a test
+after saving a real evaluation of A: [('untested-claim', ['A'])]
+B has only an about-edge to the trace and no evaluation; flagged untested? False
+
+===== P24 propagation passes through a historical (retired) dependent
+{'A': 'needs-review', 'B': 'historical', 'C': 'needs-review'} | impact A affected: ['B', 'C']
+
+===== P26 claim with "meta": null and a pattern crashes check
+check exit 1 | AttributeError: 'NoneType' object has no attribute 'get'
+
+===== P28 one condition, two findings with different codes; "answer-state-drift" means two different things
+answered-without-answer: [('answer-state-drift', ['Q']), ('unsupported-answered-state', ['Q'])]
+open-with-full-answer   : [('answer-state-drift', ['Q'])]
+
+===== P30 deleting a prerequisite and its edge in one batch flags the dependent (positive control)
+apply code 0 | B: needs-review | Dependency changed: B-dep-A Semantic content or currency changed.
+
+===== P31 only(R) versus never(R) on the same scope is reported "compatible" (an overconstraint: nobody may act)
+only(r) vs never(r): compatible
+only(r) vs only(r) : no-inconsistency-established
+must(r) vs only(r) : compatible
+
+===== P32 finding ids of formal comparisons change on every revision (computed_revision is hashed in)
+policy-conflict id stable across an unrelated revision: False
+untested-claim id stable: True

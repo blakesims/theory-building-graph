@@ -1,0 +1,251 @@
+{
+  "criteria": [
+    {
+      "id": "AC01",
+      "requirement": "Resolve existing typed identities and expose ambiguity; keep roles distinct from session instances.",
+      "cases": [
+        "D01",
+        "D02",
+        "D03",
+        "D04",
+        "C05",
+        "C06",
+        "C07"
+      ]
+    },
+    {
+      "id": "AC02",
+      "requirement": "Separate modality, standing, currency, enforcement and attribution.",
+      "cases": [
+        "D05",
+        "D06",
+        "D07",
+        "D08",
+        "A15"
+      ]
+    },
+    {
+      "id": "AC03",
+      "requirement": "Explain every formalization with source, assumptions, scope and independently reviewable pattern standing.",
+      "cases": [
+        "D06",
+        "D08",
+        "E01",
+        "A15"
+      ]
+    },
+    {
+      "id": "AC04",
+      "requirement": "On semantic input revision, compute complete transitive invalidation along declared dependency edges, without automatically changing acceptance.",
+      "cases": [
+        "I01",
+        "I02",
+        "I03",
+        "I04",
+        "I05",
+        "I08"
+      ]
+    },
+    {
+      "id": "AC05",
+      "requirement": "No broad invalidation through mere topic anchors, layouts or unrelated data.",
+      "cases": [
+        "I03",
+        "I06",
+        "R05"
+      ]
+    },
+    {
+      "id": "AC06",
+      "requirement": "Return all affected IDs and dependency paths, with bounded rendering/pagination if needed; never confuse a truncated response with a complete set.",
+      "cases": [
+        "I02",
+        "R05"
+      ]
+    },
+    {
+      "id": "AC07",
+      "requirement": "Compute readiness independently of answers; name all mandatory blockers, including retired/withdrawn prerequisites.",
+      "cases": [
+        "Q01",
+        "Q02",
+        "Q03",
+        "Q04"
+      ]
+    },
+    {
+      "id": "AC08",
+      "requirement": "Resolve questions according to answer shape and coverage, with transparent totals and stale-answer handling.",
+      "cases": [
+        "D07",
+        "Q05",
+        "Q06",
+        "Q07",
+        "Q08"
+      ]
+    },
+    {
+      "id": "AC09",
+      "requirement": "Report structural gaps with severity/context: orphan anchors, ungoverned operations, unanchored claims, edgeless questions and invalid revision cycles. Placeholder incompleteness is not logical inconsistency.",
+      "cases": [
+        "D01",
+        "Q07",
+        "R04"
+      ],
+      "additional_tests": [
+        "test_dependency.GapTests.test_gaps_and_repairs",
+        "test_dependency.GapTests.test_revision_requires_explicit_retirement",
+        "test_dependency.GapTests.test_suppression_visible_and_no_answer_drift",
+        "test_dependency.QuestionTests.test_cycles_distinct",
+        "test_dependency.IntegrationTests.test_undeclared_reference_gap_repairs",
+        "test_formalcheck.FormalChecks.test_A14_unknown_overlap"
+      ]
+    },
+    {
+      "id": "AC10",
+      "requirement": "Compare supported authority patterns using declared role/scope/modality semantics, with a witness or explicit unknown.",
+      "cases": [
+        "A01",
+        "A02",
+        "A03",
+        "A04",
+        "A05",
+        "A06",
+        "A07",
+        "A08",
+        "A09",
+        "A10",
+        "A11",
+        "A12",
+        "A13",
+        "A14",
+        "A15",
+        "A16"
+      ]
+    },
+    {
+      "id": "AC11",
+      "requirement": "Compare supported cardinality patterns using interval intersection, identity, scope and existence assumptions.",
+      "cases": [
+        "C01",
+        "C02",
+        "C03",
+        "C04",
+        "C05",
+        "C06",
+        "C07",
+        "C08"
+      ]
+    },
+    {
+      "id": "AC12",
+      "requirement": "Keep formal unsupported results, incomplete evidence and bounded absence of counterexamples distinct.",
+      "cases": [
+        "A12",
+        "A16",
+        "C08",
+        "E03",
+        "E08"
+      ]
+    },
+    {
+      "id": "AC13",
+      "requirement": "Evaluate concrete traces at event time and cite exact witnesses; don't change beliefs or case labels automatically.",
+      "cases": [
+        "E02",
+        "E03",
+        "E04",
+        "E05",
+        "E06",
+        "E07"
+      ]
+    },
+    {
+      "id": "AC14",
+      "requirement": "Invalidate saved results when any semantic input, extraction assumption, referenced definition or checker changes.",
+      "cases": [
+        "I05",
+        "I07",
+        "E01"
+      ]
+    },
+    {
+      "id": "AC15",
+      "requirement": "Retrieve current positions, superseded alternatives and their rationale without conflating them.",
+      "cases": [
+        "S01",
+        "S06"
+      ]
+    },
+    {
+      "id": "AC16",
+      "requirement": "Make a recorded potential tension inspectable; never present LLM semantic judgment as deterministic proof.",
+      "cases": [
+        "A07",
+        "S02",
+        "E08"
+      ]
+    },
+    {
+      "id": "AC17",
+      "requirement": "Surface Morphisms responsibility gaps without pre-deciding unresolved policy.",
+      "cases": [
+        "M01",
+        "M02",
+        "M03",
+        "M04",
+        "M05",
+        "M06",
+        "M07",
+        "M08",
+        "S03",
+        "S04"
+      ]
+    },
+    {
+      "id": "AC18",
+      "requirement": "Preserve atomic audited writes, references and optimistic concurrency across failure/retry.",
+      "cases": [
+        "R01",
+        "R02",
+        "R03",
+        "R04"
+      ]
+    },
+    {
+      "id": "AC19",
+      "requirement": "Return compact bounded text and valid structured JSON; aliases/flags/help are sufficient for agent use.",
+      "cases": [
+        "R05",
+        "R06",
+        "R07"
+      ]
+    },
+    {
+      "id": "AC20",
+      "requirement": "Deterministic findings include exact node/edge/version witnesses and explicit check scope.",
+      "cases": [
+        "R07",
+        "E03",
+        "A03"
+      ]
+    },
+    {
+      "id": "AC21",
+      "requirement": "Respect source trust boundaries and the user's requested pace.",
+      "cases": [
+        "R08",
+        "S08"
+      ]
+    },
+    {
+      "id": "AC22",
+      "requirement": "Demonstrate semantic recovery versus an equivalent prose baseline, measuring maintenance cost too.",
+      "cases": [
+        "S06",
+        "S07"
+      ]
+    }
+  ],
+  "scope": "Explicit contract-to-case mapping; additional gap checks must also pass for AC09."
+}

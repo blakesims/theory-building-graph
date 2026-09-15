@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "Go slowly. Before doing anything, show the exact next CLI command. Read only the current steward-next-work claim and its recorded context, explain the observed result briefly, then stop. Exactly one read command; no writes and no follow-on question yet."
+  },
+  {
+    "role": "assistant",
+    "content": "The one read is done. It was a search, not the context read, because no stable ID had been supplied.\n\n**Observed result** (revision 0, one match, not truncated):\n\n- ID `steward-next-work` is a claim, status accepted, review state current.\n- Its text: the steward generally chooses subsequent work, and an operator-approved orchestrator replacement exception is currently allowed.\n\nThe search output shows only the node line. Its incident edges, sources, and reasoning context were not returned, so I have not observed them. Reading that recorded context would be a second read, which is outside this turn's budget. The command for it would be:\n\n```sh\n./tg review steward-next-work\n```\n\nStopping here as requested. No writes were made."
+  }
+]

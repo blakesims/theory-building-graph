@@ -1,0 +1,14 @@
+{
+  "command": [
+    "./tg",
+    "--file",
+    "evidence.graph.json",
+    "node",
+    "extract",
+    "--json"
+  ],
+  "returncode": 0,
+  "stdout": "{\"edge_truncated\":false,\"edges\":{\"source-edge\":{\"from\":\"extract\",\"to\":\"source\",\"type\":\"extracted-from\"},\"trace-edge\":{\"from\":\"t\",\"to\":\"extract\",\"type\":\"extracted-from\"}},\"neighbor_bodies\":\"omitted; use walk\",\"nodes\":{\"extract\":{\"provenance\":{\"assumptions\":[\"Ordering reflects the described sequence.\",\"Actor s1 held steward-role at the choice event.\"],\"author\":\"fixture-author\"},\"status\":\"proposed\",\"text\":\"Interpretation of the synthetic sequence, not the source itself.\",\"type\":\"extraction\"}},\"revision\":0,\"truncated\":false}\n",
+  "stderr": "",
+  "elapsed_seconds": 0.06503695898572914
+}

@@ -1,0 +1,152 @@
+{
+  "stage": "01-read-only",
+  "cases": [
+    "S08"
+  ],
+  "command": [
+    "claude",
+    "-p",
+    "--safe-mode",
+    "--tools",
+    "Bash,Read",
+    "--allowedTools",
+    "Bash,Read",
+    "--no-session-persistence",
+    "--verbose",
+    "--output-format",
+    "stream-json"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 32.432,
+  "timed_out": false,
+  "stderr": "",
+  "result": {
+    "duration_api_ms": 31192,
+    "stop_reason": "end_turn",
+    "session_id": "1c0d497d-99c6-418d-9b60-2133fca41860",
+    "total_cost_usd": 0.25080574999999994,
+    "usage": {
+      "input_tokens": 98,
+      "cache_creation_input_tokens": 6973,
+      "cache_read_input_tokens": 38819,
+      "output_tokens": 1934,
+      "output_tokens_details": {
+        "thinking_tokens": 1140
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6973,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "not_available",
+      "iterations": [
+        {
+          "input_tokens": 32,
+          "output_tokens": 347,
+          "cache_read_input_tokens": 11892,
+          "cache_creation_input_tokens": 289,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 289
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard"
+    },
+    "modelUsage": {
+      "claude-haiku-4-5-20251001": {
+        "inputTokens": 3901,
+        "outputTokens": 12,
+        "cacheReadInputTokens": 0,
+        "cacheCreationInputTokens": 0,
+        "webSearchRequests": 0,
+        "costUSD": 0.003961,
+        "contextWindow": 200000,
+        "maxOutputTokens": 32000,
+        "thinkingTokens": 0,
+        "canonicalModel": "claude-haiku-4-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      },
+      "claude-fable-5-1": {
+        "inputTokens": 98,
+        "outputTokens": 1934,
+        "cacheReadInputTokens": 38819,
+        "cacheCreationInputTokens": 6973,
+        "webSearchRequests": 0,
+        "costUSD": 0.24684474999999997,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 64000,
+        "thinkingTokens": 1140,
+        "canonicalModel": "claude-fable-5-1",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "is_error": false,
+    "num_turns": 4,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "Command run: `./tg review steward-next-work` (read only, no writes).\n\nObserved result:\n\n- **The claim itself:** `steward-next-work` is a `claim`, status `accepted`, review state `current`. Its text says the steward generally chooses subsequent work, and an operator-approved orchestrator replacement exception is currently allowed.\n- **Recorded context:** the review packet returned no neighboring nodes or edges beyond the focus claim. Truncation flags were both false, so nothing was cut off. This is a filtered reasoning read, not a full incident-edge inventory, so it does not prove the claim has no anchors or sources.\n- **Graph revision:** 0.\n\nFrom the preliminary ID lookup in the graph file, I also saw an edge ID `steward-next-work-governs-choose-work` and a `steward-role` entity, plus a source-like text marked SYNTHETIC that records the same exception. I have not read those nodes, so I can only say they exist by name.\n\nStopping here as requested. No writes were made and no follow-on question is being asked.",
+    "ttft_ms": 15968,
+    "type": "result",
+    "duration_ms": 31618,
+    "uuid": "8ae29300-f25e-4aa1-afd2-975c133904c7",
+    "ttft_stream_ms": 2179,
+    "time_to_request_ms": 534,
+    "first_content_frame_ms": 2416,
+    "queued_turn_count": 0,
+    "result_index": 0
+  },
+  "tool_call_count": 3,
+  "tool_ids": [
+    "toolu_012s1ex8A6v1M3oTdaT9dtCq",
+    "toolu_0138n5ZAbYDeFZSqRAj5d9RC",
+    "toolu_01EuSoosvrq76qwqtnyxcLRv"
+  ],
+  "prompt_sha256": "aaf1e8bd56093cfa9502ada058240042a0e4ba893440db1208937962ce011672",
+  "before_sha256": "c7f9bd55b098da6e591819c05c3d6ad7d2c2bce34f6fd33abe57e4535286cc2c",
+  "after_sha256": "c7f9bd55b098da6e591819c05c3d6ad7d2c2bce34f6fd33abe57e4535286cc2c",
+  "stdout_sha256": "7ba7d198e52cb5dadb4314a6a3795f2c1ed0ae774d8ff2004607211f519afa53",
+  "data_changed": false,
+  "semantic_grade": "not-graded",
+  "budget": {
+    "tool_limit": 12,
+    "seconds_limit": 180,
+    "calls_exceeded": false,
+    "time_exceeded": false
+  }
+}

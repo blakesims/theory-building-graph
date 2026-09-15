@@ -1,0 +1,95 @@
+{
+  "id": "question-shapes",
+  "cases": [
+    "D07"
+  ],
+  "status": "completed",
+  "model": "claude-fable-5-1",
+  "participant_session": "655d23be-46ce-4075-906d-bd74584ff842",
+  "grader": "Codex /root/formal_checks; independent of participant outputs, contributor to formal checker implementation",
+  "input_sha256": "600aa7f007e4b8e0174a3e0bb9c17ee4b57e374ad93717831311d2f38881ac93",
+  "input_file_sha256": "600aa7f007e4b8e0174a3e0bb9c17ee4b57e374ad93717831311d2f38881ac93",
+  "raw_receipt_sha256": "af490b2fc9944899c43428a7e74d2290192bbbb21d73be287ab1e52f41aff778",
+  "rubric_sha256": "20d5a27d8897ea4d77e08c2b27dc3201e3ee895216a3b959e2a120140702c855",
+  "user_turn": "We have three different uncertainties: Is steward the sole next-work chooser? Under what conditions should orchestrator ask me? And what important cases are missing from our theory? Please record these as open questions.",
+  "grades": [
+    {
+      "id": "three-shapes",
+      "score": 1,
+      "excerpt": "[\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"source-4\",\n    \"value\": {\n      \"type\": \"source\",\n      \"text\": \"We have three different uncertainties: Is steward the sole next-work chooser? Under what conditions should orchestrator ask me? And what important cases are missing from our theory? Please record these as open questions.\",\n      \"status\": \"recorded\",\n      \"meta\": {\n        \"source_kind\": \"verbatim\",\n        \"speaker\": \"Blake\",\n        \"date\": \"2026-09-15\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"q-sole-chooser\",\n    \"value\": {\n      \"type\": \"question\",\n      \"text\": \"Is steward the sole next-work chooser?\",\n      \"status\": \"open\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"answer_shape\": \"verdict\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"rationale\": \"Raised by Blake as an uncertainty. steward-next-work covers only the case after a failed attempt; whether steward is the sole chooser in all cases is not settled by that claim.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"q-ask-conditions\",\n    \"value\": {\n      \"type\": \"question\",\n      \"text\": \"Under what conditions should orchestrator ask me? (speaker: Blake; 'me' not yet resolved to a graph identity)\",\n      \"status\": \"open\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"answer_shape\": \"condition\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"referent_unresolved\": \"The graph has no entity for Blake or for the operator; 'me' is retained as spoken.\",\n        \"related_questions\": [\n          \"consultation\"\n        ],\n        \"rationale\": \"Overlaps the existing consultation question but is broader: it asks for the conditions under which orchestrator should ask, not only whether consultation is mandatory before ending degraded work.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"q-missing-cases\",\n    \"value\": {\n      \"type\": \"question\",\n      \"text\": \"What important cases are missing from our theory?\",\n      \"status\": \"open\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"answer_shape\": \"exploration\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"anchor_scope\": \"unresolved\",\n        \"completion_criteria\": \"unspecified; Blake has not stated when this exploration counts as complete\",\n        \"rationale\": \"Provisionally anchored to choose-next-work as the central operation of the current theory; the intended domain needs confirmation.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-sole-chooser-about-steward\",\n    \"value\": {\n      \"from\": \"q-sole-chooser\",\n      \"type\": \"about\",\n      \"to\": \"steward-role\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-sole-chooser-governs-choose\",\n    \"value\": {\n      \"from\": \"q-sole-chooser\",\n      \"type\": \"governs\",\n      \"to\": \"choose-next-work\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-sole-chooser-src\",\n    \"value\": {\n      \"from\": \"q-sole-chooser\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"steward-next-work-answers-sole-chooser\",\n    \"value\": {\n      \"from\": \"steward-next-work\",\n      \"type\": \"answers\",\n      \"to\": \"q-sole-chooser\",\n      \"coverage\": \"partial\",\n      \"note\": \"Covers only next-work choice after a failed attempt.\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-ask-conditions-about-orchestrator\",\n    \"value\": {\n      \"from\": \"q-ask-conditions\",\n      \"type\": \"about\",\n      \"to\": \"orchestrator-role\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-ask-conditions-src\",\n    \"value\": {\n      \"from\": \"q-ask-conditions\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-missing-cases-about-choose\",\n    \"value\": {\n      \"from\": \"q-missing-cases\",\n      \"type\": \"about\",\n      \"to\": \"choose-next-work\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-missing-cases-src\",\n    \"value\": {\n      \"from\": \"q-missing-cases\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  }\n]",
+      "excerpt_location": "proposal.proposed_operations",
+      "explanation": "All three typed answer shapes are now encoded explicitly in meta.answer_shape: verdict, condition, exploration. Exploration completion criteria remain unspecified rather than invented."
+    },
+    {
+      "id": "open-not-resolved",
+      "score": 1,
+      "excerpt": "[\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"source-4\",\n    \"value\": {\n      \"type\": \"source\",\n      \"text\": \"We have three different uncertainties: Is steward the sole next-work chooser? Under what conditions should orchestrator ask me? And what important cases are missing from our theory? Please record these as open questions.\",\n      \"status\": \"recorded\",\n      \"meta\": {\n        \"source_kind\": \"verbatim\",\n        \"speaker\": \"Blake\",\n        \"date\": \"2026-09-15\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"q-sole-chooser\",\n    \"value\": {\n      \"type\": \"question\",\n      \"text\": \"Is steward the sole next-work chooser?\",\n      \"status\": \"open\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"answer_shape\": \"verdict\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"rationale\": \"Raised by Blake as an uncertainty. steward-next-work covers only the case after a failed attempt; whether steward is the sole chooser in all cases is not settled by that claim.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"q-ask-conditions\",\n    \"value\": {\n      \"type\": \"question\",\n      \"text\": \"Under what conditions should orchestrator ask me? (speaker: Blake; 'me' not yet resolved to a graph identity)\",\n      \"status\": \"open\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"answer_shape\": \"condition\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"referent_unresolved\": \"The graph has no entity for Blake or for the operator; 'me' is retained as spoken.\",\n        \"related_questions\": [\n          \"consultation\"\n        ],\n        \"rationale\": \"Overlaps the existing consultation question but is broader: it asks for the conditions under which orchestrator should ask, not only whether consultation is mandatory before ending degraded work.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"q-missing-cases\",\n    \"value\": {\n      \"type\": \"question\",\n      \"text\": \"What important cases are missing from our theory?\",\n      \"status\": \"open\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"answer_shape\": \"exploration\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"anchor_scope\": \"unresolved\",\n        \"completion_criteria\": \"unspecified; Blake has not stated when this exploration counts as complete\",\n        \"rationale\": \"Provisionally anchored to choose-next-work as the central operation of the current theory; the intended domain needs confirmation.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-sole-chooser-about-steward\",\n    \"value\": {\n      \"from\": \"q-sole-chooser\",\n      \"type\": \"about\",\n      \"to\": \"steward-role\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-sole-chooser-governs-choose\",\n    \"value\": {\n      \"from\": \"q-sole-chooser\",\n      \"type\": \"governs\",\n      \"to\": \"choose-next-work\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-sole-chooser-src\",\n    \"value\": {\n      \"from\": \"q-sole-chooser\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"steward-next-work-answers-sole-chooser\",\n    \"value\": {\n      \"from\": \"steward-next-work\",\n      \"type\": \"answers\",\n      \"to\": \"q-sole-chooser\",\n      \"coverage\": \"partial\",\n      \"note\": \"Covers only next-work choice after a failed attempt.\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-ask-conditions-about-orchestrator\",\n    \"value\": {\n      \"from\": \"q-ask-conditions\",\n      \"type\": \"about\",\n      \"to\": \"orchestrator-role\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-ask-conditions-src\",\n    \"value\": {\n      \"from\": \"q-ask-conditions\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-missing-cases-about-choose\",\n    \"value\": {\n      \"from\": \"q-missing-cases\",\n      \"type\": \"about\",\n      \"to\": \"choose-next-work\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-missing-cases-src\",\n    \"value\": {\n      \"from\": \"q-missing-cases\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  }\n]",
+      "excerpt_location": "proposal.proposed_operations",
+      "explanation": "All new questions stay open. Existing narrow accepted claim is linked only with partial coverage; condition and missing cases remain unresolved."
+    },
+    {
+      "id": "anchor-each",
+      "score": 1,
+      "excerpt": "[\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"source-4\",\n    \"value\": {\n      \"type\": \"source\",\n      \"text\": \"We have three different uncertainties: Is steward the sole next-work chooser? Under what conditions should orchestrator ask me? And what important cases are missing from our theory? Please record these as open questions.\",\n      \"status\": \"recorded\",\n      \"meta\": {\n        \"source_kind\": \"verbatim\",\n        \"speaker\": \"Blake\",\n        \"date\": \"2026-09-15\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"q-sole-chooser\",\n    \"value\": {\n      \"type\": \"question\",\n      \"text\": \"Is steward the sole next-work chooser?\",\n      \"status\": \"open\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"answer_shape\": \"verdict\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"rationale\": \"Raised by Blake as an uncertainty. steward-next-work covers only the case after a failed attempt; whether steward is the sole chooser in all cases is not settled by that claim.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"q-ask-conditions\",\n    \"value\": {\n      \"type\": \"question\",\n      \"text\": \"Under what conditions should orchestrator ask me? (speaker: Blake; 'me' not yet resolved to a graph identity)\",\n      \"status\": \"open\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"answer_shape\": \"condition\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"referent_unresolved\": \"The graph has no entity for Blake or for the operator; 'me' is retained as spoken.\",\n        \"related_questions\": [\n          \"consultation\"\n        ],\n        \"rationale\": \"Overlaps the existing consultation question but is broader: it asks for the conditions under which orchestrator should ask, not only whether consultation is mandatory before ending degraded work.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"q-missing-cases\",\n    \"value\": {\n      \"type\": \"question\",\n      \"text\": \"What important cases are missing from our theory?\",\n      \"status\": \"open\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"answer_shape\": \"exploration\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"anchor_scope\": \"unresolved\",\n        \"completion_criteria\": \"unspecified; Blake has not stated when this exploration counts as complete\",\n        \"rationale\": \"Provisionally anchored to choose-next-work as the central operation of the current theory; the intended domain needs confirmation.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-sole-chooser-about-steward\",\n    \"value\": {\n      \"from\": \"q-sole-chooser\",\n      \"type\": \"about\",\n      \"to\": \"steward-role\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-sole-chooser-governs-choose\",\n    \"value\": {\n      \"from\": \"q-sole-chooser\",\n      \"type\": \"governs\",\n      \"to\": \"choose-next-work\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-sole-chooser-src\",\n    \"value\": {\n      \"from\": \"q-sole-chooser\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"steward-next-work-answers-sole-chooser\",\n    \"value\": {\n      \"from\": \"steward-next-work\",\n      \"type\": \"answers\",\n      \"to\": \"q-sole-chooser\",\n      \"coverage\": \"partial\",\n      \"note\": \"Covers only next-work choice after a failed attempt.\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-ask-conditions-about-orchestrator\",\n    \"value\": {\n      \"from\": \"q-ask-conditions\",\n      \"type\": \"about\",\n      \"to\": \"orchestrator-role\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-ask-conditions-src\",\n    \"value\": {\n      \"from\": \"q-ask-conditions\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-missing-cases-about-choose\",\n    \"value\": {\n      \"from\": \"q-missing-cases\",\n      \"type\": \"about\",\n      \"to\": \"choose-next-work\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-missing-cases-src\",\n    \"value\": {\n      \"from\": \"q-missing-cases\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  }\n]",
+      "excerpt_location": "proposal.proposed_operations",
+      "explanation": "All questions have relevant anchors. Exploration uses a provisional choose-next-work topic anchor, explicitly marks anchor_scope unresolved, and asks whether the intended domain is next-work only or the whole theory. It no longer silently omits or settles subject scope."
+    }
+  ],
+  "score": 3,
+  "possible": 3,
+  "hard_failures": [],
+  "observations": [
+    {
+      "code": "provisional-topic-anchor",
+      "detail": "choose-next-work is a provisional retrieval anchor, not the confirmed domain of the whole exploration. Node marks anchor_scope unresolved and asks the domain question, so this meets the stated alternative rather than declaring subject scope decided."
+    }
+  ],
+  "mechanical_apply": {
+    "status": "valid-applied-proposal",
+    "command": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Users/blake/projects/theory-building-graph/graph.py",
+      "--file",
+      "/var/folders/xs/yfkt8l5n4wj3hq3_xrm7n6480000gn/T/theory-author-dta3mpwe/graph.json",
+      "apply",
+      "-",
+      "--actor",
+      "blind-participant",
+      "--reason",
+      "Synthetic authorized proposal validation",
+      "--expect",
+      "0",
+      "--json"
+    ],
+    "stdout": "{\"changes\":18,\"revision\":1}\n",
+    "stderr": "",
+    "unchanged": null,
+    "proposed_operation_count": 12,
+    "changed_nodes": [
+      "q-ask-conditions",
+      "q-missing-cases",
+      "q-sole-chooser",
+      "source-4"
+    ],
+    "deleted_nodes": [],
+    "original_steward_rule_preserved": true
+  },
+  "passed": true,
+  "metrics": {
+    "input_tokens": 9297,
+    "input_token_breakdown": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 6076,
+      "cache_read_input_tokens": 3219
+    },
+    "output_tokens": 4068,
+    "elapsed_seconds": 47.423,
+    "input_bytes": 16177,
+    "retrieval_calls": 0,
+    "authoring_seconds": null,
+    "review_seconds": null
+  },
+  "scope": "Judged isolated no-tool Fable proposals followed by separate real CLI application to temporary graphs. Not a tool-driven multi-turn interview, interactive retrieval, generalized correctness claim, or proof of graph benefit.",
+  "contract_version": "authoring/3",
+  "previous_trial": "../author-trials-v2/graded-question-shapes.json"
+}

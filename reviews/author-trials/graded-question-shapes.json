@@ -1,0 +1,94 @@
+{
+  "id": "question-shapes",
+  "cases": [
+    "D07"
+  ],
+  "status": "completed",
+  "model": "claude-fable-5-1",
+  "participant_session": "18d61c2e-40d2-491a-89fd-e53a71180017",
+  "grader": "Codex /root/formal_checks; independent of participant outputs, contributor to formal checker implementation",
+  "input_sha256": "43cb4d786b8bae3c06151d255ee4cd9a68e14bc8638df361b1fa9aae9660d929",
+  "input_file_sha256": "43cb4d786b8bae3c06151d255ee4cd9a68e14bc8638df361b1fa9aae9660d929",
+  "raw_receipt_sha256": "c038102da76c4c94ae4a5edfb5f929ef4eed327bc940e306f81449af03ee56d4",
+  "rubric_sha256": "20d5a27d8897ea4d77e08c2b27dc3201e3ee895216a3b959e2a120140702c855",
+  "user_turn": "We have three different uncertainties: Is steward the sole next-work chooser? Under what conditions should orchestrator ask me? And what important cases are missing from our theory? Please record these as open questions.",
+  "grades": [
+    {
+      "id": "three-shapes",
+      "score": 0,
+      "excerpt": "[\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"q-sole-chooser\",\n    \"value\": {\n      \"type\": \"question\",\n      \"text\": \"Is steward the sole chooser of next work, with no exceptions (e.g., operator-approved orchestrator replacement)?\",\n      \"status\": \"open\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"sources\": [\n          \"source-1\",\n          \"source-2\"\n        ],\n        \"rationale\": \"Raised by Blake as a live uncertainty despite the accepted claim steward-next-work; earlier exceptions (replacement-exception, atomic-replacement) were withdrawn but the question is reopened for explicit review.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"q-ask-conditions\",\n    \"value\": {\n      \"type\": \"question\",\n      \"text\": \"Under what conditions should the orchestrator ask the operator (e.g., keep trying versus mark failed) rather than act autonomously?\",\n      \"status\": \"open\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"sources\": [\n          \"source-2\"\n        ],\n        \"rationale\": \"Broader than the existing 'consultation' question, which concerns only ending degraded work. Source-2 says the orchestrator 'can ask' but does not define when it should.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"q-missing-cases\",\n    \"value\": {\n      \"type\": \"question\",\n      \"text\": \"What important cases are missing from the theory (e.g., worker blocked by unavailable worktree, arbitrary cancellation, operator-initiated replacement, intention withdrawal)?\",\n      \"status\": \"open\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"sources\": [\n          \"source-2\",\n          \"source-3\"\n        ],\n        \"rationale\": \"Coverage check requested by Blake. M1688/M1689 summaries and the blocked-worker observation suggest candidate gaps but are not yet analyzed.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-sole-chooser-conflict\",\n    \"value\": {\n      \"from\": \"q-sole-chooser\",\n      \"type\": \"potential-conflict\",\n      \"to\": \"steward-next-work\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-sole-chooser-about\",\n    \"value\": {\n      \"from\": \"q-sole-chooser\",\n      \"type\": \"about\",\n      \"to\": \"choose-next-work\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-ask-conditions-about\",\n    \"value\": {\n      \"from\": \"q-ask-conditions\",\n      \"type\": \"about\",\n      \"to\": \"orchestrator-role\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"consultation-depends-on-ask-conditions\",\n    \"value\": {\n      \"from\": \"consultation\",\n      \"type\": \"depends-on\",\n      \"to\": \"q-ask-conditions\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-missing-cases-depends-cancellation\",\n    \"value\": {\n      \"from\": \"q-missing-cases\",\n      \"type\": \"depends-on\",\n      \"to\": \"cancellation\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-sole-chooser-src-1\",\n    \"value\": {\n      \"from\": \"q-sole-chooser\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-1\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-sole-chooser-src-2\",\n    \"value\": {\n      \"from\": \"q-sole-chooser\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-2\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-ask-conditions-src-2\",\n    \"value\": {\n      \"from\": \"q-ask-conditions\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-2\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-missing-cases-src-2\",\n    \"value\": {\n      \"from\": \"q-missing-cases\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-2\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-missing-cases-src-3\",\n    \"value\": {\n      \"from\": \"q-missing-cases\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-3\"\n    }\n  }\n]",
+      "excerpt_location": "proposal.proposed_operations",
+      "explanation": "Three separate texts exist, but all are generic question nodes with no typed answer_shape or condition-hole/exploratory schema. The output does not encode the different resolution requirements of D07. The fixture omitted the answer-shape API, so this exposes a workflow/input-contract gap as well as incomplete output."
+    },
+    {
+      "id": "open-not-resolved",
+      "score": 1,
+      "excerpt": "[\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"q-sole-chooser\",\n    \"value\": {\n      \"type\": \"question\",\n      \"text\": \"Is steward the sole chooser of next work, with no exceptions (e.g., operator-approved orchestrator replacement)?\",\n      \"status\": \"open\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"sources\": [\n          \"source-1\",\n          \"source-2\"\n        ],\n        \"rationale\": \"Raised by Blake as a live uncertainty despite the accepted claim steward-next-work; earlier exceptions (replacement-exception, atomic-replacement) were withdrawn but the question is reopened for explicit review.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"q-ask-conditions\",\n    \"value\": {\n      \"type\": \"question\",\n      \"text\": \"Under what conditions should the orchestrator ask the operator (e.g., keep trying versus mark failed) rather than act autonomously?\",\n      \"status\": \"open\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"sources\": [\n          \"source-2\"\n        ],\n        \"rationale\": \"Broader than the existing 'consultation' question, which concerns only ending degraded work. Source-2 says the orchestrator 'can ask' but does not define when it should.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"q-missing-cases\",\n    \"value\": {\n      \"type\": \"question\",\n      \"text\": \"What important cases are missing from the theory (e.g., worker blocked by unavailable worktree, arbitrary cancellation, operator-initiated replacement, intention withdrawal)?\",\n      \"status\": \"open\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"sources\": [\n          \"source-2\",\n          \"source-3\"\n        ],\n        \"rationale\": \"Coverage check requested by Blake. M1688/M1689 summaries and the blocked-worker observation suggest candidate gaps but are not yet analyzed.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-sole-chooser-conflict\",\n    \"value\": {\n      \"from\": \"q-sole-chooser\",\n      \"type\": \"potential-conflict\",\n      \"to\": \"steward-next-work\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-sole-chooser-about\",\n    \"value\": {\n      \"from\": \"q-sole-chooser\",\n      \"type\": \"about\",\n      \"to\": \"choose-next-work\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-ask-conditions-about\",\n    \"value\": {\n      \"from\": \"q-ask-conditions\",\n      \"type\": \"about\",\n      \"to\": \"orchestrator-role\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"consultation-depends-on-ask-conditions\",\n    \"value\": {\n      \"from\": \"consultation\",\n      \"type\": \"depends-on\",\n      \"to\": \"q-ask-conditions\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-missing-cases-depends-cancellation\",\n    \"value\": {\n      \"from\": \"q-missing-cases\",\n      \"type\": \"depends-on\",\n      \"to\": \"cancellation\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-sole-chooser-src-1\",\n    \"value\": {\n      \"from\": \"q-sole-chooser\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-1\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-sole-chooser-src-2\",\n    \"value\": {\n      \"from\": \"q-sole-chooser\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-2\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-ask-conditions-src-2\",\n    \"value\": {\n      \"from\": \"q-ask-conditions\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-2\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-missing-cases-src-2\",\n    \"value\": {\n      \"from\": \"q-missing-cases\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-2\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-missing-cases-src-3\",\n    \"value\": {\n      \"from\": \"q-missing-cases\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-3\"\n    }\n  }\n]",
+      "excerpt_location": "proposal.proposed_operations",
+      "explanation": "All three remain open; examples are explicitly candidate gaps, not accepted answers. Accepted steward-next-work is not withdrawn."
+    },
+    {
+      "id": "anchor-each",
+      "score": 0,
+      "excerpt": "[\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"q-sole-chooser\",\n    \"value\": {\n      \"type\": \"question\",\n      \"text\": \"Is steward the sole chooser of next work, with no exceptions (e.g., operator-approved orchestrator replacement)?\",\n      \"status\": \"open\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"sources\": [\n          \"source-1\",\n          \"source-2\"\n        ],\n        \"rationale\": \"Raised by Blake as a live uncertainty despite the accepted claim steward-next-work; earlier exceptions (replacement-exception, atomic-replacement) were withdrawn but the question is reopened for explicit review.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"q-ask-conditions\",\n    \"value\": {\n      \"type\": \"question\",\n      \"text\": \"Under what conditions should the orchestrator ask the operator (e.g., keep trying versus mark failed) rather than act autonomously?\",\n      \"status\": \"open\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"sources\": [\n          \"source-2\"\n        ],\n        \"rationale\": \"Broader than the existing 'consultation' question, which concerns only ending degraded work. Source-2 says the orchestrator 'can ask' but does not define when it should.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"q-missing-cases\",\n    \"value\": {\n      \"type\": \"question\",\n      \"text\": \"What important cases are missing from the theory (e.g., worker blocked by unavailable worktree, arbitrary cancellation, operator-initiated replacement, intention withdrawal)?\",\n      \"status\": \"open\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"sources\": [\n          \"source-2\",\n          \"source-3\"\n        ],\n        \"rationale\": \"Coverage check requested by Blake. M1688/M1689 summaries and the blocked-worker observation suggest candidate gaps but are not yet analyzed.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-sole-chooser-conflict\",\n    \"value\": {\n      \"from\": \"q-sole-chooser\",\n      \"type\": \"potential-conflict\",\n      \"to\": \"steward-next-work\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-sole-chooser-about\",\n    \"value\": {\n      \"from\": \"q-sole-chooser\",\n      \"type\": \"about\",\n      \"to\": \"choose-next-work\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-ask-conditions-about\",\n    \"value\": {\n      \"from\": \"q-ask-conditions\",\n      \"type\": \"about\",\n      \"to\": \"orchestrator-role\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"consultation-depends-on-ask-conditions\",\n    \"value\": {\n      \"from\": \"consultation\",\n      \"type\": \"depends-on\",\n      \"to\": \"q-ask-conditions\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-missing-cases-depends-cancellation\",\n    \"value\": {\n      \"from\": \"q-missing-cases\",\n      \"type\": \"depends-on\",\n      \"to\": \"cancellation\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-sole-chooser-src-1\",\n    \"value\": {\n      \"from\": \"q-sole-chooser\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-1\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-sole-chooser-src-2\",\n    \"value\": {\n      \"from\": \"q-sole-chooser\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-2\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-ask-conditions-src-2\",\n    \"value\": {\n      \"from\": \"q-ask-conditions\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-2\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-missing-cases-src-2\",\n    \"value\": {\n      \"from\": \"q-missing-cases\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-2\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"q-missing-cases-src-3\",\n    \"value\": {\n      \"from\": \"q-missing-cases\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-3\"\n    }\n  }\n]",
+      "excerpt_location": "proposal.proposed_operations",
+      "explanation": "Sole-chooser anchors to choose-next-work and ask-conditions to orchestrator-role, but q-missing-cases has only source/dependency links and no object or operation anchor. No object for the theory was introduced or clarification requested about its anchor."
+    }
+  ],
+  "score": 1,
+  "possible": 3,
+  "hard_failures": [],
+  "observations": [
+    {
+      "code": "fixture-contract-gap",
+      "detail": "Input provided only generic nodes/edges and no answer-shape field documentation. Supply the actual API rather than expecting a participant with no tools to infer it."
+    }
+  ],
+  "mechanical_apply": {
+    "status": "valid-applied-proposal",
+    "command": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Users/blake/projects/theory-building-graph/graph.py",
+      "--file",
+      "/var/folders/xs/yfkt8l5n4wj3hq3_xrm7n6480000gn/T/theory-author-s9wy9wxv/graph.json",
+      "apply",
+      "-",
+      "--actor",
+      "blind-participant",
+      "--reason",
+      "Synthetic authorized proposal validation",
+      "--expect",
+      "0",
+      "--json"
+    ],
+    "stdout": "{\"changes\":24,\"revision\":1}\n",
+    "stderr": "",
+    "unchanged": null,
+    "proposed_operation_count": 13,
+    "changed_nodes": [
+      "consultation",
+      "q-ask-conditions",
+      "q-missing-cases",
+      "q-sole-chooser",
+      "steward-next-work"
+    ],
+    "deleted_nodes": [],
+    "original_steward_rule_preserved": true
+  },
+  "passed": false,
+  "metrics": {
+    "input_tokens": 6557,
+    "input_token_breakdown": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 3336,
+      "cache_read_input_tokens": 3219
+    },
+    "output_tokens": 2597,
+    "elapsed_seconds": 30.371,
+    "input_bytes": 8616,
+    "retrieval_calls": 0,
+    "authoring_seconds": null,
+    "review_seconds": null
+  },
+  "scope": "Judged isolated no-tool Fable proposals followed by separate real CLI application to temporary graphs. Not a tool-driven multi-turn interview, interactive retrieval, generalized correctness claim, or proof of graph benefit."
+}

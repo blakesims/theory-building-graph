@@ -9,7 +9,7 @@
   },
   "measurements": {
     "claim_walk": {
-      "seconds": 0.005281,
+      "seconds": 0.005835,
       "compact_bytes": 1531,
       "json_bytes": 8604,
       "truncated": false,
@@ -17,7 +17,7 @@
       "boundary_edges": 248
     },
     "hub_walk": {
-      "seconds": 0.005381,
+      "seconds": 0.005321,
       "compact_bytes": 2075,
       "json_bytes": 22853,
       "truncated": true,
@@ -25,7 +25,7 @@
       "boundary_edges": 56
     },
     "impact_page": {
-      "seconds": 0.005892,
+      "seconds": 0.005263,
       "compact_bytes": 10755,
       "json_bytes": 10765,
       "truncated": true,
@@ -33,9 +33,9 @@
       "boundary_edges": null
     },
     "question_page": {
-      "seconds": 0.693977,
-      "compact_bytes": 9021,
-      "json_bytes": 9942,
+      "seconds": 0.717152,
+      "compact_bytes": 2053,
+      "json_bytes": 10982,
       "truncated": true,
       "total_affected": null,
       "boundary_edges": null

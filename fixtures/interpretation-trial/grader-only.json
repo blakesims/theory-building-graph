@@ -1,0 +1,71 @@
+{
+  "criteria": [
+    {
+      "case": "M01",
+      "id": "continuing-intention",
+      "criterion": "Explain whether continuation creates another intention, how A/C relate to I, and whether A failure resolves I."
+    },
+    {
+      "case": "M02",
+      "id": "block-recovery",
+      "criterion": "Distinguish block ownership/recovery from terminal handoff using before/after receipts."
+    },
+    {
+      "case": "M03",
+      "id": "failed-terminal",
+      "criterion": "Explain lifecycle ended versus outcome failed versus intention state, and next response owner."
+    },
+    {
+      "case": "M04",
+      "id": "restart-obligation",
+      "criterion": "Use two separate checkpoint processes and identify what obligation survives and whose list it belongs to; do not claim actual runtime durability proven."
+    },
+    {
+      "case": "M05",
+      "id": "pending-completions",
+      "criterion": "Explain B while A completes, and which completion is pending after only A was considered."
+    },
+    {
+      "case": "M06",
+      "id": "same-decision",
+      "criterion": "Identify first answer, ownership afterward and stale desk attempt rejection; no second overwritten decision."
+    },
+    {
+      "case": "M07",
+      "id": "routing-validity",
+      "criterion": "Compare both routing configurations, distinguish desk route from validity/intention identity."
+    },
+    {
+      "case": "M08",
+      "id": "start-drive",
+      "criterion": "Use role state to separate user launch from autonomous continuation and explain assistant/architect/steward differences."
+    },
+    {
+      "case": "E01",
+      "id": "provenance-freshness",
+      "criterion": "Identify source/extraction/trace/result chain, extraction author/assumptions, and saved-result freshness after assumption edit without inventing automatic correction."
+    },
+    {
+      "case": "E07",
+      "id": "synthetic-limits",
+      "criterion": "Explain propagated synthetic label and not-established historical behavior; finite fixture is not proof about actual Morphisms or all executions."
+    }
+  ],
+  "cross_cutting": [
+    {
+      "id": "executed-not-guessed",
+      "criterion": "Actual command receipts for all scenarios, evaluation, separate checkpoint save/resume and assumption-change read are present; cited outputs agree with answers."
+    },
+    {
+      "id": "unknown-policy",
+      "criterion": "No-enabled-rule for threshold/cancel is missing authored rule, not permission/prohibition or resolution of consultation/cancellation."
+    }
+  ],
+  "hard_failures": [
+    "claims fixture is observed history",
+    "invents accepted stopping/cancellation policy",
+    "fabricates command execution or evidence",
+    "modifies live graph or reads grader-only data"
+  ],
+  "grading": "Independent semantic grading against inputs and actual outputs; never grant pass solely from exit code. Replay rejection may be a deliberate scenario result. Record each 0/1 with exact answer and command/output witnesses."
+}

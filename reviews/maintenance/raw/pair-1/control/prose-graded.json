@@ -1,0 +1,107 @@
+{
+  "arm": "prose",
+  "mechanical_checks": {
+    "root_exists": true,
+    "root_is_accepted_current": true,
+    "root_text_actually_changed": true,
+    "exact_dependents_need_review": false,
+    "dependents_preserve_standing_and_wording": true,
+    "unrelated_claims_unchanged": true,
+    "open_questions_unchanged": true,
+    "dependencies_preserved": true,
+    "old_wording_and_rationale_retained": true,
+    "original_source_text_preserved": true,
+    "unrelated_history_unchanged": true,
+    "revision_source_recorded": true,
+    "participant_report_written": true
+  },
+  "mechanical_passed": 12,
+  "mechanical_total": 13,
+  "mechanical_failures": [
+    "exact_dependents_need_review"
+  ],
+  "semantic_review": {
+    "status": "pending-independent-review",
+    "must_check": [
+      "The exact approved-plan + performance-investigation + failed-attempt scope is retained.",
+      "The recovery coordinator receives the permission; no general orchestrator bypass is invented.",
+      "Outside the exception the steward remains responsible.",
+      "New source faithfully records the user decision and is actually present, not just a dangling ref.",
+      "Old rationale remains contextual history, not a simultaneous current universal restriction.",
+      "No unsupported proof/completeness or settled consultation/cancellation claims in final response."
+    ]
+  },
+  "actual_edit_diff": [
+    {
+      "file": "archive.md",
+      "before_bytes": 103,
+      "after_bytes": 1048,
+      "diff_bytes": 1210,
+      "before_sha256": "0d1d56e034138ad31f53b0565dc79dcd9a30c2fde279d94bfb4149af4d861645",
+      "after_sha256": "66aaaf57eb7a9ef8120180d243150b6d11159309d6d74396e036be29fb644ccb"
+    },
+    {
+      "file": "maintenance-report.json",
+      "before_bytes": 0,
+      "after_bytes": 550,
+      "diff_bytes": 651,
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "c766db7a610fed6db2dd7a734e562f59a5e9ae2f073c793248c501ac512533e7"
+    },
+    {
+      "file": "sources.md",
+      "before_bytes": 774,
+      "after_bytes": 1448,
+      "diff_bytes": 1011,
+      "before_sha256": "3e20866f1e61faefd969038c665e2008b6b73eb835ecc3630aeec19d27b90605",
+      "after_sha256": "ac200b2c3741dee93a3625e849ef9908f47d33cf2bec2840e00fcc86fbec311e"
+    },
+    {
+      "file": "theory.md",
+      "before_bytes": 10166,
+      "after_bytes": 11803,
+      "diff_bytes": 3154,
+      "before_sha256": "f5863ca3e6324ca1440b68f6d2e087ef8d318de44d1fc8d65022e00d3330312b",
+      "after_sha256": "6b37eb7c7f28043805ee01dcd108e23281a2cba4da4a4a63a14b687803056290"
+    }
+  ],
+  "total_diff_bytes": 6026,
+  "correction_count": null,
+  "correction_count_reason": "Must be coded from observed tool failures and external review; not inferred from final success.",
+  "root_after": {
+    "type": "claim",
+    "status": "accepted",
+    "text": "The steward chooses subsequent work after an ended attempt, with one bounded exception: within an already approved performance-investigation plan, the recovery coordinator may choose replacement work after a failed attempt. Outside that exception the steward still chooses subsequent work. The exception belongs to the recovery coordinator role and does not grant a general orchestrator bypass.",
+    "meta": {
+      "review_state": "current",
+      "rationale": "User decision S04 revised the absolute steward-only rule. The earlier single-owner rationale (S01: one owner avoids ambiguous responsibility) is retained in archive.md entry A01 and still governs every case outside the approved-plan exception.",
+      "source_ref": "S04"
+    },
+    "depends": []
+  },
+  "report": {
+    "changed_claim_ids": [
+      "C01"
+    ],
+    "needs_review_ids": [
+      "C02",
+      "C03",
+      "C04",
+      "C05"
+    ],
+    "unchanged_open_question_ids": [
+      "Q01",
+      "Q02"
+    ],
+    "preserved_history_locations": [
+      "archive.md#A01 (superseded C01 text and rationale from S01)",
+      "archive.md#M01 (maintenance audit entry)",
+      "sources.md#S01 (original decision and reason)",
+      "sources.md#S02 (earlier withdrawn orchestrator-bypass debate, untouched)"
+    ],
+    "source_locations": [
+      "sources.md#S04 (new user decision, cited by theory.md C01)"
+    ],
+    "tool_limit_or_failure": null
+  }
+}

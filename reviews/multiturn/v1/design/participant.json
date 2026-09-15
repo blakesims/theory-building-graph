@@ -1,0 +1,1084 @@
+{
+  "exit_code": 0,
+  "stages": [
+    {
+      "stage": "01-read-only",
+      "cases": [
+        "S08"
+      ],
+      "command": [
+        "claude",
+        "-p",
+        "--safe-mode",
+        "--tools",
+        "Bash,Read",
+        "--allowedTools",
+        "Bash,Read",
+        "--no-session-persistence",
+        "--verbose",
+        "--output-format",
+        "stream-json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 23.203,
+      "timed_out": false,
+      "stderr": "",
+      "result": {
+        "duration_api_ms": 21792,
+        "stop_reason": "end_turn",
+        "session_id": "9ea18c71-e418-4799-bd77-50343a0b6469",
+        "total_cost_usd": 0.20001575000000002,
+        "usage": {
+          "input_tokens": 66,
+          "cache_creation_input_tokens": 5948,
+          "cache_read_input_tokens": 21871,
+          "output_tokens": 1473,
+          "output_tokens_details": {
+            "thinking_tokens": 1016
+          },
+          "server_tool_use": {
+            "web_search_requests": 0,
+            "web_fetch_requests": 0
+          },
+          "service_tier": "standard",
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 5948,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "inference_geo": "not_available",
+          "iterations": [
+            {
+              "input_tokens": 32,
+              "output_tokens": 234,
+              "cache_read_input_tokens": 10342,
+              "cache_creation_input_tokens": 814,
+              "cache_creation": {
+                "ephemeral_5m_input_tokens": 0,
+                "ephemeral_1h_input_tokens": 814
+              },
+              "type": "message"
+            }
+          ],
+          "speed": "standard"
+        },
+        "modelUsage": {
+          "claude-haiku-4-5-20251001": {
+            "inputTokens": 1213,
+            "outputTokens": 13,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 0.001278,
+            "contextWindow": 200000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "claude-haiku-4-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          },
+          "claude-fable-5-1": {
+            "inputTokens": 66,
+            "outputTokens": 1473,
+            "cacheReadInputTokens": 21871,
+            "cacheCreationInputTokens": 5948,
+            "webSearchRequests": 0,
+            "costUSD": 0.19873775000000002,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 64000,
+            "thinkingTokens": 1016,
+            "canonicalModel": "claude-fable-5-1",
+            "provider": "firstParty",
+            "costBasis": "list"
+          }
+        },
+        "permission_denials": [],
+        "terminal_reason": "completed",
+        "fast_mode_state": "off",
+        "fast_mode_disabled_reason": "sdk_opt_in_required",
+        "subagent_stats": {
+          "spawned": 0,
+          "requested": {
+            "background": 0,
+            "foreground": 0,
+            "unset": 0
+          },
+          "started_in_background": 0,
+          "max_depth": 0,
+          "spawned_by_subagents": 0,
+          "completed": 0,
+          "failed": 0,
+          "killed": {
+            "parent": 0,
+            "user": 0,
+            "system": 0
+          },
+          "refused": {
+            "depth_limit": 0,
+            "concurrency_limit": 0,
+            "budget": 0
+          },
+          "by_type": {}
+        },
+        "is_error": false,
+        "num_turns": 3,
+        "subtype": "success",
+        "api_error_status": null,
+        "result": "Observed result of `./tg review steward-next-work`:\n\n- **The claim exists** as `steward-next-work`, type claim, status accepted, review state current. Graph revision is 0.\n- **Its text:** the steward generally chooses subsequent work, and an operator-approved orchestrator replacement exception is currently allowed.\n- **Recorded context is empty.** The review returned no incident edges, no source, no subject anchor, and no related claims or questions. Neither truncation flag was set, so this is the complete direct context, not a cut-off view.\n\nSo the claim currently stands alone: accepted, but with no visible provenance and no `about` or `governs` link to a subject. Nothing was written. Stopping here as requested.",
+        "ttft_ms": 7142,
+        "type": "result",
+        "duration_ms": 22418,
+        "uuid": "fbf15659-b6b4-4ba3-964f-ef8b3d6b35a2",
+        "ttft_stream_ms": 1546,
+        "time_to_request_ms": 399,
+        "first_content_frame_ms": 1827,
+        "queued_turn_count": 0,
+        "result_index": 0
+      },
+      "tool_call_count": 2,
+      "tool_ids": [
+        "toolu_011TE45noMnzGayfBF5u2GtK",
+        "toolu_01WdChZPaaAigX4bau8ExZLb"
+      ],
+      "prompt_sha256": "d37ec296aa4e5989cc988020356242284ecf78b8985b75070107233dbb7e3e04",
+      "before_sha256": "c7f9bd55b098da6e591819c05c3d6ad7d2c2bce34f6fd33abe57e4535286cc2c",
+      "after_sha256": "c7f9bd55b098da6e591819c05c3d6ad7d2c2bce34f6fd33abe57e4535286cc2c",
+      "stdout_sha256": "1c1d3e66798c3a455353534d6f903ee38f6d4f6195722e12261a2887a2c7c4d0",
+      "data_changed": false,
+      "semantic_grade": "not-graded",
+      "budget": {
+        "tool_limit": 12,
+        "seconds_limit": 180,
+        "calls_exceeded": false,
+        "time_exceeded": false
+      }
+    },
+    {
+      "stage": "02-atomic-proposal",
+      "cases": [
+        "S01"
+      ],
+      "command": [
+        "claude",
+        "-p",
+        "--safe-mode",
+        "--tools",
+        "Bash,Read",
+        "--allowedTools",
+        "Bash,Read",
+        "--no-session-persistence",
+        "--verbose",
+        "--output-format",
+        "stream-json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 47.052,
+      "timed_out": false,
+      "stderr": "",
+      "result": {
+        "duration_api_ms": 45149,
+        "stop_reason": "end_turn",
+        "session_id": "267c70b7-e83f-4d46-ac77-8271825a464c",
+        "total_cost_usd": 0.42131975,
+        "usage": {
+          "input_tokens": 130,
+          "cache_creation_input_tokens": 11777,
+          "cache_read_input_tokens": 49351,
+          "output_tokens": 3412,
+          "output_tokens_details": {
+            "thinking_tokens": 1169
+          },
+          "server_tool_use": {
+            "web_search_requests": 0,
+            "web_fetch_requests": 0
+          },
+          "service_tier": "standard",
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 11777,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "inference_geo": "not_available",
+          "iterations": [
+            {
+              "input_tokens": 32,
+              "output_tokens": 508,
+              "cache_read_input_tokens": 13860,
+              "cache_creation_input_tokens": 3125,
+              "cache_creation": {
+                "ephemeral_5m_input_tokens": 0,
+                "ephemeral_1h_input_tokens": 3125
+              },
+              "type": "message"
+            }
+          ],
+          "speed": "standard"
+        },
+        "modelUsage": {
+          "claude-haiku-4-5-20251001": {
+            "inputTokens": 1467,
+            "outputTokens": 15,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 0.001542,
+            "contextWindow": 200000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "claude-haiku-4-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          },
+          "claude-fable-5-1": {
+            "inputTokens": 130,
+            "outputTokens": 3412,
+            "cacheReadInputTokens": 49351,
+            "cacheCreationInputTokens": 11777,
+            "webSearchRequests": 0,
+            "costUSD": 0.41977775,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 64000,
+            "thinkingTokens": 1169,
+            "canonicalModel": "claude-fable-5-1",
+            "provider": "firstParty",
+            "costBasis": "list"
+          }
+        },
+        "permission_denials": [],
+        "terminal_reason": "completed",
+        "fast_mode_state": "off",
+        "fast_mode_disabled_reason": "sdk_opt_in_required",
+        "subagent_stats": {
+          "spawned": 0,
+          "requested": {
+            "background": 0,
+            "foreground": 0,
+            "unset": 0
+          },
+          "started_in_background": 0,
+          "max_depth": 0,
+          "spawned_by_subagents": 0,
+          "completed": 0,
+          "failed": 0,
+          "killed": {
+            "parent": 0,
+            "user": 0,
+            "system": 0
+          },
+          "refused": {
+            "depth_limit": 0,
+            "concurrency_limit": 0,
+            "budget": 0
+          },
+          "by_type": {}
+        },
+        "is_error": false,
+        "num_turns": 5,
+        "subtype": "success",
+        "api_error_status": null,
+        "result": "Captured as a proposed hypothesis. Graph revision moved from 0 to 1 with 8 changes.\n\n**What was written** (applied via `./tg apply` with the batch shown above):\n\n- **`atomic-replacement-hypothesis-source`**, a synthetic verbatim source holding your exact wording, so the \"hypothesis, not a decision\" framing is preserved at the provenance level.\n- **`atomic-replacement-hypothesis`**, a claim with status proposed and review state needs-review. Its text is prefixed \"Hypothesis (not decided)\". Metadata records the open points: whether operator approval still applies, whether the steward is informed after completion, and whether archive-and-add is actually atomic in the record store.\n- **Edges:** `about` to the choose-work operation, `extracted-from` to the new source, a partial `answers` edge to the open replacement question, and a `potential-conflict` edge to `replacement-exception` with an explanation that this is a review tension, not a proven contradiction.\n\n**What was not touched:** `replacement-exception` and `steward-next-work` remain accepted and current. The replacement question stays open. The tool marks the question's review state as needs-review only because a new candidate answer was attached.\n\n**One observation from the reads:** the earlier review of steward-next-work showed no context, but a direct node read now shows it has a `governs` edge to choose-work. The review verb appears to omit anchor edges rather than the claim being unlinked.\n\n`./tg check` reports the expected new review finding for the declared tension and no structural errors.",
+        "ttft_ms": 2708,
+        "type": "result",
+        "duration_ms": 46268,
+        "uuid": "a87af5dd-11a9-4de3-87ca-64ba1e97f364",
+        "ttft_stream_ms": 1496,
+        "time_to_request_ms": 339,
+        "first_content_frame_ms": 2172,
+        "queued_turn_count": 0,
+        "result_index": 0
+      },
+      "tool_call_count": 4,
+      "tool_ids": [
+        "toolu_015s4g115R19mZiNMJUDsoSo",
+        "toolu_01TnvLXQgMicRxHfDZSJBfPa",
+        "toolu_01VUcwd5ozF2JZFHJL4YXuNB",
+        "toolu_01WweheBZTfRB7iteoYSimkx"
+      ],
+      "prompt_sha256": "83269ff06906a90113e68d4bd77a2a237956c9a5d1608e250d4febc134fa3a30",
+      "before_sha256": "c7f9bd55b098da6e591819c05c3d6ad7d2c2bce34f6fd33abe57e4535286cc2c",
+      "after_sha256": "f82cff1525fa5733b0eb21421f835411cec4f18eec4a41ec7c18d1193a786969",
+      "stdout_sha256": "c2e7b6c339bc5165f6599aa1683ff1a8a5b3a94b6831cd53c3246be06ae3b83d",
+      "data_changed": true,
+      "semantic_grade": "not-graded",
+      "budget": {
+        "tool_limit": 12,
+        "seconds_limit": 180,
+        "calls_exceeded": false,
+        "time_exceeded": false
+      }
+    },
+    {
+      "stage": "03-reconsider-and-recall",
+      "cases": [
+        "S01"
+      ],
+      "command": [
+        "claude",
+        "-p",
+        "--safe-mode",
+        "--tools",
+        "Bash,Read",
+        "--allowedTools",
+        "Bash,Read",
+        "--no-session-persistence",
+        "--verbose",
+        "--output-format",
+        "stream-json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 68.061,
+      "timed_out": false,
+      "stderr": "",
+      "result": {
+        "duration_api_ms": 66402,
+        "stop_reason": "end_turn",
+        "session_id": "040cbe17-7502-4ee4-86b8-4342fc612258",
+        "total_cost_usd": 0.37267125,
+        "usage": {
+          "input_tokens": 162,
+          "cache_creation_input_tokens": 9753,
+          "cache_read_input_tokens": 56161,
+          "output_tokens": 3199,
+          "output_tokens_details": {
+            "thinking_tokens": 461
+          },
+          "server_tool_use": {
+            "web_search_requests": 0,
+            "web_fetch_requests": 0
+          },
+          "service_tier": "standard",
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 9753,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "inference_geo": "not_available",
+          "iterations": [
+            {
+              "input_tokens": 32,
+              "output_tokens": 596,
+              "cache_read_input_tokens": 12860,
+              "cache_creation_input_tokens": 2101,
+              "cache_creation": {
+                "ephemeral_5m_input_tokens": 0,
+                "ephemeral_1h_input_tokens": 2101
+              },
+              "type": "message"
+            }
+          ],
+          "speed": "standard"
+        },
+        "modelUsage": {
+          "claude-haiku-4-5-20251001": {
+            "inputTokens": 1916,
+            "outputTokens": 17,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 0.002001,
+            "contextWindow": 200000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "claude-haiku-4-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          },
+          "claude-fable-5-1": {
+            "inputTokens": 162,
+            "outputTokens": 3199,
+            "cacheReadInputTokens": 56161,
+            "cacheCreationInputTokens": 9753,
+            "webSearchRequests": 0,
+            "costUSD": 0.37067025000000003,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 64000,
+            "thinkingTokens": 461,
+            "canonicalModel": "claude-fable-5-1",
+            "provider": "firstParty",
+            "costBasis": "list"
+          }
+        },
+        "permission_denials": [],
+        "terminal_reason": "completed",
+        "fast_mode_state": "off",
+        "fast_mode_disabled_reason": "sdk_opt_in_required",
+        "subagent_stats": {
+          "spawned": 0,
+          "requested": {
+            "background": 0,
+            "foreground": 0,
+            "unset": 0
+          },
+          "started_in_background": 0,
+          "max_depth": 0,
+          "spawned_by_subagents": 0,
+          "completed": 0,
+          "failed": 0,
+          "killed": {
+            "parent": 0,
+            "user": 0,
+            "system": 0
+          },
+          "refused": {
+            "depth_limit": 0,
+            "concurrency_limit": 0,
+            "budget": 0
+          },
+          "by_type": {}
+        },
+        "is_error": false,
+        "num_turns": 6,
+        "subtype": "success",
+        "api_error_status": null,
+        "result": "**The exception and its reason, as recorded.** The claim `replacement-exception` says the orchestrator may choose replacement work with explicit operator approval, without going through the steward. Its rationale metadata reads: \"Avoid an unnecessary relay when the orchestrator has the failure context.\" Its provenance is the synthetic source `initial-decision`, which says the same thing: the steward generally selects work, but after a failure the orchestrator already holds the failure context, so relaying through the steward was judged an unnecessary hop. The claim remains accepted.\n\n**Your alternative is captured, undecided.** Graph revision moved from 1 to 2 with 10 changes, applied with the batch above.\n\n- **`steward-always-chooses-hypothesis-source`**, a synthetic verbatim source holding your wording, including that you are not deciding yet.\n- **`steward-always-chooses-hypothesis`**, a claim with status proposed and review state needs-review. Its text is prefixed \"Alternative (not decided)\". Metadata lists it as an alternative to both the exception and the atomic-replacement hypothesis, and records the open points: whether the relay cost still matters, how failure context would reach the steward, and whether operator approval is needed anywhere.\n- **Edges:** `about` choose-work, `extracted-from` the new source, a partial `answers` edge to the open replacement question, and two `potential-conflict` edges. One points at the exception and quotes its rationale in the explanation. The other points at the atomic-replacement hypothesis so the two competing ideas stay visible side by side.\n\n**Untouched:** `replacement-exception` and `steward-next-work` stay accepted. The replacement question stays open with two candidate answers, neither preferred.\n\n`./tg check` shows the three declared tensions as review findings and no structural errors.",
+        "ttft_ms": 5834,
+        "type": "result",
+        "duration_ms": 67367,
+        "uuid": "ca89698e-cde0-4551-b094-17ba8dd13f43",
+        "ttft_stream_ms": 4139,
+        "time_to_request_ms": 301,
+        "first_content_frame_ms": 4937,
+        "queued_turn_count": 0,
+        "result_index": 0
+      },
+      "tool_call_count": 5,
+      "tool_ids": [
+        "toolu_011Sd99F6P8eebBiHfknqoy6",
+        "toolu_015XyUvbN64uvNafZxuyhq67",
+        "toolu_017XPrTt4SPiKbwrGidmoDi7",
+        "toolu_019kHVhJT1BPTDZ4b7Q7xYTS",
+        "toolu_01W1WyGpTDfj85DDxHvsHZDL"
+      ],
+      "prompt_sha256": "9d119bb6c1894fe7e774ecf7ff9bd8270d3f87060d49a023009481e588823088",
+      "before_sha256": "f82cff1525fa5733b0eb21421f835411cec4f18eec4a41ec7c18d1193a786969",
+      "after_sha256": "16d8f7d98705bbcd5583ad9499e83f041bc05b4cac962a189ac76aaf500e0997",
+      "stdout_sha256": "d7bf34fc6f95d73510fd8349059514338ff9eccbd05c293fa361679d12737a33",
+      "data_changed": true,
+      "semantic_grade": "not-graded",
+      "budget": {
+        "tool_limit": 12,
+        "seconds_limit": 180,
+        "calls_exceeded": false,
+        "time_exceeded": false
+      }
+    },
+    {
+      "stage": "04-explicit-choice",
+      "cases": [
+        "S01",
+        "S08"
+      ],
+      "command": [
+        "claude",
+        "-p",
+        "--safe-mode",
+        "--tools",
+        "Bash,Read",
+        "--allowedTools",
+        "Bash,Read",
+        "--no-session-persistence",
+        "--verbose",
+        "--output-format",
+        "stream-json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 107.343,
+      "timed_out": false,
+      "stderr": "",
+      "result": {
+        "duration_api_ms": 105555,
+        "stop_reason": "end_turn",
+        "session_id": "84d18ab6-0a6e-492d-aa3f-7c98fc00bb1f",
+        "total_cost_usd": 1.05319025,
+        "usage": {
+          "input_tokens": 258,
+          "cache_creation_input_tokens": 30344,
+          "cache_read_input_tokens": 178269,
+          "output_tokens": 7933,
+          "output_tokens_details": {
+            "thinking_tokens": 3254
+          },
+          "server_tool_use": {
+            "web_search_requests": 0,
+            "web_fetch_requests": 0
+          },
+          "service_tier": "standard",
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 30344,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "inference_geo": "not_available",
+          "iterations": [
+            {
+              "input_tokens": 32,
+              "output_tokens": 900,
+              "cache_read_input_tokens": 33772,
+              "cache_creation_input_tokens": 1780,
+              "cache_creation": {
+                "ephemeral_5m_input_tokens": 0,
+                "ephemeral_1h_input_tokens": 1780
+              },
+              "type": "message"
+            }
+          ],
+          "speed": "standard"
+        },
+        "modelUsage": {
+          "claude-haiku-4-5-20251001": {
+            "inputTokens": 2443,
+            "outputTokens": 14,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 0.002513,
+            "contextWindow": 200000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "claude-haiku-4-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          },
+          "claude-fable-5-1": {
+            "inputTokens": 258,
+            "outputTokens": 7933,
+            "cacheReadInputTokens": 178269,
+            "cacheCreationInputTokens": 30344,
+            "webSearchRequests": 0,
+            "costUSD": 1.0506772500000001,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 64000,
+            "thinkingTokens": 3254,
+            "canonicalModel": "claude-fable-5-1",
+            "provider": "firstParty",
+            "costBasis": "list"
+          }
+        },
+        "permission_denials": [],
+        "terminal_reason": "completed",
+        "fast_mode_state": "off",
+        "fast_mode_disabled_reason": "sdk_opt_in_required",
+        "subagent_stats": {
+          "spawned": 0,
+          "requested": {
+            "background": 0,
+            "foreground": 0,
+            "unset": 0
+          },
+          "started_in_background": 0,
+          "max_depth": 0,
+          "spawned_by_subagents": 0,
+          "completed": 0,
+          "failed": 0,
+          "killed": {
+            "parent": 0,
+            "user": 0,
+            "system": 0
+          },
+          "refused": {
+            "depth_limit": 0,
+            "concurrency_limit": 0,
+            "budget": 0
+          },
+          "by_type": {}
+        },
+        "is_error": false,
+        "num_turns": 9,
+        "subtype": "success",
+        "api_error_status": null,
+        "result": "Decision recorded. Graph revision moved from 2 to 3 with 22 changes, applied through `./tg apply` with the batch shown above.\n\n**New nodes**\n\n- **`steward-always-chooses-decision-source`**, a synthetic verbatim source holding your exact wording, including the sentence that consultation remains undecided.\n- **`steward-always-chooses-decision`**, a claim with status accepted and review state current. It says the steward always chooses subsequent work, the orchestrator does not choose replacement work, the orchestrator can ask whether to keep trying or mark the attempt failed, and the steward then chooses next. The text states explicitly that it does not decide whether consultation before ending is mandatory. Metadata notes that your wording does not say whom the orchestrator asks, so no addressee was assigned.\n\n**Retired, with rationale and history kept**\n\n- **`replacement-exception`** is now superseded and historical. Its rationale about avoiding an unnecessary relay stays on the node, marked as not adopted.\n- **`atomic-replacement-hypothesis`** is now rejected and historical, with its open points kept.\n- **`steward-always-chooses-hypothesis`** is now superseded and historical, since the decision restates it with the keep-trying-or-fail step and the consultation carve-out.\n- **`steward-next-work`** is now superseded and historical, because its text said the exception was currently allowed. The decision claim takes over the `governs` link to the choose-work operation.\n\n**Edges added:** the decision has `revises` edges to all four retired formulations, each carrying the retirement reason. It has `extracted-from` to its source, `governs` choose-work, and `about` end-attempt. Its `answers` edge to the replacement question has full coverage and an exploration payload marked complete.\n\n**Question reconciliation.** The replacement question is now answered and current. The consultation question is untouched and stays open, which matches your carve-out. One cosmetic leftover: the question inventory still prints an old review-reason receipt on the replacement question from revision 2, because updates merge metadata rather than removing keys. Its review state is current and the checker reports no drift.\n\n`./tg check` shows no structural errors and no unresolved tensions. The only new finding is the standard coverage gap for an accepted claim without trace evidence, which the other accepted claims share.",
+        "ttft_ms": 3467,
+        "type": "result",
+        "duration_ms": 106686,
+        "uuid": "1781b5c0-3743-45b3-ab32-a85d430ec728",
+        "ttft_stream_ms": 1627,
+        "time_to_request_ms": 338,
+        "first_content_frame_ms": 1828,
+        "queued_turn_count": 0,
+        "result_index": 0
+      },
+      "tool_call_count": 8,
+      "tool_ids": [
+        "toolu_014AAuhRew2BnBEwdzXEYxsc",
+        "toolu_01GUKLCF7WEj4hMbNtnqq7p2",
+        "toolu_01JfTf4k1ummDHTzJPqZCEE6",
+        "toolu_01KeAAHNR768EfJus2VPFXPe",
+        "toolu_01Kmombuo6yxtb5EsJ8AgmmH",
+        "toolu_01PTH1uMYkJAL6xkmUY65Pjz",
+        "toolu_01VNQPwtjf6ftCcRDcqAFwiG",
+        "toolu_01XU5kKvHFURjekREkto3kWW"
+      ],
+      "prompt_sha256": "b9baeee6fc298d8be6946f2c57c41dbea915c785a9495e8c6ac130719fffb98b",
+      "before_sha256": "16d8f7d98705bbcd5583ad9499e83f041bc05b4cac962a189ac76aaf500e0997",
+      "after_sha256": "35cf07970f48d8cf377a3ffbbdaa434edd5467c4c90c73bcc48569aab5c9dd28",
+      "stdout_sha256": "b85b270206fe5a686f9194d74817646c87bc57f1fa67e3951d822336881d1e78",
+      "data_changed": true,
+      "semantic_grade": "not-graded",
+      "budget": {
+        "tool_limit": 12,
+        "seconds_limit": 180,
+        "calls_exceeded": false,
+        "time_exceeded": false
+      }
+    },
+    {
+      "stage": "05-reviewer-challenge",
+      "cases": [
+        "S02"
+      ],
+      "command": [
+        "claude",
+        "-p",
+        "--safe-mode",
+        "--tools",
+        "Bash,Read",
+        "--allowedTools",
+        "Bash,Read",
+        "--no-session-persistence",
+        "--verbose",
+        "--output-format",
+        "stream-json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 31.103,
+      "timed_out": false,
+      "stderr": "",
+      "result": {
+        "duration_api_ms": 30077,
+        "stop_reason": "end_turn",
+        "session_id": "b09b06c5-0bed-4470-9e97-9ffd7ac2966f",
+        "total_cost_usd": 0.219638,
+        "usage": {
+          "input_tokens": 98,
+          "cache_creation_input_tokens": 5800,
+          "cache_read_input_tokens": 34204,
+          "output_tokens": 1819,
+          "output_tokens_details": {
+            "thinking_tokens": 640
+          },
+          "server_tool_use": {
+            "web_search_requests": 0,
+            "web_fetch_requests": 0
+          },
+          "service_tier": "standard",
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 5800,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "inference_geo": "not_available",
+          "iterations": [
+            {
+              "input_tokens": 32,
+              "output_tokens": 1255,
+              "cache_read_input_tokens": 10255,
+              "cache_creation_input_tokens": 753,
+              "cache_creation": {
+                "ephemeral_5m_input_tokens": 0,
+                "ephemeral_1h_input_tokens": 753
+              },
+              "type": "message"
+            }
+          ],
+          "speed": "standard"
+        },
+        "modelUsage": {
+          "claude-haiku-4-5-20251001": {
+            "inputTokens": 3087,
+            "outputTokens": 14,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 0.003157,
+            "contextWindow": 200000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "claude-haiku-4-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          },
+          "claude-fable-5-1": {
+            "inputTokens": 98,
+            "outputTokens": 1819,
+            "cacheReadInputTokens": 34204,
+            "cacheCreationInputTokens": 5800,
+            "webSearchRequests": 0,
+            "costUSD": 0.21648100000000003,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 64000,
+            "thinkingTokens": 640,
+            "canonicalModel": "claude-fable-5-1",
+            "provider": "firstParty",
+            "costBasis": "list"
+          }
+        },
+        "permission_denials": [],
+        "terminal_reason": "completed",
+        "fast_mode_state": "off",
+        "fast_mode_disabled_reason": "sdk_opt_in_required",
+        "subagent_stats": {
+          "spawned": 0,
+          "requested": {
+            "background": 0,
+            "foreground": 0,
+            "unset": 0
+          },
+          "started_in_background": 0,
+          "max_depth": 0,
+          "spawned_by_subagents": 0,
+          "completed": 0,
+          "failed": 0,
+          "killed": {
+            "parent": 0,
+            "user": 0,
+            "system": 0
+          },
+          "refused": {
+            "depth_limit": 0,
+            "concurrency_limit": 0,
+            "budget": 0
+          },
+          "by_type": {}
+        },
+        "is_error": false,
+        "num_turns": 4,
+        "subtype": "success",
+        "api_error_status": null,
+        "result": "**Assessment: the two claims do not contradict each other as written, but the reviewer has found a real ambiguity, and it is the one already recorded as the open consultation question.**\n\nWhat the graph holds around `end-attempt` at revision 3:\n\n- **threshold-ending** (accepted, guidance): the orchestrator *can* end unproductive work when a configured threshold is reached.\n- **may-ask** (accepted, guidance): the orchestrator *may* ask the operator whether to keep trying or mark an attempt failed.\n- **steward-always-chooses-decision** (accepted): restates the may-ask step, and explicitly leaves consultation-before-ending undecided.\n- **consultation-question** (open): is operator consultation before stopping a degraded attempt mandatory, optional, or conditional?\n- No conflict edge exists between the two claims, and the checker reports no recorded tension. Both cite `initial-decision` as source, but that source text mentions neither thresholds nor asking, so their provenance is thin.\n\nWhy it is not a contradiction: both claims grant permissions. Being allowed to end on a threshold and being allowed to ask the operator are compatible. The orchestrator could ask first, or end directly, and violate neither.\n\nWhy the reviewer still has a point: read together, they are silent on precedence. If a threshold is reached, threshold-ending suggests the orchestrator can just stop. If consultation is meant to be mandatory, that reading would be wrong, and the two claims would then genuinely clash. If consultation is optional, they coexist cleanly. If conditional, the condition needs stating. That is exactly the consultation question, still open, and the steward-ownership decision deliberately did not settle it.\n\n**The one clarification I need from you:**\n\nWhen a configured threshold is reached, may the orchestrator end the attempt directly without asking the operator, or must it ask first? If the answer differs by situation, what is the condition that decides which applies?\n\nNothing was written. Depending on your answer, the follow-up would either be resolving the consultation question and adding a precedence note on threshold-ending, or recording a potential-conflict edge between the two claims with the reviewer's criticism as its explanation.",
+        "ttft_ms": 2371,
+        "type": "result",
+        "duration_ms": 30422,
+        "uuid": "e53c86dc-3926-40b9-ba8d-1b583d63b87b",
+        "ttft_stream_ms": 1984,
+        "time_to_request_ms": 361,
+        "first_content_frame_ms": 2370,
+        "queued_turn_count": 0,
+        "result_index": 0
+      },
+      "tool_call_count": 3,
+      "tool_ids": [
+        "toolu_01QLVTSxruBitRNbkr4sL6Fz",
+        "toolu_01QRdiPRXERS7wqEHw1EyNiz",
+        "toolu_01TuzBSKhBJfjHk4vQrR7MFy"
+      ],
+      "prompt_sha256": "2f5f5d4cecd843c9ae3872dbce61c09489752c78d876f545c512b519a4c17c23",
+      "before_sha256": "35cf07970f48d8cf377a3ffbbdaa434edd5467c4c90c73bcc48569aab5c9dd28",
+      "after_sha256": "35cf07970f48d8cf377a3ffbbdaa434edd5467c4c90c73bcc48569aab5c9dd28",
+      "stdout_sha256": "a8d22bdf70997879abcf94cab5f900fffe8da864d782a445268cbb948b0bf2cd",
+      "data_changed": false,
+      "semantic_grade": "not-graded",
+      "budget": {
+        "tool_limit": 12,
+        "seconds_limit": 180,
+        "calls_exceeded": false,
+        "time_exceeded": false
+      }
+    },
+    {
+      "stage": "06-M1688-summary",
+      "cases": [
+        "S03"
+      ],
+      "command": [
+        "claude",
+        "-p",
+        "--safe-mode",
+        "--tools",
+        "Bash,Read",
+        "--allowedTools",
+        "Bash,Read",
+        "--no-session-persistence",
+        "--verbose",
+        "--output-format",
+        "stream-json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 71.886,
+      "timed_out": false,
+      "stderr": "",
+      "result": {
+        "duration_api_ms": 69915,
+        "stop_reason": "end_turn",
+        "session_id": "20353c73-dcba-4e34-8014-e994f2e9fdf2",
+        "total_cost_usd": 0.610022,
+        "usage": {
+          "input_tokens": 130,
+          "cache_creation_input_tokens": 16038,
+          "cache_read_input_tokens": 62472,
+          "output_tokens": 5371,
+          "output_tokens_details": {
+            "thinking_tokens": 1361
+          },
+          "server_tool_use": {
+            "web_search_requests": 0,
+            "web_fetch_requests": 0
+          },
+          "service_tier": "standard",
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 16038,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "inference_geo": "not_available",
+          "iterations": [
+            {
+              "input_tokens": 32,
+              "output_tokens": 740,
+              "cache_read_input_tokens": 17630,
+              "cache_creation_input_tokens": 3616,
+              "cache_creation": {
+                "ephemeral_5m_input_tokens": 0,
+                "ephemeral_1h_input_tokens": 3616
+              },
+              "type": "message"
+            }
+          ],
+          "speed": "standard"
+        },
+        "modelUsage": {
+          "claude-haiku-4-5-20251001": {
+            "inputTokens": 3709,
+            "outputTokens": 17,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 0.003794,
+            "contextWindow": 200000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "claude-haiku-4-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          },
+          "claude-fable-5-1": {
+            "inputTokens": 130,
+            "outputTokens": 5371,
+            "cacheReadInputTokens": 62472,
+            "cacheCreationInputTokens": 16038,
+            "webSearchRequests": 0,
+            "costUSD": 0.606228,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 64000,
+            "thinkingTokens": 1361,
+            "canonicalModel": "claude-fable-5-1",
+            "provider": "firstParty",
+            "costBasis": "list"
+          }
+        },
+        "permission_denials": [],
+        "terminal_reason": "completed",
+        "fast_mode_state": "off",
+        "fast_mode_disabled_reason": "sdk_opt_in_required",
+        "subagent_stats": {
+          "spawned": 0,
+          "requested": {
+            "background": 0,
+            "foreground": 0,
+            "unset": 0
+          },
+          "started_in_background": 0,
+          "max_depth": 0,
+          "spawned_by_subagents": 0,
+          "completed": 0,
+          "failed": 0,
+          "killed": {
+            "parent": 0,
+            "user": 0,
+            "system": 0
+          },
+          "refused": {
+            "depth_limit": 0,
+            "concurrency_limit": 0,
+            "budget": 0
+          },
+          "by_type": {}
+        },
+        "is_error": false,
+        "num_turns": 5,
+        "subtype": "success",
+        "api_error_status": null,
+        "result": "Captured, with nothing accepted. Graph revision moved from 3 to 4 with 13 changes, applied through `./tg apply` with the batch shown above.\n\n**Candidate failure mode, as extracted**\n\nIndividually useful reviews can keep generating further reviews with no effective stop and no ruling on what comes next, so the intention ends up served manually outside Morphisms. The summary shows two separate gaps: nobody ended the attempt, and nobody ruled on subsequent work. It does not say who should have done either, so no role is assigned.\n\n**What a stop threshold and steward handoff might address**\n\n- A stop threshold could bound how long reviews may spawn reviews before the attempt ends. The accepted threshold-ending claim already allows ending unproductive work at a configured threshold, but M1688's reviews were each useful, so it is untested whether any threshold would have tripped.\n- A steward handoff at ending could supply the missing ruling, since the steward already owns choosing subsequent work under the current decision.\n- Neither mechanism, on its own, says what happens to the concern after the attempt stops. That is the gap your question points at.\n\n**What was written**\n\n- `m1688-summary-source`, a synthetic verbatim source, graded as a secondary summary with the primary postmortem marked unavailable.\n- `m1688-review-loop-failure-mode`, a claim with status proposed and review state needs-review, anchored to end-attempt and choose-work.\n- `m1688-stop-and-handoff-proposal`, a claim with status proposed, marked threshold unchosen and stopping authority unsettled. It depends on the failure mode and does not revise threshold-ending or the steward decision.\n- `m1688-concern-persistence-question`, open, answer shape condition, anchored to end-attempt and the CPU intention as the example of a concern that must outlive an attempt.\n\nThe consultation question stays open and untouched. `./tg check` reports no structural errors and no new tensions.\n\n**The question for you:** when a review-generating attempt is terminated, what rule keeps the underlying concern alive afterward? For example, does the intention stay open on the steward's queue, does the terminating party have to record an explicit carry-forward, or is there a different mechanism? No candidate answer is recorded.",
+        "ttft_ms": 4370,
+        "type": "result",
+        "duration_ms": 71164,
+        "uuid": "c176b47a-5f2b-425d-aeca-7ee8db24833c",
+        "ttft_stream_ms": 2147,
+        "time_to_request_ms": 344,
+        "first_content_frame_ms": 2651,
+        "queued_turn_count": 0,
+        "result_index": 0
+      },
+      "tool_call_count": 4,
+      "tool_ids": [
+        "toolu_011ptFtAaR53VFan1BcAopJC",
+        "toolu_015R5ggvaug6ABpmydry5ikc",
+        "toolu_01DYbFAHSYon3Ej9QipYVmwj",
+        "toolu_01WdhzXu3FpBamQVLmBBU2tk"
+      ],
+      "prompt_sha256": "6f53b5ff97891ded58e843d8b40ccc9af1413b3cc0a2d6beeef65a57588d780d",
+      "before_sha256": "35cf07970f48d8cf377a3ffbbdaa434edd5467c4c90c73bcc48569aab5c9dd28",
+      "after_sha256": "33bd503fc4424474425c1a211f86fccf06684882252f5c53a65c45f275ccb7d3",
+      "stdout_sha256": "5832e25de91c8fb1b451acb615b81b8f60c03cca4a1a561b729e7fe99501054d",
+      "data_changed": true,
+      "semantic_grade": "not-graded",
+      "budget": {
+        "tool_limit": 12,
+        "seconds_limit": 180,
+        "calls_exceeded": false,
+        "time_exceeded": false
+      }
+    },
+    {
+      "stage": "07-M1689-summary",
+      "cases": [
+        "S04"
+      ],
+      "command": [
+        "claude",
+        "-p",
+        "--safe-mode",
+        "--tools",
+        "Bash,Read",
+        "--allowedTools",
+        "Bash,Read",
+        "--no-session-persistence",
+        "--verbose",
+        "--output-format",
+        "stream-json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 124.798,
+      "timed_out": false,
+      "stderr": "",
+      "result": {
+        "duration_api_ms": 121765,
+        "stop_reason": "end_turn",
+        "session_id": "ba49ceeb-a6e0-43b0-a9d0-14876e6632d2",
+        "total_cost_usd": 0.9619862499999999,
+        "usage": {
+          "input_tokens": 258,
+          "cache_creation_input_tokens": 22250,
+          "cache_read_input_tokens": 150221,
+          "output_tokens": 9448,
+          "output_tokens_details": {
+            "thinking_tokens": 3312
+          },
+          "server_tool_use": {
+            "web_search_requests": 0,
+            "web_fetch_requests": 0
+          },
+          "service_tier": "standard",
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 22250,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "inference_geo": "not_available",
+          "iterations": [
+            {
+              "input_tokens": 32,
+              "output_tokens": 875,
+              "cache_read_input_tokens": 25439,
+              "cache_creation_input_tokens": 2019,
+              "cache_creation": {
+                "ephemeral_5m_input_tokens": 0,
+                "ephemeral_1h_input_tokens": 2019
+              },
+              "type": "message"
+            }
+          ],
+          "speed": "standard"
+        },
+        "modelUsage": {
+          "claude-haiku-4-5-20251001": {
+            "inputTokens": 4366,
+            "outputTokens": 17,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 0.004451,
+            "contextWindow": 200000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "claude-haiku-4-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          },
+          "claude-fable-5-1": {
+            "inputTokens": 258,
+            "outputTokens": 9448,
+            "cacheReadInputTokens": 150221,
+            "cacheCreationInputTokens": 22250,
+            "webSearchRequests": 0,
+            "costUSD": 0.95753525,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 64000,
+            "thinkingTokens": 3312,
+            "canonicalModel": "claude-fable-5-1",
+            "provider": "firstParty",
+            "costBasis": "list"
+          }
+        },
+        "permission_denials": [],
+        "terminal_reason": "completed",
+        "fast_mode_state": "off",
+        "fast_mode_disabled_reason": "sdk_opt_in_required",
+        "subagent_stats": {
+          "spawned": 0,
+          "requested": {
+            "background": 0,
+            "foreground": 0,
+            "unset": 0
+          },
+          "started_in_background": 0,
+          "max_depth": 0,
+          "spawned_by_subagents": 0,
+          "completed": 0,
+          "failed": 0,
+          "killed": {
+            "parent": 0,
+            "user": 0,
+            "system": 0
+          },
+          "refused": {
+            "depth_limit": 0,
+            "concurrency_limit": 0,
+            "budget": 0
+          },
+          "by_type": {}
+        },
+        "is_error": false,
+        "num_turns": 9,
+        "subtype": "success",
+        "api_error_status": null,
+        "result": "Captured, with nothing accepted and no performance result asserted. Graph revision moved from 4 to 5 with 22 changes, applied through `./tg apply` with the batch shown above. The first attempt was rejected because the tool does not accept \"decision\" as an answer shape, so the question uses \"condition\" like the other open questions.\n\n**How M1689 relates to the model**\n\n- **The original concern is kept.** The entity `cpu-intention` is untouched and still declared and current. Every new node anchors to it.\n- **Implementation is not satisfaction.** A new claim, `implementation-vs-intention-distinction`, says a fully implemented mechanism is an implementation success only. The intention is satisfied when CPU usage is measurably reduced. It is proposed and needs review, since you asked for the distinction rather than a rule.\n- **The failure mode is goal substitution.** The claim `m1689-goal-substitution-failure-mode` records that the notification mechanism displaced the concern as the objective. It contrasts with M1688, where the attempt never stopped. Here the attempt drifted away from what it was for.\n- **The alternative is recorded as unmeasured.** The claim `m1689-cheaper-requests-alternative` holds the \"later evidence\" suggestion. Its text states that no measurements exist and that it does not displace the selected mechanism.\n\n**The reconsideration question and its owner**\n\n`m1689-mechanism-reconsideration-question` asks whether the notification mechanism should remain the selected hypothesis, or whether cheaper requests should be pursued instead or first, and what CPU evidence is needed before ruling. Its metadata names `steward-role` as owner. The derivation is that the accepted decision gives the steward the choice of subsequent work for an intention, and choosing which mechanism to pursue next is such a choice. A `depends-on` edge to that decision records that the owner must be re-derived if the decision changes. One residual interpretation is flagged: the decision does not say whether reconsidering a mechanism inside a still-running attempt counts as subsequent work.\n\n**Other effects**\n\n- `chosen-mechanism` stays proposed and is now marked needs-review, because of the declared tension with the alternative and its new partial answer edge to the question. It remains the incumbent.\n- The M1688 questions and the consultation question are untouched and open.\n- `./tg check` reports the one new declared tension between the alternative and the incumbent, no structural errors, and the same pre-existing coverage gaps.\n\nThe M1689 source is graded as a synthetic secondary summary with the primary postmortem unavailable and no measurements, so nothing in the graph claims either approach reduces CPU.",
+        "ttft_ms": 3642,
+        "type": "result",
+        "duration_ms": 124020,
+        "uuid": "a795b6b0-42df-40ce-ae81-228ac3283979",
+        "ttft_stream_ms": 2197,
+        "time_to_request_ms": 577,
+        "first_content_frame_ms": 2523,
+        "queued_turn_count": 0,
+        "result_index": 0
+      },
+      "tool_call_count": 8,
+      "tool_ids": [
+        "toolu_013A5RW3Jgz33fwWgMTNVX3K",
+        "toolu_014RibX5AXRKT6vYBEtbRfyr",
+        "toolu_017fUobriJHDBZNpB4njHLU2",
+        "toolu_01FYo6CehQUbKvRFPx3YBEUY",
+        "toolu_01Gev8pkQUzNtarxfDPM9yCc",
+        "toolu_01M8PsqozKR34b4Yo2SYFNut",
+        "toolu_01MPwKwXJPTKGHBUqDMYBYtt",
+        "toolu_01XPGuupJSr9ex9XofXZhWCo"
+      ],
+      "prompt_sha256": "b5005c4b08cd723edc42390a829d61d8433e1dafc3fcf76ad537e29078e3b1e1",
+      "before_sha256": "33bd503fc4424474425c1a211f86fccf06684882252f5c53a65c45f275ccb7d3",
+      "after_sha256": "5f802f2631b1b7eba54313b5f3c25e95847cfbd47094b7d5ff8ac23ca5c9e911",
+      "stdout_sha256": "755b4514236d956c8d213ec94f301193e3a19453b291163720f758e0228c46ad",
+      "data_changed": true,
+      "semantic_grade": "not-graded",
+      "budget": {
+        "tool_limit": 12,
+        "seconds_limit": 180,
+        "calls_exceeded": false,
+        "time_exceeded": false
+      }
+    }
+  ],
+  "protocol": "Fresh isolated Fable print process per turn, past-only transcript plus persistent actual-tool workspace."
+}

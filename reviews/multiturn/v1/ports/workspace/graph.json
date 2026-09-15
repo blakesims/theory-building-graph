@@ -1,0 +1,2447 @@
+{
+  "version": 1,
+  "revision": 7,
+  "node_types": {
+    "entity": {},
+    "operation": {},
+    "claim": {},
+    "question": {},
+    "source": {},
+    "extraction": {},
+    "trace": {},
+    "check-result": {}
+  },
+  "edge_types": {
+    "about": {},
+    "governs": {},
+    "answers": {},
+    "depends-on": {},
+    "extracted-from": {},
+    "revises": {},
+    "potential-conflict": {},
+    "supports": {},
+    "tests": {},
+    "owned-by": {}
+  },
+  "nodes": {
+    "steward-role": {
+      "type": "entity",
+      "text": "Steward role",
+      "status": "declared",
+      "meta": {
+        "kind": "agent-role",
+        "aliases": [
+          "steward"
+        ]
+      }
+    },
+    "orchestrator-role": {
+      "type": "entity",
+      "text": "Orchestrator role",
+      "status": "declared",
+      "meta": {
+        "kind": "agent-role",
+        "aliases": [
+          "orchestrator"
+        ]
+      }
+    },
+    "operator-role": {
+      "type": "entity",
+      "text": "Operator role",
+      "status": "declared",
+      "meta": {
+        "kind": "agent-role",
+        "aliases": [
+          "operator"
+        ]
+      }
+    },
+    "choose-work": {
+      "type": "operation",
+      "text": "Select subsequent work for an intention.",
+      "status": "declared"
+    },
+    "end-attempt": {
+      "type": "operation",
+      "text": "End the current work attempt.",
+      "status": "declared"
+    },
+    "create-record": {
+      "type": "operation",
+      "text": "Mechanically insert a work record.",
+      "status": "declared"
+    },
+    "port-type": {
+      "type": "entity",
+      "text": "Port. In this fixture identified by the ordered pair (host, number); see port-identity-answer.",
+      "status": "declared",
+      "meta": {
+        "identity_key": [
+          "host",
+          "number"
+        ],
+        "identity_scope": "this fixture only",
+        "review_state": "needs-review",
+        "review_reason": "Semantic content or currency changed.",
+        "review_roots": [
+          "port-identity-answer",
+          "port-instances",
+          "port-rule",
+          "port-type"
+        ]
+      },
+      "semantic_version": 2
+    },
+    "service-type": {
+      "type": "entity",
+      "text": "Service owner identity.",
+      "status": "declared"
+    },
+    "port-rule": {
+      "type": "claim",
+      "text": "Each port has exactly one owner. Port identity is not yet defined.",
+      "status": "accepted",
+      "meta": {
+        "review_state": "needs-review",
+        "pattern_standing": "proposed",
+        "review_note": "Pattern identity_key supplied from the accepted answer port-identity-answer (user decision, fixture scope). Pattern remains proposed; prose still says identity undefined and awaits user revision.",
+        "review_reason": "Dependency changed: port-rule-depends-on-port-identity-answer Semantic content or currency changed.",
+        "review_roots": [
+          "port-identity-answer",
+          "port-instances",
+          "port-rule",
+          "port-type"
+        ]
+      },
+      "pattern": {
+        "kind": "cardinality",
+        "min": 1,
+        "max": 1,
+        "scope": "all",
+        "slot": {
+          "subject_type": "port-type",
+          "relation": "owned-by",
+          "target_type": "service-type",
+          "direction": "out",
+          "count": "distinct",
+          "identity_key": [
+            "host",
+            "number"
+          ]
+        }
+      },
+      "semantic_version": 2
+    },
+    "port-observations": {
+      "type": "trace",
+      "text": "Synthetic owner observations; complete for the listed subjects. Third report (host-a, 8080 -> service-c) added from port-observation-service-c-source; earlier reports retained.",
+      "status": "recorded",
+      "meta": {
+        "synthetic": true,
+        "review_state": "current",
+        "review_note": "Report 3 appended at user request; reports 1-2 unchanged.",
+        "reviewed_inputs": {
+          "port-observation-service-c-source": "e04d6a7cc3791a4079e8c8cae941b2dc389f3b8678589b86287573c552c9a046"
+        },
+        "reviewed_input_versions": {
+          "port-observation-service-c-source": 1
+        }
+      },
+      "trace": {
+        "complete": true,
+        "reports": [
+          {
+            "subject": {
+              "host": "host-a",
+              "number": 8080
+            },
+            "target": "service-a"
+          },
+          {
+            "subject": {
+              "host": "host-b",
+              "number": 8080
+            },
+            "target": "service-b"
+          },
+          {
+            "subject": {
+              "host": "host-a",
+              "number": 8080
+            },
+            "target": "service-c",
+            "source": "port-observation-service-c-source"
+          }
+        ]
+      },
+      "semantic_version": 2
+    },
+    "port-identity": {
+      "type": "question",
+      "text": "Which fields define the identity of a port in this fixture?",
+      "status": "resolved",
+      "meta": {
+        "answer_shape": "condition",
+        "review_state": "current",
+        "review_reason": "Decision relation changed: port-identity-answer-answers-port-identity",
+        "review_roots": [],
+        "review_note": "Resolved by explicit user decision recorded in port-identity-source; answer port-identity-answer, coverage full, scope this fixture only."
+      },
+      "semantic_version": 2
+    },
+    "port-identity-source": {
+      "type": "source",
+      "text": "For this fixture, I define a port as the ordered pair (host, number).",
+      "status": "recorded",
+      "meta": {
+        "source_kind": "verbatim",
+        "synthetic": true,
+        "speaker": "user",
+        "author": "blake.sims27@gmail.com",
+        "captured": "2026-09-15",
+        "context": "Design session turn answering the open question port-identity; scope limited to this fixture."
+      }
+    },
+    "port-identity-answer": {
+      "type": "claim",
+      "text": "In this fixture, a port is identified by the ordered pair (host, number). Two observations with different hosts are different ports even when the number is equal.",
+      "status": "accepted",
+      "meta": {
+        "review_state": "current",
+        "scope": "this fixture only",
+        "identity_key": [
+          "host",
+          "number"
+        ],
+        "decided_by": "user",
+        "reviewed_inputs": {
+          "port-identity-source": "70dc4e0b2b4883133712766de626e29452c5f0f79fce64d8ed9e3cf93100151a"
+        },
+        "reviewed_input_versions": {
+          "port-identity-source": 1
+        }
+      }
+    },
+    "port-instances": {
+      "type": "trace",
+      "text": "Synthetic port instances constructed from port-observations using identity (host, number). Complete for the listed reports only. Instance (host-a, 8080) now carries two owner reports (service-a, service-c); instance (host-b, 8080) carries one.",
+      "status": "recorded",
+      "meta": {
+        "synthetic": true,
+        "identity_key": [
+          "host",
+          "number"
+        ],
+        "constructed_from": "port-observations",
+        "scope": "this fixture only",
+        "review_state": "current",
+        "review_note": "Rebuilt from the three-report trace under the unchanged identity (host, number).",
+        "reviewed_inputs": {
+          "port-identity-answer": "ada28c20870a387cbd5fc498f815bac42490dbf58bc34812340530a24a00ed71",
+          "port-observations": "248e476bf9bb3df0729d7e401a04de0288928713ed0d02bd777c74d98f56b60f"
+        },
+        "reviewed_input_versions": {
+          "port-identity-answer": 1,
+          "port-observations": 2
+        }
+      },
+      "trace": {
+        "complete": true,
+        "reports": [
+          {
+            "instance": "(host-a, 8080)",
+            "sources": [
+              "port-observations"
+            ],
+            "subject": {
+              "host": "host-a",
+              "number": 8080
+            },
+            "target": "service-a"
+          },
+          {
+            "instance": "(host-b, 8080)",
+            "sources": [
+              "port-observations"
+            ],
+            "subject": {
+              "host": "host-b",
+              "number": 8080
+            },
+            "target": "service-b"
+          },
+          {
+            "instance": "(host-a, 8080)",
+            "sources": [
+              "port-observations",
+              "port-observation-service-c-source"
+            ],
+            "subject": {
+              "host": "host-a",
+              "number": 8080
+            },
+            "target": "service-c"
+          }
+        ]
+      },
+      "semantic_version": 2
+    },
+    "port-rule-check-host-number": {
+      "type": "check-result",
+      "text": "Bounded cardinality check of port-rule against port-instances using identity (host, number): satisfies for both instances, each with one distinct owner. Synthetic fixture evidence only; not a proof of the claim and not ratification of the pattern.",
+      "status": "recorded",
+      "meta": {
+        "synthetic": true,
+        "review_state": "historical",
+        "scope": "this fixture only",
+        "review_note": "Computed at revision 5 against the two-report trace. Retained as history; superseded by port-rule-check-host-number-r6 after report 3 was added. Under identity (number) alone the same reports would collapse to one subject with two owners; that reading is not the user's decision and was not checked."
+      },
+      "result": {
+        "assessment": {
+          "empirical_support": false,
+          "evidence_basis": "unspecified",
+          "findings": [],
+          "historical_behavior": "not-established",
+          "polarity": "unspecified",
+          "reachability": {
+            "outcome": "not-checked",
+            "reason": "No rewrite reachability engine is implemented. Explaining an observed defect requires implementation rules, not necessarily intended rules."
+          }
+        },
+        "checked_events": [],
+        "checker_version": "exclusive-actor/3",
+        "claim": "port-rule",
+        "claim_standing": "accepted",
+        "computed_revision": 1,
+        "definition_fingerprints": {
+          "edge_types": "a22df93853b9867396ba765187295a504fcbfc6063320274e37f54fa26da39ef",
+          "formal_model": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+        },
+        "diagnostics": [],
+        "fragment_version": "formal-fragment/2",
+        "input_fingerprints": {
+          "port-identity-answer": "5c5cfa34b6933019e52f3d87506a6e68f3fe8c74308dd3e55611528b5cc9f7ae",
+          "port-identity-source": "c87b15e4c5055945fcb52db79c28519337561923114a3d7f926a0c5dfb7d61eb",
+          "port-instances": "57db86c7ad54ad4076befb7b7f7b57d399f566306cd8adf50d212488c1e38537",
+          "port-observations": "4bc9e19b16631aa090a2c6216add0dd36ca8c81c6a9c7f63636e8c8bdf6d2789",
+          "port-rule": "d985f7fc11457f19db7250bda7fefb7422bc51465c5ebe72048fa3b761134a85",
+          "port-type": "8f422275e65dca78da0793af0029ab3953c8dfaf3a800c755c930d13b6818a79",
+          "service-type": "7e26d71497350a2962ac22646b3c9666cd67d8f5e14565e1c6270a152562badd"
+        },
+        "out_of_scope_events": [],
+        "outcome": "satisfies",
+        "pattern_standing": "proposed",
+        "provenance": {
+          "edges": {
+            "port-identity-answer-extracted-from-source": "18819c1a5817db832f2e2d6dae93625fcc8baaec6f3fdb2ca3dc7f63805e32ac",
+            "port-instances-depends-on-port-identity-answer": "fcb1efa9790989ce39e4cd6f208a53b86379909c01668048f7949568c705befe",
+            "port-instances-extracted-from-port-observations": "5d10f9de757998c4d34b4dcfaa1bbe706e1a339c0735a1c01fe373901d5b5b68",
+            "port-rule-depends-on-port-identity-answer": "cc78e0560810dcfabee59564e20cc60944e84f79391e1e8c1997533359f45124"
+          },
+          "fingerprints": {
+            "port-identity-answer": "5c5cfa34b6933019e52f3d87506a6e68f3fe8c74308dd3e55611528b5cc9f7ae",
+            "port-identity-source": "c87b15e4c5055945fcb52db79c28519337561923114a3d7f926a0c5dfb7d61eb",
+            "port-instances": "57db86c7ad54ad4076befb7b7f7b57d399f566306cd8adf50d212488c1e38537",
+            "port-observations": "4bc9e19b16631aa090a2c6216add0dd36ca8c81c6a9c7f63636e8c8bdf6d2789",
+            "port-rule": "d985f7fc11457f19db7250bda7fefb7422bc51465c5ebe72048fa3b761134a85"
+          },
+          "missing": [],
+          "nodes": [
+            "port-identity-answer",
+            "port-identity-source",
+            "port-instances",
+            "port-observations",
+            "port-rule"
+          ]
+        },
+        "provenance_roots": [
+          "port-rule",
+          "port-instances"
+        ],
+        "scope": "supplied reports and declared completeness only",
+        "subjects": [
+          {
+            "distinct_count": 1,
+            "identity": {
+              "host": "host-a",
+              "number": 8080
+            },
+            "outcome": "satisfies",
+            "sources": [
+              "port-observations"
+            ]
+          },
+          {
+            "distinct_count": 1,
+            "identity": {
+              "host": "host-b",
+              "number": 8080
+            },
+            "outcome": "satisfies",
+            "sources": [
+              "port-observations"
+            ]
+          }
+        ],
+        "synthetic": true,
+        "trace": "port-instances",
+        "witnesses": []
+      }
+    },
+    "port-observation-service-c-source": {
+      "type": "source",
+      "status": "recorded",
+      "text": "host-a, port8080, also has the distinct owner service-c.",
+      "meta": {
+        "source_kind": "verbatim",
+        "speaker": "user",
+        "author": "blake.sims27@gmail.com",
+        "captured": "2026-09-15",
+        "synthetic": true,
+        "context": "Design session turn adding a third synthetic owner observation to the complete fixture port-observations. User instruction in the same turn: keep earlier observations, run the same exactly-one check, do not change the rule to make the check pass."
+      }
+    },
+    "port-rule-check-host-number-r6": {
+      "type": "check-result",
+      "status": "recorded",
+      "text": "Bounded cardinality check of port-rule against port-instances (three reports) using identity (host, number): violates. Witness subject (host-a, 8080) has distinct_count 2 (owners service-a and service-c). Subject (host-b, 8080) satisfies with one owner. The checker's witnesses array is empty; the witness is carried in the per-subject entry. Synthetic fixture evidence only; not a proof and not ratification of the pattern. The rule was not changed.",
+      "result": {
+        "assessment": {
+          "empirical_support": false,
+          "evidence_basis": "unspecified",
+          "findings": [],
+          "historical_behavior": "not-established",
+          "polarity": "unspecified",
+          "reachability": {
+            "outcome": "not-checked",
+            "reason": "No rewrite reachability engine is implemented. Explaining an observed defect requires implementation rules, not necessarily intended rules."
+          }
+        },
+        "checked_events": [],
+        "checker_version": "exclusive-actor/3",
+        "claim": "port-rule",
+        "claim_standing": "accepted",
+        "computed_revision": 6,
+        "definition_fingerprints": {
+          "edge_types": "a22df93853b9867396ba765187295a504fcbfc6063320274e37f54fa26da39ef",
+          "formal_model": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+        },
+        "diagnostics": [],
+        "fragment_version": "formal-fragment/2",
+        "input_fingerprints": {
+          "port-identity-answer": "5c5cfa34b6933019e52f3d87506a6e68f3fe8c74308dd3e55611528b5cc9f7ae",
+          "port-identity-source": "c87b15e4c5055945fcb52db79c28519337561923114a3d7f926a0c5dfb7d61eb",
+          "port-instances": "36dd294b1fdaa5234d320c6e072c4df9d55de50fa21a4c985791d413a1fafbe9",
+          "port-observation-service-c-source": "0c51d9cad730680283cd26c132cc1fa059ae2d6969457c9731b197512c2101c8",
+          "port-observations": "349e6bea85aa0d4f68ae10e1e442855b7345c68ef32a7e5feb7653dd6777e78a",
+          "port-rule": "d985f7fc11457f19db7250bda7fefb7422bc51465c5ebe72048fa3b761134a85",
+          "port-type": "8f422275e65dca78da0793af0029ab3953c8dfaf3a800c755c930d13b6818a79",
+          "service-type": "7e26d71497350a2962ac22646b3c9666cd67d8f5e14565e1c6270a152562badd"
+        },
+        "out_of_scope_events": [],
+        "outcome": "violates",
+        "pattern_standing": "proposed",
+        "provenance": {
+          "edges": {
+            "port-identity-answer-extracted-from-source": "18819c1a5817db832f2e2d6dae93625fcc8baaec6f3fdb2ca3dc7f63805e32ac",
+            "port-instances-depends-on-port-identity-answer": "0fbd2cb3ff2ec6289e2be0b34693ce9dab2035885b90b97c891f10da594210c9",
+            "port-instances-extracted-from-port-observations": "b34b673f48f780180ead317c2bb68a851e6357ced9f33cce3e2d81ed96aa884e",
+            "port-observations-extracted-from-service-c-source": "7116de424a25afa9b0232b097f4be78a472140110c87b895358bd437e332e39d",
+            "port-rule-depends-on-port-identity-answer": "cc78e0560810dcfabee59564e20cc60944e84f79391e1e8c1997533359f45124"
+          },
+          "fingerprints": {
+            "port-identity-answer": "5c5cfa34b6933019e52f3d87506a6e68f3fe8c74308dd3e55611528b5cc9f7ae",
+            "port-identity-source": "c87b15e4c5055945fcb52db79c28519337561923114a3d7f926a0c5dfb7d61eb",
+            "port-instances": "36dd294b1fdaa5234d320c6e072c4df9d55de50fa21a4c985791d413a1fafbe9",
+            "port-observation-service-c-source": "0c51d9cad730680283cd26c132cc1fa059ae2d6969457c9731b197512c2101c8",
+            "port-observations": "349e6bea85aa0d4f68ae10e1e442855b7345c68ef32a7e5feb7653dd6777e78a",
+            "port-rule": "d985f7fc11457f19db7250bda7fefb7422bc51465c5ebe72048fa3b761134a85"
+          },
+          "missing": [],
+          "nodes": [
+            "port-identity-answer",
+            "port-identity-source",
+            "port-instances",
+            "port-observation-service-c-source",
+            "port-observations",
+            "port-rule"
+          ]
+        },
+        "provenance_roots": [
+          "port-rule",
+          "port-instances"
+        ],
+        "scope": "supplied reports and declared completeness only",
+        "subjects": [
+          {
+            "distinct_count": 2,
+            "identity": {
+              "host": "host-a",
+              "number": 8080
+            },
+            "outcome": "violates",
+            "sources": [
+              "port-observations",
+              "port-observations",
+              "port-observation-service-c-source"
+            ]
+          },
+          {
+            "distinct_count": 1,
+            "identity": {
+              "host": "host-b",
+              "number": 8080
+            },
+            "outcome": "satisfies",
+            "sources": [
+              "port-observations"
+            ]
+          }
+        ],
+        "synthetic": true,
+        "trace": "port-instances",
+        "witnesses": []
+      },
+      "result_state": "current",
+      "meta": {
+        "synthetic": true,
+        "scope": "this fixture only",
+        "review_state": "current",
+        "review_note": "Supersedes port-rule-check-host-number, which was computed at revision 5 against the two-report trace. Rule and identity unchanged; only the trace grew."
+      }
+    }
+  },
+  "edges": {
+    "port-rule-governs-port-type": {
+      "type": "governs",
+      "from": "port-rule",
+      "to": "port-type"
+    },
+    "port-identity-about-port-type": {
+      "type": "about",
+      "from": "port-identity",
+      "to": "port-type"
+    },
+    "port-identity-answer-extracted-from-source": {
+      "type": "extracted-from",
+      "from": "port-identity-answer",
+      "to": "port-identity-source",
+      "input_fingerprint": "70dc4e0b2b4883133712766de626e29452c5f0f79fce64d8ed9e3cf93100151a",
+      "input_version": 1
+    },
+    "port-identity-answer-answers-port-identity": {
+      "type": "answers",
+      "from": "port-identity-answer",
+      "to": "port-identity",
+      "coverage": "full",
+      "answer": {
+        "condition": "A port is identified by the ordered pair (host, number); identity_key = [host, number]. Scope: this fixture only."
+      }
+    },
+    "port-identity-answer-about-port-type": {
+      "type": "about",
+      "from": "port-identity-answer",
+      "to": "port-type"
+    },
+    "port-rule-depends-on-port-identity-answer": {
+      "type": "depends-on",
+      "from": "port-rule",
+      "to": "port-identity-answer",
+      "note": "The pattern's identity_key is taken from this answer."
+    },
+    "port-instances-extracted-from-port-observations": {
+      "type": "extracted-from",
+      "from": "port-instances",
+      "to": "port-observations",
+      "input_fingerprint": "248e476bf9bb3df0729d7e401a04de0288928713ed0d02bd777c74d98f56b60f",
+      "input_version": 2
+    },
+    "port-instances-depends-on-port-identity-answer": {
+      "type": "depends-on",
+      "from": "port-instances",
+      "to": "port-identity-answer",
+      "input_fingerprint": "ada28c20870a387cbd5fc498f815bac42490dbf58bc34812340530a24a00ed71",
+      "input_version": 1
+    },
+    "port-instances-tests-port-rule": {
+      "type": "tests",
+      "from": "port-instances",
+      "to": "port-rule"
+    },
+    "port-rule-check-tests-port-rule": {
+      "type": "tests",
+      "from": "port-rule-check-host-number",
+      "to": "port-rule"
+    },
+    "port-observations-extracted-from-service-c-source": {
+      "from": "port-observations",
+      "to": "port-observation-service-c-source",
+      "type": "extracted-from",
+      "note": "Only report 3 derives from this source; reports 1-2 predate it.",
+      "input_fingerprint": "e04d6a7cc3791a4079e8c8cae941b2dc389f3b8678589b86287573c552c9a046",
+      "input_version": 1
+    },
+    "port-rule-check-r6-tests-port-rule": {
+      "from": "port-rule-check-host-number-r6",
+      "to": "port-rule",
+      "type": "tests"
+    },
+    "port-rule-check-r6-revises-r5": {
+      "from": "port-rule-check-host-number-r6",
+      "to": "port-rule-check-host-number",
+      "type": "revises",
+      "note": "Same rule, same identity, trace extended by one report; outcome changed from satisfies to violates."
+    }
+  },
+  "changes": [
+    {
+      "revision": 1,
+      "at": "2026-09-15T10:42:40.922720+00:00",
+      "actor": "assistant",
+      "reason": "Record user-defined port identity (host, number) with verbatim synthetic source, construct instances, wire pattern identity_key",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "port-identity-source",
+          "before": null,
+          "after": {
+            "type": "source",
+            "text": "For this fixture, I define a port as the ordered pair (host, number).",
+            "status": "recorded",
+            "meta": {
+              "source_kind": "verbatim",
+              "synthetic": true,
+              "speaker": "user",
+              "author": "blake.sims27@gmail.com",
+              "captured": "2026-09-15",
+              "context": "Design session turn answering the open question port-identity; scope limited to this fixture."
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "port-identity-answer",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "text": "In this fixture, a port is identified by the ordered pair (host, number). Two observations with different hosts are different ports even when the number is equal.",
+            "status": "accepted",
+            "meta": {
+              "review_state": "current",
+              "scope": "this fixture only",
+              "identity_key": [
+                "host",
+                "number"
+              ],
+              "decided_by": "user"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "port-identity-answer-extracted-from-source",
+          "before": null,
+          "after": {
+            "type": "extracted-from",
+            "from": "port-identity-answer",
+            "to": "port-identity-source"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "port-identity-answer-answers-port-identity",
+          "before": null,
+          "after": {
+            "type": "answers",
+            "from": "port-identity-answer",
+            "to": "port-identity",
+            "coverage": "full"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "port-identity-answer-about-port-type",
+          "before": null,
+          "after": {
+            "type": "about",
+            "from": "port-identity-answer",
+            "to": "port-type"
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "port-type",
+          "before": {
+            "type": "entity",
+            "text": "Port identity, not yet defined.",
+            "status": "declared"
+          },
+          "after": {
+            "type": "entity",
+            "text": "Port. In this fixture identified by the ordered pair (host, number); see port-identity-answer.",
+            "status": "declared",
+            "meta": {
+              "identity_key": [
+                "host",
+                "number"
+              ],
+              "identity_scope": "this fixture only"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "port-rule",
+          "before": {
+            "type": "claim",
+            "text": "Each port has exactly one owner. Port identity is not yet defined.",
+            "status": "accepted",
+            "meta": {
+              "review_state": "current",
+              "pattern_standing": "proposed"
+            },
+            "pattern": {
+              "kind": "cardinality",
+              "min": 1,
+              "max": 1,
+              "scope": "all",
+              "slot": {
+                "subject_type": "port-type",
+                "relation": "owned-by",
+                "target_type": "service-type",
+                "direction": "out",
+                "count": "distinct"
+              }
+            }
+          },
+          "after": {
+            "type": "claim",
+            "text": "Each port has exactly one owner. Port identity is not yet defined.",
+            "status": "accepted",
+            "meta": {
+              "review_state": "current",
+              "pattern_standing": "proposed",
+              "review_note": "Pattern identity_key supplied from the accepted answer port-identity-answer (user decision, fixture scope). Pattern remains proposed; prose still says identity undefined and awaits user revision."
+            },
+            "pattern": {
+              "kind": "cardinality",
+              "min": 1,
+              "max": 1,
+              "scope": "all",
+              "slot": {
+                "subject_type": "port-type",
+                "relation": "owned-by",
+                "target_type": "service-type",
+                "direction": "out",
+                "count": "distinct",
+                "identity_key": [
+                  "host",
+                  "number"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "port-rule-depends-on-port-identity-answer",
+          "before": null,
+          "after": {
+            "type": "depends-on",
+            "from": "port-rule",
+            "to": "port-identity-answer",
+            "note": "The pattern's identity_key is taken from this answer."
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "port-instances",
+          "before": null,
+          "after": {
+            "type": "trace",
+            "text": "Synthetic port instances constructed from port-observations using identity (host, number). Complete for the two listed instances only.",
+            "status": "recorded",
+            "meta": {
+              "synthetic": true,
+              "identity_key": [
+                "host",
+                "number"
+              ],
+              "constructed_from": "port-observations",
+              "scope": "this fixture only"
+            },
+            "trace": {
+              "complete": true,
+              "reports": [
+                {
+                  "subject": {
+                    "host": "host-a",
+                    "number": 8080
+                  },
+                  "instance": "(host-a, 8080)",
+                  "target": "service-a",
+                  "sources": [
+                    "port-observations"
+                  ]
+                },
+                {
+                  "subject": {
+                    "host": "host-b",
+                    "number": 8080
+                  },
+                  "instance": "(host-b, 8080)",
+                  "target": "service-b",
+                  "sources": [
+                    "port-observations"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "port-instances-extracted-from-port-observations",
+          "before": null,
+          "after": {
+            "type": "extracted-from",
+            "from": "port-instances",
+            "to": "port-observations"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "port-instances-depends-on-port-identity-answer",
+          "before": null,
+          "after": {
+            "type": "depends-on",
+            "from": "port-instances",
+            "to": "port-identity-answer"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "port-instances-tests-port-rule",
+          "before": null,
+          "after": {
+            "type": "tests",
+            "from": "port-instances",
+            "to": "port-rule"
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "port-type",
+          "before": {
+            "type": "entity",
+            "text": "Port. In this fixture identified by the ordered pair (host, number); see port-identity-answer.",
+            "status": "declared",
+            "meta": {
+              "identity_key": [
+                "host",
+                "number"
+              ],
+              "identity_scope": "this fixture only"
+            }
+          },
+          "after": {
+            "type": "entity",
+            "text": "Port. In this fixture identified by the ordered pair (host, number); see port-identity-answer.",
+            "status": "declared",
+            "meta": {
+              "identity_key": [
+                "host",
+                "number"
+              ],
+              "identity_scope": "this fixture only"
+            },
+            "semantic_version": 2
+          },
+          "automatic": "semantic-version"
+        },
+        {
+          "collection": "nodes",
+          "id": "port-rule",
+          "before": {
+            "type": "claim",
+            "text": "Each port has exactly one owner. Port identity is not yet defined.",
+            "status": "accepted",
+            "meta": {
+              "review_state": "current",
+              "pattern_standing": "proposed",
+              "review_note": "Pattern identity_key supplied from the accepted answer port-identity-answer (user decision, fixture scope). Pattern remains proposed; prose still says identity undefined and awaits user revision."
+            },
+            "pattern": {
+              "kind": "cardinality",
+              "min": 1,
+              "max": 1,
+              "scope": "all",
+              "slot": {
+                "subject_type": "port-type",
+                "relation": "owned-by",
+                "target_type": "service-type",
+                "direction": "out",
+                "count": "distinct",
+                "identity_key": [
+                  "host",
+                  "number"
+                ]
+              }
+            }
+          },
+          "after": {
+            "type": "claim",
+            "text": "Each port has exactly one owner. Port identity is not yet defined.",
+            "status": "accepted",
+            "meta": {
+              "review_state": "current",
+              "pattern_standing": "proposed",
+              "review_note": "Pattern identity_key supplied from the accepted answer port-identity-answer (user decision, fixture scope). Pattern remains proposed; prose still says identity undefined and awaits user revision."
+            },
+            "pattern": {
+              "kind": "cardinality",
+              "min": 1,
+              "max": 1,
+              "scope": "all",
+              "slot": {
+                "subject_type": "port-type",
+                "relation": "owned-by",
+                "target_type": "service-type",
+                "direction": "out",
+                "count": "distinct",
+                "identity_key": [
+                  "host",
+                  "number"
+                ]
+              }
+            },
+            "semantic_version": 2
+          },
+          "automatic": "semantic-version"
+        },
+        {
+          "collection": "nodes",
+          "id": "port-identity",
+          "before": {
+            "type": "question",
+            "text": "Which fields define the identity of a port in this fixture?",
+            "status": "open",
+            "meta": {
+              "answer_shape": "condition",
+              "review_state": "current"
+            }
+          },
+          "after": {
+            "type": "question",
+            "text": "Which fields define the identity of a port in this fixture?",
+            "status": "open",
+            "meta": {
+              "answer_shape": "condition",
+              "review_state": "needs-review",
+              "review_reason": "Decision relation changed: port-identity-answer-answers-port-identity Answer changed: port-identity-answer",
+              "review_roots": [
+                "port-identity-answer",
+                "port-instances",
+                "port-rule",
+                "port-type"
+              ]
+            }
+          },
+          "automatic": "dependency-review"
+        },
+        {
+          "collection": "nodes",
+          "id": "port-rule",
+          "before": {
+            "type": "claim",
+            "text": "Each port has exactly one owner. Port identity is not yet defined.",
+            "status": "accepted",
+            "meta": {
+              "review_state": "current",
+              "pattern_standing": "proposed",
+              "review_note": "Pattern identity_key supplied from the accepted answer port-identity-answer (user decision, fixture scope). Pattern remains proposed; prose still says identity undefined and awaits user revision."
+            },
+            "pattern": {
+              "kind": "cardinality",
+              "min": 1,
+              "max": 1,
+              "scope": "all",
+              "slot": {
+                "subject_type": "port-type",
+                "relation": "owned-by",
+                "target_type": "service-type",
+                "direction": "out",
+                "count": "distinct",
+                "identity_key": [
+                  "host",
+                  "number"
+                ]
+              }
+            },
+            "semantic_version": 2
+          },
+          "after": {
+            "type": "claim",
+            "text": "Each port has exactly one owner. Port identity is not yet defined.",
+            "status": "accepted",
+            "meta": {
+              "review_state": "needs-review",
+              "pattern_standing": "proposed",
+              "review_note": "Pattern identity_key supplied from the accepted answer port-identity-answer (user decision, fixture scope). Pattern remains proposed; prose still says identity undefined and awaits user revision.",
+              "review_reason": "Dependency changed: port-rule-depends-on-port-identity-answer Semantic content or currency changed.",
+              "review_roots": [
+                "port-identity-answer",
+                "port-instances",
+                "port-rule",
+                "port-type"
+              ]
+            },
+            "pattern": {
+              "kind": "cardinality",
+              "min": 1,
+              "max": 1,
+              "scope": "all",
+              "slot": {
+                "subject_type": "port-type",
+                "relation": "owned-by",
+                "target_type": "service-type",
+                "direction": "out",
+                "count": "distinct",
+                "identity_key": [
+                  "host",
+                  "number"
+                ]
+              }
+            },
+            "semantic_version": 2
+          },
+          "automatic": "dependency-review"
+        },
+        {
+          "collection": "nodes",
+          "id": "port-type",
+          "before": {
+            "type": "entity",
+            "text": "Port. In this fixture identified by the ordered pair (host, number); see port-identity-answer.",
+            "status": "declared",
+            "meta": {
+              "identity_key": [
+                "host",
+                "number"
+              ],
+              "identity_scope": "this fixture only"
+            },
+            "semantic_version": 2
+          },
+          "after": {
+            "type": "entity",
+            "text": "Port. In this fixture identified by the ordered pair (host, number); see port-identity-answer.",
+            "status": "declared",
+            "meta": {
+              "identity_key": [
+                "host",
+                "number"
+              ],
+              "identity_scope": "this fixture only",
+              "review_state": "needs-review",
+              "review_reason": "Semantic content or currency changed.",
+              "review_roots": [
+                "port-identity-answer",
+                "port-instances",
+                "port-rule",
+                "port-type"
+              ]
+            },
+            "semantic_version": 2
+          },
+          "automatic": "dependency-review"
+        },
+        {
+          "collection": "edges",
+          "id": "port-identity-answer-extracted-from-source",
+          "before": {
+            "type": "extracted-from",
+            "from": "port-identity-answer",
+            "to": "port-identity-source"
+          },
+          "after": {
+            "type": "extracted-from",
+            "from": "port-identity-answer",
+            "to": "port-identity-source",
+            "input_fingerprint": "70dc4e0b2b4883133712766de626e29452c5f0f79fce64d8ed9e3cf93100151a",
+            "input_version": 1
+          },
+          "automatic": "review-receipt"
+        },
+        {
+          "collection": "nodes",
+          "id": "port-identity-answer",
+          "before": {
+            "type": "claim",
+            "text": "In this fixture, a port is identified by the ordered pair (host, number). Two observations with different hosts are different ports even when the number is equal.",
+            "status": "accepted",
+            "meta": {
+              "review_state": "current",
+              "scope": "this fixture only",
+              "identity_key": [
+                "host",
+                "number"
+              ],
+              "decided_by": "user"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "text": "In this fixture, a port is identified by the ordered pair (host, number). Two observations with different hosts are different ports even when the number is equal.",
+            "status": "accepted",
+            "meta": {
+              "review_state": "current",
+              "scope": "this fixture only",
+              "identity_key": [
+                "host",
+                "number"
+              ],
+              "decided_by": "user",
+              "reviewed_inputs": {
+                "port-identity-source": "70dc4e0b2b4883133712766de626e29452c5f0f79fce64d8ed9e3cf93100151a"
+              },
+              "reviewed_input_versions": {
+                "port-identity-source": 1
+              }
+            }
+          },
+          "automatic": "review-receipt"
+        }
+      ]
+    },
+    {
+      "revision": 2,
+      "at": "2026-09-15T10:42:53.890693+00:00",
+      "actor": "assistant",
+      "reason": "Store bounded check receipt for port-rule vs port-instances",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "port-rule-check-host-number",
+          "before": null,
+          "after": {
+            "type": "check-result",
+            "text": "Bounded cardinality check of port-rule against port-instances using identity (host, number): satisfies for both instances, each with one distinct owner. Synthetic fixture evidence only; not a proof of the claim and not ratification of the pattern.",
+            "status": "recorded",
+            "meta": {
+              "synthetic": true,
+              "review_state": "current",
+              "scope": "this fixture only",
+              "review_note": "Under identity (number) alone the same reports would collapse to one subject with two owners; that reading is not the user's decision and was not checked."
+            },
+            "result": {
+              "assessment": {
+                "empirical_support": false,
+                "evidence_basis": "unspecified",
+                "findings": [],
+                "historical_behavior": "not-established",
+                "polarity": "unspecified",
+                "reachability": {
+                  "outcome": "not-checked",
+                  "reason": "No rewrite reachability engine is implemented. Explaining an observed defect requires implementation rules, not necessarily intended rules."
+                }
+              },
+              "checked_events": [],
+              "checker_version": "exclusive-actor/3",
+              "claim": "port-rule",
+              "claim_standing": "accepted",
+              "computed_revision": 1,
+              "definition_fingerprints": {
+                "edge_types": "a22df93853b9867396ba765187295a504fcbfc6063320274e37f54fa26da39ef",
+                "formal_model": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+              },
+              "diagnostics": [],
+              "fragment_version": "formal-fragment/2",
+              "input_fingerprints": {
+                "port-identity-answer": "5c5cfa34b6933019e52f3d87506a6e68f3fe8c74308dd3e55611528b5cc9f7ae",
+                "port-identity-source": "c87b15e4c5055945fcb52db79c28519337561923114a3d7f926a0c5dfb7d61eb",
+                "port-instances": "57db86c7ad54ad4076befb7b7f7b57d399f566306cd8adf50d212488c1e38537",
+                "port-observations": "4bc9e19b16631aa090a2c6216add0dd36ca8c81c6a9c7f63636e8c8bdf6d2789",
+                "port-rule": "d985f7fc11457f19db7250bda7fefb7422bc51465c5ebe72048fa3b761134a85",
+                "port-type": "8f422275e65dca78da0793af0029ab3953c8dfaf3a800c755c930d13b6818a79",
+                "service-type": "7e26d71497350a2962ac22646b3c9666cd67d8f5e14565e1c6270a152562badd"
+              },
+              "out_of_scope_events": [],
+              "outcome": "satisfies",
+              "pattern_standing": "proposed",
+              "provenance": {
+                "edges": {
+                  "port-identity-answer-extracted-from-source": "18819c1a5817db832f2e2d6dae93625fcc8baaec6f3fdb2ca3dc7f63805e32ac",
+                  "port-instances-depends-on-port-identity-answer": "fcb1efa9790989ce39e4cd6f208a53b86379909c01668048f7949568c705befe",
+                  "port-instances-extracted-from-port-observations": "5d10f9de757998c4d34b4dcfaa1bbe706e1a339c0735a1c01fe373901d5b5b68",
+                  "port-rule-depends-on-port-identity-answer": "cc78e0560810dcfabee59564e20cc60944e84f79391e1e8c1997533359f45124"
+                },
+                "fingerprints": {
+                  "port-identity-answer": "5c5cfa34b6933019e52f3d87506a6e68f3fe8c74308dd3e55611528b5cc9f7ae",
+                  "port-identity-source": "c87b15e4c5055945fcb52db79c28519337561923114a3d7f926a0c5dfb7d61eb",
+                  "port-instances": "57db86c7ad54ad4076befb7b7f7b57d399f566306cd8adf50d212488c1e38537",
+                  "port-observations": "4bc9e19b16631aa090a2c6216add0dd36ca8c81c6a9c7f63636e8c8bdf6d2789",
+                  "port-rule": "d985f7fc11457f19db7250bda7fefb7422bc51465c5ebe72048fa3b761134a85"
+                },
+                "missing": [],
+                "nodes": [
+                  "port-identity-answer",
+                  "port-identity-source",
+                  "port-instances",
+                  "port-observations",
+                  "port-rule"
+                ]
+              },
+              "provenance_roots": [
+                "port-rule",
+                "port-instances"
+              ],
+              "scope": "supplied reports and declared completeness only",
+              "subjects": [
+                {
+                  "distinct_count": 1,
+                  "identity": {
+                    "host": "host-a",
+                    "number": 8080
+                  },
+                  "outcome": "satisfies",
+                  "sources": [
+                    "port-observations"
+                  ]
+                },
+                {
+                  "distinct_count": 1,
+                  "identity": {
+                    "host": "host-b",
+                    "number": 8080
+                  },
+                  "outcome": "satisfies",
+                  "sources": [
+                    "port-observations"
+                  ]
+                }
+              ],
+              "synthetic": true,
+              "trace": "port-instances",
+              "witnesses": []
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "port-rule-check-tests-port-rule",
+          "before": null,
+          "after": {
+            "type": "tests",
+            "from": "port-rule-check-host-number",
+            "to": "port-rule"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 3,
+      "at": "2026-09-15T10:43:06.925492+00:00",
+      "actor": "assistant",
+      "reason": "Close port-identity: explicit user answer with full coverage",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "port-identity",
+          "before": {
+            "type": "question",
+            "text": "Which fields define the identity of a port in this fixture?",
+            "status": "open",
+            "meta": {
+              "answer_shape": "condition",
+              "review_state": "needs-review",
+              "review_reason": "Decision relation changed: port-identity-answer-answers-port-identity Answer changed: port-identity-answer",
+              "review_roots": [
+                "port-identity-answer",
+                "port-instances",
+                "port-rule",
+                "port-type"
+              ]
+            }
+          },
+          "after": {
+            "type": "question",
+            "text": "Which fields define the identity of a port in this fixture?",
+            "status": "resolved",
+            "meta": {
+              "answer_shape": "condition",
+              "review_state": "current",
+              "review_reason": "Decision relation changed: port-identity-answer-answers-port-identity Answer changed: port-identity-answer",
+              "review_roots": [
+                "port-identity-answer",
+                "port-instances",
+                "port-rule",
+                "port-type"
+              ],
+              "review_note": "Resolved by explicit user decision recorded in port-identity-source; answer port-identity-answer, coverage full, scope this fixture only."
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "port-identity",
+          "before": {
+            "type": "question",
+            "text": "Which fields define the identity of a port in this fixture?",
+            "status": "resolved",
+            "meta": {
+              "answer_shape": "condition",
+              "review_state": "current",
+              "review_reason": "Decision relation changed: port-identity-answer-answers-port-identity Answer changed: port-identity-answer",
+              "review_roots": [
+                "port-identity-answer",
+                "port-instances",
+                "port-rule",
+                "port-type"
+              ],
+              "review_note": "Resolved by explicit user decision recorded in port-identity-source; answer port-identity-answer, coverage full, scope this fixture only."
+            }
+          },
+          "after": {
+            "type": "question",
+            "text": "Which fields define the identity of a port in this fixture?",
+            "status": "resolved",
+            "meta": {
+              "answer_shape": "condition",
+              "review_state": "current",
+              "review_reason": "Decision relation changed: port-identity-answer-answers-port-identity Answer changed: port-identity-answer",
+              "review_roots": [
+                "port-identity-answer",
+                "port-instances",
+                "port-rule",
+                "port-type"
+              ],
+              "review_note": "Resolved by explicit user decision recorded in port-identity-source; answer port-identity-answer, coverage full, scope this fixture only."
+            },
+            "semantic_version": 2
+          },
+          "automatic": "semantic-version"
+        }
+      ]
+    },
+    {
+      "revision": 4,
+      "at": "2026-09-15T10:43:23.358398+00:00",
+      "actor": "assistant",
+      "reason": "Supply structured condition payload for the condition-shaped question",
+      "edits": [
+        {
+          "collection": "edges",
+          "id": "port-identity-answer-answers-port-identity",
+          "before": {
+            "type": "answers",
+            "from": "port-identity-answer",
+            "to": "port-identity",
+            "coverage": "full"
+          },
+          "after": {
+            "type": "answers",
+            "from": "port-identity-answer",
+            "to": "port-identity",
+            "coverage": "full",
+            "answer": {
+              "condition": "A port is identified by the ordered pair (host, number); identity_key = [host, number]. Scope: this fixture only."
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "port-identity",
+          "before": {
+            "type": "question",
+            "text": "Which fields define the identity of a port in this fixture?",
+            "status": "resolved",
+            "meta": {
+              "answer_shape": "condition",
+              "review_state": "current",
+              "review_reason": "Decision relation changed: port-identity-answer-answers-port-identity Answer changed: port-identity-answer",
+              "review_roots": [
+                "port-identity-answer",
+                "port-instances",
+                "port-rule",
+                "port-type"
+              ],
+              "review_note": "Resolved by explicit user decision recorded in port-identity-source; answer port-identity-answer, coverage full, scope this fixture only."
+            },
+            "semantic_version": 2
+          },
+          "after": {
+            "type": "question",
+            "text": "Which fields define the identity of a port in this fixture?",
+            "status": "resolved",
+            "meta": {
+              "answer_shape": "condition",
+              "review_state": "needs-review",
+              "review_reason": "Decision relation changed: port-identity-answer-answers-port-identity",
+              "review_roots": [],
+              "review_note": "Resolved by explicit user decision recorded in port-identity-source; answer port-identity-answer, coverage full, scope this fixture only."
+            },
+            "semantic_version": 2
+          },
+          "automatic": "dependency-review"
+        }
+      ]
+    },
+    {
+      "revision": 5,
+      "at": "2026-09-15T10:43:28.927850+00:00",
+      "actor": "assistant",
+      "reason": "Mark port-identity reviewed after adding condition payload",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "port-identity",
+          "before": {
+            "type": "question",
+            "text": "Which fields define the identity of a port in this fixture?",
+            "status": "resolved",
+            "meta": {
+              "answer_shape": "condition",
+              "review_state": "needs-review",
+              "review_reason": "Decision relation changed: port-identity-answer-answers-port-identity",
+              "review_roots": [],
+              "review_note": "Resolved by explicit user decision recorded in port-identity-source; answer port-identity-answer, coverage full, scope this fixture only."
+            },
+            "semantic_version": 2
+          },
+          "after": {
+            "type": "question",
+            "text": "Which fields define the identity of a port in this fixture?",
+            "status": "resolved",
+            "meta": {
+              "answer_shape": "condition",
+              "review_state": "current",
+              "review_reason": "Decision relation changed: port-identity-answer-answers-port-identity",
+              "review_roots": [],
+              "review_note": "Resolved by explicit user decision recorded in port-identity-source; answer port-identity-answer, coverage full, scope this fixture only."
+            },
+            "semantic_version": 2
+          }
+        }
+      ]
+    },
+    {
+      "revision": 6,
+      "at": "2026-09-15T10:44:12.975531+00:00",
+      "actor": "assistant",
+      "reason": "User-authorized: add synthetic observation host-a/8080 owned by service-c, keep earlier observations, rebuild instances under (host, number)",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "port-observation-service-c-source",
+          "before": null,
+          "after": {
+            "type": "source",
+            "status": "recorded",
+            "text": "host-a, port8080, also has the distinct owner service-c.",
+            "meta": {
+              "source_kind": "verbatim",
+              "speaker": "user",
+              "author": "blake.sims27@gmail.com",
+              "captured": "2026-09-15",
+              "synthetic": true,
+              "context": "Design session turn adding a third synthetic owner observation to the complete fixture port-observations. User instruction in the same turn: keep earlier observations, run the same exactly-one check, do not change the rule to make the check pass."
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "port-observations",
+          "before": {
+            "type": "trace",
+            "text": "Synthetic owner observations; complete for the listed subjects.",
+            "status": "recorded",
+            "meta": {
+              "synthetic": true
+            },
+            "trace": {
+              "complete": true,
+              "reports": [
+                {
+                  "subject": {
+                    "host": "host-a",
+                    "number": 8080
+                  },
+                  "target": "service-a"
+                },
+                {
+                  "subject": {
+                    "host": "host-b",
+                    "number": 8080
+                  },
+                  "target": "service-b"
+                }
+              ]
+            }
+          },
+          "after": {
+            "type": "trace",
+            "text": "Synthetic owner observations; complete for the listed subjects. Third report (host-a, 8080 -> service-c) added from port-observation-service-c-source; earlier reports retained.",
+            "status": "recorded",
+            "meta": {
+              "synthetic": true,
+              "review_state": "current",
+              "review_note": "Report 3 appended at user request; reports 1-2 unchanged."
+            },
+            "trace": {
+              "complete": true,
+              "reports": [
+                {
+                  "subject": {
+                    "host": "host-a",
+                    "number": 8080
+                  },
+                  "target": "service-a"
+                },
+                {
+                  "subject": {
+                    "host": "host-b",
+                    "number": 8080
+                  },
+                  "target": "service-b"
+                },
+                {
+                  "subject": {
+                    "host": "host-a",
+                    "number": 8080
+                  },
+                  "target": "service-c",
+                  "source": "port-observation-service-c-source"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "port-instances",
+          "before": {
+            "type": "trace",
+            "text": "Synthetic port instances constructed from port-observations using identity (host, number). Complete for the two listed instances only.",
+            "status": "recorded",
+            "meta": {
+              "synthetic": true,
+              "identity_key": [
+                "host",
+                "number"
+              ],
+              "constructed_from": "port-observations",
+              "scope": "this fixture only"
+            },
+            "trace": {
+              "complete": true,
+              "reports": [
+                {
+                  "subject": {
+                    "host": "host-a",
+                    "number": 8080
+                  },
+                  "instance": "(host-a, 8080)",
+                  "target": "service-a",
+                  "sources": [
+                    "port-observations"
+                  ]
+                },
+                {
+                  "subject": {
+                    "host": "host-b",
+                    "number": 8080
+                  },
+                  "instance": "(host-b, 8080)",
+                  "target": "service-b",
+                  "sources": [
+                    "port-observations"
+                  ]
+                }
+              ]
+            }
+          },
+          "after": {
+            "type": "trace",
+            "text": "Synthetic port instances constructed from port-observations using identity (host, number). Complete for the listed reports only. Instance (host-a, 8080) now carries two owner reports (service-a, service-c); instance (host-b, 8080) carries one.",
+            "status": "recorded",
+            "meta": {
+              "synthetic": true,
+              "identity_key": [
+                "host",
+                "number"
+              ],
+              "constructed_from": "port-observations",
+              "scope": "this fixture only",
+              "review_state": "current",
+              "review_note": "Rebuilt from the three-report trace under the unchanged identity (host, number)."
+            },
+            "trace": {
+              "complete": true,
+              "reports": [
+                {
+                  "instance": "(host-a, 8080)",
+                  "sources": [
+                    "port-observations"
+                  ],
+                  "subject": {
+                    "host": "host-a",
+                    "number": 8080
+                  },
+                  "target": "service-a"
+                },
+                {
+                  "instance": "(host-b, 8080)",
+                  "sources": [
+                    "port-observations"
+                  ],
+                  "subject": {
+                    "host": "host-b",
+                    "number": 8080
+                  },
+                  "target": "service-b"
+                },
+                {
+                  "instance": "(host-a, 8080)",
+                  "sources": [
+                    "port-observations",
+                    "port-observation-service-c-source"
+                  ],
+                  "subject": {
+                    "host": "host-a",
+                    "number": 8080
+                  },
+                  "target": "service-c"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "port-observations-extracted-from-service-c-source",
+          "before": null,
+          "after": {
+            "from": "port-observations",
+            "to": "port-observation-service-c-source",
+            "type": "extracted-from",
+            "note": "Only report 3 derives from this source; reports 1-2 predate it."
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "port-observations",
+          "before": {
+            "type": "trace",
+            "text": "Synthetic owner observations; complete for the listed subjects. Third report (host-a, 8080 -> service-c) added from port-observation-service-c-source; earlier reports retained.",
+            "status": "recorded",
+            "meta": {
+              "synthetic": true,
+              "review_state": "current",
+              "review_note": "Report 3 appended at user request; reports 1-2 unchanged."
+            },
+            "trace": {
+              "complete": true,
+              "reports": [
+                {
+                  "subject": {
+                    "host": "host-a",
+                    "number": 8080
+                  },
+                  "target": "service-a"
+                },
+                {
+                  "subject": {
+                    "host": "host-b",
+                    "number": 8080
+                  },
+                  "target": "service-b"
+                },
+                {
+                  "subject": {
+                    "host": "host-a",
+                    "number": 8080
+                  },
+                  "target": "service-c",
+                  "source": "port-observation-service-c-source"
+                }
+              ]
+            }
+          },
+          "after": {
+            "type": "trace",
+            "text": "Synthetic owner observations; complete for the listed subjects. Third report (host-a, 8080 -> service-c) added from port-observation-service-c-source; earlier reports retained.",
+            "status": "recorded",
+            "meta": {
+              "synthetic": true,
+              "review_state": "current",
+              "review_note": "Report 3 appended at user request; reports 1-2 unchanged."
+            },
+            "trace": {
+              "complete": true,
+              "reports": [
+                {
+                  "subject": {
+                    "host": "host-a",
+                    "number": 8080
+                  },
+                  "target": "service-a"
+                },
+                {
+                  "subject": {
+                    "host": "host-b",
+                    "number": 8080
+                  },
+                  "target": "service-b"
+                },
+                {
+                  "subject": {
+                    "host": "host-a",
+                    "number": 8080
+                  },
+                  "target": "service-c",
+                  "source": "port-observation-service-c-source"
+                }
+              ]
+            },
+            "semantic_version": 2
+          },
+          "automatic": "semantic-version"
+        },
+        {
+          "collection": "nodes",
+          "id": "port-instances",
+          "before": {
+            "type": "trace",
+            "text": "Synthetic port instances constructed from port-observations using identity (host, number). Complete for the listed reports only. Instance (host-a, 8080) now carries two owner reports (service-a, service-c); instance (host-b, 8080) carries one.",
+            "status": "recorded",
+            "meta": {
+              "synthetic": true,
+              "identity_key": [
+                "host",
+                "number"
+              ],
+              "constructed_from": "port-observations",
+              "scope": "this fixture only",
+              "review_state": "current",
+              "review_note": "Rebuilt from the three-report trace under the unchanged identity (host, number)."
+            },
+            "trace": {
+              "complete": true,
+              "reports": [
+                {
+                  "instance": "(host-a, 8080)",
+                  "sources": [
+                    "port-observations"
+                  ],
+                  "subject": {
+                    "host": "host-a",
+                    "number": 8080
+                  },
+                  "target": "service-a"
+                },
+                {
+                  "instance": "(host-b, 8080)",
+                  "sources": [
+                    "port-observations"
+                  ],
+                  "subject": {
+                    "host": "host-b",
+                    "number": 8080
+                  },
+                  "target": "service-b"
+                },
+                {
+                  "instance": "(host-a, 8080)",
+                  "sources": [
+                    "port-observations",
+                    "port-observation-service-c-source"
+                  ],
+                  "subject": {
+                    "host": "host-a",
+                    "number": 8080
+                  },
+                  "target": "service-c"
+                }
+              ]
+            }
+          },
+          "after": {
+            "type": "trace",
+            "text": "Synthetic port instances constructed from port-observations using identity (host, number). Complete for the listed reports only. Instance (host-a, 8080) now carries two owner reports (service-a, service-c); instance (host-b, 8080) carries one.",
+            "status": "recorded",
+            "meta": {
+              "synthetic": true,
+              "identity_key": [
+                "host",
+                "number"
+              ],
+              "constructed_from": "port-observations",
+              "scope": "this fixture only",
+              "review_state": "current",
+              "review_note": "Rebuilt from the three-report trace under the unchanged identity (host, number)."
+            },
+            "trace": {
+              "complete": true,
+              "reports": [
+                {
+                  "instance": "(host-a, 8080)",
+                  "sources": [
+                    "port-observations"
+                  ],
+                  "subject": {
+                    "host": "host-a",
+                    "number": 8080
+                  },
+                  "target": "service-a"
+                },
+                {
+                  "instance": "(host-b, 8080)",
+                  "sources": [
+                    "port-observations"
+                  ],
+                  "subject": {
+                    "host": "host-b",
+                    "number": 8080
+                  },
+                  "target": "service-b"
+                },
+                {
+                  "instance": "(host-a, 8080)",
+                  "sources": [
+                    "port-observations",
+                    "port-observation-service-c-source"
+                  ],
+                  "subject": {
+                    "host": "host-a",
+                    "number": 8080
+                  },
+                  "target": "service-c"
+                }
+              ]
+            },
+            "semantic_version": 2
+          },
+          "automatic": "semantic-version"
+        },
+        {
+          "collection": "edges",
+          "id": "port-instances-depends-on-port-identity-answer",
+          "before": {
+            "type": "depends-on",
+            "from": "port-instances",
+            "to": "port-identity-answer"
+          },
+          "after": {
+            "type": "depends-on",
+            "from": "port-instances",
+            "to": "port-identity-answer",
+            "input_fingerprint": "ada28c20870a387cbd5fc498f815bac42490dbf58bc34812340530a24a00ed71",
+            "input_version": 1
+          },
+          "automatic": "review-receipt"
+        },
+        {
+          "collection": "edges",
+          "id": "port-instances-extracted-from-port-observations",
+          "before": {
+            "type": "extracted-from",
+            "from": "port-instances",
+            "to": "port-observations"
+          },
+          "after": {
+            "type": "extracted-from",
+            "from": "port-instances",
+            "to": "port-observations",
+            "input_fingerprint": "248e476bf9bb3df0729d7e401a04de0288928713ed0d02bd777c74d98f56b60f",
+            "input_version": 2
+          },
+          "automatic": "review-receipt"
+        },
+        {
+          "collection": "nodes",
+          "id": "port-instances",
+          "before": {
+            "type": "trace",
+            "text": "Synthetic port instances constructed from port-observations using identity (host, number). Complete for the listed reports only. Instance (host-a, 8080) now carries two owner reports (service-a, service-c); instance (host-b, 8080) carries one.",
+            "status": "recorded",
+            "meta": {
+              "synthetic": true,
+              "identity_key": [
+                "host",
+                "number"
+              ],
+              "constructed_from": "port-observations",
+              "scope": "this fixture only",
+              "review_state": "current",
+              "review_note": "Rebuilt from the three-report trace under the unchanged identity (host, number)."
+            },
+            "trace": {
+              "complete": true,
+              "reports": [
+                {
+                  "instance": "(host-a, 8080)",
+                  "sources": [
+                    "port-observations"
+                  ],
+                  "subject": {
+                    "host": "host-a",
+                    "number": 8080
+                  },
+                  "target": "service-a"
+                },
+                {
+                  "instance": "(host-b, 8080)",
+                  "sources": [
+                    "port-observations"
+                  ],
+                  "subject": {
+                    "host": "host-b",
+                    "number": 8080
+                  },
+                  "target": "service-b"
+                },
+                {
+                  "instance": "(host-a, 8080)",
+                  "sources": [
+                    "port-observations",
+                    "port-observation-service-c-source"
+                  ],
+                  "subject": {
+                    "host": "host-a",
+                    "number": 8080
+                  },
+                  "target": "service-c"
+                }
+              ]
+            },
+            "semantic_version": 2
+          },
+          "after": {
+            "type": "trace",
+            "text": "Synthetic port instances constructed from port-observations using identity (host, number). Complete for the listed reports only. Instance (host-a, 8080) now carries two owner reports (service-a, service-c); instance (host-b, 8080) carries one.",
+            "status": "recorded",
+            "meta": {
+              "synthetic": true,
+              "identity_key": [
+                "host",
+                "number"
+              ],
+              "constructed_from": "port-observations",
+              "scope": "this fixture only",
+              "review_state": "current",
+              "review_note": "Rebuilt from the three-report trace under the unchanged identity (host, number).",
+              "reviewed_inputs": {
+                "port-identity-answer": "ada28c20870a387cbd5fc498f815bac42490dbf58bc34812340530a24a00ed71",
+                "port-observations": "248e476bf9bb3df0729d7e401a04de0288928713ed0d02bd777c74d98f56b60f"
+              },
+              "reviewed_input_versions": {
+                "port-identity-answer": 1,
+                "port-observations": 2
+              }
+            },
+            "trace": {
+              "complete": true,
+              "reports": [
+                {
+                  "instance": "(host-a, 8080)",
+                  "sources": [
+                    "port-observations"
+                  ],
+                  "subject": {
+                    "host": "host-a",
+                    "number": 8080
+                  },
+                  "target": "service-a"
+                },
+                {
+                  "instance": "(host-b, 8080)",
+                  "sources": [
+                    "port-observations"
+                  ],
+                  "subject": {
+                    "host": "host-b",
+                    "number": 8080
+                  },
+                  "target": "service-b"
+                },
+                {
+                  "instance": "(host-a, 8080)",
+                  "sources": [
+                    "port-observations",
+                    "port-observation-service-c-source"
+                  ],
+                  "subject": {
+                    "host": "host-a",
+                    "number": 8080
+                  },
+                  "target": "service-c"
+                }
+              ]
+            },
+            "semantic_version": 2
+          },
+          "automatic": "review-receipt"
+        },
+        {
+          "collection": "edges",
+          "id": "port-observations-extracted-from-service-c-source",
+          "before": {
+            "from": "port-observations",
+            "to": "port-observation-service-c-source",
+            "type": "extracted-from",
+            "note": "Only report 3 derives from this source; reports 1-2 predate it."
+          },
+          "after": {
+            "from": "port-observations",
+            "to": "port-observation-service-c-source",
+            "type": "extracted-from",
+            "note": "Only report 3 derives from this source; reports 1-2 predate it.",
+            "input_fingerprint": "e04d6a7cc3791a4079e8c8cae941b2dc389f3b8678589b86287573c552c9a046",
+            "input_version": 1
+          },
+          "automatic": "review-receipt"
+        },
+        {
+          "collection": "nodes",
+          "id": "port-observations",
+          "before": {
+            "type": "trace",
+            "text": "Synthetic owner observations; complete for the listed subjects. Third report (host-a, 8080 -> service-c) added from port-observation-service-c-source; earlier reports retained.",
+            "status": "recorded",
+            "meta": {
+              "synthetic": true,
+              "review_state": "current",
+              "review_note": "Report 3 appended at user request; reports 1-2 unchanged."
+            },
+            "trace": {
+              "complete": true,
+              "reports": [
+                {
+                  "subject": {
+                    "host": "host-a",
+                    "number": 8080
+                  },
+                  "target": "service-a"
+                },
+                {
+                  "subject": {
+                    "host": "host-b",
+                    "number": 8080
+                  },
+                  "target": "service-b"
+                },
+                {
+                  "subject": {
+                    "host": "host-a",
+                    "number": 8080
+                  },
+                  "target": "service-c",
+                  "source": "port-observation-service-c-source"
+                }
+              ]
+            },
+            "semantic_version": 2
+          },
+          "after": {
+            "type": "trace",
+            "text": "Synthetic owner observations; complete for the listed subjects. Third report (host-a, 8080 -> service-c) added from port-observation-service-c-source; earlier reports retained.",
+            "status": "recorded",
+            "meta": {
+              "synthetic": true,
+              "review_state": "current",
+              "review_note": "Report 3 appended at user request; reports 1-2 unchanged.",
+              "reviewed_inputs": {
+                "port-observation-service-c-source": "e04d6a7cc3791a4079e8c8cae941b2dc389f3b8678589b86287573c552c9a046"
+              },
+              "reviewed_input_versions": {
+                "port-observation-service-c-source": 1
+              }
+            },
+            "trace": {
+              "complete": true,
+              "reports": [
+                {
+                  "subject": {
+                    "host": "host-a",
+                    "number": 8080
+                  },
+                  "target": "service-a"
+                },
+                {
+                  "subject": {
+                    "host": "host-b",
+                    "number": 8080
+                  },
+                  "target": "service-b"
+                },
+                {
+                  "subject": {
+                    "host": "host-a",
+                    "number": 8080
+                  },
+                  "target": "service-c",
+                  "source": "port-observation-service-c-source"
+                }
+              ]
+            },
+            "semantic_version": 2
+          },
+          "automatic": "review-receipt"
+        }
+      ]
+    },
+    {
+      "revision": 7,
+      "at": "2026-09-15T10:44:32.911652+00:00",
+      "actor": "assistant",
+      "reason": "Store revision-6 check receipt (violates) for port-rule against extended port-instances; retire prior receipt as historical",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "port-rule-check-host-number-r6",
+          "before": null,
+          "after": {
+            "type": "check-result",
+            "status": "recorded",
+            "text": "Bounded cardinality check of port-rule against port-instances (three reports) using identity (host, number): violates. Witness subject (host-a, 8080) has distinct_count 2 (owners service-a and service-c). Subject (host-b, 8080) satisfies with one owner. The checker's witnesses array is empty; the witness is carried in the per-subject entry. Synthetic fixture evidence only; not a proof and not ratification of the pattern. The rule was not changed.",
+            "result": {
+              "assessment": {
+                "empirical_support": false,
+                "evidence_basis": "unspecified",
+                "findings": [],
+                "historical_behavior": "not-established",
+                "polarity": "unspecified",
+                "reachability": {
+                  "outcome": "not-checked",
+                  "reason": "No rewrite reachability engine is implemented. Explaining an observed defect requires implementation rules, not necessarily intended rules."
+                }
+              },
+              "checked_events": [],
+              "checker_version": "exclusive-actor/3",
+              "claim": "port-rule",
+              "claim_standing": "accepted",
+              "computed_revision": 6,
+              "definition_fingerprints": {
+                "edge_types": "a22df93853b9867396ba765187295a504fcbfc6063320274e37f54fa26da39ef",
+                "formal_model": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+              },
+              "diagnostics": [],
+              "fragment_version": "formal-fragment/2",
+              "input_fingerprints": {
+                "port-identity-answer": "5c5cfa34b6933019e52f3d87506a6e68f3fe8c74308dd3e55611528b5cc9f7ae",
+                "port-identity-source": "c87b15e4c5055945fcb52db79c28519337561923114a3d7f926a0c5dfb7d61eb",
+                "port-instances": "36dd294b1fdaa5234d320c6e072c4df9d55de50fa21a4c985791d413a1fafbe9",
+                "port-observation-service-c-source": "0c51d9cad730680283cd26c132cc1fa059ae2d6969457c9731b197512c2101c8",
+                "port-observations": "349e6bea85aa0d4f68ae10e1e442855b7345c68ef32a7e5feb7653dd6777e78a",
+                "port-rule": "d985f7fc11457f19db7250bda7fefb7422bc51465c5ebe72048fa3b761134a85",
+                "port-type": "8f422275e65dca78da0793af0029ab3953c8dfaf3a800c755c930d13b6818a79",
+                "service-type": "7e26d71497350a2962ac22646b3c9666cd67d8f5e14565e1c6270a152562badd"
+              },
+              "out_of_scope_events": [],
+              "outcome": "violates",
+              "pattern_standing": "proposed",
+              "provenance": {
+                "edges": {
+                  "port-identity-answer-extracted-from-source": "18819c1a5817db832f2e2d6dae93625fcc8baaec6f3fdb2ca3dc7f63805e32ac",
+                  "port-instances-depends-on-port-identity-answer": "0fbd2cb3ff2ec6289e2be0b34693ce9dab2035885b90b97c891f10da594210c9",
+                  "port-instances-extracted-from-port-observations": "b34b673f48f780180ead317c2bb68a851e6357ced9f33cce3e2d81ed96aa884e",
+                  "port-observations-extracted-from-service-c-source": "7116de424a25afa9b0232b097f4be78a472140110c87b895358bd437e332e39d",
+                  "port-rule-depends-on-port-identity-answer": "cc78e0560810dcfabee59564e20cc60944e84f79391e1e8c1997533359f45124"
+                },
+                "fingerprints": {
+                  "port-identity-answer": "5c5cfa34b6933019e52f3d87506a6e68f3fe8c74308dd3e55611528b5cc9f7ae",
+                  "port-identity-source": "c87b15e4c5055945fcb52db79c28519337561923114a3d7f926a0c5dfb7d61eb",
+                  "port-instances": "36dd294b1fdaa5234d320c6e072c4df9d55de50fa21a4c985791d413a1fafbe9",
+                  "port-observation-service-c-source": "0c51d9cad730680283cd26c132cc1fa059ae2d6969457c9731b197512c2101c8",
+                  "port-observations": "349e6bea85aa0d4f68ae10e1e442855b7345c68ef32a7e5feb7653dd6777e78a",
+                  "port-rule": "d985f7fc11457f19db7250bda7fefb7422bc51465c5ebe72048fa3b761134a85"
+                },
+                "missing": [],
+                "nodes": [
+                  "port-identity-answer",
+                  "port-identity-source",
+                  "port-instances",
+                  "port-observation-service-c-source",
+                  "port-observations",
+                  "port-rule"
+                ]
+              },
+              "provenance_roots": [
+                "port-rule",
+                "port-instances"
+              ],
+              "scope": "supplied reports and declared completeness only",
+              "subjects": [
+                {
+                  "distinct_count": 2,
+                  "identity": {
+                    "host": "host-a",
+                    "number": 8080
+                  },
+                  "outcome": "violates",
+                  "sources": [
+                    "port-observations",
+                    "port-observations",
+                    "port-observation-service-c-source"
+                  ]
+                },
+                {
+                  "distinct_count": 1,
+                  "identity": {
+                    "host": "host-b",
+                    "number": 8080
+                  },
+                  "outcome": "satisfies",
+                  "sources": [
+                    "port-observations"
+                  ]
+                }
+              ],
+              "synthetic": true,
+              "trace": "port-instances",
+              "witnesses": []
+            },
+            "result_state": "current",
+            "meta": {
+              "synthetic": true,
+              "scope": "this fixture only",
+              "review_state": "current",
+              "review_note": "Supersedes port-rule-check-host-number, which was computed at revision 5 against the two-report trace. Rule and identity unchanged; only the trace grew."
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "port-rule-check-r6-tests-port-rule",
+          "before": null,
+          "after": {
+            "from": "port-rule-check-host-number-r6",
+            "to": "port-rule",
+            "type": "tests"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "port-rule-check-r6-revises-r5",
+          "before": null,
+          "after": {
+            "from": "port-rule-check-host-number-r6",
+            "to": "port-rule-check-host-number",
+            "type": "revises",
+            "note": "Same rule, same identity, trace extended by one report; outcome changed from satisfies to violates."
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "port-rule-check-host-number",
+          "before": {
+            "type": "check-result",
+            "text": "Bounded cardinality check of port-rule against port-instances using identity (host, number): satisfies for both instances, each with one distinct owner. Synthetic fixture evidence only; not a proof of the claim and not ratification of the pattern.",
+            "status": "recorded",
+            "meta": {
+              "synthetic": true,
+              "review_state": "current",
+              "scope": "this fixture only",
+              "review_note": "Under identity (number) alone the same reports would collapse to one subject with two owners; that reading is not the user's decision and was not checked."
+            },
+            "result": {
+              "assessment": {
+                "empirical_support": false,
+                "evidence_basis": "unspecified",
+                "findings": [],
+                "historical_behavior": "not-established",
+                "polarity": "unspecified",
+                "reachability": {
+                  "outcome": "not-checked",
+                  "reason": "No rewrite reachability engine is implemented. Explaining an observed defect requires implementation rules, not necessarily intended rules."
+                }
+              },
+              "checked_events": [],
+              "checker_version": "exclusive-actor/3",
+              "claim": "port-rule",
+              "claim_standing": "accepted",
+              "computed_revision": 1,
+              "definition_fingerprints": {
+                "edge_types": "a22df93853b9867396ba765187295a504fcbfc6063320274e37f54fa26da39ef",
+                "formal_model": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+              },
+              "diagnostics": [],
+              "fragment_version": "formal-fragment/2",
+              "input_fingerprints": {
+                "port-identity-answer": "5c5cfa34b6933019e52f3d87506a6e68f3fe8c74308dd3e55611528b5cc9f7ae",
+                "port-identity-source": "c87b15e4c5055945fcb52db79c28519337561923114a3d7f926a0c5dfb7d61eb",
+                "port-instances": "57db86c7ad54ad4076befb7b7f7b57d399f566306cd8adf50d212488c1e38537",
+                "port-observations": "4bc9e19b16631aa090a2c6216add0dd36ca8c81c6a9c7f63636e8c8bdf6d2789",
+                "port-rule": "d985f7fc11457f19db7250bda7fefb7422bc51465c5ebe72048fa3b761134a85",
+                "port-type": "8f422275e65dca78da0793af0029ab3953c8dfaf3a800c755c930d13b6818a79",
+                "service-type": "7e26d71497350a2962ac22646b3c9666cd67d8f5e14565e1c6270a152562badd"
+              },
+              "out_of_scope_events": [],
+              "outcome": "satisfies",
+              "pattern_standing": "proposed",
+              "provenance": {
+                "edges": {
+                  "port-identity-answer-extracted-from-source": "18819c1a5817db832f2e2d6dae93625fcc8baaec6f3fdb2ca3dc7f63805e32ac",
+                  "port-instances-depends-on-port-identity-answer": "fcb1efa9790989ce39e4cd6f208a53b86379909c01668048f7949568c705befe",
+                  "port-instances-extracted-from-port-observations": "5d10f9de757998c4d34b4dcfaa1bbe706e1a339c0735a1c01fe373901d5b5b68",
+                  "port-rule-depends-on-port-identity-answer": "cc78e0560810dcfabee59564e20cc60944e84f79391e1e8c1997533359f45124"
+                },
+                "fingerprints": {
+                  "port-identity-answer": "5c5cfa34b6933019e52f3d87506a6e68f3fe8c74308dd3e55611528b5cc9f7ae",
+                  "port-identity-source": "c87b15e4c5055945fcb52db79c28519337561923114a3d7f926a0c5dfb7d61eb",
+                  "port-instances": "57db86c7ad54ad4076befb7b7f7b57d399f566306cd8adf50d212488c1e38537",
+                  "port-observations": "4bc9e19b16631aa090a2c6216add0dd36ca8c81c6a9c7f63636e8c8bdf6d2789",
+                  "port-rule": "d985f7fc11457f19db7250bda7fefb7422bc51465c5ebe72048fa3b761134a85"
+                },
+                "missing": [],
+                "nodes": [
+                  "port-identity-answer",
+                  "port-identity-source",
+                  "port-instances",
+                  "port-observations",
+                  "port-rule"
+                ]
+              },
+              "provenance_roots": [
+                "port-rule",
+                "port-instances"
+              ],
+              "scope": "supplied reports and declared completeness only",
+              "subjects": [
+                {
+                  "distinct_count": 1,
+                  "identity": {
+                    "host": "host-a",
+                    "number": 8080
+                  },
+                  "outcome": "satisfies",
+                  "sources": [
+                    "port-observations"
+                  ]
+                },
+                {
+                  "distinct_count": 1,
+                  "identity": {
+                    "host": "host-b",
+                    "number": 8080
+                  },
+                  "outcome": "satisfies",
+                  "sources": [
+                    "port-observations"
+                  ]
+                }
+              ],
+              "synthetic": true,
+              "trace": "port-instances",
+              "witnesses": []
+            }
+          },
+          "after": {
+            "type": "check-result",
+            "text": "Bounded cardinality check of port-rule against port-instances using identity (host, number): satisfies for both instances, each with one distinct owner. Synthetic fixture evidence only; not a proof of the claim and not ratification of the pattern.",
+            "status": "recorded",
+            "meta": {
+              "synthetic": true,
+              "review_state": "historical",
+              "scope": "this fixture only",
+              "review_note": "Computed at revision 5 against the two-report trace. Retained as history; superseded by port-rule-check-host-number-r6 after report 3 was added. Under identity (number) alone the same reports would collapse to one subject with two owners; that reading is not the user's decision and was not checked."
+            },
+            "result": {
+              "assessment": {
+                "empirical_support": false,
+                "evidence_basis": "unspecified",
+                "findings": [],
+                "historical_behavior": "not-established",
+                "polarity": "unspecified",
+                "reachability": {
+                  "outcome": "not-checked",
+                  "reason": "No rewrite reachability engine is implemented. Explaining an observed defect requires implementation rules, not necessarily intended rules."
+                }
+              },
+              "checked_events": [],
+              "checker_version": "exclusive-actor/3",
+              "claim": "port-rule",
+              "claim_standing": "accepted",
+              "computed_revision": 1,
+              "definition_fingerprints": {
+                "edge_types": "a22df93853b9867396ba765187295a504fcbfc6063320274e37f54fa26da39ef",
+                "formal_model": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+              },
+              "diagnostics": [],
+              "fragment_version": "formal-fragment/2",
+              "input_fingerprints": {
+                "port-identity-answer": "5c5cfa34b6933019e52f3d87506a6e68f3fe8c74308dd3e55611528b5cc9f7ae",
+                "port-identity-source": "c87b15e4c5055945fcb52db79c28519337561923114a3d7f926a0c5dfb7d61eb",
+                "port-instances": "57db86c7ad54ad4076befb7b7f7b57d399f566306cd8adf50d212488c1e38537",
+                "port-observations": "4bc9e19b16631aa090a2c6216add0dd36ca8c81c6a9c7f63636e8c8bdf6d2789",
+                "port-rule": "d985f7fc11457f19db7250bda7fefb7422bc51465c5ebe72048fa3b761134a85",
+                "port-type": "8f422275e65dca78da0793af0029ab3953c8dfaf3a800c755c930d13b6818a79",
+                "service-type": "7e26d71497350a2962ac22646b3c9666cd67d8f5e14565e1c6270a152562badd"
+              },
+              "out_of_scope_events": [],
+              "outcome": "satisfies",
+              "pattern_standing": "proposed",
+              "provenance": {
+                "edges": {
+                  "port-identity-answer-extracted-from-source": "18819c1a5817db832f2e2d6dae93625fcc8baaec6f3fdb2ca3dc7f63805e32ac",
+                  "port-instances-depends-on-port-identity-answer": "fcb1efa9790989ce39e4cd6f208a53b86379909c01668048f7949568c705befe",
+                  "port-instances-extracted-from-port-observations": "5d10f9de757998c4d34b4dcfaa1bbe706e1a339c0735a1c01fe373901d5b5b68",
+                  "port-rule-depends-on-port-identity-answer": "cc78e0560810dcfabee59564e20cc60944e84f79391e1e8c1997533359f45124"
+                },
+                "fingerprints": {
+                  "port-identity-answer": "5c5cfa34b6933019e52f3d87506a6e68f3fe8c74308dd3e55611528b5cc9f7ae",
+                  "port-identity-source": "c87b15e4c5055945fcb52db79c28519337561923114a3d7f926a0c5dfb7d61eb",
+                  "port-instances": "57db86c7ad54ad4076befb7b7f7b57d399f566306cd8adf50d212488c1e38537",
+                  "port-observations": "4bc9e19b16631aa090a2c6216add0dd36ca8c81c6a9c7f63636e8c8bdf6d2789",
+                  "port-rule": "d985f7fc11457f19db7250bda7fefb7422bc51465c5ebe72048fa3b761134a85"
+                },
+                "missing": [],
+                "nodes": [
+                  "port-identity-answer",
+                  "port-identity-source",
+                  "port-instances",
+                  "port-observations",
+                  "port-rule"
+                ]
+              },
+              "provenance_roots": [
+                "port-rule",
+                "port-instances"
+              ],
+              "scope": "supplied reports and declared completeness only",
+              "subjects": [
+                {
+                  "distinct_count": 1,
+                  "identity": {
+                    "host": "host-a",
+                    "number": 8080
+                  },
+                  "outcome": "satisfies",
+                  "sources": [
+                    "port-observations"
+                  ]
+                },
+                {
+                  "distinct_count": 1,
+                  "identity": {
+                    "host": "host-b",
+                    "number": 8080
+                  },
+                  "outcome": "satisfies",
+                  "sources": [
+                    "port-observations"
+                  ]
+                }
+              ],
+              "synthetic": true,
+              "trace": "port-instances",
+              "witnesses": []
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

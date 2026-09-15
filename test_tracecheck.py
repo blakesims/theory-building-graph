@@ -132,7 +132,12 @@ class DefinitionAcceptanceTests(unittest.TestCase):
   self.g['nodes']['session-B']={'type':'entity','text':'Session B','meta':{'kind':'agent-session'}}
   for session in ('session-A','session-B'):
    self.choice()['actor']=session;r=self.evaluate();self.assertEqual(r['outcome'],'satisfies')
-   self.assertEqual(self.g['nodes']['c']['pattern']['allowed_role'],'steward-role');self.assertEqual(self.choice()['actor'],session)
+   # The same role policy accepts either session, but witnesses identify the
+   # particular actor when its event-time role changes.
+   self.choice()['actor_role']='orchestrator-role';failed=self.evaluate()
+   self.assertEqual(failed['outcome'],'violates')
+   self.assertEqual(failed['witnesses'][0]['actor'],session)
+   self.choice()['actor_role']='steward-role'
   self.assertEqual(sum(n['type']=='claim' for n in self.g['nodes'].values()),1)
  def test_D08_pattern_evaluation_does_not_ratify_prose(self):
   self.g['nodes']['c']['status']='accepted';self.g['nodes']['c']['meta']={'pattern_standing':'proposed'}
@@ -149,3 +154,61 @@ class DefinitionAcceptanceTests(unittest.TestCase):
  def test_review_receipts_do_not_invalidate(self):
   r=self.evaluate();self.g['nodes']['c']['meta']={'review_state':'needs-review','reviewed_inputs':{'x':'abc'},'reviewed_input_versions':{'x':2},'review_roots':['x'],'sources':['a display citation']};self.g['nodes']['c']['semantic_version']=10
   self.assertEqual(checker.result_state(self.g,r),'current')
+
+class ReviewRegressionTests(unittest.TestCase):
+ setUp=TraceChecks.setUp
+ evaluate=TraceChecks.evaluate
+ choice=TraceChecks.choice
+ def modern(self):
+  self.g['nodes']['c']['pattern']={'kind':'authority','modality':'only','role':'steward-role','operation':'choose-work','scope':'after_attempt_ended'}
+ def save_memory(self,result):
+  self.g['nodes']['receipt']={'type':'check-result','text':'Bounded receipt','result':result}
+ def test_P11_witness_only_event_role_revision_stales_modern_check(self):
+  self.modern();self.choice()['actor_role']='orchestrator-role';r=self.evaluate()
+  self.assertEqual(r['outcome'],'violates');self.assertIn('orchestrator-role',r['input_fingerprints']);self.assertEqual(checker.result_state(self.g,r),'current')
+  self.g['nodes']['orchestrator-role']['text']='Changed role meaning'
+  self.assertEqual(checker.result_state(self.g,r),'stale')
+ def test_P11_role_lists_and_event_operations_are_bound(self):
+  self.modern();self.choice().pop('actor_role');self.choice()['actor_roles']=['orchestrator-role'];r=self.evaluate()
+  self.assertEqual(r['outcome'],'violates');self.assertIn('orchestrator-role',r['input_fingerprints']);self.assertIn('end-attempt',r['input_fingerprints'])
+  self.g['nodes']['end-attempt']['text']='New terminal semantics';self.assertEqual(checker.result_state(self.g,r),'stale')
+ def test_P11_missing_event_role_definition_becoming_known_stales(self):
+  self.modern();self.choice()['actor_role']='new-role';r=self.evaluate();self.assertIsNone(r['input_fingerprints']['new-role'])
+  self.g['nodes']['new-role']={'type':'entity','text':'New role','meta':{'kind':'agent-role'}};self.assertEqual(checker.result_state(self.g,r),'stale')
+ def test_P20_receipt_counts_without_topic_edge(self):
+  self.save_memory(self.evaluate());r=checker.coverage(self.g,'c')
+  self.assertTrue(r['has_coverage']);self.assertEqual(r['state'],'evaluated');self.assertEqual(r['current_evaluations'][0]['id'],'receipt');self.assertTrue(r['current_evaluations'][0]['synthetic'])
+ def test_P20_stale_receipt_no_longer_current_coverage(self):
+  self.save_memory(self.evaluate());self.g['nodes']['c']['text']+=' revised';r=checker.coverage(self.g,'c')
+  self.assertFalse(r['has_coverage']);self.assertEqual(len(r['stale_evaluations']),1)
+ def test_P20_about_trace_does_not_mean_tested(self):
+  self.g['edges']['topic']={'from':'c','to':'t','type':'about'}
+  self.assertFalse(checker.coverage(self.g,'c')['has_coverage'])
+ def test_P20_explicit_evidence_link_is_declared_not_evaluated(self):
+  for relation,src,dst in [('tests','t','c'),('supports','t','c'),('tested-by','c','t')]:
+   self.g['edges']={'e':{'from':src,'to':dst,'type':relation}};r=checker.coverage(self.g,'c')
+   self.assertTrue(r['has_coverage']);self.assertEqual(r['state'],'declared-evidence');self.assertEqual(r['current_evaluations'],[]);self.assertEqual(r['declared_evidence'][0]['evaluation'],'not-implied')
+ def test_P20_unsupported_check_receipt_is_not_test_coverage(self):
+  self.g['nodes']['c'].pop('pattern');self.save_memory(self.evaluate());r=checker.coverage(self.g,'c')
+  self.assertFalse(r['has_coverage']);self.assertEqual(len(r['unchecked_evaluations']),1)
+
+class VacuityRegressionTests(unittest.TestCase):
+ setUp=TraceChecks.setUp
+ evaluate=TraceChecks.evaluate
+ def modern(self,modality='only'):
+  self.g['nodes']['c']['pattern']={'kind':'authority','modality':modality,'role':'steward-role','operation':'choose-work','scope':'all'}
+ def test_P9_modern_empty_is_explicitly_vacuous_not_defect_evidence(self):
+  self.modern();self.g['nodes']['t']['trace']['events']=[];self.g['nodes']['t']['polarity']='defect';r=self.evaluate()
+  self.assertEqual(r['outcome'],'satisfies');self.assertTrue(r['vacuous']);self.assertEqual(r['checked_events'],[]);self.assertFalse(r['empirical_support'])
+  self.assertIn('no-matching-event',[d['code'] for d in r['diagnostics']]);self.assertEqual(r['assessment']['findings'],[])
+  rendered=graph.compact(r);self.assertIn('checked events: []',rendered);self.assertIn('vacuous',rendered);self.assertIn('no-matching-event',rendered)
+ def test_P9_may_is_not_empirical_permission_evidence(self):
+  self.modern('may');self.g['nodes']['t']['polarity']='defect';r=self.evaluate()
+  self.assertEqual(r['outcome'],'satisfies');self.assertTrue(r['permission_only']);self.assertFalse(r['empirical_support']);self.assertEqual(r['assessment']['findings'],[])
+  self.assertIn('permission-only',[d['code'] for d in r['diagnostics']])
+ def test_P9_nonempty_defect_fragment_still_reports_unexplained(self):
+  self.modern();self.g['nodes']['t']['polarity']='defect';r=self.evaluate()
+  self.assertEqual(r['outcome'],'satisfies');self.assertFalse(r['vacuous']);self.assertEqual(r['assessment']['findings'][0]['code'],'known-defect-unexplained')
+  rendered=graph.compact(r);self.assertIn('known-defect-unexplained',rendered);self.assertIn('not-checked',rendered)
+ def test_P9_legacy_stays_nonvacuous(self):
+  self.g['nodes']['t']['trace']['events']=[];self.assertEqual(self.evaluate()['outcome'],'insufficient-information')

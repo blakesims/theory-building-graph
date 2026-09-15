@@ -1,0 +1,93 @@
+{
+  "id": "operation-modality",
+  "cases": [
+    "D04",
+    "D06",
+    "A07"
+  ],
+  "status": "completed",
+  "model": "claude-fable-5-1",
+  "participant_session": "ccfcce5a-7490-4617-af30-46e0222b84cf",
+  "grader": "Codex /root/formal_checks; independent of participant outputs, contributor to formal checker implementation",
+  "input_sha256": "7ce40f2f647afb2f97ea726e7a21612d99c420d3e8ed90b1c656d78cf6cdb68d",
+  "input_file_sha256": "7ce40f2f647afb2f97ea726e7a21612d99c420d3e8ed90b1c656d78cf6cdb68d",
+  "raw_receipt_sha256": "fe7b6b73a63928407362190b159399cd543a60c5286344c44b097737de0689a8",
+  "rubric_sha256": "fce324f627ebc199c1a9a34c15805f1795e5a7f5c0824b17cdc4d1bc748d9b76",
+  "user_turn": "The steward chooses what the next work should be. After I have chosen, the orchestrator can insert the record for that already chosen work. Also, the orchestrator may ask me before stopping. Please capture that, without broadening it.",
+  "grades": [
+    {
+      "id": "choose-insert",
+      "score": 1,
+      "excerpt": "[\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"source-4\",\n    \"value\": {\n      \"type\": \"source\",\n      \"text\": \"The steward chooses what the next work should be. After I have chosen, the orchestrator can insert the record for that already chosen work. Also, the orchestrator may ask me before stopping. Please capture that, without broadening it.\",\n      \"status\": \"recorded\",\n      \"meta\": {\n        \"source_kind\": \"verbatim\",\n        \"speaker\": \"user (Blake)\",\n        \"date\": \"2026-09-15\",\n        \"note\": \"First-person 'I'/'me' refers to the user as speaker; not resolved to a graph role.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"orchestrator-inserts-chosen-record\",\n    \"value\": {\n      \"type\": \"claim\",\n      \"text\": \"After the next work has been chosen (speaker: \\\"after I have chosen\\\"), the orchestrator can insert the record for that already chosen work.\",\n      \"status\": \"proposed\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"modality\": \"permission (\\\"can\\\")\",\n        \"condition\": \"Only after the choice has been made, and only for the work already chosen.\",\n        \"scope_note\": \"Recording a chosen work item is distinct from choosing it; this claim does not grant the orchestrator any choice of next work.\",\n        \"open_ambiguity\": \"Whether the speaker's 'I' is the steward role, the operator, or a distinct identity is unresolved.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"orchestrator-may-ask-before-stopping\",\n    \"value\": {\n      \"type\": \"claim\",\n      \"text\": \"The orchestrator may ask the speaker (\\\"me\\\") before stopping.\",\n      \"status\": \"proposed\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"modality\": \"permission (\\\"may\\\"), not a requirement\",\n        \"open_ambiguity\": \"Referent of 'me' (operator, steward, or the user as a distinct identity) and whether 'stopping' means ending a failed attempt specifically are unresolved.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-orchestrator-inserts-chosen-record-0\",\n    \"value\": {\n      \"from\": \"orchestrator-inserts-chosen-record\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-5\",\n    \"value\": {\n      \"from\": \"orchestrator-inserts-chosen-record\",\n      \"type\": \"about\",\n      \"to\": \"orchestrator-role\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-6\",\n    \"value\": {\n      \"from\": \"orchestrator-inserts-chosen-record\",\n      \"type\": \"governs\",\n      \"to\": \"create-record\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-orchestrator-may-ask-before-stopping-0\",\n    \"value\": {\n      \"from\": \"orchestrator-may-ask-before-stopping\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-7\",\n    \"value\": {\n      \"from\": \"orchestrator-may-ask-before-stopping\",\n      \"type\": \"about\",\n      \"to\": \"orchestrator-role\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-8\",\n    \"value\": {\n      \"from\": \"orchestrator-may-ask-before-stopping\",\n      \"type\": \"governs\",\n      \"to\": \"end-attempt\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"answer-consultation-0\",\n    \"value\": {\n      \"from\": \"orchestrator-may-ask-before-stopping\",\n      \"type\": \"answers\",\n      \"to\": \"consultation\",\n      \"coverage\": \"unknown\",\n      \"note\": \"Establishes permission to ask, not an obligation, and says nothing about a threshold. Whether it bears on the question depends on whether 'me' is the operator. Question remains open.\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-steward-next-work-1\",\n    \"value\": {\n      \"from\": \"steward-next-work\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\",\n      \"note\": \"Source states steward chooses next work without the after-a-failed-attempt condition; claim scope left unchanged pending user confirmation.\"\n    }\n  }\n]",
+      "excerpt_location": "proposal.proposed_operations",
+      "explanation": "Preserves choice versus mechanical insertion distinction, anchors insertion to create-record, and explicitly denies independent orchestrator next-work choice."
+    },
+    {
+      "id": "may-not-must",
+      "score": 1,
+      "excerpt": "[\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"source-4\",\n    \"value\": {\n      \"type\": \"source\",\n      \"text\": \"The steward chooses what the next work should be. After I have chosen, the orchestrator can insert the record for that already chosen work. Also, the orchestrator may ask me before stopping. Please capture that, without broadening it.\",\n      \"status\": \"recorded\",\n      \"meta\": {\n        \"source_kind\": \"verbatim\",\n        \"speaker\": \"user (Blake)\",\n        \"date\": \"2026-09-15\",\n        \"note\": \"First-person 'I'/'me' refers to the user as speaker; not resolved to a graph role.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"orchestrator-inserts-chosen-record\",\n    \"value\": {\n      \"type\": \"claim\",\n      \"text\": \"After the next work has been chosen (speaker: \\\"after I have chosen\\\"), the orchestrator can insert the record for that already chosen work.\",\n      \"status\": \"proposed\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"modality\": \"permission (\\\"can\\\")\",\n        \"condition\": \"Only after the choice has been made, and only for the work already chosen.\",\n        \"scope_note\": \"Recording a chosen work item is distinct from choosing it; this claim does not grant the orchestrator any choice of next work.\",\n        \"open_ambiguity\": \"Whether the speaker's 'I' is the steward role, the operator, or a distinct identity is unresolved.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"orchestrator-may-ask-before-stopping\",\n    \"value\": {\n      \"type\": \"claim\",\n      \"text\": \"The orchestrator may ask the speaker (\\\"me\\\") before stopping.\",\n      \"status\": \"proposed\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"modality\": \"permission (\\\"may\\\"), not a requirement\",\n        \"open_ambiguity\": \"Referent of 'me' (operator, steward, or the user as a distinct identity) and whether 'stopping' means ending a failed attempt specifically are unresolved.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-orchestrator-inserts-chosen-record-0\",\n    \"value\": {\n      \"from\": \"orchestrator-inserts-chosen-record\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-5\",\n    \"value\": {\n      \"from\": \"orchestrator-inserts-chosen-record\",\n      \"type\": \"about\",\n      \"to\": \"orchestrator-role\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-6\",\n    \"value\": {\n      \"from\": \"orchestrator-inserts-chosen-record\",\n      \"type\": \"governs\",\n      \"to\": \"create-record\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-orchestrator-may-ask-before-stopping-0\",\n    \"value\": {\n      \"from\": \"orchestrator-may-ask-before-stopping\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-7\",\n    \"value\": {\n      \"from\": \"orchestrator-may-ask-before-stopping\",\n      \"type\": \"about\",\n      \"to\": \"orchestrator-role\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-8\",\n    \"value\": {\n      \"from\": \"orchestrator-may-ask-before-stopping\",\n      \"type\": \"governs\",\n      \"to\": \"end-attempt\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"answer-consultation-0\",\n    \"value\": {\n      \"from\": \"orchestrator-may-ask-before-stopping\",\n      \"type\": \"answers\",\n      \"to\": \"consultation\",\n      \"coverage\": \"unknown\",\n      \"note\": \"Establishes permission to ask, not an obligation, and says nothing about a threshold. Whether it bears on the question depends on whether 'me' is the operator. Question remains open.\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-steward-next-work-1\",\n    \"value\": {\n      \"from\": \"steward-next-work\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\",\n      \"note\": \"Source states steward chooses next work without the after-a-failed-attempt condition; claim scope left unchanged pending user confirmation.\"\n    }\n  }\n]",
+      "excerpt_location": "proposal.proposed_operations",
+      "explanation": "May ask remains permission, not requirement; proposed standing and unknown answer coverage leave consultation open."
+    },
+    {
+      "id": "scope-preserved",
+      "score": 1,
+      "excerpt": "[\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"source-4\",\n    \"value\": {\n      \"type\": \"source\",\n      \"text\": \"The steward chooses what the next work should be. After I have chosen, the orchestrator can insert the record for that already chosen work. Also, the orchestrator may ask me before stopping. Please capture that, without broadening it.\",\n      \"status\": \"recorded\",\n      \"meta\": {\n        \"source_kind\": \"verbatim\",\n        \"speaker\": \"user (Blake)\",\n        \"date\": \"2026-09-15\",\n        \"note\": \"First-person 'I'/'me' refers to the user as speaker; not resolved to a graph role.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"orchestrator-inserts-chosen-record\",\n    \"value\": {\n      \"type\": \"claim\",\n      \"text\": \"After the next work has been chosen (speaker: \\\"after I have chosen\\\"), the orchestrator can insert the record for that already chosen work.\",\n      \"status\": \"proposed\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"modality\": \"permission (\\\"can\\\")\",\n        \"condition\": \"Only after the choice has been made, and only for the work already chosen.\",\n        \"scope_note\": \"Recording a chosen work item is distinct from choosing it; this claim does not grant the orchestrator any choice of next work.\",\n        \"open_ambiguity\": \"Whether the speaker's 'I' is the steward role, the operator, or a distinct identity is unresolved.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"orchestrator-may-ask-before-stopping\",\n    \"value\": {\n      \"type\": \"claim\",\n      \"text\": \"The orchestrator may ask the speaker (\\\"me\\\") before stopping.\",\n      \"status\": \"proposed\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"modality\": \"permission (\\\"may\\\"), not a requirement\",\n        \"open_ambiguity\": \"Referent of 'me' (operator, steward, or the user as a distinct identity) and whether 'stopping' means ending a failed attempt specifically are unresolved.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-orchestrator-inserts-chosen-record-0\",\n    \"value\": {\n      \"from\": \"orchestrator-inserts-chosen-record\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-5\",\n    \"value\": {\n      \"from\": \"orchestrator-inserts-chosen-record\",\n      \"type\": \"about\",\n      \"to\": \"orchestrator-role\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-6\",\n    \"value\": {\n      \"from\": \"orchestrator-inserts-chosen-record\",\n      \"type\": \"governs\",\n      \"to\": \"create-record\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-orchestrator-may-ask-before-stopping-0\",\n    \"value\": {\n      \"from\": \"orchestrator-may-ask-before-stopping\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-7\",\n    \"value\": {\n      \"from\": \"orchestrator-may-ask-before-stopping\",\n      \"type\": \"about\",\n      \"to\": \"orchestrator-role\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-8\",\n    \"value\": {\n      \"from\": \"orchestrator-may-ask-before-stopping\",\n      \"type\": \"governs\",\n      \"to\": \"end-attempt\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"answer-consultation-0\",\n    \"value\": {\n      \"from\": \"orchestrator-may-ask-before-stopping\",\n      \"type\": \"answers\",\n      \"to\": \"consultation\",\n      \"coverage\": \"unknown\",\n      \"note\": \"Establishes permission to ask, not an obligation, and says nothing about a threshold. Whether it bears on the question depends on whether 'me' is the operator. Question remains open.\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-steward-next-work-1\",\n    \"value\": {\n      \"from\": \"steward-next-work\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\",\n      \"note\": \"Source states steward chooses next work without the after-a-failed-attempt condition; claim scope left unchanged pending user confirmation.\"\n    }\n  }\n]",
+      "excerpt_location": "proposal.proposed_operations",
+      "explanation": "Retains exact after I have chosen and me in verbatim source, cites the original phrase inside the proposed claim, marks unresolved graph referent, and asks clarification before acceptance. No automatic I-to-steward substitution."
+    }
+  ],
+  "score": 3,
+  "possible": 3,
+  "hard_failures": [],
+  "observations": [],
+  "mechanical_apply": {
+    "status": "valid-applied-proposal",
+    "command": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Users/blake/projects/theory-building-graph/graph.py",
+      "--file",
+      "/var/folders/xs/yfkt8l5n4wj3hq3_xrm7n6480000gn/T/theory-author-ey6bi21g/graph.json",
+      "apply",
+      "-",
+      "--actor",
+      "blind-participant",
+      "--reason",
+      "Synthetic authorized proposal validation",
+      "--expect",
+      "0",
+      "--json"
+    ],
+    "stdout": "{\"changes\":17,\"revision\":1}\n",
+    "stderr": "",
+    "unchanged": null,
+    "proposed_operation_count": 11,
+    "changed_nodes": [
+      "consultation",
+      "orchestrator-inserts-chosen-record",
+      "orchestrator-may-ask-before-stopping",
+      "source-4",
+      "steward-next-work"
+    ],
+    "deleted_nodes": [],
+    "original_steward_rule_preserved": true
+  },
+  "passed": true,
+  "metrics": {
+    "input_tokens": 9133,
+    "input_token_breakdown": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 5912,
+      "cache_read_input_tokens": 3219
+    },
+    "output_tokens": 5581,
+    "elapsed_seconds": 67.594,
+    "input_bytes": 15702,
+    "retrieval_calls": 0,
+    "authoring_seconds": null,
+    "review_seconds": null
+  },
+  "scope": "Judged isolated no-tool Fable proposals followed by separate real CLI application to temporary graphs. Not a tool-driven multi-turn interview, interactive retrieval, generalized correctness claim, or proof of graph benefit.",
+  "contract_version": "authoring/2",
+  "previous_trial": "../author-trials/graded-operation-modality.json"
+}

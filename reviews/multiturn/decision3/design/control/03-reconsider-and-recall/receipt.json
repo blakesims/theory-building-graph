@@ -1,0 +1,153 @@
+{
+  "stage": "03-reconsider-and-recall",
+  "cases": [
+    "S01"
+  ],
+  "command": [
+    "claude",
+    "-p",
+    "--safe-mode",
+    "--tools",
+    "Bash,Read",
+    "--allowedTools",
+    "Bash,Read",
+    "--no-session-persistence",
+    "--verbose",
+    "--output-format",
+    "stream-json"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 48.636,
+  "timed_out": false,
+  "stderr": "",
+  "result": {
+    "duration_api_ms": 46500,
+    "stop_reason": "end_turn",
+    "session_id": "b48eaf58-e53d-458e-8ded-65e7cffdf0eb",
+    "total_cost_usd": 0.47627924999999993,
+    "usage": {
+      "input_tokens": 130,
+      "cache_creation_input_tokens": 13745,
+      "cache_read_input_tokens": 57949,
+      "output_tokens": 3617,
+      "output_tokens_details": {
+        "thinking_tokens": 709
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 13745,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "not_available",
+      "iterations": [
+        {
+          "input_tokens": 32,
+          "output_tokens": 597,
+          "cache_read_input_tokens": 16070,
+          "cache_creation_input_tokens": 2883,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2883
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard"
+    },
+    "modelUsage": {
+      "claude-haiku-4-5-20251001": {
+        "inputTokens": 4657,
+        "outputTokens": 17,
+        "cacheReadInputTokens": 0,
+        "cacheCreationInputTokens": 0,
+        "webSearchRequests": 0,
+        "costUSD": 0.004742,
+        "contextWindow": 200000,
+        "maxOutputTokens": 32000,
+        "thinkingTokens": 0,
+        "canonicalModel": "claude-haiku-4-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      },
+      "claude-fable-5-1": {
+        "inputTokens": 130,
+        "outputTokens": 3617,
+        "cacheReadInputTokens": 57949,
+        "cacheCreationInputTokens": 13745,
+        "webSearchRequests": 0,
+        "costUSD": 0.47153725,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 64000,
+        "thinkingTokens": 709,
+        "canonicalModel": "claude-fable-5-1",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "is_error": false,
+    "num_turns": 5,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "**The earlier exception and its reason.** The accepted claim `replacement-exception` says the orchestrator may choose replacement work with explicit operator approval, without going through the steward. Its recorded rationale is to avoid an unnecessary relay when the orchestrator already holds the failure context. That comes from the synthetic prior decision source `initial-decision`, which also grounds the general rule that the steward chooses subsequent work.\n\n**Alternative captured, not decided.** The graph is now at revision 2 with 16 changes. The check shows only the same pre-existing informational findings, none caused by this write.\n\n- `steward-always-chooses-alt-source`: synthetic session-paraphrase source, speaker attributed as user, labelled as an alternative and not a decision.\n- `steward-always-chooses-question`: open verdict question asking whether the orchestrator should always end failed work and let the steward choose next. Its metadata lists the atomic archive-and-add hypothesis and the exception as the competing alternatives, and restates the exception's rationale so the trade-off is visible in one place.\n- `steward-always-chooses-hypothesis`: proposed claim stating the alternative. Its answers edge to the new question has coverage unknown, so the question stays open.\n- Anchor edges from both to the choose-work operation, orchestrator role, and steward role, plus extracted-from edges to the source.\n\n**Kept unchanged.** Both `replacement-exception` and `steward-next-work` remain accepted and current, verified after the write. No revises or potential-conflict edge was added, since either would mark the exception as needing review before you have decided. The three options now sit side by side: the current exception, the atomic replacement hypothesis, and this steward-always-chooses alternative. When you pick one, the relation between the chosen option and the exception should be recorded then.",
+    "ttft_ms": 4790,
+    "type": "result",
+    "duration_ms": 47928,
+    "uuid": "a0ff2b93-3c5b-4d29-a46e-f13a631f23aa",
+    "ttft_stream_ms": 1953,
+    "time_to_request_ms": 567,
+    "first_content_frame_ms": 2271,
+    "queued_turn_count": 0,
+    "result_index": 0
+  },
+  "tool_call_count": 4,
+  "tool_ids": [
+    "toolu_012NWw5gkYNpg5LUygCNmA53",
+    "toolu_01GEym7sFiJ85mUKiuXqaKEs",
+    "toolu_01Nsw5rGbonLsXDBjLeRwLFi",
+    "toolu_01XQ9HfCuj5i3Fot1XdoKp72"
+  ],
+  "prompt_sha256": "d0fce6070d5ac351da61ba12f3b14558c98358a7c0db1bc6c1c4942f0ff1c16b",
+  "before_sha256": "af23d567c845d2debefaea26b52af184da764bf750f2560a274158a363db623e",
+  "after_sha256": "ce97106866c88fdcee3ec4410122b2b4e2e47059f612c6ead85b96eef46f0720",
+  "stdout_sha256": "99ba5437b0fab5bee275c16cf4cd4585e12f28f3fdcc5c265ceef7a10e9aaf89",
+  "data_changed": true,
+  "semantic_grade": "not-graded",
+  "budget": {
+    "tool_limit": 12,
+    "seconds_limit": 180,
+    "calls_exceeded": false,
+    "time_exceeded": false
+  }
+}

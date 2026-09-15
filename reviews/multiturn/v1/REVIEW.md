@@ -1,0 +1,9 @@
+# First actual staged interview: failures preserved
+
+Both sequences completed in fresh Fable 5.1 processes with actual Read/Bash tools, a persistent workspace and only past transcript supplied. The final correct graph does not erase earlier mistakes.
+
+**Design: five of seven stage criteria pass.** Stage1 took a preliminary contract read, did not display the exact next CLI command before executing it, and inferred absent links from an incomplete review view. Stage2 preserved accepted standing but changed the expressly-current exception to needs-review and then said it remained current. Stages3–7 correctly preserve the undecided alternative, retire it only after explicit instruction, distinguish may from must, and treat postmortem summaries as limited proposed interpretations. Stage7 initially attempted an unsupported question answer shape, then repaired it and disclosed the error. All broad time/tool budgets pass.
+
+**Ports: three of three semantic stages pass, but protocol and provenance fail.** Identity is asked before chosen; host-number identity then yields satisfies for separate hosts; a third owner on the same host-number yields violates without changing the rule. Stage2 uses13 calls against the12-call budget. New source records add an unsupported author identifier, and an old check annotation misstates the computed revision. Source quote wording itself is preserved. Final results do not license treating those provenance fields as trustworthy.
+
+Every original prompt, tool stream, stage receipt and before/after graph is bound by hashes in the per-trial graded receipt. The normalized rubric preserves original stage wording and adds separately identified generic protocol/source checks. No participant artifacts have been repaired. The acceptance gate must reject both receipts. Pacing measured here is command observability, not browser rendering or a human satisfaction study. Human correction effort was not measured.

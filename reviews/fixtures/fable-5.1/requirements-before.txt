@@ -1,0 +1,32 @@
+FF.F
+======================================================================
+FAIL: test_N3_question_requirement_typos_and_legacy_reject_atomically (test_fable_dependency_regressions.FableDependencyRegressions.test_N3_question_requirement_typos_and_legacy_reject_atomically) (required='answerd')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/blake/projects/theory-building-graph/test_fable_dependency_regressions.py", line 19, in test_N3_question_requirement_typos_and_legacy_reject_atomically
+    with self.assertRaisesRegex(graph.GraphError,'B-depends-on-Q.*question resolution'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: GraphError not raised
+
+======================================================================
+FAIL: test_N3_question_requirement_typos_and_legacy_reject_atomically (test_fable_dependency_regressions.FableDependencyRegressions.test_N3_question_requirement_typos_and_legacy_reject_atomically) (required='accepted')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/blake/projects/theory-building-graph/test_fable_dependency_regressions.py", line 19, in test_N3_question_requirement_typos_and_legacy_reject_atomically
+    with self.assertRaisesRegex(graph.GraphError,'B-depends-on-Q.*question resolution'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: GraphError not raised
+
+======================================================================
+FAIL: test_N3_declared_custom_status_vocabulary_respected (test_fable_dependency_regressions.FableDependencyRegressions.test_N3_declared_custom_status_vocabulary_respected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/blake/projects/theory-building-graph/test_fable_dependency_regressions.py", line 35, in test_N3_declared_custom_status_vocabulary_respected
+    with self.assertRaisesRegex(graph.GraphError,'milestone.*verified'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: GraphError not raised
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.004s
+
+FAILED (failures=3)

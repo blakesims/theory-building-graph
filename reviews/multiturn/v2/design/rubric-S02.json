@@ -1,0 +1,23 @@
+{
+  "criteria": [
+    {
+      "id": "05-reviewer-challenge",
+      "criterion": "Actual retrieval around end-attempt precedes assessment. May is not treated as must; potential tension/scope question is appropriate. Focused optional-versus-mandatory consultation question asked, unresolved; steward agreement unchanged.",
+      "cases": [
+        "S02"
+      ]
+    },
+    {
+      "id": "protocol-budget",
+      "criterion": "General staged protocol: at most12 tool invocations and180seconds per turn.",
+      "cases": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S08"
+      ]
+    }
+  ],
+  "scope": "All parent criteria for S02, not a full trial pass."
+}

@@ -1,0 +1,209 @@
+{
+  "cases": {
+    "D01": {
+      "tests": [
+        "test_agent_receipts.IndependentAgentReceipts.test_identity"
+      ],
+      "coverage": "full",
+      "evidence_kind": "agent-receipt",
+      "receipts": [
+        "reviews/author-trials-v3/graded-identity.json"
+      ],
+      "notes": "Independent Fable proposal interpretation, separate semantic grading and actual temporary CLI apply/read replay; bounded test, not universal agent reliability."
+    },
+    "D02": {
+      "tests": [
+        "test_agent_receipts.IndependentAgentReceipts.test_identity"
+      ],
+      "coverage": "full",
+      "evidence_kind": "agent-receipt",
+      "receipts": [
+        "reviews/author-trials-v3/graded-identity.json"
+      ],
+      "notes": "Independent Fable proposal interpretation, separate semantic grading and actual temporary CLI apply/read replay; bounded test, not universal agent reliability."
+    },
+    "D04": {
+      "tests": [
+        "test_agent_receipts.IndependentAgentReceipts.test_operation_modality"
+      ],
+      "coverage": "full",
+      "evidence_kind": "agent-receipt",
+      "receipts": [
+        "reviews/author-trials-v3/graded-operation-modality.json"
+      ],
+      "notes": "Independent Fable proposal interpretation, separate semantic grading and actual temporary CLI apply/read replay; bounded test, not universal agent reliability."
+    },
+    "D06": {
+      "tests": [
+        "test_agent_receipts.IndependentAgentReceipts.test_operation_modality"
+      ],
+      "coverage": "full",
+      "evidence_kind": "agent-receipt",
+      "receipts": [
+        "reviews/author-trials-v3/graded-operation-modality.json"
+      ],
+      "notes": "Independent Fable proposal interpretation, separate semantic grading and actual temporary CLI apply/read replay; bounded test, not universal agent reliability."
+    },
+    "D07": {
+      "tests": [
+        "test_agent_receipts.IndependentAgentReceipts.test_question_shapes"
+      ],
+      "coverage": "full",
+      "evidence_kind": "agent-receipt",
+      "receipts": [
+        "reviews/author-trials-v3/graded-question-shapes.json"
+      ],
+      "notes": "Independent Fable proposal interpretation, separate semantic grading and actual temporary CLI apply/read replay; bounded test, not universal agent reliability."
+    },
+    "D08": {
+      "tests": [
+        "test_agent_receipts.IndependentAgentReceipts.test_pattern_fidelity"
+      ],
+      "coverage": "full",
+      "evidence_kind": "agent-receipt",
+      "receipts": [
+        "reviews/author-trials-v5/graded-pattern-fidelity.json"
+      ],
+      "notes": "Independent Fable proposal interpretation, separate semantic grading and actual temporary CLI apply/read replay; bounded test, not universal agent reliability."
+    },
+    "A07": {
+      "tests": [
+        "test_agent_receipts.IndependentAgentReceipts.test_operation_modality"
+      ],
+      "coverage": "full",
+      "evidence_kind": "agent-receipt",
+      "receipts": [
+        "reviews/author-trials-v3/graded-operation-modality.json"
+      ],
+      "notes": "Independent Fable proposal interpretation, separate semantic grading and actual temporary CLI apply/read replay; bounded test, not universal agent reliability."
+    },
+    "A15": {
+      "tests": [
+        "test_agent_receipts.IndependentAgentReceipts.test_pattern_fidelity"
+      ],
+      "coverage": "full",
+      "evidence_kind": "agent-receipt",
+      "receipts": [
+        "reviews/author-trials-v5/graded-pattern-fidelity.json"
+      ],
+      "notes": "Independent Fable proposal interpretation, separate semantic grading and actual temporary CLI apply/read replay; bounded test, not universal agent reliability."
+    },
+    "C05": {
+      "tests": [
+        "test_agent_receipts.IndependentAgentReceipts.test_defined_port"
+      ],
+      "coverage": "full",
+      "evidence_kind": "agent-receipt",
+      "receipts": [
+        "reviews/author-trials-v3/graded-defined-port.json"
+      ],
+      "notes": "Independent Fable proposal interpretation, separate semantic grading and actual temporary CLI apply/read replay; bounded test, not universal agent reliability."
+    },
+    "C06": {
+      "tests": [
+        "test_agent_receipts.IndependentAgentReceipts.test_unknown_port"
+      ],
+      "coverage": "full",
+      "evidence_kind": "agent-receipt",
+      "receipts": [
+        "reviews/author-trials-v3/graded-unknown-port.json"
+      ],
+      "notes": "Independent Fable proposal interpretation, separate semantic grading and actual temporary CLI apply/read replay; bounded test, not universal agent reliability."
+    },
+    "R08": {
+      "tests": [
+        "test_agent_receipts.IndependentAgentReceipts.test_untrusted_source"
+      ],
+      "coverage": "full",
+      "evidence_kind": "agent-receipt",
+      "receipts": [
+        "reviews/author-trials-v3/graded-untrusted-source.json"
+      ],
+      "notes": "Independent Fable proposal interpretation, separate semantic grading and actual temporary CLI apply/read replay; bounded test, not universal agent reliability."
+    },
+    "S08": {
+      "tests": [
+        "test_agent_receipts.IndependentAgentReceipts.test_slow_next_step"
+      ],
+      "coverage": "full",
+      "evidence_kind": "agent-receipt",
+      "receipts": [
+        "reviews/author-trials-v4/graded-slow-next-step.json"
+      ],
+      "notes": "Independent Fable proposal interpretation, separate semantic grading and actual temporary CLI apply/read replay; bounded test, not universal agent reliability."
+    },
+    "S01": {
+      "tests": [
+        "test_agent_receipts.IndependentAgentReceipts.test_cold_start_recovery"
+      ],
+      "coverage": "partial",
+      "evidence_kind": "agent-receipt",
+      "receipts": [
+        "reviews/blind-trials/graded-graph-1.json",
+        "reviews/blind-trials/graded-graph-2.json"
+      ],
+      "notes": "Independent recovery of current/history/uncertainty/source limits supplements per-stage mechanical replays; this does not claim tool retrieval was exercised by the injected packet. Sequential interactive stages require a separate sustained trial; packet recovery alone is partial."
+    },
+    "S02": {
+      "tests": [
+        "test_agent_receipts.IndependentAgentReceipts.test_cold_start_recovery"
+      ],
+      "coverage": "partial",
+      "evidence_kind": "agent-receipt",
+      "receipts": [
+        "reviews/blind-trials/graded-graph-1.json",
+        "reviews/blind-trials/graded-graph-2.json"
+      ],
+      "notes": "Independent recovery of current/history/uncertainty/source limits supplements per-stage mechanical replays; this does not claim tool retrieval was exercised by the injected packet. Sequential interactive stages require a separate sustained trial; packet recovery alone is partial."
+    },
+    "S03": {
+      "tests": [
+        "test_agent_receipts.IndependentAgentReceipts.test_cold_start_recovery"
+      ],
+      "coverage": "partial",
+      "evidence_kind": "agent-receipt",
+      "receipts": [
+        "reviews/blind-trials/graded-graph-1.json",
+        "reviews/blind-trials/graded-graph-2.json"
+      ],
+      "notes": "Independent recovery of current/history/uncertainty/source limits supplements per-stage mechanical replays; this does not claim tool retrieval was exercised by the injected packet. Sequential interactive stages require a separate sustained trial; packet recovery alone is partial."
+    },
+    "S04": {
+      "tests": [
+        "test_agent_receipts.IndependentAgentReceipts.test_cold_start_recovery"
+      ],
+      "coverage": "partial",
+      "evidence_kind": "agent-receipt",
+      "receipts": [
+        "reviews/blind-trials/graded-graph-1.json",
+        "reviews/blind-trials/graded-graph-2.json"
+      ],
+      "notes": "Independent recovery of current/history/uncertainty/source limits supplements per-stage mechanical replays; this does not claim tool retrieval was exercised by the injected packet. Sequential interactive stages require a separate sustained trial; packet recovery alone is partial."
+    },
+    "S06": {
+      "tests": [
+        "test_agent_receipts.IndependentAgentReceipts.test_cold_start_recovery"
+      ],
+      "coverage": "full",
+      "evidence_kind": "agent-receipt",
+      "receipts": [
+        "reviews/blind-trials/bound-graph-1.json",
+        "reviews/blind-trials/bound-graph-2.json"
+      ],
+      "notes": "Independent recovery of current/history/uncertainty/source limits supplements per-stage mechanical replays; this does not claim tool retrieval was exercised by the injected packet."
+    },
+    "S05": {
+      "tests": [
+        "test_agent_receipts.IndependentAgentReceipts.test_defined_port",
+        "test_agent_receipts.IndependentAgentReceipts.test_unknown_port"
+      ],
+      "coverage": "partial",
+      "evidence_kind": "agent-receipt",
+      "receipts": [
+        "reviews/author-trials-v3/graded-defined-port.json",
+        "reviews/author-trials-v3/graded-unknown-port.json"
+      ],
+      "notes": "Independent interpretation before and after explicit identity definition, plus separate exact cardinality/checker and mutation sequence tests. Sequential interactive stages require a separate sustained trial; packet recovery alone is partial."
+    }
+  }
+}

@@ -1,0 +1,154 @@
+{
+  "stage": "02-atomic-proposal",
+  "cases": [
+    "S01"
+  ],
+  "command": [
+    "claude",
+    "-p",
+    "--safe-mode",
+    "--tools",
+    "Bash,Read",
+    "--allowedTools",
+    "Bash,Read",
+    "--no-session-persistence",
+    "--verbose",
+    "--output-format",
+    "stream-json"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 54.376,
+  "timed_out": false,
+  "stderr": "",
+  "result": {
+    "duration_api_ms": 52266,
+    "stop_reason": "end_turn",
+    "session_id": "2d84b7b5-a83f-40ac-bb61-ccf74f054227",
+    "total_cost_usd": 0.45984975,
+    "usage": {
+      "input_tokens": 162,
+      "cache_creation_input_tokens": 11993,
+      "cache_read_input_tokens": 69543,
+      "output_tokens": 3933,
+      "output_tokens_details": {
+        "thinking_tokens": 1127
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 11993,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "not_available",
+      "iterations": [
+        {
+          "input_tokens": 32,
+          "output_tokens": 487,
+          "cache_read_input_tokens": 15847,
+          "cache_creation_input_tokens": 1354,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1354
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard"
+    },
+    "modelUsage": {
+      "claude-haiku-4-5-20251001": {
+        "inputTokens": 4239,
+        "outputTokens": 19,
+        "cacheReadInputTokens": 0,
+        "cacheCreationInputTokens": 0,
+        "webSearchRequests": 0,
+        "costUSD": 0.004333999999999999,
+        "contextWindow": 200000,
+        "maxOutputTokens": 32000,
+        "thinkingTokens": 0,
+        "canonicalModel": "claude-haiku-4-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      },
+      "claude-fable-5-1": {
+        "inputTokens": 162,
+        "outputTokens": 3933,
+        "cacheReadInputTokens": 69543,
+        "cacheCreationInputTokens": 11993,
+        "webSearchRequests": 0,
+        "costUSD": 0.45551575,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 64000,
+        "thinkingTokens": 1127,
+        "canonicalModel": "claude-fable-5-1",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "is_error": false,
+    "num_turns": 6,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "Captured as a hypothesis for discussion, not a decision. Graph is now at revision 1 with 16 changes, and the check shows only pre-existing informational findings, none from this write.\n\n**What was added**\n\n- `atomic-replacement-hypothesis-source`: a synthetic session-paraphrase source, speaker attributed as user, marked as a hypothesis rather than a decision.\n- `atomic-replacement-question`: open question, answer shape verdict, asking whether replacement could be an atomic archive-and-add performed by the orchestrator without waking the steward until completion. It points to the existing open replacement-question as related, and to the two accepted policy claims by reference only.\n- `atomic-replacement-hypothesis`: proposed claim stating the hypothesis, marked as an unaffirmed candidate answer. Its answers edge to the question carries coverage unknown, so the question stays open.\n- Anchor edges from both the question and the claim to the choose-work operation, the orchestrator role, and the steward role, plus extracted-from edges to the source.\n\n**What was deliberately not done**\n\n- No potential-conflict or revises edge was added. That keeps `steward-next-work` and `replacement-exception` accepted and current, which I verified after the write.\n- Nothing was accepted, retired, or reworded. The existing open question about how replacement moves between roles is untouched.\n\nWhen you reach a verdict on the hypothesis, the relation to the operator-approved exception should be reconsidered at that point.",
+    "ttft_ms": 6117,
+    "type": "result",
+    "duration_ms": 53543,
+    "uuid": "e355e4d2-30de-4aa5-a2e5-244c63aad7a4",
+    "ttft_stream_ms": 1914,
+    "time_to_request_ms": 298,
+    "first_content_frame_ms": 2288,
+    "queued_turn_count": 0,
+    "result_index": 0
+  },
+  "tool_call_count": 5,
+  "tool_ids": [
+    "toolu_012eNKVW44dhaeb3H41jrob6",
+    "toolu_016DvjJbwg9XgjgNpEKpC1Y8",
+    "toolu_01HysPi8tsk4iyx1aCXgGu5C",
+    "toolu_01K84rv8r1t7AHAeSn7r8MYn",
+    "toolu_01PJWRJShNMZ9W5ngbWuRTsS"
+  ],
+  "prompt_sha256": "0d4bb22edf51e96f7c7c1cf641692fa9425b096a37f5c8b17b38e3503403d32e",
+  "before_sha256": "c7f9bd55b098da6e591819c05c3d6ad7d2c2bce34f6fd33abe57e4535286cc2c",
+  "after_sha256": "af23d567c845d2debefaea26b52af184da764bf750f2560a274158a363db623e",
+  "stdout_sha256": "43dac084b4c2bf1f170a269375b62dea630e8fd17dc0aecaf8f89216b5c3a48b",
+  "data_changed": true,
+  "semantic_grade": "not-graded",
+  "budget": {
+    "tool_limit": 12,
+    "seconds_limit": 180,
+    "calls_exceeded": false,
+    "time_exceeded": false
+  }
+}

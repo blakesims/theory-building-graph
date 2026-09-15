@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "cases": ["S07"],
+  "basis": "The six core semantic checks were recorded in each raw control/*-graded.json semantic_review.must_check before independent grading. This binding gives those pre-existing checks stable arm-qualified IDs. Observability differences and missing human-time measurements are reported separately, not silently converted into successes.",
+  "required_grades": [
+    "graph/scope-retained",
+    "graph/permission-owner",
+    "graph/default-steward",
+    "graph/source-faithful-present",
+    "graph/superseded-history-context",
+    "graph/no-invented-policy-or-proof",
+    "prose/scope-retained",
+    "prose/permission-owner",
+    "prose/default-steward",
+    "prose/source-faithful-present",
+    "prose/superseded-history-context",
+    "prose/no-invented-policy-or-proof"
+  ],
+  "structural_checks": [
+    "Both arms received identical source facts and explicit dependencies, with equal task/tool budgets.",
+    "Participants actually read and edited isolated stores; no evaluator applied their proposed writes later.",
+    "All actual raw, input, after-store, original-grade and comparison artifacts are hash-bound.",
+    "Measured calls, tokens, walltime and diff bytes match raw receipts.",
+    "Original negative or ambiguous observations and unmeasured human costs remain explicit."
+  ],
+  "not_required_for_success": [
+    "Graph superiority",
+    "Equal formatting choices across arms",
+    "Invented human review or correction duration",
+    "Generalization from one synthetic pair"
+  ],
+  "limits": "One pair; whole-pass agent walltime only. Independent grader is not representation-blinded and belongs to the tool-building team. Raw prose labels remain ambiguous and were not repaired."
+}

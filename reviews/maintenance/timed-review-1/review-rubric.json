@@ -1,0 +1,25 @@
+{
+  "criteria": [
+    {
+      "id": "scope",
+      "criterion": "Recover steward default and role-scoped approved-plan failed-attempt exception, not general orchestrator permission."
+    },
+    {
+      "id": "dependencies",
+      "criterion": "Identify all and only four declared dependents C02-C05 needing review, not rejection."
+    },
+    {
+      "id": "history",
+      "criterion": "Locate prior absolute rule and rationale in preserved history with source references."
+    },
+    {
+      "id": "unknowns",
+      "criterion": "Keep Q01 consultation and Q02 cancellation unresolved."
+    },
+    {
+      "id": "changes",
+      "criterion": "Identify changed C01 and preserved unrelated claims without inventing replacement policy."
+    }
+  ],
+  "note": "Independent core semantic review criteria derived from same supplied maintenance task; additional reviewer suggestions assessed separately, not counted as correct by default."
+}

@@ -1,0 +1,95 @@
+{
+  "id": "question-shapes",
+  "cases": [
+    "D07"
+  ],
+  "status": "completed",
+  "model": "claude-fable-5-1",
+  "participant_session": "24315fde-c916-4be2-8cf6-6633bb8bafce",
+  "grader": "Codex /root/formal_checks; independent of participant outputs, contributor to formal checker implementation",
+  "input_sha256": "aba8783f77682cf450d21a02f63558f930f2dc98e0b44946442bf708808ce8a9",
+  "input_file_sha256": "aba8783f77682cf450d21a02f63558f930f2dc98e0b44946442bf708808ce8a9",
+  "raw_receipt_sha256": "3b43b2da163f19657d819e4367306011142bfa0365864c216c09da34ea67adc3",
+  "rubric_sha256": "20d5a27d8897ea4d77e08c2b27dc3201e3ee895216a3b959e2a120140702c855",
+  "user_turn": "We have three different uncertainties: Is steward the sole next-work chooser? Under what conditions should orchestrator ask me? And what important cases are missing from our theory? Please record these as open questions.",
+  "grades": [
+    {
+      "id": "three-shapes",
+      "score": 1,
+      "excerpt": "[\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"source-4\",\n    \"value\": {\n      \"type\": \"source\",\n      \"text\": \"We have three different uncertainties: Is steward the sole next-work chooser? Under what conditions should orchestrator ask me? And what important cases are missing from our theory? Please record these as open questions.\",\n      \"status\": \"recorded\",\n      \"meta\": {\n        \"source_kind\": \"verbatim\",\n        \"speaker\": \"user (Blake)\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"q-sole-chooser\",\n    \"value\": {\n      \"type\": \"question\",\n      \"text\": \"Is steward the sole chooser of next work, in all circumstances and not only after a failed attempt?\",\n      \"status\": \"open\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"answer_shape\": \"verdict\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"rationale\": \"The accepted claim steward-next-work covers the failed-attempt case only; the user asks about sole ownership generally, so that claim is at most a partial answer.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"q-ask-conditions\",\n    \"value\": {\n      \"type\": \"question\",\n      \"text\": \"Under what conditions should the orchestrator ask the user (Blake) before acting?\",\n      \"status\": \"open\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"answer_shape\": \"condition\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"rationale\": \"User wording is 'ask me'. Not resolved to the 'operator' named in the existing consultation question because the graph does not establish that identity. The existing consultation question is narrower (consult before ending degraded work) and is left as a separate node.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"q-missing-cases\",\n    \"value\": {\n      \"type\": \"question\",\n      \"text\": \"What important cases are missing from the theory?\",\n      \"status\": \"open\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"answer_shape\": \"exploration\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"completion_criteria\": \"unspecified\",\n        \"rationale\": \"Exploration task; needs explicit completion criteria and accepted coverage before it can be considered resolved. Not to be reduced to a yes/no claim.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-q-sole-chooser-0\",\n    \"value\": {\n      \"from\": \"q-sole-chooser\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-q-ask-conditions-0\",\n    \"value\": {\n      \"from\": \"q-ask-conditions\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-q-missing-cases-0\",\n    \"value\": {\n      \"from\": \"q-missing-cases\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-q-sole-chooser-about\",\n    \"value\": {\n      \"from\": \"q-sole-chooser\",\n      \"type\": \"about\",\n      \"to\": \"steward-role\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-q-sole-chooser-governs\",\n    \"value\": {\n      \"from\": \"q-sole-chooser\",\n      \"type\": \"governs\",\n      \"to\": \"choose-next-work\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-q-ask-conditions-about\",\n    \"value\": {\n      \"from\": \"q-ask-conditions\",\n      \"type\": \"about\",\n      \"to\": \"orchestrator-role\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"answer-q-sole-chooser-0\",\n    \"value\": {\n      \"from\": \"steward-next-work\",\n      \"type\": \"answers\",\n      \"to\": \"q-sole-chooser\",\n      \"coverage\": \"partial\",\n      \"note\": \"Covers only the failed-attempt case; the question asks about sole ownership in general.\"\n    }\n  }\n]",
+      "excerpt_location": "proposal.proposed_operations",
+      "explanation": "All three typed answer shapes are now encoded explicitly in meta.answer_shape: verdict, condition, exploration. Exploration completion criteria remain unspecified rather than invented."
+    },
+    {
+      "id": "open-not-resolved",
+      "score": 1,
+      "excerpt": "[\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"source-4\",\n    \"value\": {\n      \"type\": \"source\",\n      \"text\": \"We have three different uncertainties: Is steward the sole next-work chooser? Under what conditions should orchestrator ask me? And what important cases are missing from our theory? Please record these as open questions.\",\n      \"status\": \"recorded\",\n      \"meta\": {\n        \"source_kind\": \"verbatim\",\n        \"speaker\": \"user (Blake)\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"q-sole-chooser\",\n    \"value\": {\n      \"type\": \"question\",\n      \"text\": \"Is steward the sole chooser of next work, in all circumstances and not only after a failed attempt?\",\n      \"status\": \"open\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"answer_shape\": \"verdict\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"rationale\": \"The accepted claim steward-next-work covers the failed-attempt case only; the user asks about sole ownership generally, so that claim is at most a partial answer.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"q-ask-conditions\",\n    \"value\": {\n      \"type\": \"question\",\n      \"text\": \"Under what conditions should the orchestrator ask the user (Blake) before acting?\",\n      \"status\": \"open\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"answer_shape\": \"condition\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"rationale\": \"User wording is 'ask me'. Not resolved to the 'operator' named in the existing consultation question because the graph does not establish that identity. The existing consultation question is narrower (consult before ending degraded work) and is left as a separate node.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"q-missing-cases\",\n    \"value\": {\n      \"type\": \"question\",\n      \"text\": \"What important cases are missing from the theory?\",\n      \"status\": \"open\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"answer_shape\": \"exploration\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"completion_criteria\": \"unspecified\",\n        \"rationale\": \"Exploration task; needs explicit completion criteria and accepted coverage before it can be considered resolved. Not to be reduced to a yes/no claim.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-q-sole-chooser-0\",\n    \"value\": {\n      \"from\": \"q-sole-chooser\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-q-ask-conditions-0\",\n    \"value\": {\n      \"from\": \"q-ask-conditions\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-q-missing-cases-0\",\n    \"value\": {\n      \"from\": \"q-missing-cases\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-q-sole-chooser-about\",\n    \"value\": {\n      \"from\": \"q-sole-chooser\",\n      \"type\": \"about\",\n      \"to\": \"steward-role\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-q-sole-chooser-governs\",\n    \"value\": {\n      \"from\": \"q-sole-chooser\",\n      \"type\": \"governs\",\n      \"to\": \"choose-next-work\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-q-ask-conditions-about\",\n    \"value\": {\n      \"from\": \"q-ask-conditions\",\n      \"type\": \"about\",\n      \"to\": \"orchestrator-role\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"answer-q-sole-chooser-0\",\n    \"value\": {\n      \"from\": \"steward-next-work\",\n      \"type\": \"answers\",\n      \"to\": \"q-sole-chooser\",\n      \"coverage\": \"partial\",\n      \"note\": \"Covers only the failed-attempt case; the question asks about sole ownership in general.\"\n    }\n  }\n]",
+      "excerpt_location": "proposal.proposed_operations",
+      "explanation": "All new questions stay open. Existing narrow accepted claim is linked only with partial coverage; condition and missing cases remain unresolved."
+    },
+    {
+      "id": "anchor-each",
+      "score": 0,
+      "excerpt": "[\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"source-4\",\n    \"value\": {\n      \"type\": \"source\",\n      \"text\": \"We have three different uncertainties: Is steward the sole next-work chooser? Under what conditions should orchestrator ask me? And what important cases are missing from our theory? Please record these as open questions.\",\n      \"status\": \"recorded\",\n      \"meta\": {\n        \"source_kind\": \"verbatim\",\n        \"speaker\": \"user (Blake)\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"q-sole-chooser\",\n    \"value\": {\n      \"type\": \"question\",\n      \"text\": \"Is steward the sole chooser of next work, in all circumstances and not only after a failed attempt?\",\n      \"status\": \"open\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"answer_shape\": \"verdict\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"rationale\": \"The accepted claim steward-next-work covers the failed-attempt case only; the user asks about sole ownership generally, so that claim is at most a partial answer.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"q-ask-conditions\",\n    \"value\": {\n      \"type\": \"question\",\n      \"text\": \"Under what conditions should the orchestrator ask the user (Blake) before acting?\",\n      \"status\": \"open\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"answer_shape\": \"condition\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"rationale\": \"User wording is 'ask me'. Not resolved to the 'operator' named in the existing consultation question because the graph does not establish that identity. The existing consultation question is narrower (consult before ending degraded work) and is left as a separate node.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"q-missing-cases\",\n    \"value\": {\n      \"type\": \"question\",\n      \"text\": \"What important cases are missing from the theory?\",\n      \"status\": \"open\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"answer_shape\": \"exploration\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"completion_criteria\": \"unspecified\",\n        \"rationale\": \"Exploration task; needs explicit completion criteria and accepted coverage before it can be considered resolved. Not to be reduced to a yes/no claim.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-q-sole-chooser-0\",\n    \"value\": {\n      \"from\": \"q-sole-chooser\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-q-ask-conditions-0\",\n    \"value\": {\n      \"from\": \"q-ask-conditions\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-q-missing-cases-0\",\n    \"value\": {\n      \"from\": \"q-missing-cases\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-q-sole-chooser-about\",\n    \"value\": {\n      \"from\": \"q-sole-chooser\",\n      \"type\": \"about\",\n      \"to\": \"steward-role\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-q-sole-chooser-governs\",\n    \"value\": {\n      \"from\": \"q-sole-chooser\",\n      \"type\": \"governs\",\n      \"to\": \"choose-next-work\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-q-ask-conditions-about\",\n    \"value\": {\n      \"from\": \"q-ask-conditions\",\n      \"type\": \"about\",\n      \"to\": \"orchestrator-role\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"answer-q-sole-chooser-0\",\n    \"value\": {\n      \"from\": \"steward-next-work\",\n      \"type\": \"answers\",\n      \"to\": \"q-sole-chooser\",\n      \"coverage\": \"partial\",\n      \"note\": \"Covers only the failed-attempt case; the question asks about sole ownership in general.\"\n    }\n  }\n]",
+      "excerpt_location": "proposal.proposed_operations",
+      "explanation": "The first two questions have existing object/operation anchors. q-missing-cases still has only extracted-from source-4; there is no about/governs object anchor and no question asking what theory/object scope should anchor it. This is the same anchor-each gap recorded in v1, so it cannot pass unchanged."
+    }
+  ],
+  "score": 2,
+  "possible": 3,
+  "hard_failures": [],
+  "observations": [
+    {
+      "code": "remaining-anchor-gap",
+      "detail": "Exploratory completion criteria are not the same as a subject anchor. Ask which theory scope/object it concerns or create an explicitly user-grounded theory entity, rather than silently choosing an arbitrary actor."
+    }
+  ],
+  "mechanical_apply": {
+    "status": "valid-applied-proposal",
+    "command": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Users/blake/projects/theory-building-graph/graph.py",
+      "--file",
+      "/var/folders/xs/yfkt8l5n4wj3hq3_xrm7n6480000gn/T/theory-author-2ckjnnr8/graph.json",
+      "apply",
+      "-",
+      "--actor",
+      "blind-participant",
+      "--reason",
+      "Synthetic authorized proposal validation",
+      "--expect",
+      "0",
+      "--json"
+    ],
+    "stdout": "{\"changes\":17,\"revision\":1}\n",
+    "stderr": "",
+    "unchanged": null,
+    "proposed_operation_count": 11,
+    "changed_nodes": [
+      "q-ask-conditions",
+      "q-missing-cases",
+      "q-sole-chooser",
+      "source-4"
+    ],
+    "deleted_nodes": [],
+    "original_steward_rule_preserved": true
+  },
+  "passed": false,
+  "metrics": {
+    "input_tokens": 9127,
+    "input_token_breakdown": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 5906,
+      "cache_read_input_tokens": 3219
+    },
+    "output_tokens": 2941,
+    "elapsed_seconds": 35.744,
+    "input_bytes": 15688,
+    "retrieval_calls": 0,
+    "authoring_seconds": null,
+    "review_seconds": null
+  },
+  "scope": "Judged isolated no-tool Fable proposals followed by separate real CLI application to temporary graphs. Not a tool-driven multi-turn interview, interactive retrieval, generalized correctness claim, or proof of graph benefit.",
+  "contract_version": "authoring/2",
+  "previous_trial": "../author-trials/graded-question-shapes.json"
+}

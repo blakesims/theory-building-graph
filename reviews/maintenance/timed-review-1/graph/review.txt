@@ -1,0 +1,68 @@
+```json
+{
+  "current_rule": {
+    "who": "Steward, by default, after any ended attempt (C01, after).",
+    "exception": "A recovery coordinator may choose replacement work only when ALL hold: (1) the attempt failed, (2) the work is within an already approved performance-investigation plan, (3) the chooser acts in the recovery coordinator role. The exception is role-scoped and 'does not grant a general orchestrator bypass'.",
+    "source": "C01 (semantic_version 2, source_ref S04); edge C01-about-recovery-role"
+  },
+  "changed_claim_ids": ["C01"],
+  "added_ids": ["S04", "C01-superseded-r0", "C01-revises-C01-superseded-r0", "C01-about-recovery-role"],
+  "dependent_review_ids": {
+    "flagged_needs_review_not_rejected": ["C02", "C03", "C04", "C05"],
+    "status_unchanged": "all four remain status=accepted; text and rationale unchanged, only review_state/review_reason/review_roots added",
+    "tension_notes": {
+      "C02": "Direct dependent of C01. 'belongs to the steward' after a failed attempt now has a carve-out; review needed.",
+      "C03": "Transitive via C02. Text about orchestrator-only bypass is consistent with S04's 'no general orchestrator bypass'; likely survives, but rationale 'preserving one owner' no longer fully holds.",
+      "C04": "Transitive via C02. Exhausted-retry handoff may or may not fall inside the exception; ambiguous, not contradicted.",
+      "C05": "Transitive via C03/C04. 'needs a plan selected by the steward' is the claim most likely in definite tension with the exception when the failed investigation is inside an approved performance-investigation plan."
+    },
+    "correctly_not_flagged": ["C06", "C07", "C08", "C09", "C10", "C11-C30 (no declared depends-on edges)"]
+  },
+  "preserved_history": [
+    {"location": "graph.json nodes.C01-superseded-r0.text", "quote": "Only the steward chooses subsequent work after any ended attempt."},
+    {"location": "graph.json nodes.C01-superseded-r0.meta.rationale", "quote": "The single-owner rule avoids ambiguous responsibility for choosing the next attempt."},
+    {"location": "graph.json nodes.C01.meta.superseded_text / superseded_rationale / superseded_source_ref", "quote": "superseded_source_ref: S01"},
+    {"location": "graph.json nodes.C01.meta.rationale", "quote": "Superseded rationale (S01): the single-owner rule avoids ambiguous responsibility..."},
+    {"location": "graph.json nodes.S01 and sources.md ## S01 (unchanged)", "quote": "Reason: one owner is easier to understand and holds responsibility across records."},
+    {"location": "graph.json nodes.S02 and sources.md ## S02 (unchanged)", "quote": "withdrawn in favor of the single-owner steward rule"},
+    {"location": "graph.json changes[0].edits (C01 before snapshot)", "quote": "before.text: Only the steward chooses subsequent work after any ended attempt."}
+  ],
+  "still_open_questions": [
+    {"id": "Q01", "status": "open", "wording": "Must the orchestrator ask the operator before stopping a degraded attempt?"},
+    {"id": "Q02", "status": "open", "wording": "Which arbitrary cancellation outcomes should wake the steward?"}
+  ],
+  "discrepancies": [
+    {
+      "kind": "ambiguity",
+      "where": "C03, C04, C05 meta.review_reason",
+      "detail": "Says 'Declared semantic prerequisite changed: C01', but their declared prerequisites are C02 (C03, C04) and C03/C04 (C05). C01 is only the root. review_roots=[C01] is fine; the reason text misstates the direct edge."
+    },
+    {
+      "kind": "ambiguity",
+      "where": "S04 meta.supersedes = S01",
+      "detail": "S04 narrows S01 rather than replacing it, and S01 is still the live source_ref for accepted C02, C04, C05. 'supersedes' may be read as retiring S01 wholesale."
+    },
+    {
+      "kind": "ambiguity",
+      "where": "C01-superseded-r0 meta.superseded_by = S04",
+      "detail": "Points to a source, not the successor claim. The revises edge does link C01 to the archive, so lineage is recoverable, but the field is inconsistent with archived_from=C01."
+    },
+    {
+      "kind": "minor",
+      "where": "changes[0].edits",
+      "detail": "C01 appears twice (manual edit, then automatic semantic-version bump). Not wrong, but the log shows two C01 edits for one revision."
+    },
+    {
+      "kind": "verified_ok",
+      "where": "User instructions",
+      "detail": "No dependent text was rewritten or rejected; no answer to Q01/Q02 was added; sources.md S04 matches graph S04 verbatim; revision counter incremented to 1."
+    }
+  ],
+  "suggested_corrections": [
+    "C03/C04/C05 review_reason: change to 'Transitive prerequisite changed: C01 (via C02 / via C03,C04)' or keep review_roots only.",
+    "S04 meta: rename 'supersedes' to 'revises' or 'narrows', or add a note that S01 remains cited by C02/C04/C05.",
+    "C01-superseded-r0 meta: set superseded_by to 'C01' (keep S04 under a separate field such as superseded_per_source).",
+    "No corrections needed to C01 text, archived history, Q01/Q02, or the unflagged claims."
+  ]
+}
+```

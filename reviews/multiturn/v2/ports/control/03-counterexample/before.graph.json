@@ -1,0 +1,857 @@
+{
+  "version": 1,
+  "revision": 2,
+  "node_types": {
+    "entity": {},
+    "operation": {},
+    "claim": {},
+    "question": {},
+    "source": {},
+    "extraction": {},
+    "trace": {},
+    "check-result": {}
+  },
+  "edge_types": {
+    "about": {},
+    "governs": {},
+    "answers": {},
+    "depends-on": {},
+    "extracted-from": {},
+    "revises": {},
+    "potential-conflict": {},
+    "supports": {},
+    "tests": {},
+    "owned-by": {}
+  },
+  "nodes": {
+    "steward-role": {
+      "type": "entity",
+      "text": "Steward role",
+      "status": "declared",
+      "meta": {
+        "kind": "agent-role",
+        "aliases": [
+          "steward"
+        ]
+      }
+    },
+    "orchestrator-role": {
+      "type": "entity",
+      "text": "Orchestrator role",
+      "status": "declared",
+      "meta": {
+        "kind": "agent-role",
+        "aliases": [
+          "orchestrator"
+        ]
+      }
+    },
+    "operator-role": {
+      "type": "entity",
+      "text": "Operator role",
+      "status": "declared",
+      "meta": {
+        "kind": "agent-role",
+        "aliases": [
+          "operator"
+        ]
+      }
+    },
+    "choose-work": {
+      "type": "operation",
+      "text": "Select subsequent work for an intention.",
+      "status": "declared"
+    },
+    "end-attempt": {
+      "type": "operation",
+      "text": "End the current work attempt.",
+      "status": "declared"
+    },
+    "create-record": {
+      "type": "operation",
+      "text": "Mechanically insert a work record.",
+      "status": "declared"
+    },
+    "port-type": {
+      "type": "entity",
+      "text": "Port. In this fixture, identity is the ordered pair (host, number), per port-identity-answer.",
+      "status": "declared",
+      "meta": {
+        "identity_key": [
+          "host",
+          "number"
+        ],
+        "identity_scope": "this fixture only",
+        "review_state": "needs-review",
+        "review_reason": "Semantic content or currency changed.",
+        "review_roots": [
+          "port-identity",
+          "port-identity-answer",
+          "port-rule",
+          "port-type"
+        ]
+      },
+      "semantic_version": 2
+    },
+    "service-type": {
+      "type": "entity",
+      "text": "Service owner identity.",
+      "status": "declared"
+    },
+    "port-rule": {
+      "type": "claim",
+      "text": "Each port has exactly one owner. In this fixture, port identity is the ordered pair (host, number), per port-identity-answer.",
+      "status": "accepted",
+      "meta": {
+        "review_state": "current",
+        "pattern_standing": "proposed",
+        "pattern_note": "identity_key filled from the user's explicit fixture definition (src-port-identity-user-answer); the machine pattern itself is still unratified."
+      },
+      "pattern": {
+        "kind": "cardinality",
+        "max": 1,
+        "min": 1,
+        "scope": "all",
+        "slot": {
+          "count": "distinct",
+          "direction": "out",
+          "relation": "owned-by",
+          "subject_type": "port-type",
+          "target_type": "service-type",
+          "identity_key": [
+            "host",
+            "number"
+          ]
+        }
+      },
+      "semantic_version": 2
+    },
+    "port-observations": {
+      "type": "trace",
+      "text": "Synthetic owner observations; complete for the listed subjects.",
+      "status": "recorded",
+      "meta": {
+        "synthetic": true
+      },
+      "trace": {
+        "complete": true,
+        "reports": [
+          {
+            "subject": {
+              "host": "host-a",
+              "number": 8080
+            },
+            "target": "service-a"
+          },
+          {
+            "subject": {
+              "host": "host-b",
+              "number": 8080
+            },
+            "target": "service-b"
+          }
+        ]
+      }
+    },
+    "port-identity": {
+      "type": "question",
+      "text": "Which fields define the identity of a port in this fixture?",
+      "status": "answered",
+      "meta": {
+        "answer_shape": "condition",
+        "review_state": "current"
+      },
+      "semantic_version": 2
+    },
+    "src-port-identity-user-answer": {
+      "type": "source",
+      "status": "recorded",
+      "text": "For this fixture, I define a port as the ordered pair (host, number).",
+      "meta": {
+        "source_kind": "verbatim",
+        "speaker": "user",
+        "synthetic": true,
+        "session": "ports design session, turn 2",
+        "scope": "this fixture only"
+      }
+    },
+    "port-identity-answer": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "In this fixture, a port is identified by the ordered pair (host, number). Two observations with the same number on different hosts are two distinct ports.",
+      "meta": {
+        "review_state": "current",
+        "scope": "this fixture only",
+        "interpretation_note": "Direct restatement of the user's explicit definition; not generalized beyond this fixture.",
+        "reviewed_inputs": {
+          "src-port-identity-user-answer": "1d3fe15c7af4543999525345187c04872dab2394e86b17d55bb9036f7c6ad8b0"
+        },
+        "reviewed_input_versions": {
+          "src-port-identity-user-answer": 1
+        }
+      }
+    },
+    "port-host-a-8080": {
+      "type": "entity",
+      "status": "declared",
+      "text": "Port instance (host-a, 8080), constructed from port-observations under the fixture identity.",
+      "meta": {
+        "instance_of": "port-type",
+        "identity": {
+          "host": "host-a",
+          "number": 8080
+        },
+        "synthetic": true,
+        "constructed_from": "port-observations"
+      }
+    },
+    "port-host-b-8080": {
+      "type": "entity",
+      "status": "declared",
+      "text": "Port instance (host-b, 8080), constructed from port-observations under the fixture identity.",
+      "meta": {
+        "instance_of": "port-type",
+        "identity": {
+          "host": "host-b",
+          "number": 8080
+        },
+        "synthetic": true,
+        "constructed_from": "port-observations"
+      }
+    },
+    "service-a": {
+      "type": "entity",
+      "status": "declared",
+      "text": "Service instance service-a, from port-observations.",
+      "meta": {
+        "instance_of": "service-type",
+        "synthetic": true,
+        "constructed_from": "port-observations"
+      }
+    },
+    "service-b": {
+      "type": "entity",
+      "status": "declared",
+      "text": "Service instance service-b, from port-observations.",
+      "meta": {
+        "instance_of": "service-type",
+        "synthetic": true,
+        "constructed_from": "port-observations"
+      }
+    },
+    "check-port-rule-vs-observations-rev1": {
+      "type": "check-result",
+      "status": "recorded",
+      "text": "evaluate port-rule port-observations at revision 1: outcome satisfies. Subjects (host-a,8080) and (host-b,8080) each have distinct owner count 1. Under the fixture identity (host, number) the two observations are two ports, so no contradiction with port-rule. Bounded to supplied reports and declared completeness; pattern_standing remains proposed.",
+      "meta": {
+        "synthetic": true,
+        "scope": "this fixture only",
+        "outcome": "satisfies",
+        "computed_revision": 1,
+        "checker_version": "exclusive-actor/3",
+        "input_fingerprints": {
+          "port-observations": "4bc9e19b16631aa090a2c6216add0dd36ca8c81c6a9c7f63636e8c8bdf6d2789",
+          "port-rule": "07a1863c8297826e40d7b088d73bb47051d5350a0a682b874176449895b61e16"
+        }
+      }
+    }
+  },
+  "edges": {
+    "port-rule-governs-port-type": {
+      "type": "governs",
+      "from": "port-rule",
+      "to": "port-type"
+    },
+    "port-identity-about-port-type": {
+      "type": "about",
+      "from": "port-identity",
+      "to": "port-type"
+    },
+    "port-identity-answer-extracted-from-src": {
+      "from": "port-identity-answer",
+      "to": "src-port-identity-user-answer",
+      "type": "extracted-from",
+      "input_fingerprint": "1d3fe15c7af4543999525345187c04872dab2394e86b17d55bb9036f7c6ad8b0",
+      "input_version": 1
+    },
+    "port-identity-answer-about-port-type": {
+      "from": "port-identity-answer",
+      "to": "port-type",
+      "type": "about"
+    },
+    "port-identity-answer-answers-port-identity": {
+      "from": "port-identity-answer",
+      "to": "port-identity",
+      "type": "answers",
+      "coverage": "full",
+      "answer": {
+        "condition": "port identity = ordered pair (host, number), within this fixture"
+      }
+    },
+    "port-host-a-8080-owned-by-service-a": {
+      "from": "port-host-a-8080",
+      "to": "service-a",
+      "type": "owned-by",
+      "provenance": {
+        "sources": [
+          "port-observations"
+        ]
+      }
+    },
+    "port-host-b-8080-owned-by-service-b": {
+      "from": "port-host-b-8080",
+      "to": "service-b",
+      "type": "owned-by",
+      "provenance": {
+        "sources": [
+          "port-observations"
+        ]
+      }
+    },
+    "port-observations-tests-port-rule": {
+      "from": "port-observations",
+      "to": "port-rule",
+      "type": "tests"
+    },
+    "check-port-rule-vs-observations-rev1-about-port-rule": {
+      "from": "check-port-rule-vs-observations-rev1",
+      "to": "port-rule",
+      "type": "about"
+    },
+    "check-port-rule-vs-observations-rev1-extracted-from-observations": {
+      "from": "check-port-rule-vs-observations-rev1",
+      "to": "port-observations",
+      "type": "extracted-from"
+    }
+  },
+  "changes": [
+    {
+      "revision": 1,
+      "at": "2026-09-15T10:53:11.379915+00:00",
+      "actor": "assistant",
+      "reason": "Record user fixture definition of port identity (host, number) verbatim, answer port-identity, fill identity_key from that explicit answer, construct the two port instances from port-observations, bind trace to rule",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "src-port-identity-user-answer",
+          "before": null,
+          "after": {
+            "type": "source",
+            "status": "recorded",
+            "text": "For this fixture, I define a port as the ordered pair (host, number).",
+            "meta": {
+              "source_kind": "verbatim",
+              "speaker": "user",
+              "synthetic": true,
+              "session": "ports design session, turn 2",
+              "scope": "this fixture only"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "port-identity-answer",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "In this fixture, a port is identified by the ordered pair (host, number). Two observations with the same number on different hosts are two distinct ports.",
+            "meta": {
+              "review_state": "current",
+              "scope": "this fixture only",
+              "interpretation_note": "Direct restatement of the user's explicit definition; not generalized beyond this fixture."
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "port-identity-answer-extracted-from-src",
+          "before": null,
+          "after": {
+            "from": "port-identity-answer",
+            "to": "src-port-identity-user-answer",
+            "type": "extracted-from"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "port-identity-answer-about-port-type",
+          "before": null,
+          "after": {
+            "from": "port-identity-answer",
+            "to": "port-type",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "port-identity-answer-answers-port-identity",
+          "before": null,
+          "after": {
+            "from": "port-identity-answer",
+            "to": "port-identity",
+            "type": "answers",
+            "coverage": "full",
+            "answer": {
+              "condition": "port identity = ordered pair (host, number), within this fixture"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "port-identity",
+          "before": {
+            "type": "question",
+            "text": "Which fields define the identity of a port in this fixture?",
+            "status": "open",
+            "meta": {
+              "answer_shape": "condition",
+              "review_state": "current"
+            }
+          },
+          "after": {
+            "type": "question",
+            "text": "Which fields define the identity of a port in this fixture?",
+            "status": "answered",
+            "meta": {
+              "answer_shape": "condition",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "port-type",
+          "before": {
+            "type": "entity",
+            "text": "Port identity, not yet defined.",
+            "status": "declared"
+          },
+          "after": {
+            "type": "entity",
+            "text": "Port. In this fixture, identity is the ordered pair (host, number), per port-identity-answer.",
+            "status": "declared",
+            "meta": {
+              "identity_key": [
+                "host",
+                "number"
+              ],
+              "identity_scope": "this fixture only"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "port-rule",
+          "before": {
+            "type": "claim",
+            "text": "Each port has exactly one owner. Port identity is not yet defined.",
+            "status": "accepted",
+            "meta": {
+              "review_state": "current",
+              "pattern_standing": "proposed"
+            },
+            "pattern": {
+              "kind": "cardinality",
+              "min": 1,
+              "max": 1,
+              "scope": "all",
+              "slot": {
+                "subject_type": "port-type",
+                "relation": "owned-by",
+                "target_type": "service-type",
+                "direction": "out",
+                "count": "distinct"
+              }
+            }
+          },
+          "after": {
+            "type": "claim",
+            "text": "Each port has exactly one owner. In this fixture, port identity is the ordered pair (host, number), per port-identity-answer.",
+            "status": "accepted",
+            "meta": {
+              "review_state": "current",
+              "pattern_standing": "proposed",
+              "pattern_note": "identity_key filled from the user's explicit fixture definition (src-port-identity-user-answer); the machine pattern itself is still unratified."
+            },
+            "pattern": {
+              "kind": "cardinality",
+              "max": 1,
+              "min": 1,
+              "scope": "all",
+              "slot": {
+                "count": "distinct",
+                "direction": "out",
+                "relation": "owned-by",
+                "subject_type": "port-type",
+                "target_type": "service-type",
+                "identity_key": [
+                  "host",
+                  "number"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "port-host-a-8080",
+          "before": null,
+          "after": {
+            "type": "entity",
+            "status": "declared",
+            "text": "Port instance (host-a, 8080), constructed from port-observations under the fixture identity.",
+            "meta": {
+              "instance_of": "port-type",
+              "identity": {
+                "host": "host-a",
+                "number": 8080
+              },
+              "synthetic": true,
+              "constructed_from": "port-observations"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "port-host-b-8080",
+          "before": null,
+          "after": {
+            "type": "entity",
+            "status": "declared",
+            "text": "Port instance (host-b, 8080), constructed from port-observations under the fixture identity.",
+            "meta": {
+              "instance_of": "port-type",
+              "identity": {
+                "host": "host-b",
+                "number": 8080
+              },
+              "synthetic": true,
+              "constructed_from": "port-observations"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "service-a",
+          "before": null,
+          "after": {
+            "type": "entity",
+            "status": "declared",
+            "text": "Service instance service-a, from port-observations.",
+            "meta": {
+              "instance_of": "service-type",
+              "synthetic": true,
+              "constructed_from": "port-observations"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "service-b",
+          "before": null,
+          "after": {
+            "type": "entity",
+            "status": "declared",
+            "text": "Service instance service-b, from port-observations.",
+            "meta": {
+              "instance_of": "service-type",
+              "synthetic": true,
+              "constructed_from": "port-observations"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "port-host-a-8080-owned-by-service-a",
+          "before": null,
+          "after": {
+            "from": "port-host-a-8080",
+            "to": "service-a",
+            "type": "owned-by",
+            "provenance": {
+              "sources": [
+                "port-observations"
+              ]
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "port-host-b-8080-owned-by-service-b",
+          "before": null,
+          "after": {
+            "from": "port-host-b-8080",
+            "to": "service-b",
+            "type": "owned-by",
+            "provenance": {
+              "sources": [
+                "port-observations"
+              ]
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "port-observations-tests-port-rule",
+          "before": null,
+          "after": {
+            "from": "port-observations",
+            "to": "port-rule",
+            "type": "tests"
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "port-identity",
+          "before": {
+            "type": "question",
+            "text": "Which fields define the identity of a port in this fixture?",
+            "status": "answered",
+            "meta": {
+              "answer_shape": "condition",
+              "review_state": "current"
+            }
+          },
+          "after": {
+            "type": "question",
+            "text": "Which fields define the identity of a port in this fixture?",
+            "status": "answered",
+            "meta": {
+              "answer_shape": "condition",
+              "review_state": "current"
+            },
+            "semantic_version": 2
+          },
+          "automatic": "semantic-version"
+        },
+        {
+          "collection": "nodes",
+          "id": "port-type",
+          "before": {
+            "type": "entity",
+            "text": "Port. In this fixture, identity is the ordered pair (host, number), per port-identity-answer.",
+            "status": "declared",
+            "meta": {
+              "identity_key": [
+                "host",
+                "number"
+              ],
+              "identity_scope": "this fixture only"
+            }
+          },
+          "after": {
+            "type": "entity",
+            "text": "Port. In this fixture, identity is the ordered pair (host, number), per port-identity-answer.",
+            "status": "declared",
+            "meta": {
+              "identity_key": [
+                "host",
+                "number"
+              ],
+              "identity_scope": "this fixture only"
+            },
+            "semantic_version": 2
+          },
+          "automatic": "semantic-version"
+        },
+        {
+          "collection": "nodes",
+          "id": "port-rule",
+          "before": {
+            "type": "claim",
+            "text": "Each port has exactly one owner. In this fixture, port identity is the ordered pair (host, number), per port-identity-answer.",
+            "status": "accepted",
+            "meta": {
+              "review_state": "current",
+              "pattern_standing": "proposed",
+              "pattern_note": "identity_key filled from the user's explicit fixture definition (src-port-identity-user-answer); the machine pattern itself is still unratified."
+            },
+            "pattern": {
+              "kind": "cardinality",
+              "max": 1,
+              "min": 1,
+              "scope": "all",
+              "slot": {
+                "count": "distinct",
+                "direction": "out",
+                "relation": "owned-by",
+                "subject_type": "port-type",
+                "target_type": "service-type",
+                "identity_key": [
+                  "host",
+                  "number"
+                ]
+              }
+            }
+          },
+          "after": {
+            "type": "claim",
+            "text": "Each port has exactly one owner. In this fixture, port identity is the ordered pair (host, number), per port-identity-answer.",
+            "status": "accepted",
+            "meta": {
+              "review_state": "current",
+              "pattern_standing": "proposed",
+              "pattern_note": "identity_key filled from the user's explicit fixture definition (src-port-identity-user-answer); the machine pattern itself is still unratified."
+            },
+            "pattern": {
+              "kind": "cardinality",
+              "max": 1,
+              "min": 1,
+              "scope": "all",
+              "slot": {
+                "count": "distinct",
+                "direction": "out",
+                "relation": "owned-by",
+                "subject_type": "port-type",
+                "target_type": "service-type",
+                "identity_key": [
+                  "host",
+                  "number"
+                ]
+              }
+            },
+            "semantic_version": 2
+          },
+          "automatic": "semantic-version"
+        },
+        {
+          "collection": "nodes",
+          "id": "port-type",
+          "before": {
+            "type": "entity",
+            "text": "Port. In this fixture, identity is the ordered pair (host, number), per port-identity-answer.",
+            "status": "declared",
+            "meta": {
+              "identity_key": [
+                "host",
+                "number"
+              ],
+              "identity_scope": "this fixture only"
+            },
+            "semantic_version": 2
+          },
+          "after": {
+            "type": "entity",
+            "text": "Port. In this fixture, identity is the ordered pair (host, number), per port-identity-answer.",
+            "status": "declared",
+            "meta": {
+              "identity_key": [
+                "host",
+                "number"
+              ],
+              "identity_scope": "this fixture only",
+              "review_state": "needs-review",
+              "review_reason": "Semantic content or currency changed.",
+              "review_roots": [
+                "port-identity",
+                "port-identity-answer",
+                "port-rule",
+                "port-type"
+              ]
+            },
+            "semantic_version": 2
+          },
+          "automatic": "dependency-review"
+        },
+        {
+          "collection": "edges",
+          "id": "port-identity-answer-extracted-from-src",
+          "before": {
+            "from": "port-identity-answer",
+            "to": "src-port-identity-user-answer",
+            "type": "extracted-from"
+          },
+          "after": {
+            "from": "port-identity-answer",
+            "to": "src-port-identity-user-answer",
+            "type": "extracted-from",
+            "input_fingerprint": "1d3fe15c7af4543999525345187c04872dab2394e86b17d55bb9036f7c6ad8b0",
+            "input_version": 1
+          },
+          "automatic": "review-receipt"
+        },
+        {
+          "collection": "nodes",
+          "id": "port-identity-answer",
+          "before": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "In this fixture, a port is identified by the ordered pair (host, number). Two observations with the same number on different hosts are two distinct ports.",
+            "meta": {
+              "review_state": "current",
+              "scope": "this fixture only",
+              "interpretation_note": "Direct restatement of the user's explicit definition; not generalized beyond this fixture."
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "In this fixture, a port is identified by the ordered pair (host, number). Two observations with the same number on different hosts are two distinct ports.",
+            "meta": {
+              "review_state": "current",
+              "scope": "this fixture only",
+              "interpretation_note": "Direct restatement of the user's explicit definition; not generalized beyond this fixture.",
+              "reviewed_inputs": {
+                "src-port-identity-user-answer": "1d3fe15c7af4543999525345187c04872dab2394e86b17d55bb9036f7c6ad8b0"
+              },
+              "reviewed_input_versions": {
+                "src-port-identity-user-answer": 1
+              }
+            }
+          },
+          "automatic": "review-receipt"
+        }
+      ]
+    },
+    {
+      "revision": 2,
+      "at": "2026-09-15T10:53:25.196671+00:00",
+      "actor": "assistant",
+      "reason": "Record the observed evaluate result (satisfies) as a check-result bound to the fixture",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "check-port-rule-vs-observations-rev1",
+          "before": null,
+          "after": {
+            "type": "check-result",
+            "status": "recorded",
+            "text": "evaluate port-rule port-observations at revision 1: outcome satisfies. Subjects (host-a,8080) and (host-b,8080) each have distinct owner count 1. Under the fixture identity (host, number) the two observations are two ports, so no contradiction with port-rule. Bounded to supplied reports and declared completeness; pattern_standing remains proposed.",
+            "meta": {
+              "synthetic": true,
+              "scope": "this fixture only",
+              "outcome": "satisfies",
+              "computed_revision": 1,
+              "checker_version": "exclusive-actor/3",
+              "input_fingerprints": {
+                "port-observations": "4bc9e19b16631aa090a2c6216add0dd36ca8c81c6a9c7f63636e8c8bdf6d2789",
+                "port-rule": "07a1863c8297826e40d7b088d73bb47051d5350a0a682b874176449895b61e16"
+              }
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "check-port-rule-vs-observations-rev1-about-port-rule",
+          "before": null,
+          "after": {
+            "from": "check-port-rule-vs-observations-rev1",
+            "to": "port-rule",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "check-port-rule-vs-observations-rev1-extracted-from-observations",
+          "before": null,
+          "after": {
+            "from": "check-port-rule-vs-observations-rev1",
+            "to": "port-observations",
+            "type": "extracted-from"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "status": "completed",
+  "passed": true,
+  "cases": [
+    "S08"
+  ],
+  "grader": "Independent evidence_sessions grades participant pace/proposal/write; browser integration observed by root and validated via separate browser receipt test.",
+  "grades": [
+    {
+      "id": "paced-read",
+      "score": 1,
+      "excerpt": "The exact next command: ./tg review steward-next-work. ... An empty reasoning packet does not prove the claim has no anchors, sources, or incident edges.",
+      "explanation": "One actual Bash preceded by exact command text; unchanged graph; bounded observations. Pace4 independent scoped receipt bound."
+    },
+    {
+      "id": "proposed-hypothetical",
+      "score": 1,
+      "excerpt": "Captured as a hypothesis for discussion, not a decision. ... Both accepted policy claims remain accepted and current.",
+      "explanation": "V2stage2 before/after confirms new proposed hypothesis, open verdict question, synthetic paraphrase; accepted exception and policy unchanged. One substantive authorized design capture despite multiple structural edits."
+    },
+    {
+      "id": "authorized-visible-change",
+      "score": 1,
+      "excerpt": "Graph is now at revision1 with16changes. Added atomic-replacement-hypothesis-source, atomic-replacement-question, atomic-replacement-hypothesis and anchor/extraction/answer edges.",
+      "explanation": "Actual apply command tool input contains precise batch; final names changed IDs and edge purposes/revision. Root browser integration separately verifies live revision, search and changed item/history findability. Commands after first read are observable as tool arguments, not all separately narrated."
+    }
+  ],
+  "hard_failures": [],
+  "limitations": [
+    "Combines independent participant components and root browser integration; not a single continuous user trial or measured human cognitive load.",
+    "Only paced first read is verified exact-command-before-execution; later tool command arguments are exposed but not all separately narrated in prose."
+  ],
+  "artifact_hashes": {
+    "reviews/multiturn/pace4/design/graded.json": "932092ab1e9bdcd2e83c0768fe69b82e29dbc8c58ecf4fee5f0fa7cfe89b2eea",
+    "reviews/multiturn/pace4/design/control/01-read-only/stdout.jsonl": "0036297f9662124055a7d7403c5e03fcef81e2c31b6c65c46c10c637c3f9b572",
+    "reviews/multiturn/v2/design/control/02-atomic-proposal/receipt.json": "485abd7db5881c8be8088ba97933e4864b122ddbceb9675dd6cf8b91918603fb",
+    "reviews/multiturn/v2/design/control/02-atomic-proposal/stdout.jsonl": "43dac084b4c2bf1f170a269375b62dea630e8fd17dc0aecaf8f89216b5c3a48b",
+    "reviews/multiturn/v2/design/control/02-atomic-proposal/before.graph.json": "c7f9bd55b098da6e591819c05c3d6ad7d2c2bce34f6fd33abe57e4535286cc2c",
+    "reviews/multiturn/v2/design/control/02-atomic-proposal/after.graph.json": "af23d567c845d2debefaea26b52af184da764bf750f2560a274158a363db623e",
+    "reviews/browser/receipt.json": "971a720f544a2085d1ddf8b25b71e47ea6327f559229994a5cd3a4d7bad21c23",
+    "reviews/browser/commands.json": "d4c5852d9ad5eee0b7ff18f7bb12f1c6932d78fd6f49507a63edd6c6850a07e3",
+    "reviews/multiturn/v2/design/graded-S08-proposal.json": "ea88971b5d13b3e3e491442a1fba5ab6321b03160fa64a824c170a995ee67882",
+    "reviews/multiturn/v2/design/graded.json": "ccdcddd33dde0d4586c7bf3a213677dd06efeea49ec8bce1e8cd26dc539a0a8f"
+  },
+  "raw_path": "reviews/multiturn/S08/participant.json",
+  "raw_sha256": "4165d2e1a1cae79fcb044596293dd54a7425e94d6bc9d22a3c15bd739df57a2b",
+  "input_path": "reviews/multiturn/S08/input.json",
+  "input_sha256": "6806c63d6a83f5825c01651520caeff1bab5b333c62c2b93657c41f56ed1c5be",
+  "rubric_path": "reviews/multiturn/S08/rubric.json",
+  "rubric_sha256": "151af34c5850368ede241f4bb2ad6a47a63ef3e4b6fca6f4ba45243691461ce4",
+  "components": [
+    {
+      "id": "pace",
+      "receipt": "reviews/multiturn/pace4/design/graded.json",
+      "case": "S08",
+      "criterion_ids": [
+        "01-read-only"
+      ],
+      "partial": false
+    },
+    {
+      "id": "proposal",
+      "receipt": "reviews/multiturn/v2/design/graded-S08-proposal.json",
+      "case": "S08",
+      "criterion_ids": [
+        "02-atomic-proposal",
+        "protocol-budget"
+      ],
+      "partial": true
+    }
+  ],
+  "parent_disclosures": [
+    {
+      "parent_trial": "reviews/multiturn/v2/design",
+      "parent_graded_sha256": "ccdcddd33dde0d4586c7bf3a213677dd06efeea49ec8bce1e8cd26dc539a0a8f",
+      "parent_hard_failures": [
+        "01-read-only",
+        "04-explicit-choice"
+      ]
+    }
+  ],
+  "contract_versions_note": "Composite evidence mixes actual authoring/6 v2 proposed capture and newer pace4 guidance. Does not validate all behavior under latest authoring/9; prior failed whole trials remain preserved."
+}

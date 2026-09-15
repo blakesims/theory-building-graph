@@ -1,0 +1,90 @@
+{
+  "id": "identity",
+  "cases": [
+    "D01",
+    "D02"
+  ],
+  "status": "completed",
+  "model": "claude-fable-5-1",
+  "participant_session": "c40f63b7-22c2-4e52-a91d-99aafd8ab1ed",
+  "grader": "Codex /root/formal_checks; independent of participant outputs, contributor to formal checker implementation",
+  "input_sha256": "5d7f291cd7c271f39ce679b98de5e5f04d563ef0a6ee96b20ba180c3c49e5a3d",
+  "input_file_sha256": "5d7f291cd7c271f39ce679b98de5e5f04d563ef0a6ee96b20ba180c3c49e5a3d",
+  "raw_receipt_sha256": "37e1ac1047b57d267765b0d1f78f2ad69252b58164cab3934b6fa25aacd68352",
+  "rubric_sha256": "ec693c177c1e08df227ccb1009c46150a26b88488b262cadff4faf1a25edb455",
+  "user_turn": "Please record that the steward owns deciding the next work. Separately, I think Assistant should be allowed to edit the brief. By Assistant I mean the thing we discussed; I am not sure which one of these entries it is.",
+  "grades": [
+    {
+      "id": "reuse-steward",
+      "score": 1,
+      "excerpt": "[\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"source-4\",\n    \"value\": {\n      \"type\": \"source\",\n      \"text\": \"Please record that the steward owns deciding the next work. Separately, I think Assistant should be allowed to edit the brief. By Assistant I mean the thing we discussed; I am not sure which one of these entries it is.\",\n      \"status\": \"recorded\",\n      \"meta\": {\n        \"source_kind\": \"verbatim\",\n        \"speaker\": \"Blake\",\n        \"captured\": \"2026-09-15\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"steward-owns-next-work\",\n    \"value\": {\n      \"type\": \"claim\",\n      \"text\": \"The steward owns deciding the next work.\",\n      \"status\": \"accepted\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"rationale\": \"Explicit user request to record. Stated without the 'after a failed attempt' qualifier carried by steward-next-work, so kept as a separate general claim rather than a rewrite of that one.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-steward-owns-next-work-0\",\n    \"value\": {\n      \"from\": \"steward-owns-next-work\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-5\",\n    \"value\": {\n      \"from\": \"steward-owns-next-work\",\n      \"type\": \"about\",\n      \"to\": \"steward-role\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-6\",\n    \"value\": {\n      \"from\": \"steward-owns-next-work\",\n      \"type\": \"governs\",\n      \"to\": \"choose-next-work\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"assistant-may-edit-brief\",\n    \"value\": {\n      \"type\": \"claim\",\n      \"text\": \"Assistant should be allowed to edit the brief.\",\n      \"status\": \"proposed\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"referent_unresolved\": \"User said 'Assistant' means 'the thing we discussed' and was unsure whether that is assistant-role or assistant-session. No about edge until resolved.\",\n        \"rationale\": \"User framed this as 'I think ... should be allowed', a tentative permission statement, and the referent is ambiguous. Not accepted. 'The brief' has no entity in the graph.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-assistant-may-edit-brief-0\",\n    \"value\": {\n      \"from\": \"assistant-may-edit-brief\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  }\n]",
+      "excerpt_location": "proposal.proposed_operations",
+      "explanation": "New steward ownership claim anchors to existing steward-role and choose-next-work; no duplicate steward entity. User explicitly requested the unqualified statement, and original narrower accepted claim remains intact."
+    },
+    {
+      "id": "assistant-ambiguity",
+      "score": 1,
+      "excerpt": "[\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"source-4\",\n    \"value\": {\n      \"type\": \"source\",\n      \"text\": \"Please record that the steward owns deciding the next work. Separately, I think Assistant should be allowed to edit the brief. By Assistant I mean the thing we discussed; I am not sure which one of these entries it is.\",\n      \"status\": \"recorded\",\n      \"meta\": {\n        \"source_kind\": \"verbatim\",\n        \"speaker\": \"Blake\",\n        \"captured\": \"2026-09-15\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"steward-owns-next-work\",\n    \"value\": {\n      \"type\": \"claim\",\n      \"text\": \"The steward owns deciding the next work.\",\n      \"status\": \"accepted\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"rationale\": \"Explicit user request to record. Stated without the 'after a failed attempt' qualifier carried by steward-next-work, so kept as a separate general claim rather than a rewrite of that one.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-steward-owns-next-work-0\",\n    \"value\": {\n      \"from\": \"steward-owns-next-work\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-5\",\n    \"value\": {\n      \"from\": \"steward-owns-next-work\",\n      \"type\": \"about\",\n      \"to\": \"steward-role\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-6\",\n    \"value\": {\n      \"from\": \"steward-owns-next-work\",\n      \"type\": \"governs\",\n      \"to\": \"choose-next-work\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"assistant-may-edit-brief\",\n    \"value\": {\n      \"type\": \"claim\",\n      \"text\": \"Assistant should be allowed to edit the brief.\",\n      \"status\": \"proposed\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"referent_unresolved\": \"User said 'Assistant' means 'the thing we discussed' and was unsure whether that is assistant-role or assistant-session. No about edge until resolved.\",\n        \"rationale\": \"User framed this as 'I think ... should be allowed', a tentative permission statement, and the referent is ambiguous. Not accepted. 'The brief' has no entity in the graph.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-assistant-may-edit-brief-0\",\n    \"value\": {\n      \"from\": \"assistant-may-edit-brief\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  }\n]",
+      "excerpt_location": "proposal.proposed_operations",
+      "explanation": "Ambiguous Assistant permission remains proposed with referent_unresolved and no link to either Assistant identity; questions explicitly ask role versus session."
+    },
+    {
+      "id": "no-false-change",
+      "score": 1,
+      "excerpt": "Two items. First, the steward ownership statement: the graph already has an accepted claim scoped to \"after a failed attempt\" (steward-next-work). Your wording is unqualified, so I would add a verbatim source for this turn and a separate accepted claim stating general ownership, leaving the narrower claim in place. Second, the Assistant brief-editing permission: the graph has two distinct Assistant identities, assistant-role (agent-role) and assistant-session (agent-session). I would store the permission as a proposed claim with your wording retained and no link to either entity until you say which one you meant. There is also no existing entity for \"the brief\". Nothing is changed until you apply the batch.",
+      "excerpt_location": "proposal.response",
+      "explanation": "Uses would add/store and explicitly says Nothing is changed until you apply the batch. No premature execution claim."
+    }
+  ],
+  "score": 3,
+  "possible": 3,
+  "hard_failures": [],
+  "observations": [],
+  "mechanical_apply": {
+    "status": "valid-applied-proposal",
+    "command": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Users/blake/projects/theory-building-graph/graph.py",
+      "--file",
+      "/var/folders/xs/yfkt8l5n4wj3hq3_xrm7n6480000gn/T/theory-author-sy7liqk4/graph.json",
+      "apply",
+      "-",
+      "--actor",
+      "blind-participant",
+      "--reason",
+      "Synthetic authorized proposal validation",
+      "--expect",
+      "0",
+      "--json"
+    ],
+    "stdout": "{\"changes\":11,\"revision\":1}\n",
+    "stderr": "",
+    "unchanged": null,
+    "proposed_operation_count": 7,
+    "changed_nodes": [
+      "assistant-may-edit-brief",
+      "source-4",
+      "steward-owns-next-work"
+    ],
+    "deleted_nodes": [],
+    "original_steward_rule_preserved": true
+  },
+  "passed": true,
+  "metrics": {
+    "input_tokens": 9132,
+    "input_token_breakdown": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 5911,
+      "cache_read_input_tokens": 3219
+    },
+    "output_tokens": 3044,
+    "elapsed_seconds": 38.516,
+    "input_bytes": 15686,
+    "retrieval_calls": 0,
+    "authoring_seconds": null,
+    "review_seconds": null
+  },
+  "scope": "Judged isolated no-tool Fable proposals followed by separate real CLI application to temporary graphs. Not a tool-driven multi-turn interview, interactive retrieval, generalized correctness claim, or proof of graph benefit.",
+  "contract_version": "authoring/2",
+  "previous_trial": "../author-trials/graded-identity.json"
+}

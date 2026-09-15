@@ -1,0 +1,103 @@
+{
+  "id": "operation-modality",
+  "cases": [
+    "D04",
+    "D06",
+    "A07"
+  ],
+  "status": "completed",
+  "model": "claude-fable-5-1",
+  "participant_session": "9edc3c1f-7291-4481-a27d-44ceec89d722",
+  "grader": "Codex /root/formal_checks; independent of participant outputs, contributor to formal checker implementation",
+  "input_sha256": "5ab7b413b15b5b36e909cb37af4587616ddc144bf2eb85bfa3ca3df531d7e4ea",
+  "input_file_sha256": "5ab7b413b15b5b36e909cb37af4587616ddc144bf2eb85bfa3ca3df531d7e4ea",
+  "raw_receipt_sha256": "56c3916880be5cb94a786f32bafca235a56637a720b1904410fbee18a0d2dba2",
+  "rubric_sha256": "fce324f627ebc199c1a9a34c15805f1795e5a7f5c0824b17cdc4d1bc748d9b76",
+  "user_turn": "The steward chooses what the next work should be. After I have chosen, the orchestrator can insert the record for that already chosen work. Also, the orchestrator may ask me before stopping. Please capture that, without broadening it.",
+  "grades": [
+    {
+      "id": "choose-insert",
+      "score": 1,
+      "excerpt": "[\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"source-4\",\n    \"value\": {\n      \"type\": \"source\",\n      \"text\": \"Session paraphrase: Blake stated the steward chooses what the next work should be; after the steward has chosen, the orchestrator can insert the record for that already chosen work; the orchestrator may ask the steward before stopping. Blake asked that this be captured without broadening.\",\n      \"status\": \"recorded\",\n      \"meta\": {\n        \"source_kind\": \"session-paraphrase\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"orchestrator-inserts-chosen-record\",\n    \"value\": {\n      \"type\": \"claim\",\n      \"text\": \"After the steward has chosen the next work, the orchestrator may insert the record for that already chosen work. Inserting the record does not include choosing the work.\",\n      \"status\": \"accepted\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"rationale\": \"Separates mechanical record insertion from the choice of next work, which remains with the steward.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"orchestrator-may-ask-before-stopping\",\n    \"value\": {\n      \"type\": \"claim\",\n      \"text\": \"The orchestrator may ask the steward before stopping. This is permissive; it does not establish that asking is required.\",\n      \"status\": \"accepted\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"rationale\": \"Recorded as stated. Whether consultation is mandatory remains an open question.\"\n      }\n    }\n  },\n  {\n    \"op\": \"update\",\n    \"collection\": \"nodes\",\n    \"id\": \"steward-next-work\",\n    \"value\": {\n      \"type\": \"claim\",\n      \"text\": \"Steward always chooses next work after a failed attempt.\",\n      \"status\": \"accepted\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"sources\": [\n          \"source-2\",\n          \"source-4\"\n        ],\n        \"rationale\": \"Keep a clean responsibility boundary; orchestrator may end a failed attempt and return it to steward. Restated by Blake in source-4.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-steward-next-work-1\",\n    \"value\": {\n      \"from\": \"steward-next-work\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-orchestrator-inserts-chosen-record-0\",\n    \"value\": {\n      \"from\": \"orchestrator-inserts-chosen-record\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-5\",\n    \"value\": {\n      \"from\": \"orchestrator-inserts-chosen-record\",\n      \"type\": \"about\",\n      \"to\": \"orchestrator-role\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-6\",\n    \"value\": {\n      \"from\": \"orchestrator-inserts-chosen-record\",\n      \"type\": \"governs\",\n      \"to\": \"create-record\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-7\",\n    \"value\": {\n      \"from\": \"orchestrator-inserts-chosen-record\",\n      \"type\": \"depends-on\",\n      \"to\": \"steward-next-work\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-orchestrator-may-ask-before-stopping-0\",\n    \"value\": {\n      \"from\": \"orchestrator-may-ask-before-stopping\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-8\",\n    \"value\": {\n      \"from\": \"orchestrator-may-ask-before-stopping\",\n      \"type\": \"about\",\n      \"to\": \"orchestrator-role\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-9\",\n    \"value\": {\n      \"from\": \"orchestrator-may-ask-before-stopping\",\n      \"type\": \"governs\",\n      \"to\": \"end-attempt\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-10\",\n    \"value\": {\n      \"from\": \"orchestrator-may-ask-before-stopping\",\n      \"type\": \"answers\",\n      \"to\": \"consultation\",\n      \"coverage\": \"partial\"\n    }\n  }\n]",
+      "excerpt_location": "proposal.proposed_operations",
+      "explanation": "Explicitly separates inserting a record from deciding the work and does not give orchestrator independent next-work selection. Recipient/chooser identity errors are graded separately."
+    },
+    {
+      "id": "may-not-must",
+      "score": 1,
+      "excerpt": "[\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"source-4\",\n    \"value\": {\n      \"type\": \"source\",\n      \"text\": \"Session paraphrase: Blake stated the steward chooses what the next work should be; after the steward has chosen, the orchestrator can insert the record for that already chosen work; the orchestrator may ask the steward before stopping. Blake asked that this be captured without broadening.\",\n      \"status\": \"recorded\",\n      \"meta\": {\n        \"source_kind\": \"session-paraphrase\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"orchestrator-inserts-chosen-record\",\n    \"value\": {\n      \"type\": \"claim\",\n      \"text\": \"After the steward has chosen the next work, the orchestrator may insert the record for that already chosen work. Inserting the record does not include choosing the work.\",\n      \"status\": \"accepted\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"rationale\": \"Separates mechanical record insertion from the choice of next work, which remains with the steward.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"orchestrator-may-ask-before-stopping\",\n    \"value\": {\n      \"type\": \"claim\",\n      \"text\": \"The orchestrator may ask the steward before stopping. This is permissive; it does not establish that asking is required.\",\n      \"status\": \"accepted\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"rationale\": \"Recorded as stated. Whether consultation is mandatory remains an open question.\"\n      }\n    }\n  },\n  {\n    \"op\": \"update\",\n    \"collection\": \"nodes\",\n    \"id\": \"steward-next-work\",\n    \"value\": {\n      \"type\": \"claim\",\n      \"text\": \"Steward always chooses next work after a failed attempt.\",\n      \"status\": \"accepted\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"sources\": [\n          \"source-2\",\n          \"source-4\"\n        ],\n        \"rationale\": \"Keep a clean responsibility boundary; orchestrator may end a failed attempt and return it to steward. Restated by Blake in source-4.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-steward-next-work-1\",\n    \"value\": {\n      \"from\": \"steward-next-work\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-orchestrator-inserts-chosen-record-0\",\n    \"value\": {\n      \"from\": \"orchestrator-inserts-chosen-record\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-5\",\n    \"value\": {\n      \"from\": \"orchestrator-inserts-chosen-record\",\n      \"type\": \"about\",\n      \"to\": \"orchestrator-role\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-6\",\n    \"value\": {\n      \"from\": \"orchestrator-inserts-chosen-record\",\n      \"type\": \"governs\",\n      \"to\": \"create-record\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-7\",\n    \"value\": {\n      \"from\": \"orchestrator-inserts-chosen-record\",\n      \"type\": \"depends-on\",\n      \"to\": \"steward-next-work\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-orchestrator-may-ask-before-stopping-0\",\n    \"value\": {\n      \"from\": \"orchestrator-may-ask-before-stopping\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-8\",\n    \"value\": {\n      \"from\": \"orchestrator-may-ask-before-stopping\",\n      \"type\": \"about\",\n      \"to\": \"orchestrator-role\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-9\",\n    \"value\": {\n      \"from\": \"orchestrator-may-ask-before-stopping\",\n      \"type\": \"governs\",\n      \"to\": \"end-attempt\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-10\",\n    \"value\": {\n      \"from\": \"orchestrator-may-ask-before-stopping\",\n      \"type\": \"answers\",\n      \"to\": \"consultation\",\n      \"coverage\": \"partial\"\n    }\n  }\n]",
+      "excerpt_location": "proposal.proposed_operations",
+      "explanation": "Keeps asking permissive and leaves consultation unresolved with partial coverage; does not infer must from may."
+    },
+    {
+      "id": "scope-preserved",
+      "score": 0,
+      "excerpt": "[\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"source-4\",\n    \"value\": {\n      \"type\": \"source\",\n      \"text\": \"Session paraphrase: Blake stated the steward chooses what the next work should be; after the steward has chosen, the orchestrator can insert the record for that already chosen work; the orchestrator may ask the steward before stopping. Blake asked that this be captured without broadening.\",\n      \"status\": \"recorded\",\n      \"meta\": {\n        \"source_kind\": \"session-paraphrase\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"orchestrator-inserts-chosen-record\",\n    \"value\": {\n      \"type\": \"claim\",\n      \"text\": \"After the steward has chosen the next work, the orchestrator may insert the record for that already chosen work. Inserting the record does not include choosing the work.\",\n      \"status\": \"accepted\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"rationale\": \"Separates mechanical record insertion from the choice of next work, which remains with the steward.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"nodes\",\n    \"id\": \"orchestrator-may-ask-before-stopping\",\n    \"value\": {\n      \"type\": \"claim\",\n      \"text\": \"The orchestrator may ask the steward before stopping. This is permissive; it does not establish that asking is required.\",\n      \"status\": \"accepted\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"sources\": [\n          \"source-4\"\n        ],\n        \"rationale\": \"Recorded as stated. Whether consultation is mandatory remains an open question.\"\n      }\n    }\n  },\n  {\n    \"op\": \"update\",\n    \"collection\": \"nodes\",\n    \"id\": \"steward-next-work\",\n    \"value\": {\n      \"type\": \"claim\",\n      \"text\": \"Steward always chooses next work after a failed attempt.\",\n      \"status\": \"accepted\",\n      \"meta\": {\n        \"review_state\": \"current\",\n        \"sources\": [\n          \"source-2\",\n          \"source-4\"\n        ],\n        \"rationale\": \"Keep a clean responsibility boundary; orchestrator may end a failed attempt and return it to steward. Restated by Blake in source-4.\"\n      }\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-steward-next-work-1\",\n    \"value\": {\n      \"from\": \"steward-next-work\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-orchestrator-inserts-chosen-record-0\",\n    \"value\": {\n      \"from\": \"orchestrator-inserts-chosen-record\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-5\",\n    \"value\": {\n      \"from\": \"orchestrator-inserts-chosen-record\",\n      \"type\": \"about\",\n      \"to\": \"orchestrator-role\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-6\",\n    \"value\": {\n      \"from\": \"orchestrator-inserts-chosen-record\",\n      \"type\": \"governs\",\n      \"to\": \"create-record\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-7\",\n    \"value\": {\n      \"from\": \"orchestrator-inserts-chosen-record\",\n      \"type\": \"depends-on\",\n      \"to\": \"steward-next-work\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"source-orchestrator-may-ask-before-stopping-0\",\n    \"value\": {\n      \"from\": \"orchestrator-may-ask-before-stopping\",\n      \"type\": \"extracted-from\",\n      \"to\": \"source-4\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-8\",\n    \"value\": {\n      \"from\": \"orchestrator-may-ask-before-stopping\",\n      \"type\": \"about\",\n      \"to\": \"orchestrator-role\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-9\",\n    \"value\": {\n      \"from\": \"orchestrator-may-ask-before-stopping\",\n      \"type\": \"governs\",\n      \"to\": \"end-attempt\"\n    }\n  },\n  {\n    \"op\": \"add\",\n    \"collection\": \"edges\",\n    \"id\": \"link-10\",\n    \"value\": {\n      \"from\": \"orchestrator-may-ask-before-stopping\",\n      \"type\": \"answers\",\n      \"to\": \"consultation\",\n      \"coverage\": \"partial\"\n    }\n  }\n]",
+      "excerpt_location": "proposal.proposed_operations",
+      "explanation": "User said after I have chosen and ask me. Proposal replaces both with steward, records that rewritten wording as a source, and accepts it before asking whether that interpretation is right. The operator-choice condition is not preserved."
+    }
+  ],
+  "score": 2,
+  "possible": 3,
+  "hard_failures": [
+    {
+      "code": "invented accepted decision",
+      "excerpt": "After the steward has chosen the next work, the orchestrator may insert the record for that already chosen work. Inserting the record does not include choosing the work.",
+      "source_excerpt": "The steward chooses what the next work should be. After I have chosen, the orchestrator can insert the record for that already chosen work. Also, the orchestrator may ask me before stopping. Please capture that, without broadening it.",
+      "explanation": "User operator identity was changed to steward in both an accepted claim and its supposedly user-authored source. Asking for confirmation afterward does not authorize the accepted mutation."
+    }
+  ],
+  "observations": [
+    {
+      "code": "source-fidelity",
+      "detail": "Store exact user turn independently of paraphrase; unresolved pronouns require proposed standing and clarification before dependent accepted edits."
+    }
+  ],
+  "mechanical_apply": {
+    "status": "valid-applied-proposal",
+    "command": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Users/blake/projects/theory-building-graph/graph.py",
+      "--file",
+      "/var/folders/xs/yfkt8l5n4wj3hq3_xrm7n6480000gn/T/theory-author-8ji3xwcd/graph.json",
+      "apply",
+      "-",
+      "--actor",
+      "blind-participant",
+      "--reason",
+      "Synthetic authorized proposal validation",
+      "--expect",
+      "0",
+      "--json"
+    ],
+    "stdout": "{\"changes\":22,\"revision\":1}\n",
+    "stderr": "",
+    "unchanged": null,
+    "proposed_operation_count": 13,
+    "changed_nodes": [
+      "consultation",
+      "orchestrator-inserts-chosen-record",
+      "orchestrator-may-ask-before-stopping",
+      "source-4",
+      "steward-next-work"
+    ],
+    "deleted_nodes": [],
+    "original_steward_rule_preserved": true
+  },
+  "passed": false,
+  "metrics": {
+    "input_tokens": 6564,
+    "input_token_breakdown": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 3343,
+      "cache_read_input_tokens": 3219
+    },
+    "output_tokens": 3091,
+    "elapsed_seconds": 34.3,
+    "input_bytes": 8630,
+    "retrieval_calls": 0,
+    "authoring_seconds": null,
+    "review_seconds": null
+  },
+  "scope": "Judged isolated no-tool Fable proposals followed by separate real CLI application to temporary graphs. Not a tool-driven multi-turn interview, interactive retrieval, generalized correctness claim, or proof of graph benefit."
+}
