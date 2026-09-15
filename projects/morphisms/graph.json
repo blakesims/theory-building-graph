@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 16,
+  "revision": 17,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -271,9 +271,13 @@
         "source_sha256": "c4be1ed8842a60f8b0727aff9fac528c435d922b395d6b2cd58f518d28fe9cef",
         "review": "Reconstructed paraphrase; not newly ratified wording.",
         "review_state": "needs-review",
-        "review_reason": "Linked statement changed: steward-chooses-next-work",
+        "review_reason": "Answer changed: end-degraded-attempt",
         "legacy_status": "open",
-        "source_kind": "assistant-paraphrase"
+        "source_kind": "assistant-paraphrase",
+        "review_roots": [
+          "end-degraded-attempt",
+          "stopping-authority"
+        ]
       }
     },
     "replacement-authority": {
@@ -288,7 +292,7 @@
         "source_sha256": "32908b8159a59ea055dfd8563c8fd00ff7d50541959f1ba8ccb05b87d75bccca",
         "review": "Reconstructed paraphrase; not newly ratified wording.",
         "review_state": "current",
-        "review_reason": "Explicitly resolved: steward chooses subsequent work. Earlier proposed answer is retained but is not the accepted answer.",
+        "review_reason": "Reviewed after end-degraded-attempt was withdrawn: it was never the accepted answer. steward-planning and steward-chooses-next-work still answer this question.",
         "answer": "steward-chooses-next-work",
         "legacy_status": "answered",
         "source_kind": "assistant-paraphrase"
@@ -350,19 +354,21 @@
     "end-degraded-attempt": {
       "type": "claim",
       "text": "Proposed revision: when bounded work becomes unproductive under an operator-defined stopping threshold, the orchestrator ends the attempt with a failed or degraded outcome. This terminal result brings the matter to the steward, who decides whether to replace the work, commission an investigation in another store, or take another next step.",
-      "status": "proposed",
+      "status": "withdrawn",
       "meta": {
         "author": "Blake",
         "source_excerpt": "the steward will always be involved ... I’m going to prematurely end it ... marked as done, but with an outcome of degraded or failed, and then the steward is responsible",
         "provenance": "Current discussion, revisiting the provisional atomic replacement exception.",
         "scope": "Unproductive or degraded bounded work; ordinary recoverable blockages need not terminate the attempt.",
         "review": "User asked for assessment; preserve as proposal, not ratified rule.",
-        "review_state": "needs-review",
-        "review_reason": "Possible tension in stopping authority: earlier threshold-based ending vs later option to ask the operator. \"May ask\" does not mean \"must ask\"; human resolution needed.",
+        "review_state": "historical",
+        "review_reason": "User rejected autonomous ending at a threshold; the orchestrator asks the operator.",
         "clarified_by": "steward-chooses-next-work",
         "legacy_status": "user-stated",
-        "source_kind": "assistant-paraphrase"
-      }
+        "source_kind": "assistant-paraphrase",
+        "superseded_by": "orchestrator-asks-before-ending"
+      },
+      "semantic_version": 2
     },
     "operator-exception-scope": {
       "type": "question",
@@ -387,7 +393,7 @@
         "source_excerpt": "the steward always chooses the work ... Would you like to keep trying this a few more times, or do you want to scrap this, mark it as failed, and let the steward pick up and work out what to do next?",
         "provenance": "Current conversation: explicit resolution of the operator-approval exception.",
         "review_state": "current",
-        "review_reason": "Existing accepted prose preserved; optional machine pattern is an assistant interpretation for this experiment.",
+        "review_reason": "Reviewed after the stopping-authority decision: steward ownership of next work stands; the operator-consultation sentence is narrowed (see review_note).",
         "scope": "Design agreement only; no Morphisms runtime code changed. The exact autonomous stopping threshold remains configurable and unspecified here.",
         "legacy_status": "agreed",
         "source_kind": "assistant-paraphrase",
@@ -395,7 +401,8 @@
         "pattern_author": "assistant",
         "pattern_scope": "Checks actor-role exclusivity for choosing subsequent work after an ended attempt in the supplied trace. Does not check operator consultation, liveness, or every part of the prose claim.",
         "modality": "only",
-        "enforcement": "guidance"
+        "enforcement": "guidance",
+        "review_note": "Its 'may ask the operator' sentence is narrowed by orchestrator-asks-before-ending: the orchestrator asks, in general. Steward ownership of next work is unchanged."
       },
       "pattern": {
         "kind": "exclusive_actor",
@@ -501,14 +508,16 @@
     "stopping-authority": {
       "type": "question",
       "text": "When an operator-defined stopping threshold is reached, may the orchestrator end the attempt autonomously, or must it ask the operator first?",
-      "status": "open",
+      "status": "answered",
       "meta": {
         "title": "Who authorizes ending an attempt?",
         "author": "assistant",
         "source_kind": "assistant-proposal",
-        "review_state": "needs-review",
-        "review_reason": "Linked statement changed: steward-chooses-next-work"
-      }
+        "review_state": "current",
+        "review_reason": "User decided: the orchestrator must ask the operator first, in general.",
+        "answer_shape": "verdict"
+      },
+      "semantic_version": 2
     },
     "fixture-steward-next": {
       "type": "trace",
@@ -947,6 +956,21 @@
         "source_kind": "computed-pattern-check",
         "synthetic": true,
         "title": "Pattern insufficient-information",
+        "review_state": "current"
+      }
+    },
+    "orchestrator-asks-before-ending": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "In general, the orchestrator asks the operator before ending an unproductive attempt; it does not end the attempt on its own when a stopping threshold is reached. The request comes to the operator's desk.",
+      "meta": {
+        "title": "Orchestrator asks the operator before ending an attempt",
+        "author": "user",
+        "source_kind": "session-paraphrase",
+        "source_excerpt": "no i want the orchestrator to ask the operator in general, yes. this should come to the desk of the operator.",
+        "provenance": "Claude Code session 2026-09-15, answer to stopping-authority.",
+        "modality": "must ask, in general",
+        "scope": "'In general' is preserved: exceptions are not specified. 'Desk' is not modelled as an entity.",
         "review_state": "current"
       }
     }
@@ -1808,7 +1832,8 @@
       "type": "potential-conflict",
       "meta": {
         "author": "assistant",
-        "rationale": "Both govern ending an attempt, but the necessity of operator consultation is unclear. Preserve both until scope is clarified."
+        "rationale": "Both govern ending an attempt, but the necessity of operator consultation is unclear. Preserve both until scope is clarified.",
+        "resolution": "Resolved by orchestrator-asks-before-ending: end-degraded-attempt withdrawn."
       }
     },
     "scope-end-degraded-attempt-end-attempt": {
@@ -2005,6 +2030,38 @@
       "type": "checks",
       "from": "check-v3-missing-role",
       "to": "fixture-missing-role"
+    },
+    "asks-governs-end-attempt": {
+      "from": "orchestrator-asks-before-ending",
+      "to": "end-attempt",
+      "type": "governs"
+    },
+    "asks-about-orchestrator": {
+      "from": "orchestrator-asks-before-ending",
+      "to": "orchestrator-role",
+      "type": "about"
+    },
+    "asks-answers-stopping-authority": {
+      "from": "orchestrator-asks-before-ending",
+      "to": "stopping-authority",
+      "type": "answers",
+      "coverage": "full",
+      "answer": {
+        "verdict": "must ask the operator first, in general"
+      },
+      "meta": {
+        "author": "assistant",
+        "source_excerpt": "i want the orchestrator to ask the operator in general, yes"
+      }
+    },
+    "asks-revises-end-degraded": {
+      "from": "orchestrator-asks-before-ending",
+      "to": "end-degraded-attempt",
+      "type": "revises",
+      "meta": {
+        "author": "assistant",
+        "rationale": "Rejects autonomous ending at a threshold. The steward handoff after a failed attempt stays covered by steward-chooses-next-work."
+      }
     }
   },
   "changes": [
@@ -6493,6 +6550,391 @@
               "review_reason": "Preserved older checker result; superseded by audited exclusive-actor/3 evaluation."
             }
           }
+        }
+      ]
+    },
+    {
+      "revision": 17,
+      "at": "2026-09-15T14:29:44.237464+00:00",
+      "actor": "assistant",
+      "reason": "User decided the orchestrator asks the operator before ending an attempt",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "orchestrator-asks-before-ending",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "In general, the orchestrator asks the operator before ending an unproductive attempt; it does not end the attempt on its own when a stopping threshold is reached. The request comes to the operator's desk.",
+            "meta": {
+              "title": "Orchestrator asks the operator before ending an attempt",
+              "author": "user",
+              "source_kind": "session-paraphrase",
+              "source_excerpt": "no i want the orchestrator to ask the operator in general, yes. this should come to the desk of the operator.",
+              "provenance": "Claude Code session 2026-09-15, answer to stopping-authority.",
+              "modality": "must ask, in general",
+              "scope": "'In general' is preserved: exceptions are not specified. 'Desk' is not modelled as an entity.",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "asks-governs-end-attempt",
+          "before": null,
+          "after": {
+            "from": "orchestrator-asks-before-ending",
+            "to": "end-attempt",
+            "type": "governs"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "asks-about-orchestrator",
+          "before": null,
+          "after": {
+            "from": "orchestrator-asks-before-ending",
+            "to": "orchestrator-role",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "asks-answers-stopping-authority",
+          "before": null,
+          "after": {
+            "from": "orchestrator-asks-before-ending",
+            "to": "stopping-authority",
+            "type": "answers",
+            "coverage": "full",
+            "answer": {
+              "verdict": "must ask the operator first, in general"
+            },
+            "meta": {
+              "author": "assistant",
+              "source_excerpt": "i want the orchestrator to ask the operator in general, yes"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "asks-revises-end-degraded",
+          "before": null,
+          "after": {
+            "from": "orchestrator-asks-before-ending",
+            "to": "end-degraded-attempt",
+            "type": "revises",
+            "meta": {
+              "author": "assistant",
+              "rationale": "Rejects autonomous ending at a threshold. The steward handoff after a failed attempt stays covered by steward-chooses-next-work."
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "stopping-authority",
+          "before": {
+            "type": "question",
+            "text": "When an operator-defined stopping threshold is reached, may the orchestrator end the attempt autonomously, or must it ask the operator first?",
+            "status": "open",
+            "meta": {
+              "title": "Who authorizes ending an attempt?",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "review_state": "needs-review",
+              "review_reason": "Linked statement changed: steward-chooses-next-work"
+            }
+          },
+          "after": {
+            "type": "question",
+            "text": "When an operator-defined stopping threshold is reached, may the orchestrator end the attempt autonomously, or must it ask the operator first?",
+            "status": "answered",
+            "meta": {
+              "title": "Who authorizes ending an attempt?",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "review_state": "current",
+              "review_reason": "User decided: the orchestrator must ask the operator first, in general.",
+              "answer_shape": "verdict"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "end-degraded-attempt",
+          "before": {
+            "type": "claim",
+            "text": "Proposed revision: when bounded work becomes unproductive under an operator-defined stopping threshold, the orchestrator ends the attempt with a failed or degraded outcome. This terminal result brings the matter to the steward, who decides whether to replace the work, commission an investigation in another store, or take another next step.",
+            "status": "proposed",
+            "meta": {
+              "author": "Blake",
+              "source_excerpt": "the steward will always be involved ... I’m going to prematurely end it ... marked as done, but with an outcome of degraded or failed, and then the steward is responsible",
+              "provenance": "Current discussion, revisiting the provisional atomic replacement exception.",
+              "scope": "Unproductive or degraded bounded work; ordinary recoverable blockages need not terminate the attempt.",
+              "review": "User asked for assessment; preserve as proposal, not ratified rule.",
+              "review_state": "needs-review",
+              "review_reason": "Possible tension in stopping authority: earlier threshold-based ending vs later option to ask the operator. \"May ask\" does not mean \"must ask\"; human resolution needed.",
+              "clarified_by": "steward-chooses-next-work",
+              "legacy_status": "user-stated",
+              "source_kind": "assistant-paraphrase"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "text": "Proposed revision: when bounded work becomes unproductive under an operator-defined stopping threshold, the orchestrator ends the attempt with a failed or degraded outcome. This terminal result brings the matter to the steward, who decides whether to replace the work, commission an investigation in another store, or take another next step.",
+            "status": "withdrawn",
+            "meta": {
+              "author": "Blake",
+              "source_excerpt": "the steward will always be involved ... I’m going to prematurely end it ... marked as done, but with an outcome of degraded or failed, and then the steward is responsible",
+              "provenance": "Current discussion, revisiting the provisional atomic replacement exception.",
+              "scope": "Unproductive or degraded bounded work; ordinary recoverable blockages need not terminate the attempt.",
+              "review": "User asked for assessment; preserve as proposal, not ratified rule.",
+              "review_state": "historical",
+              "review_reason": "User rejected autonomous ending at a threshold; the orchestrator asks the operator.",
+              "clarified_by": "steward-chooses-next-work",
+              "legacy_status": "user-stated",
+              "source_kind": "assistant-paraphrase",
+              "superseded_by": "orchestrator-asks-before-ending"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "stopping-authority-tension",
+          "before": {
+            "from": "end-degraded-attempt",
+            "to": "steward-chooses-next-work",
+            "type": "potential-conflict",
+            "meta": {
+              "author": "assistant",
+              "rationale": "Both govern ending an attempt, but the necessity of operator consultation is unclear. Preserve both until scope is clarified."
+            }
+          },
+          "after": {
+            "from": "end-degraded-attempt",
+            "to": "steward-chooses-next-work",
+            "type": "potential-conflict",
+            "meta": {
+              "author": "assistant",
+              "rationale": "Both govern ending an attempt, but the necessity of operator consultation is unclear. Preserve both until scope is clarified.",
+              "resolution": "Resolved by orchestrator-asks-before-ending: end-degraded-attempt withdrawn."
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "steward-chooses-next-work",
+          "before": {
+            "type": "claim",
+            "text": "The steward always chooses subsequent work. When an attempt becomes unproductive, the orchestrator may ask the operator whether to keep trying or end it as failed. An ended failed attempt goes to the steward to decide what to do next. Explicit operator approval does not provide an exception for the orchestrator to choose or create replacement work directly.",
+            "status": "accepted",
+            "meta": {
+              "author": "Blake",
+              "source_excerpt": "the steward always chooses the work ... Would you like to keep trying this a few more times, or do you want to scrap this, mark it as failed, and let the steward pick up and work out what to do next?",
+              "provenance": "Current conversation: explicit resolution of the operator-approval exception.",
+              "review_state": "current",
+              "review_reason": "Existing accepted prose preserved; optional machine pattern is an assistant interpretation for this experiment.",
+              "scope": "Design agreement only; no Morphisms runtime code changed. The exact autonomous stopping threshold remains configurable and unspecified here.",
+              "legacy_status": "agreed",
+              "source_kind": "assistant-paraphrase",
+              "pattern_standing": "proposed",
+              "pattern_author": "assistant",
+              "pattern_scope": "Checks actor-role exclusivity for choosing subsequent work after an ended attempt in the supplied trace. Does not check operator consultation, liveness, or every part of the prose claim.",
+              "modality": "only",
+              "enforcement": "guidance"
+            },
+            "pattern": {
+              "kind": "exclusive_actor",
+              "operation": "choose-work",
+              "allowed_role": "steward-role",
+              "scope": "after_attempt_ended"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "text": "The steward always chooses subsequent work. When an attempt becomes unproductive, the orchestrator may ask the operator whether to keep trying or end it as failed. An ended failed attempt goes to the steward to decide what to do next. Explicit operator approval does not provide an exception for the orchestrator to choose or create replacement work directly.",
+            "status": "accepted",
+            "meta": {
+              "author": "Blake",
+              "source_excerpt": "the steward always chooses the work ... Would you like to keep trying this a few more times, or do you want to scrap this, mark it as failed, and let the steward pick up and work out what to do next?",
+              "provenance": "Current conversation: explicit resolution of the operator-approval exception.",
+              "review_state": "current",
+              "review_reason": "Reviewed after the stopping-authority decision: steward ownership of next work stands; the operator-consultation sentence is narrowed (see review_note).",
+              "scope": "Design agreement only; no Morphisms runtime code changed. The exact autonomous stopping threshold remains configurable and unspecified here.",
+              "legacy_status": "agreed",
+              "source_kind": "assistant-paraphrase",
+              "pattern_standing": "proposed",
+              "pattern_author": "assistant",
+              "pattern_scope": "Checks actor-role exclusivity for choosing subsequent work after an ended attempt in the supplied trace. Does not check operator consultation, liveness, or every part of the prose claim.",
+              "modality": "only",
+              "enforcement": "guidance",
+              "review_note": "Its 'may ask the operator' sentence is narrowed by orchestrator-asks-before-ending: the orchestrator asks, in general. Steward ownership of next work is unchanged."
+            },
+            "pattern": {
+              "kind": "exclusive_actor",
+              "operation": "choose-work",
+              "allowed_role": "steward-role",
+              "scope": "after_attempt_ended"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "replacement-authority",
+          "before": {
+            "type": "question",
+            "text": "When a record no longer serves its intention, who decides what work replaces it?",
+            "status": "answered",
+            "meta": {
+              "title": "Who chooses replacement work",
+              "author": "session reconstruction",
+              "provenance": "Blake raised this boundary using the two postmortem case studies.",
+              "source_file": "/Users/blake/Documents/Codex/2026-09-14/realtime-voice-chat/outputs/Theory Graph Trial/Nodes/Q - Who chooses replacement work.md",
+              "source_sha256": "32908b8159a59ea055dfd8563c8fd00ff7d50541959f1ba8ccb05b87d75bccca",
+              "review": "Reconstructed paraphrase; not newly ratified wording.",
+              "review_state": "current",
+              "review_reason": "Explicitly resolved: steward chooses subsequent work. Earlier proposed answer is retained but is not the accepted answer.",
+              "answer": "steward-chooses-next-work",
+              "legacy_status": "answered",
+              "source_kind": "assistant-paraphrase"
+            }
+          },
+          "after": {
+            "type": "question",
+            "text": "When a record no longer serves its intention, who decides what work replaces it?",
+            "status": "answered",
+            "meta": {
+              "title": "Who chooses replacement work",
+              "author": "session reconstruction",
+              "provenance": "Blake raised this boundary using the two postmortem case studies.",
+              "source_file": "/Users/blake/Documents/Codex/2026-09-14/realtime-voice-chat/outputs/Theory Graph Trial/Nodes/Q - Who chooses replacement work.md",
+              "source_sha256": "32908b8159a59ea055dfd8563c8fd00ff7d50541959f1ba8ccb05b87d75bccca",
+              "review": "Reconstructed paraphrase; not newly ratified wording.",
+              "review_state": "current",
+              "review_reason": "Reviewed after end-degraded-attempt was withdrawn: it was never the accepted answer. steward-planning and steward-chooses-next-work still answer this question.",
+              "answer": "steward-chooses-next-work",
+              "legacy_status": "answered",
+              "source_kind": "assistant-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "stopping-authority",
+          "before": {
+            "type": "question",
+            "text": "When an operator-defined stopping threshold is reached, may the orchestrator end the attempt autonomously, or must it ask the operator first?",
+            "status": "answered",
+            "meta": {
+              "title": "Who authorizes ending an attempt?",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "review_state": "current",
+              "review_reason": "User decided: the orchestrator must ask the operator first, in general.",
+              "answer_shape": "verdict"
+            }
+          },
+          "after": {
+            "type": "question",
+            "text": "When an operator-defined stopping threshold is reached, may the orchestrator end the attempt autonomously, or must it ask the operator first?",
+            "status": "answered",
+            "meta": {
+              "title": "Who authorizes ending an attempt?",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "review_state": "current",
+              "review_reason": "User decided: the orchestrator must ask the operator first, in general.",
+              "answer_shape": "verdict"
+            },
+            "semantic_version": 2
+          },
+          "automatic": "semantic-version"
+        },
+        {
+          "collection": "nodes",
+          "id": "end-degraded-attempt",
+          "before": {
+            "type": "claim",
+            "text": "Proposed revision: when bounded work becomes unproductive under an operator-defined stopping threshold, the orchestrator ends the attempt with a failed or degraded outcome. This terminal result brings the matter to the steward, who decides whether to replace the work, commission an investigation in another store, or take another next step.",
+            "status": "withdrawn",
+            "meta": {
+              "author": "Blake",
+              "source_excerpt": "the steward will always be involved ... I’m going to prematurely end it ... marked as done, but with an outcome of degraded or failed, and then the steward is responsible",
+              "provenance": "Current discussion, revisiting the provisional atomic replacement exception.",
+              "scope": "Unproductive or degraded bounded work; ordinary recoverable blockages need not terminate the attempt.",
+              "review": "User asked for assessment; preserve as proposal, not ratified rule.",
+              "review_state": "historical",
+              "review_reason": "User rejected autonomous ending at a threshold; the orchestrator asks the operator.",
+              "clarified_by": "steward-chooses-next-work",
+              "legacy_status": "user-stated",
+              "source_kind": "assistant-paraphrase",
+              "superseded_by": "orchestrator-asks-before-ending"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "text": "Proposed revision: when bounded work becomes unproductive under an operator-defined stopping threshold, the orchestrator ends the attempt with a failed or degraded outcome. This terminal result brings the matter to the steward, who decides whether to replace the work, commission an investigation in another store, or take another next step.",
+            "status": "withdrawn",
+            "meta": {
+              "author": "Blake",
+              "source_excerpt": "the steward will always be involved ... I’m going to prematurely end it ... marked as done, but with an outcome of degraded or failed, and then the steward is responsible",
+              "provenance": "Current discussion, revisiting the provisional atomic replacement exception.",
+              "scope": "Unproductive or degraded bounded work; ordinary recoverable blockages need not terminate the attempt.",
+              "review": "User asked for assessment; preserve as proposal, not ratified rule.",
+              "review_state": "historical",
+              "review_reason": "User rejected autonomous ending at a threshold; the orchestrator asks the operator.",
+              "clarified_by": "steward-chooses-next-work",
+              "legacy_status": "user-stated",
+              "source_kind": "assistant-paraphrase",
+              "superseded_by": "orchestrator-asks-before-ending"
+            },
+            "semantic_version": 2
+          },
+          "automatic": "semantic-version"
+        },
+        {
+          "collection": "nodes",
+          "id": "cancellation-wakeup",
+          "before": {
+            "type": "question",
+            "text": "If a record is cancelled or scrapped without successful completion, what makes the intention available for reassessment? The completion rule alone does not settle this.",
+            "status": "open",
+            "meta": {
+              "title": "Does cancellation also wake the steward",
+              "author": "session reconstruction",
+              "provenance": "Assistant raised this edge case; no user resolution is recorded.",
+              "source_file": "/Users/blake/Documents/Codex/2026-09-14/realtime-voice-chat/outputs/Theory Graph Trial/Nodes/Q - Does cancellation also wake the steward.md",
+              "source_sha256": "c4be1ed8842a60f8b0727aff9fac528c435d922b395d6b2cd58f518d28fe9cef",
+              "review": "Reconstructed paraphrase; not newly ratified wording.",
+              "review_state": "needs-review",
+              "review_reason": "Linked statement changed: steward-chooses-next-work",
+              "legacy_status": "open",
+              "source_kind": "assistant-paraphrase"
+            }
+          },
+          "after": {
+            "type": "question",
+            "text": "If a record is cancelled or scrapped without successful completion, what makes the intention available for reassessment? The completion rule alone does not settle this.",
+            "status": "open",
+            "meta": {
+              "title": "Does cancellation also wake the steward",
+              "author": "session reconstruction",
+              "provenance": "Assistant raised this edge case; no user resolution is recorded.",
+              "source_file": "/Users/blake/Documents/Codex/2026-09-14/realtime-voice-chat/outputs/Theory Graph Trial/Nodes/Q - Does cancellation also wake the steward.md",
+              "source_sha256": "c4be1ed8842a60f8b0727aff9fac528c435d922b395d6b2cd58f518d28fe9cef",
+              "review": "Reconstructed paraphrase; not newly ratified wording.",
+              "review_state": "needs-review",
+              "review_reason": "Answer changed: end-degraded-attempt",
+              "legacy_status": "open",
+              "source_kind": "assistant-paraphrase",
+              "review_roots": [
+                "end-degraded-attempt",
+                "stopping-authority"
+              ]
+            }
+          },
+          "automatic": "dependency-review"
         }
       ]
     }
