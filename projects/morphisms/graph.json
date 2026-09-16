@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 103,
+  "revision": 107,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -2049,7 +2049,7 @@
     },
     "intention-kind-registry": {
       "type": "question",
-      "status": "open",
+      "status": "answered",
       "text": "Is an intention's kind a fixed set shipped with Morphisms, a user-configurable registry, or free text with a few reserved values (such as observation)?",
       "meta": {
         "review_state": "current",
@@ -2071,11 +2071,55 @@
     },
     "intention-has-no-artifacts": {
       "type": "question",
-      "status": "open",
+      "status": "answered",
       "text": "Does an intention carry no artifacts at all, with everything durable living in its event log and its desk items' logs? Blake is wary of artifacts on intentions; the draft assumes none.",
       "meta": {
         "review_state": "current",
         "title": "intention has no artifacts",
+        "author": "assistant",
+        "source_kind": "assistant-proposal"
+      }
+    },
+    "session-2026-09-16-kind-artifacts": {
+      "type": "source",
+      "status": "recorded",
+      "text": "Blake, 2026-09-16, verbatim, on kind: \"if they modify the types, then they need an agent that will consume those types ... if there is no agent set to process those kinds, that's user error, and we would show that as an alert. I don't know how much freedom we give. Maybe we start with a fixed set until we prove that we need more ... Yeah, let's go with that. Less is more.\" On attention state: \"Does the steward's attention really need to be separate from the base state? Can't we collapse it down?\" On artifacts: \"Maybe less is more, I think. My original idea was, can we think of intentions as just another type of record? But we don't need that, I think, do we?\"",
+      "meta": {
+        "review_state": "current",
+        "title": "session 2026 09 16 kind artifacts",
+        "author": "Blake",
+        "source_kind": "verbatim"
+      }
+    },
+    "intention-kind-fixed-set": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "An intention's kind comes from a fixed set shipped with Morphisms, not a user registry, until a real need proves otherwise. Reason: a user-added kind needs an agent configured to consume it, and an unconsumed kind is a user error the system would have to alert on.",
+      "meta": {
+        "review_state": "current",
+        "title": "intention kind fixed set",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
+      }
+    },
+    "intention-carries-no-artifacts": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "An intention carries no artifacts. Everything durable about it is in its event log and in its desk items' logs.",
+      "meta": {
+        "review_state": "current",
+        "title": "intention carries no artifacts",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
+      }
+    },
+    "intention-single-state": {
+      "type": "claim",
+      "status": "proposed",
+      "text": "An intention has one state, not two: ready, claimed, waiting, satisfied, withdrawn. Open is just 'not yet satisfied or withdrawn'; attention values are the live substates of open. Satisfied and withdrawn are rest. A record coming to rest moves waiting to ready; a new filing starts at ready.",
+      "meta": {
+        "review_state": "current",
+        "title": "intention single state",
         "author": "assistant",
         "source_kind": "assistant-proposal"
       }
@@ -4610,6 +4654,63 @@
       "from": "intention-schema-draft",
       "type": "raises",
       "to": "intention-has-no-artifacts"
+    },
+    "intention-kind-fixed-set-about-intention-type": {
+      "from": "intention-kind-fixed-set",
+      "type": "about",
+      "to": "intention-type"
+    },
+    "intention-kind-fixed-set-extracted-from-session-2026-09-16-kind-artifacts": {
+      "from": "intention-kind-fixed-set",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-kind-artifacts"
+    },
+    "intention-kind-fixed-set-answers-intention-kind-registry": {
+      "from": "intention-kind-fixed-set",
+      "type": "answers",
+      "to": "intention-kind-registry",
+      "coverage": "full"
+    },
+    "intention-carries-no-artifacts-about-intention-type": {
+      "from": "intention-carries-no-artifacts",
+      "type": "about",
+      "to": "intention-type"
+    },
+    "intention-carries-no-artifacts-extracted-from-session-2026-09-16-kind-artifacts": {
+      "from": "intention-carries-no-artifacts",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-kind-artifacts"
+    },
+    "intention-carries-no-artifacts-answers-intention-has-no-artifacts": {
+      "from": "intention-carries-no-artifacts",
+      "type": "answers",
+      "to": "intention-has-no-artifacts",
+      "coverage": "full"
+    },
+    "intention-single-state-about-intention-type": {
+      "from": "intention-single-state",
+      "type": "about",
+      "to": "intention-type"
+    },
+    "intention-single-state-about-steward-role": {
+      "from": "intention-single-state",
+      "type": "about",
+      "to": "steward-role"
+    },
+    "intention-single-state-depends-on-rest-wakes-steward": {
+      "from": "intention-single-state",
+      "type": "depends-on",
+      "to": "rest-wakes-steward"
+    },
+    "intention-single-state-extracted-from-session-2026-09-16-kind-artifacts": {
+      "from": "intention-single-state",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-kind-artifacts"
+    },
+    "intention-single-state-revises-intention-status-set": {
+      "from": "intention-single-state",
+      "type": "revises",
+      "to": "intention-status-set"
     }
   },
   "changes": [
@@ -15871,6 +15972,266 @@
             "from": "intention-schema-draft",
             "type": "raises",
             "to": "intention-has-no-artifacts"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 104,
+      "at": "2026-09-16T08:55:10.221346+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: kind is a fixed shipped set until proven otherwise; an intention carries no artifacts; less is more",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "session-2026-09-16-kind-artifacts",
+          "before": null,
+          "after": {
+            "type": "source",
+            "status": "recorded",
+            "text": "Blake, 2026-09-16, verbatim, on kind: \"if they modify the types, then they need an agent that will consume those types ... if there is no agent set to process those kinds, that's user error, and we would show that as an alert. I don't know how much freedom we give. Maybe we start with a fixed set until we prove that we need more ... Yeah, let's go with that. Less is more.\" On attention state: \"Does the steward's attention really need to be separate from the base state? Can't we collapse it down?\" On artifacts: \"Maybe less is more, I think. My original idea was, can we think of intentions as just another type of record? But we don't need that, I think, do we?\"",
+            "meta": {
+              "review_state": "current",
+              "title": "session 2026 09 16 kind artifacts",
+              "author": "Blake",
+              "source_kind": "verbatim"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 105,
+      "at": "2026-09-16T08:55:10.318321+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: kind is a fixed shipped set until proven otherwise; an intention carries no artifacts; less is more",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "intention-kind-fixed-set",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "An intention's kind comes from a fixed set shipped with Morphisms, not a user registry, until a real need proves otherwise. Reason: a user-added kind needs an agent configured to consume it, and an unconsumed kind is a user error the system would have to alert on.",
+            "meta": {
+              "review_state": "current",
+              "title": "intention kind fixed set",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-kind-fixed-set-about-intention-type",
+          "before": null,
+          "after": {
+            "from": "intention-kind-fixed-set",
+            "type": "about",
+            "to": "intention-type"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-kind-fixed-set-extracted-from-session-2026-09-16-kind-artifacts",
+          "before": null,
+          "after": {
+            "from": "intention-kind-fixed-set",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-kind-artifacts"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-kind-fixed-set-answers-intention-kind-registry",
+          "before": null,
+          "after": {
+            "from": "intention-kind-fixed-set",
+            "type": "answers",
+            "to": "intention-kind-registry",
+            "coverage": "full"
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "intention-kind-registry",
+          "before": {
+            "type": "question",
+            "status": "open",
+            "text": "Is an intention's kind a fixed set shipped with Morphisms, a user-configurable registry, or free text with a few reserved values (such as observation)?",
+            "meta": {
+              "review_state": "current",
+              "title": "intention kind registry",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          },
+          "after": {
+            "type": "question",
+            "status": "answered",
+            "text": "Is an intention's kind a fixed set shipped with Morphisms, a user-configurable registry, or free text with a few reserved values (such as observation)?",
+            "meta": {
+              "review_state": "current",
+              "title": "intention kind registry",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 106,
+      "at": "2026-09-16T08:55:10.448366+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: kind is a fixed shipped set until proven otherwise; an intention carries no artifacts; less is more",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "intention-carries-no-artifacts",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "An intention carries no artifacts. Everything durable about it is in its event log and in its desk items' logs.",
+            "meta": {
+              "review_state": "current",
+              "title": "intention carries no artifacts",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-carries-no-artifacts-about-intention-type",
+          "before": null,
+          "after": {
+            "from": "intention-carries-no-artifacts",
+            "type": "about",
+            "to": "intention-type"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-carries-no-artifacts-extracted-from-session-2026-09-16-kind-artifacts",
+          "before": null,
+          "after": {
+            "from": "intention-carries-no-artifacts",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-kind-artifacts"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-carries-no-artifacts-answers-intention-has-no-artifacts",
+          "before": null,
+          "after": {
+            "from": "intention-carries-no-artifacts",
+            "type": "answers",
+            "to": "intention-has-no-artifacts",
+            "coverage": "full"
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "intention-has-no-artifacts",
+          "before": {
+            "type": "question",
+            "status": "open",
+            "text": "Does an intention carry no artifacts at all, with everything durable living in its event log and its desk items' logs? Blake is wary of artifacts on intentions; the draft assumes none.",
+            "meta": {
+              "review_state": "current",
+              "title": "intention has no artifacts",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          },
+          "after": {
+            "type": "question",
+            "status": "answered",
+            "text": "Does an intention carry no artifacts at all, with everything durable living in its event log and its desk items' logs? Blake is wary of artifacts on intentions; the draft assumes none.",
+            "meta": {
+              "review_state": "current",
+              "title": "intention has no artifacts",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 107,
+      "at": "2026-09-16T08:55:10.554629+00:00",
+      "actor": "assistant",
+      "reason": "Blake asked whether attention can collapse into the base state; assistant proposes the collapse. Supersedes the two-machine draft if accepted",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "intention-single-state",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "An intention has one state, not two: ready, claimed, waiting, satisfied, withdrawn. Open is just 'not yet satisfied or withdrawn'; attention values are the live substates of open. Satisfied and withdrawn are rest. A record coming to rest moves waiting to ready; a new filing starts at ready.",
+            "meta": {
+              "review_state": "current",
+              "title": "intention single state",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-single-state-about-intention-type",
+          "before": null,
+          "after": {
+            "from": "intention-single-state",
+            "type": "about",
+            "to": "intention-type"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-single-state-about-steward-role",
+          "before": null,
+          "after": {
+            "from": "intention-single-state",
+            "type": "about",
+            "to": "steward-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-single-state-depends-on-rest-wakes-steward",
+          "before": null,
+          "after": {
+            "from": "intention-single-state",
+            "type": "depends-on",
+            "to": "rest-wakes-steward"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-single-state-extracted-from-session-2026-09-16-kind-artifacts",
+          "before": null,
+          "after": {
+            "from": "intention-single-state",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-kind-artifacts"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-single-state-revises-intention-status-set",
+          "before": null,
+          "after": {
+            "from": "intention-single-state",
+            "type": "revises",
+            "to": "intention-status-set"
           }
         }
       ]
