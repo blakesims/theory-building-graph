@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 41,
+  "revision": 42,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1585,6 +1585,20 @@
         "title": "flag",
         "author": "assistant",
         "source_kind": "assistant-proposal"
+      }
+    },
+    "contract": {
+      "type": "entity",
+      "status": "defined",
+      "text": "The frame an attempt runs under: stores, dimensions, states, edges, schemas, personas. Not a rung on the ladder; changing it is not an attempt at an intention.",
+      "meta": {
+        "review_state": "current",
+        "title": "contract",
+        "author": "assistant",
+        "source_kind": "assistant-proposal",
+        "aliases": [
+          "frame"
+        ]
       }
     }
   },
@@ -10971,6 +10985,33 @@
               "title": "flag",
               "author": "assistant",
               "source_kind": "assistant-proposal"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 42,
+      "at": "2026-09-16T06:32:49.909743+00:00",
+      "actor": "assistant",
+      "reason": "Handover update 2026-09-16: ladder and obstruction model, delegates, frame",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "contract",
+          "before": null,
+          "after": {
+            "type": "entity",
+            "status": "defined",
+            "text": "The frame an attempt runs under: stores, dimensions, states, edges, schemas, personas. Not a rung on the ladder; changing it is not an attempt at an intention.",
+            "meta": {
+              "review_state": "current",
+              "title": "contract",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "aliases": [
+                "frame"
+              ]
             }
           }
         }
