@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 116,
+  "revision": 122,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1053,7 +1053,7 @@
     "intention-carries-history": {
       "type": "claim",
       "status": "accepted",
-      "text": "An intention carries its history: manifest-record links, discussion, and operator answers, as an append-only history. A report that chosen work no longer serves the intention returns to that same intention; it does not create a new intention. Evidence about what went wrong lives on the record (the archive reason), not on the intention.",
+      "text": "An intention carries its history as an append-only log: manifest-record links and, by link to its desk items, the discussion and operator answers held on those items' logs. A report that chosen work no longer serves the intention returns to that same intention.",
       "meta": {
         "title": "The intention carries the history",
         "author": "Blake",
@@ -1493,7 +1493,7 @@
     "desk-item": {
       "type": "entity",
       "status": "defined",
-      "text": "An item on the operator's desk: a question or a proposal with options, linked to the record it concerns and through it to the intention. Birthed by the steward or the orchestrator, or mirrored by the system from an agent-thread question. Claimable only by the operator.",
+      "text": "An item on the operator's desk: a question, a proposal with options, or a block the orchestrator or steward cannot settle. Linked to the intention(s) it concerns and to zero or more records across them; an intention sent up by the steward has no record yet, an obstruction may span many. Carries its own dated log (the discussion and the operator's answers).",
       "meta": {
         "review_state": "current",
         "title": "desk item",
@@ -1508,7 +1508,7 @@
     "run": {
       "type": "entity",
       "status": "defined",
-      "text": "One worker's turn on a record: the pair (record, worker). Claimable only by the orchestrator, which starts it and owns its outcome, including a blocked return.",
+      "text": "One worker's turn on a record at a node: the pair (record, worker). Started by the orchestrator, claimed by the worker. Its events are a span of the record's log. Rest of a run wakes the orchestrator.",
       "meta": {
         "review_state": "current",
         "title": "run",
@@ -1722,7 +1722,7 @@
     "attempt-obstruction-dual": {
       "type": "claim",
       "status": "proposed",
-      "text": "Two shapes cover everything that happens to an intention on the ladder: it moves (an attempt: record, run) or it is blocked (an obstruction: a desk item, or a flag when the contract is the cause). Attempts go down the ladder, are born from the claimer above, are claimed by a doer, rest when the walk ends, and wake the claimer above. Obstructions go sideways, are born from the blocked claimer, are claimed by a resolver, rest when answered, and wake the raiser. An observation is neither: it is a new intention entering the front door.",
+      "text": "On the ladder, two shapes cover what happens to an intention: it moves (an attempt: record, run) or it is blocked (an obstruction). Attempts go down the ladder, are born from the claimer above, are claimed by a doer, rest when the walk ends, and wake the claimer above. A block goes sideways to a resolver and freezes the rungs it names: a flag when the contract is the cause (resolver auditor), otherwise up to the orchestrator and, if it cannot settle it, to the desk. The desk itself is not an obstruction shape: it also receives non-blocking questions and dials-routed intentions. An observation is neither: it is a new intention entering the front door.",
       "meta": {
         "review_state": "current",
         "title": "attempt obstruction dual",
@@ -1755,13 +1755,14 @@
     },
     "running-policy-separates-delegates": {
       "type": "claim",
-      "status": "proposed",
+      "status": "withdrawn",
       "text": "What separates the contract writer, assistant and architect from an ordinary worker is only the running policy P = (start, drive): the operator drives them turn by turn. Nothing about what they claim differs.",
       "meta": {
-        "review_state": "current",
+        "review_state": "historical",
         "title": "running policy separates delegates",
         "author": "assistant",
-        "source_kind": "assistant-proposal"
+        "source_kind": "assistant-proposal",
+        "superseded_by": "delegates-are-co-seats"
       }
     },
     "flag-as-intention": {
@@ -4638,11 +4639,6 @@
       "type": "depends-on",
       "to": "intention-operation-set"
     },
-    "intention-schema-draft-depends-on-intention-status-set": {
-      "from": "intention-schema-draft",
-      "type": "depends-on",
-      "to": "intention-status-set"
-    },
     "intention-schema-draft-depends-on-desk-arrival-carries-trace": {
       "from": "intention-schema-draft",
       "type": "depends-on",
@@ -4801,6 +4797,11 @@
       "from": "intention-is-not-a-record",
       "type": "supports",
       "to": "contract-is-the-frame"
+    },
+    "intention-schema-draft-depends-on-intention-single-state": {
+      "from": "intention-schema-draft",
+      "type": "depends-on",
+      "to": "intention-single-state"
     }
   },
   "changes": [
@@ -16716,6 +16717,223 @@
               "review_state": "historical",
               "superseded_by": "intention-single-state"
             }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 117,
+      "at": "2026-09-16T09:07:47.985652+00:00",
+      "actor": "assistant",
+      "reason": "Fix stale text and edges caught by the three Flash reviewers (2026-09-16); meaning unchanged, all consequences of rulings already recorded (R1-F1: entity still said the orchestrator claims it)",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "run",
+          "before": {
+            "type": "entity",
+            "status": "defined",
+            "text": "One worker's turn on a record: the pair (record, worker). Claimable only by the orchestrator, which starts it and owns its outcome, including a blocked return.",
+            "meta": {
+              "review_state": "current",
+              "title": "run",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "aliases": [
+                "worker turn"
+              ]
+            }
+          },
+          "after": {
+            "type": "entity",
+            "status": "defined",
+            "text": "One worker's turn on a record at a node: the pair (record, worker). Started by the orchestrator, claimed by the worker. Its events are a span of the record's log. Rest of a run wakes the orchestrator.",
+            "meta": {
+              "review_state": "current",
+              "title": "run",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "aliases": [
+                "worker turn"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 118,
+      "at": "2026-09-16T09:07:48.083264+00:00",
+      "actor": "assistant",
+      "reason": "Fix stale text and edges caught by the three Flash reviewers (2026-09-16); meaning unchanged, all consequences of rulings already recorded (R2-F4: entity said exactly one record)",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "desk-item",
+          "before": {
+            "type": "entity",
+            "status": "defined",
+            "text": "An item on the operator's desk: a question or a proposal with options, linked to the record it concerns and through it to the intention. Birthed by the steward or the orchestrator, or mirrored by the system from an agent-thread question. Claimable only by the operator.",
+            "meta": {
+              "review_state": "current",
+              "title": "desk item",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "aliases": [
+                "desk item",
+                "question"
+              ]
+            }
+          },
+          "after": {
+            "type": "entity",
+            "status": "defined",
+            "text": "An item on the operator's desk: a question, a proposal with options, or a block the orchestrator or steward cannot settle. Linked to the intention(s) it concerns and to zero or more records across them; an intention sent up by the steward has no record yet, an obstruction may span many. Carries its own dated log (the discussion and the operator's answers).",
+            "meta": {
+              "review_state": "current",
+              "title": "desk item",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "aliases": [
+                "desk item",
+                "question"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 119,
+      "at": "2026-09-16T09:07:48.180272+00:00",
+      "actor": "assistant",
+      "reason": "Fix stale text and edges caught by the three Flash reviewers (2026-09-16); meaning unchanged, all consequences of rulings already recorded (R1/R2-F1: discussion and answers now live on the desk item log; carried by link)",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "intention-carries-history",
+          "before": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "An intention carries its history: manifest-record links, discussion, and operator answers, as an append-only history. A report that chosen work no longer serves the intention returns to that same intention; it does not create a new intention. Evidence about what went wrong lives on the record (the archive reason), not on the intention.",
+            "meta": {
+              "title": "The intention carries the history",
+              "author": "Blake",
+              "source_kind": "assistant-paraphrase",
+              "provenance": "Session 2 F5 and the rejected alternative 'making every human-facing matter an intention'. Reaffirmed 2026-09-16 when the bullet list was read back.",
+              "review_state": "current",
+              "review_reason": "Narrowed 2026-09-16: 'decisions' and 'blocked-work evidence' were assistant words; the handover lives on the record's archive reason."
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "An intention carries its history as an append-only log: manifest-record links and, by link to its desk items, the discussion and operator answers held on those items' logs. A report that chosen work no longer serves the intention returns to that same intention.",
+            "meta": {
+              "title": "The intention carries the history",
+              "author": "Blake",
+              "source_kind": "assistant-paraphrase",
+              "provenance": "Session 2 F5 and the rejected alternative 'making every human-facing matter an intention'. Reaffirmed 2026-09-16 when the bullet list was read back.",
+              "review_state": "current",
+              "review_reason": "Narrowed 2026-09-16: 'decisions' and 'blocked-work evidence' were assistant words; the handover lives on the record's archive reason."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 120,
+      "at": "2026-09-16T09:07:48.264276+00:00",
+      "actor": "assistant",
+      "reason": "Fix stale text and edges caught by the three Flash reviewers (2026-09-16); meaning unchanged, all consequences of rulings already recorded (R1-F3: said delegates claim what workers claim; the accepted co-seat claim says they are the operator's pen, not actors)",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "running-policy-separates-delegates",
+          "before": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "What separates the contract writer, assistant and architect from an ordinary worker is only the running policy P = (start, drive): the operator drives them turn by turn. Nothing about what they claim differs.",
+            "meta": {
+              "review_state": "current",
+              "title": "running policy separates delegates",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "withdrawn",
+            "text": "What separates the contract writer, assistant and architect from an ordinary worker is only the running policy P = (start, drive): the operator drives them turn by turn. Nothing about what they claim differs.",
+            "meta": {
+              "review_state": "historical",
+              "title": "running policy separates delegates",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "superseded_by": "delegates-are-co-seats"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 121,
+      "at": "2026-09-16T09:07:48.343770+00:00",
+      "actor": "assistant",
+      "reason": "Fix stale text and edges caught by the three Flash reviewers (2026-09-16); meaning unchanged, all consequences of rulings already recorded (R3-F1/F5: desk items are not all blocks; flag is a block on the frame, not an obstruction pointing at records)",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "attempt-obstruction-dual",
+          "before": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "Two shapes cover everything that happens to an intention on the ladder: it moves (an attempt: record, run) or it is blocked (an obstruction: a desk item, or a flag when the contract is the cause). Attempts go down the ladder, are born from the claimer above, are claimed by a doer, rest when the walk ends, and wake the claimer above. Obstructions go sideways, are born from the blocked claimer, are claimed by a resolver, rest when answered, and wake the raiser. An observation is neither: it is a new intention entering the front door.",
+            "meta": {
+              "review_state": "current",
+              "title": "attempt obstruction dual",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "On the ladder, two shapes cover what happens to an intention: it moves (an attempt: record, run) or it is blocked (an obstruction). Attempts go down the ladder, are born from the claimer above, are claimed by a doer, rest when the walk ends, and wake the claimer above. A block goes sideways to a resolver and freezes the rungs it names: a flag when the contract is the cause (resolver auditor), otherwise up to the orchestrator and, if it cannot settle it, to the desk. The desk itself is not an obstruction shape: it also receives non-blocking questions and dials-routed intentions. An observation is neither: it is a new intention entering the front door.",
+            "meta": {
+              "review_state": "current",
+              "title": "attempt obstruction dual",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 122,
+      "at": "2026-09-16T09:07:48.429369+00:00",
+      "actor": "assistant",
+      "reason": "Fix stale text and edges caught by the three Flash reviewers (2026-09-16); meaning unchanged, all consequences of rulings already recorded (R2-F7/R3-F7: schema draft depended on the withdrawn two-state claim)",
+      "edits": [
+        {
+          "collection": "edges",
+          "id": "intention-schema-draft-depends-on-intention-status-set",
+          "before": {
+            "from": "intention-schema-draft",
+            "type": "depends-on",
+            "to": "intention-status-set"
+          },
+          "after": null
+        },
+        {
+          "collection": "edges",
+          "id": "intention-schema-draft-depends-on-intention-single-state",
+          "before": null,
+          "after": {
+            "from": "intention-schema-draft",
+            "type": "depends-on",
+            "to": "intention-single-state"
           }
         }
       ]
