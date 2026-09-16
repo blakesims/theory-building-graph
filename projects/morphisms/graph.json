@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 29,
+  "revision": 30,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1469,6 +1469,17 @@
         "source_kind": "assistant-proposal",
         "answer_shape": "verdict",
         "review_state": "current"
+      }
+    },
+    "session-2026-09-16-claimability": {
+      "type": "source",
+      "status": "recorded",
+      "text": "Blake, 2026-09-16, verbatim excerpts: \"a single intention could create multiple desk items. I was thinking that the intention itself was coming onto my desk, and that's not actually correct.\" \"An intention is never claimable by the operator; only a desk item is. A record is never claimable by an operator, only a worker. ... a pair, record, worker, is claimable by the orchestrator. And yes, a desk item is claimable only by me.\" \"An intention is only claimable by the steward.\" \"the orchestrator can create a desk item ... Is a question just a desk item?\" \"Whenever it files a question in the agent thread, the system automatically mirrors it in the desk. I can answer it either in the desk or in the agent thread; wherever I answer it, it disappears from both.\"",
+      "meta": {
+        "review_state": "current",
+        "title": "session 2026 09 16 claimability",
+        "author": "Blake",
+        "source_kind": "verbatim"
       }
     }
   },
@@ -10353,6 +10364,30 @@
               "review_roots": [
                 "completion-wakes-steward"
               ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 30,
+      "at": "2026-09-16T04:30:15.815274+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: desk items are separate from intentions; one actor claims one item kind",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "session-2026-09-16-claimability",
+          "before": null,
+          "after": {
+            "type": "source",
+            "status": "recorded",
+            "text": "Blake, 2026-09-16, verbatim excerpts: \"a single intention could create multiple desk items. I was thinking that the intention itself was coming onto my desk, and that's not actually correct.\" \"An intention is never claimable by the operator; only a desk item is. A record is never claimable by an operator, only a worker. ... a pair, record, worker, is claimable by the orchestrator. And yes, a desk item is claimable only by me.\" \"An intention is only claimable by the steward.\" \"the orchestrator can create a desk item ... Is a question just a desk item?\" \"Whenever it files a question in the agent thread, the system automatically mirrors it in the desk. I can answer it either in the desk or in the agent thread; wherever I answer it, it disappears from both.\"",
+            "meta": {
+              "review_state": "current",
+              "title": "session 2026 09 16 claimability",
+              "author": "Blake",
+              "source_kind": "verbatim"
             }
           }
         }
