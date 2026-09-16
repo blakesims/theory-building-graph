@@ -39,6 +39,7 @@ reviewers was low, so focus prompts worked.
 7. `frontier` prints nothing under findings/conflicts when there are none; a "0 conflicts,
    3 informational" line would show that the check ran.
 8. Entities and operations have no retired state (found by the assistant, same day).
+9. No derived table of who-claims-what / who-performs-what: a `roles` command that walks each role to its performed-by operations and their acts-on entities would print the table the model keeps only in prose (Blake asked for it 2026-09-16).
 
 ## Verdict
 
