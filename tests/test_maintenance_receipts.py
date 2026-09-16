@@ -1,6 +1,7 @@
 """Validate archived actual maintenance evidence; never run a new model in unit tests."""
 import hashlib,json,re,unittest
 from pathlib import Path
+from tests.paths import RepositoryPath as Path
 ROOT=Path(__file__).resolve().parents[1];BASE=ROOT/'reviews'/'maintenance';RAW=BASE/'raw'
 def read(p):return json.loads(p.read_text())
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()

@@ -7,6 +7,7 @@ import hashlib
 import json
 import unittest
 from pathlib import Path
+from tests.paths import RepositoryPath as Path
 
 ROOT=Path(__file__).resolve().parents[1]
 REPORT=ROOT/'reviews/interpretation'

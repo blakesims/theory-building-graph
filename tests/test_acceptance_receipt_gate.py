@@ -1,7 +1,8 @@
 """Regression tests for falsely green empirical acceptance receipts."""
 import copy,json,tempfile,unittest,hashlib
 from pathlib import Path
-from acceptance.receipt_validation import grade_errors,author_receipt_errors,validate_receipt_file,agent_evidence
+from tests.paths import RepositoryPath as Path
+from tests.acceptance.receipt_validation import grade_errors,author_receipt_errors,validate_receipt_file,agent_evidence
 
 class ReceiptGateTests(unittest.TestCase):
     def setUp(self):

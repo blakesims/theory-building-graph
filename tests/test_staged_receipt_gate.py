@@ -1,6 +1,7 @@
 import copy,hashlib,json,tempfile,unittest
 from pathlib import Path
-from acceptance.receipt_validation import validate_receipt_file
+from tests.paths import RepositoryPath as Path
+from tests.acceptance.receipt_validation import validate_receipt_file
 
 class StagedGateTests(unittest.TestCase):
     def setUp(self):

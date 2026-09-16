@@ -1,67 +1,68 @@
 # Theory graph
 
-A local tool for keeping the *theory* of a program (Naur, "Programming as Theory Building") as an inspectable graph while you design with an AI agent. Entities, operations, claims and questions carry explicit standing, provenance, declared dependencies and an audit history. The agent authors through the CLI; the human reads the browser view. The tool never infers meaning from prose.
+Keep a program's design decisions, open questions, sources and revisions in a local
+graph. An agent writes through `tg`; a human inspects the same data in a read-only
+browser. The tool preserves your theory. It does not infer meaning from prose.
 
-## Use it anywhere
+## Install
 
-```sh
-tg projects                       # registered projects, default marked *
-tg -p morphisms frontier          # session opener: open, unreviewed, proposed, flagged, stale, recent
-tg -p morphisms overview          # counts by type and status; evidence nodes counted separately
-tg -p morphisms check             # review-level findings; informational ones counted (--all to list)
-tg -p morphisms questions         # open, answered and needs-review questions
-tg -p morphisms review steward-role
-tg -p morphisms apply edits.json --actor assistant --reason '...' --expect 17 --dry-run   # effects, no write
-tg -p morphisms reviewed ID --reason '...'   # mark reviewed through the audited path
-tg -p morphisms sync              # commit the graph if changed, pull --rebase, push
-tg -p morphisms where             # engine root, registry, which rule chose the graph
-tg -p morphisms serve             # viewer at http://127.0.0.1:8767
-tg new my-program                 # ./theory/graph.json from the template, registered as my-program
-```
-
-Reads hide evidence machinery (traces and saved check results) unless `--evidence` is passed.
-
-`tg` is on PATH via `~/bin/tg` (installed by `~/dotfiles/install.sh`). The graph a command targets is chosen by, in order: `--file`, `-p NAME`, `$TG_PROJECT`, the nearest `theory/graph.json` above the working directory, then the registry default (`tg use NAME`). The registry lives at `~/.config/theory-graph/projects.json`.
-
-In Claude Code or Pi, `/theory <project>` starts a design session on a registered project and `/theory new <name>` creates one.
-
-## Layout
-
-| Path | What |
-|---|---|
-| `tg` | Launcher. Symlink-safe |
-| `theorygraph/` | The engine: `graph.py` (CLI, store, serve), `dependency.py`, `formalcheck.py`, `tracecheck.py`, `replay.py`, `projects.py`, `template.json`, `viewer/` |
-| `projects/morphisms/graph.json` | The Morphisms theory. Canonical user data |
-| `docs/` | Agent contract, workflow, dependency schema, product notes, build report, worklog |
-| `tests/` | Unit and receipt tests |
-| `acceptance/` | 80-case acceptance contract, runner, trial and evaluation tooling |
-| `fixtures/`, `reviews/` | Recorded trial inputs, receipts and independent reviews. Evidence, not code |
-
-## Working with an agent
-
-Read [docs/AGENT_CONTRACT.md](docs/AGENT_CONTRACT.md) before writing to a graph. [docs/AGENT_WORKFLOW.md](docs/AGENT_WORKFLOW.md) is the session loop: locate, separate source from interpretation, preview one change, apply one audited batch, reconcile with `impact` and `readiness`, stop with one useful question. [docs/DEPENDENCY-SCHEMA.md](docs/DEPENDENCY-SCHEMA.md) defines transitive review, readiness and version receipts.
-
-Writes are one JSON operation array:
+Python 3.10 or later, with no runtime dependencies:
 
 ```sh
-tg -p morphisms apply edits.json --actor assistant --reason 'Record the user clarification' --expect 16
+git clone https://github.com/blakesims/theory-building-graph.git
+cd theory-building-graph
+./tg --version
+# Optional: put this checkout's tg launcher on PATH, or pip install .
 ```
 
-`--expect` rejects stale revisions. Unknown endpoints, types or states reject the whole batch. Semantic edits mark declared dependents `needs-review`. The browser is read-only.
-
-## Verify
+## Ten everyday commands
 
 ```sh
-make test          # 256 unit and receipt tests
-make acceptance    # 80 cases, 22 criteria, against recorded receipts
-make baseline      # checker outcomes on a temporary copy of the live graph
-python3 acceptance/browser_smoke.py   # real browser run on an isolated graph (needs npx)
+tg new my-program                 # create and register ./theory/graph.json
+tg -p my-program frontier         # open decisions and recent changes
+tg -p my-program search owner     # discover stable IDs
+tg -p my-program review ID        # statement and direct reasoning context
+tg -p my-program questions        # question inventory
+tg -p my-program check            # structural and supported pattern findings
+tg -p my-program apply edits.json --actor assistant --reason 'Record decision' --expect 0
+tg -p my-program reviewed ID --reason 'Reviewed the tension'
+tg -p my-program history          # audited revisions
+tg -p my-program serve            # http://127.0.0.1:8767
 ```
 
-`make acceptance` validates saved LLM trial receipts. It does not rerun paid model calls. See [docs/BUILD-REPORT.md](docs/BUILD-REPORT.md) for what the evidence does and does not establish. The graph and prose experiments did not show that graphs beat prose. The supported benefit is explicit retrieval, dependency and check state with inspectable history.
+## Worked example
 
-## Boundaries
+Use a new project, never somebody else's live theory:
 
-This is a tool for developing a theory, not the Morphisms runtime. It does not prove natural-language consistency, source fidelity or agent reliability. Finite pattern checks (`tg evaluate CLAIM TRACE`) cover only declared patterns against supplied traces. See [docs/AGENT_WORKFLOW.md](docs/AGENT_WORKFLOW.md) and [acceptance/FORMAL-SCHEMA.md](acceptance/FORMAL-SCHEMA.md).
+```sh
+tg new example --dir /tmp/theory-example
+printf '%s\n' '[{"op":"add","collection":"nodes","id":"owner","value":{"type":"entity","status":"declared","text":"The person responsible for this program."}}]' > /tmp/theory-edit.json
+tg -p example apply /tmp/theory-edit.json --actor assistant --reason 'Name the subject' --expect 0 --dry-run
+tg -p example apply /tmp/theory-edit.json --actor assistant --reason 'Name the subject' --expect 0
+tg -p example review owner
+```
 
-Keep backups. There is no sync service, and the graph must not be edited by hand while an agent is writing.
+## Selection and boundaries
+
+Choose a graph with `--file PATH`, `-p NAME`, `$TG_PROJECT`, the nearest ancestor's
+`theory/graph.json` or `graph.json`, then the registry default, in that order.
+`tg projects`, `tg use NAME` and `tg where` inspect or change selection. The registry
+is `~/.config/theory-graph/projects.json`. `--json` gives structured reads and
+`--full` includes extended metadata. `--evidence` includes traces and saved checks.
+
+Read the [agent contract](docs/AGENT_CONTRACT.md) and
+[workflow](docs/AGENT_WORKFLOW.md) before representing a user's theory. A successful
+write validates storage, not interpretation or acceptance. Finite checks only test
+supplied patterns and evidence. Graph/prose trials have not established superiority.
+
+## Verify and navigate
+
+`make test` runs unit, receipt and acceptance checks. It validates saved agent
+observations, not fresh paid model trials. `make baseline` checks a temporary copy
+of the live graph. Tests and all archived trial artifacts live under `tests/`.
+`tests/relocations.json` records every cleanup move without rewriting hash-bound
+inputs or receipts. Historical decisions and findings live in `docs/worklog/`.
+
+`theorygraph/` is the Python package. `projects/` contains user graph data. Keep
+backups and do not edit a graph file by hand while an agent is writing. The original
+notebook remains a separate project on port 8766, not this viewer on 8767.

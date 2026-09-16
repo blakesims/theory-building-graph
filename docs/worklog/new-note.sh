@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # new-note.sh — create a worklog note in the project's documentation system.
 #
-# Reads .notes-config.yml at the project root (walks up from CWD to find it).
-# Supports flat / daily / weekly granularity configured via .notes-config.yml.
+# Reads docs/worklog/notes-config.yml (walks up from CWD to find it).
+# Supports flat / daily / weekly granularity.
 
 set -euo pipefail
 
@@ -25,14 +25,14 @@ EOF
 find_root() {
     local dir="$PWD"
     while [[ "$dir" != "/" ]]; do
-        [[ -f "$dir/.notes-config.yml" ]] && { echo "$dir"; return 0; }
+        [[ -f "$dir/docs/worklog/notes-config.yml" ]] && { echo "$dir"; return 0; }
         dir="$(dirname "$dir")"
     done
     return 1
 }
 
 PROJECT_ROOT="$(find_root)" || {
-    echo "Error: .notes-config.yml not found in any parent directory." >&2
+    echo "Error: docs/worklog/notes-config.yml not found in any parent directory." >&2
     echo "Run /doc:init to set up the documentation system first." >&2
     exit 1
 }
@@ -41,7 +41,7 @@ cd "$PROJECT_ROOT"
 
 cfg() {
     local key="$1" default="${2:-}" val
-    val="$(grep -E "^${key}:" .notes-config.yml 2>/dev/null \
+    val="$(grep -E "^${key}:" docs/worklog/notes-config.yml 2>/dev/null \
         | head -1 \
         | sed -E "s/^${key}:[[:space:]]*//" \
         | sed 's/[[:space:]]*#.*$//' \
@@ -71,7 +71,7 @@ target_dir() {
         flat)   echo "$WORKLOG_DIR" ;;
         daily)  echo "$WORKLOG_DIR/$date" ;;
         weekly) echo "$WORKLOG_DIR/$week" ;;
-        *)      echo "Error: unknown granularity '$GRANULARITY' in .notes-config.yml" >&2; exit 1 ;;
+        *)      echo "Error: unknown granularity '$GRANULARITY' in docs/worklog/notes-config.yml" >&2; exit 1 ;;
     esac
 }
 

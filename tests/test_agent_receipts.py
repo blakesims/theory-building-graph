@@ -6,9 +6,10 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from tests.paths import RepositoryPath as Path
 from theorygraph import graph
-from acceptance import session_evaluation
-from acceptance.receipt_validation import author_receipt_errors, validate_receipt_file
+from tests.acceptance import session_evaluation
+from tests.acceptance.receipt_validation import author_receipt_errors, validate_receipt_file
 ROOT=Path(__file__).resolve().parents[1]
 
 class IndependentAgentReceipts(unittest.TestCase):

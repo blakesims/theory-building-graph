@@ -5,7 +5,8 @@ record integrity and observed behavior; they do not make failed acceptance pass.
 """
 import hashlib,json,unittest
 from pathlib import Path
-from acceptance.receipt_validation import validate_receipt_file
+from tests.paths import RepositoryPath as Path
+from tests.acceptance.receipt_validation import validate_receipt_file
 ROOT=Path(__file__).resolve().parents[1]
 BASE=ROOT/'reviews/multiturn/v1'
 def load(p):return json.loads(p.read_text())

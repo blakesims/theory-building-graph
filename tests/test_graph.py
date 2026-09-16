@@ -1,5 +1,6 @@
 import importlib.util,json,tempfile,unittest
 from pathlib import Path
+from tests.paths import RepositoryPath as Path
 from theorygraph import graph as m
 class Tests(unittest.TestCase):
  def setUp(self):

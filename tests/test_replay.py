@@ -3,6 +3,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from tests.paths import RepositoryPath as Path
 from theorygraph import replay
 
 A=lambda name:{'$arg':name}
@@ -107,7 +108,7 @@ if __name__=='__main__':unittest.main()
 
 class SessionReplayTests(unittest.TestCase):
  def test_S01_reversal_preserves_each_stage(self):
-  from theorygraph import graph; from acceptance import session_fixtures
+  from theorygraph import graph; from tests.acceptance import session_fixtures
   g,steps=session_fixtures.replacement_session()
   with tempfile.TemporaryDirectory() as d:
    p=Path(d)/'graph.json';p.write_text(json.dumps(g))
@@ -127,7 +128,7 @@ class SessionReplayTests(unittest.TestCase):
    self.assertIn('replacement-exception',graph.walk(current,'steward-next-work',depth=1,current=False)['nodes'])
    self.assertNotIn('replacement-exception',graph.walk(current,'steward-next-work',depth=1,current=True)['nodes'])
  def test_S02_potential_conflict_does_not_resolve_policy(self):
-  from theorygraph import graph; from acceptance import session_fixtures
+  from theorygraph import graph; from tests.acceptance import session_fixtures
   g=session_fixtures.base_graph()
   with tempfile.TemporaryDirectory() as d:
    p=Path(d)/'g.json';p.write_text(json.dumps(g))
@@ -135,7 +136,7 @@ class SessionReplayTests(unittest.TestCase):
    current=graph.load(p);self.assertEqual(current['nodes']['consultation']['status'],'open');self.assertEqual(current['nodes']['steward-next-work']['status'],'accepted')
    self.assertIn('no formal contradiction',current['edges']['possible-tension']['meta']['rationale'])
  def test_S03_summary_provenance_and_candidate_only(self):
-  from theorygraph import graph; from acceptance import session_fixtures
+  from theorygraph import graph; from tests.acceptance import session_fixtures
   g=session_fixtures.base_graph()
   with tempfile.TemporaryDirectory() as d:
    p=Path(d)/'g.json';p.write_text(json.dumps(g))
@@ -143,7 +144,7 @@ class SessionReplayTests(unittest.TestCase):
    current=graph.load(p);self.assertEqual(current['nodes']['loop-extraction']['status'],'proposed');self.assertEqual(current['nodes']['stop-threshold']['status'],'open')
    self.assertEqual(current['nodes']['consultation']['status'],'open');self.assertEqual(current['nodes']['source-3']['meta']['source_kind'],'summary')
  def test_S04_implementation_choice_can_change_without_goal(self):
-  from theorygraph import graph; from acceptance import session_fixtures
+  from theorygraph import graph; from tests.acceptance import session_fixtures
   g=session_fixtures.base_graph();g['nodes']['cpu']={'type':'entity','text':'Intention: reduce CPU','status':'declared'}
   with tempfile.TemporaryDirectory() as d:
    p=Path(d)/'g.json';p.write_text(json.dumps(g))
@@ -159,7 +160,7 @@ class SessionReplayTests(unittest.TestCase):
   reports.append({'subject':{'host':'a','number':8080},'target':'bob'})
   self.assertEqual(formalcheck.evaluate_cardinality(pattern,reports,True)['outcome'],'violates')
  def test_S06_S07_packets_same_facts_and_no_fake_trial(self):
-  from acceptance import session_evaluation as se
+  from tests.acceptance import session_evaluation as se
   with tempfile.TemporaryDirectory() as d:
    r=se.prepare(d);data=json.loads((Path(d)/'graph-arm.json').read_text());prose=(Path(d)/'prose-arm.md').read_text()
    for fact in data['facts']:
@@ -169,7 +170,7 @@ class SessionReplayTests(unittest.TestCase):
    receipt=json.loads((Path(d)/'receipt-template.json').read_text());self.assertEqual(receipt['status'],'not-run');self.assertFalse(se.validate_receipt(receipt)['valid'])
    self.assertEqual(r['status'],'prepared-not-run')
  def test_S08_cli_read_then_authorized_single_batch(self):
-  import subprocess,sys; from acceptance import session_fixtures
+  import subprocess,sys; from tests.acceptance import session_fixtures
   g,steps=session_fixtures.replacement_session()
   with tempfile.TemporaryDirectory() as d:
    p=Path(d)/'graph.json';p.write_text(json.dumps(g));before=p.read_bytes()

@@ -1,13 +1,16 @@
-"""Latest recorded browser integration evidence (reviews/browser/current); rerun acceptance/browser_smoke.py after UI or engine changes. The original run at reviews/browser/ is bound by the S08 composite receipt and is left untouched."""
+"""Recorded v0.1 browser evidence, not a claim of a fresh run on the current engine.
+The original S08 composite evidence and observed engine bytes remain immutable.
+"""
 import hashlib,json,unittest
 from pathlib import Path
+from tests.paths import RepositoryPath as Path
 ROOT=Path(__file__).resolve().parents[1]
 class BrowserReceipt(unittest.TestCase):
     def test_live_observability(self):
         folder=ROOT/'reviews'/'browser'/'current';r=json.loads((folder/'receipt.json').read_text())
         self.assertTrue(r['passed']);self.assertTrue(r['live_graph_unchanged']);self.assertTrue(r['synthetic'])
         for name,digest in r['files_sha256'].items():
-            p={'index.html':ROOT/'theorygraph'/'viewer'/'index.html','graph.py':ROOT/'theorygraph'/'graph.py'}.get(name,folder/name)
+            p={'index.html':ROOT/'theorygraph'/'viewer'/'index.html','graph.py':folder/'graph.py'}.get(name,folder/name)
             self.assertEqual(hashlib.sha256(p.read_bytes()).hexdigest(),digest,name)
         for name,digest in r['screenshots'].items():self.assertEqual(hashlib.sha256((folder/name).read_bytes()).hexdigest(),digest)
         commands=json.loads((folder/'commands.json').read_text())

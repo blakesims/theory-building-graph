@@ -1,5 +1,6 @@
 import contextlib,copy,importlib.util,io,json,tempfile,unittest
 from pathlib import Path
+from tests.paths import RepositoryPath as Path
 from theorygraph import graph
 spec=importlib.util.spec_from_file_location('maintenance',Path(__file__).resolve().parents[1]/'acceptance'/'run_maintenance_trials.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
 

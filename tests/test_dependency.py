@@ -6,6 +6,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from tests.paths import RepositoryPath as Path
 from theorygraph import dependency as d
 from theorygraph import graph as g
 

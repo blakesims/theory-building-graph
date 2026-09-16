@@ -1,6 +1,7 @@
 """Bind measured review latency to real no-tool review artifacts; not semantic grading."""
 import hashlib,json,unittest
 from pathlib import Path
+from tests.paths import RepositoryPath as Path
 ROOT=Path(__file__).resolve().parents[1]
 PHASE=ROOT/'reviews/maintenance/timed-review-1'
 def digest(path):return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -22,7 +23,7 @@ class TimedReviewReceipts(unittest.TestCase):
   for name in ('sources.md','unrelated-history.md'):self.assertEqual(packets[0]['before_documents'][name],packets[1]['before_documents'][name])
 
  def test_independent_review_grades_measurements_and_required_phases(self):
-  from acceptance.receipt_validation import validate_receipt_file
+  from tests.acceptance.receipt_validation import validate_receipt_file
   mapping=json.loads((ROOT/'acceptance/maintenance-mapping.json').read_text())['cases']['S07']
   expected={'reviews/maintenance/study-receipt.json'}
   for arm in ('graph','prose'):

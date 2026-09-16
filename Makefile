@@ -2,13 +2,14 @@
 
 test:
 	python3 -m unittest discover -s tests -t . -p 'test*.py' -v
+	$(MAKE) acceptance
 
 acceptance:
-	python3 acceptance/validate_suite.py
-	python3 acceptance/run.py
+	python3 -m tests.acceptance.validate_suite
+	python3 -m tests.acceptance.run --report /tmp/theorygraph-acceptance-report.json
 
 baseline:
-	python3 acceptance/baseline_smoke.py --engine .
+	python3 -m tests.acceptance.baseline_smoke --engine .
 
 serve:
 	./tg -p morphisms serve --port 8767

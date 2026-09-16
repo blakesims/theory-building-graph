@@ -6,7 +6,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse, parse_qs
 from . import tracecheck
 from . import dependency
-from . import projects
+from . import projects, __version__
 HERE = Path(__file__).resolve().parent
 
 class GraphError(Exception): pass
@@ -502,6 +502,7 @@ def serve(path,port,host='127.0.0.1'):
 def main():
     p=argparse.ArgumentParser(description=__doc__,epilog='Default reads omit historical material. Use --historical to include it. JSON flags work before or after subcommands.')
     p.add_argument('--file',type=Path,default=None,help='Graph JSON file (default: -p project, $TG_PROJECT, nearest theory/graph.json, then the registry default)'); p.add_argument('-p','--project',default=None,help='Registered project name (see `tg projects`)'); p.add_argument('--all',action='store_true',help='check: list informational findings too'); p.add_argument('--evidence',action='store_true',help='Include evidence nodes (traces, saved check results) in reads'); p.add_argument('--json',action='store_true',help='Emit machine-readable JSON'); p.add_argument('--full',action='store_true',help='Include metadata or full history before/after values')
+    p.add_argument('--version', action='version', version='tg '+__version__)
     sub=p.add_subparsers(dest='cmd',required=True)
     for name in ('overview','types','anchors','check','frontier','where'): sub.add_parser(name,help={'anchors':'List entity and operation anchors','check':'Check declared tensions and structural consistency; informational findings are counted unless --all','frontier':'Session opener: open questions, needs-review, proposed claims, findings, conflicts, stale evidence, recent changes','where':'Engine root, registry, and which rule selected the graph'}.get(name,name))
     q=sub.add_parser('readiness',help='Explicit prerequisites and independent answer resolution');q.add_argument('id')

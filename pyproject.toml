@@ -1,0 +1,19 @@
+[project]
+name = "theorygraph"
+version = "0.1.0"
+description = "A local, audited theory graph for program design"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+tg = "theorygraph.graph:main"
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.package-data]
+theorygraph = ["template.json", "viewer/*.html", "viewer/vendor/*.js"]
+
+[tool.setuptools.packages.find]
+include = ["theorygraph*"]
