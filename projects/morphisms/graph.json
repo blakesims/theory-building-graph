@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 33,
+  "revision": 34,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1522,6 +1522,17 @@
       "meta": {
         "review_state": "current",
         "title": "one actor one item kind",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
+      }
+    },
+    "thread-question-mirrors-to-desk": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "An orchestrator's question in the agent thread is a desk item. The system mirrors it onto the desk without the orchestrator knowing about the desk; the operator may answer in either place, and the answer clears it from both.",
+      "meta": {
+        "review_state": "current",
+        "title": "thread question mirrors to desk",
         "author": "Blake",
         "source_kind": "session-paraphrase"
       }
@@ -3192,6 +3203,31 @@
       "from": "one-actor-one-item-kind",
       "type": "extracted-from",
       "to": "session-2026-09-16-claimability"
+    },
+    "thread-question-mirrors-to-desk-about-desk-item": {
+      "from": "thread-question-mirrors-to-desk",
+      "type": "about",
+      "to": "desk-item"
+    },
+    "thread-question-mirrors-to-desk-about-orchestrator-role": {
+      "from": "thread-question-mirrors-to-desk",
+      "type": "about",
+      "to": "orchestrator-role"
+    },
+    "thread-question-mirrors-to-desk-about-operator-role": {
+      "from": "thread-question-mirrors-to-desk",
+      "type": "about",
+      "to": "operator-role"
+    },
+    "thread-question-mirrors-to-desk-extracted-from-session-2026-09-16-claimability": {
+      "from": "thread-question-mirrors-to-desk",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-claimability"
+    },
+    "thread-question-mirrors-to-desk-supports-desk-is-operator-list": {
+      "from": "thread-question-mirrors-to-desk",
+      "type": "supports",
+      "to": "desk-is-operator-list"
     }
   },
   "changes": [
@@ -10641,6 +10677,80 @@
             "from": "one-actor-one-item-kind",
             "type": "extracted-from",
             "to": "session-2026-09-16-claimability"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 34,
+      "at": "2026-09-16T04:30:42.398793+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: desk items are separate from intentions; one actor claims one item kind",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "thread-question-mirrors-to-desk",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "An orchestrator's question in the agent thread is a desk item. The system mirrors it onto the desk without the orchestrator knowing about the desk; the operator may answer in either place, and the answer clears it from both.",
+            "meta": {
+              "review_state": "current",
+              "title": "thread question mirrors to desk",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "thread-question-mirrors-to-desk-about-desk-item",
+          "before": null,
+          "after": {
+            "from": "thread-question-mirrors-to-desk",
+            "type": "about",
+            "to": "desk-item"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "thread-question-mirrors-to-desk-about-orchestrator-role",
+          "before": null,
+          "after": {
+            "from": "thread-question-mirrors-to-desk",
+            "type": "about",
+            "to": "orchestrator-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "thread-question-mirrors-to-desk-about-operator-role",
+          "before": null,
+          "after": {
+            "from": "thread-question-mirrors-to-desk",
+            "type": "about",
+            "to": "operator-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "thread-question-mirrors-to-desk-extracted-from-session-2026-09-16-claimability",
+          "before": null,
+          "after": {
+            "from": "thread-question-mirrors-to-desk",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-claimability"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "thread-question-mirrors-to-desk-supports-desk-is-operator-list",
+          "before": null,
+          "after": {
+            "from": "thread-question-mirrors-to-desk",
+            "type": "supports",
+            "to": "desk-is-operator-list"
           }
         }
       ]
