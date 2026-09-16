@@ -95,6 +95,23 @@ class StatusListings(TemporaryGraph):
             self.assertFalse(data['truncated'])
 
 
+class FrontierSummary(TemporaryGraph):
+    def test_empty_sections_explicitly_count_informational_findings(self):
+        self.assertIn('0 conflicts, 0 informational findings', self.cli('frontier').stdout)
+        self.cli('entity', 'add', 'subject', 'Subject', '--reason', 'anchor')
+        self.assertIn('0 conflicts, 2 informational findings', self.cli('frontier').stdout)
+        data = json.loads(self.cli('frontier', '--json').stdout)
+        self.assertEqual(data['counts']['informational_findings'], 2)
+        self.assertEqual(data['counts']['findings'], 0)
+        self.assertEqual(data['counts']['unresolved_conflicts'], 0)
+
+    def test_review_findings_are_not_replaced_by_an_empty_summary(self):
+        self.path.write_text(json.dumps(fixture(['unanchored'])))
+        out = self.cli('frontier').stdout
+        self.assertIn('unanchored-claim', out)
+        self.assertNotIn('0 conflicts,', out)
+
+
 class RetireAnchors(TemporaryGraph):
     def test_retirement_is_audited_and_default_reads_hide_retired_anchors(self):
         model = fixture(['claim'])

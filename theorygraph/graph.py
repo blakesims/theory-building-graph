@@ -351,13 +351,15 @@ def frontier(g, limit=30, changes=5, historical=False):
     open_questions=[{'id':i,'title':title(n),'resolution':dependency.resolution(g,i)['resolution'],'readiness':question_readiness(i)} for i,n in live.items() if n['type']=='question' and n.get('status')!='retired' and dependency.resolution(g,i)['resolution']!='answered']
     needs_review=[{'id':i,'type':n['type'],'review_reason':(n.get('meta') or {}).get('review_reason','')} for i,n in live.items() if review_state(n)=='needs-review']
     proposed=[{'id':i,'text':n['text']} for i,n in live.items() if n['type']=='claim' and n.get('status')=='proposed']
-    findings=[{'code':f['code'],'nodes':f['nodes'],'message':f['message']} for f in check(g)['findings'] if f.get('severity')!='informational']
+    checked=check(g)['findings']
+    informational=sum(f.get('severity')=='informational' for f in checked)
+    findings=[{'code':f['code'],'nodes':f['nodes'],'message':f['message']} for f in checked if f.get('severity')!='informational']
     conflicts=[{'edge':i,'from':e['from'],'to':e['to']} for i,e in view['edges'].items() if e['type'] in ('potential-conflict','contradicts') and not (e.get('meta') or {}).get('resolution') and e['from'] in live and e['to'] in live]
     stale=sum(1 for i,n in g['nodes'].items() if n.get('type')=='check-result' and isinstance(n.get('result'),dict) and review_state(n)!='historical' and tracecheck.result_state(g,n['result'])!='current')
     recent=[{'revision':c['revision'],'actor':c['actor'],'reason':c['reason']} for c in g['changes'][-changes:]]
     answered_questions=[{'id':i,'title':title(n),'resolution':'answered'} for i,n in live.items() if n['type']=='question' and n.get('status')=='answered']
     sections={'open_questions':open_questions,'answered_questions':answered_questions,'needs_review':needs_review,'proposed_claims':proposed,'findings':findings,'unresolved_conflicts':conflicts}
-    return {'revision':g['revision'],'counts':{k:len(v) for k,v in sections.items()}|{'evidence_stale':stale},**{k:v[:limit] for k,v in sections.items()},'truncated':any(len(v)>limit for v in sections.values()),'evidence_stale':stale,'recent_changes':recent}
+    return {'revision':g['revision'],'counts':{k:len(v) for k,v in sections.items()}|{'evidence_stale':stale,'informational_findings':informational},**{k:v[:limit] for k,v in sections.items()},'truncated':any(len(v)>limit for v in sections.values()),'evidence_stale':stale,'recent_changes':recent}
 
 def save_evaluation(path,g,result,result_id=None,actor='assistant',reason='Save finite-trace pattern evaluation; do not change belief status'):
     result_id=result_id or f"check-{result['claim']}-{result['trace']}-r{g['revision']}"
@@ -456,6 +458,7 @@ def compact(data, full=False):
         section('proposed claims',data['proposed_claims'],('CLAIM','TEXT'),lambda n:(n['id'],n['text']))
         section('findings',data['findings'],('FINDING','NODES','MESSAGE'),lambda f:(f['code'],', '.join(f['nodes']),f['message']))
         section('unresolved conflicts',data['unresolved_conflicts'],('EDGE','FROM','TO'),lambda e:(e['edge'],e['from'],e['to']))
+        if not c['findings'] and not c['unresolved_conflicts']: lines.append(f"0 conflicts, {c['informational_findings']} informational findings")
         section('recent changes',data['recent_changes'],('CHANGE','ACTOR','REASON'),lambda ch:(f"r{ch['revision']}",ch['actor'],ch['reason']))
         if data['evidence_stale']: lines.append(f"Stale evidence: {data['evidence_stale']}")
         if data.get('truncated'): lines.append('(sections truncated; use --json)')
