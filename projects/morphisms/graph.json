@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 46,
+  "revision": 47,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1633,6 +1633,17 @@
       "meta": {
         "review_state": "current",
         "title": "raise obstruction",
+        "author": "assistant",
+        "source_kind": "assistant-proposal"
+      }
+    },
+    "rule-on-flag": {
+      "type": "operation",
+      "status": "defined",
+      "text": "The auditor resolves a flag: rules whether the contract changes. The change itself is frame work by the contract writer, not a record.",
+      "meta": {
+        "review_state": "current",
+        "title": "rule on flag",
         "author": "assistant",
         "source_kind": "assistant-proposal"
       }
@@ -3368,6 +3379,16 @@
       "from": "raise-obstruction",
       "type": "acts-on",
       "to": "flag"
+    },
+    "rule-on-flag-acts-on-flag": {
+      "from": "rule-on-flag",
+      "type": "acts-on",
+      "to": "flag"
+    },
+    "rule-on-flag-acts-on-contract": {
+      "from": "rule-on-flag",
+      "type": "acts-on",
+      "to": "contract"
     }
   },
   "changes": [
@@ -11212,6 +11233,50 @@
             "from": "raise-obstruction",
             "type": "acts-on",
             "to": "flag"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 47,
+      "at": "2026-09-16T06:33:27.614702+00:00",
+      "actor": "assistant",
+      "reason": "Handover update 2026-09-16: ladder and obstruction model, delegates, frame",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "rule-on-flag",
+          "before": null,
+          "after": {
+            "type": "operation",
+            "status": "defined",
+            "text": "The auditor resolves a flag: rules whether the contract changes. The change itself is frame work by the contract writer, not a record.",
+            "meta": {
+              "review_state": "current",
+              "title": "rule on flag",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "rule-on-flag-acts-on-flag",
+          "before": null,
+          "after": {
+            "from": "rule-on-flag",
+            "type": "acts-on",
+            "to": "flag"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "rule-on-flag-acts-on-contract",
+          "before": null,
+          "after": {
+            "from": "rule-on-flag",
+            "type": "acts-on",
+            "to": "contract"
           }
         }
       ]
