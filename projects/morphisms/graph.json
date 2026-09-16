@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 57,
+  "revision": 58,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1756,6 +1756,18 @@
         "title": "running policy separates delegates",
         "author": "assistant",
         "source_kind": "assistant-proposal"
+      }
+    },
+    "flag-as-intention": {
+      "type": "claim",
+      "status": "withdrawn",
+      "text": "Rejected for now: a flag could be an intention whose steward is the auditor, leaving the desk item as the only obstruction shape. Blake: 'I don't like the idea of a flag becoming an intention, but I'm open to it slightly.'",
+      "meta": {
+        "title": "Flag as intention (rejected)",
+        "author": "assistant",
+        "source_kind": "assistant-proposal",
+        "review_state": "current",
+        "provenance": "2026-09-16"
       }
     }
   },
@@ -3710,6 +3722,101 @@
       "from": "running-policy-separates-delegates",
       "type": "supports",
       "to": "agent-definition"
+    },
+    "perf-file-intention-operator-role": {
+      "from": "file-intention",
+      "to": "operator-role",
+      "type": "performed-by"
+    },
+    "perf-file-intention-worker-role": {
+      "from": "file-intention",
+      "to": "worker-role",
+      "type": "performed-by"
+    },
+    "perf-reassess-intention-steward-role": {
+      "from": "reassess-intention",
+      "to": "steward-role",
+      "type": "performed-by"
+    },
+    "perf-create-record-steward-role": {
+      "from": "create-record",
+      "to": "steward-role",
+      "type": "performed-by"
+    },
+    "perf-choose-work-steward-role": {
+      "from": "choose-work",
+      "to": "steward-role",
+      "type": "performed-by"
+    },
+    "perf-settle-intention-steward-role": {
+      "from": "settle-intention",
+      "to": "steward-role",
+      "type": "performed-by"
+    },
+    "perf-settle-intention-operator-role": {
+      "from": "settle-intention",
+      "to": "operator-role",
+      "type": "performed-by"
+    },
+    "perf-send-to-desk-steward-role": {
+      "from": "send-to-desk",
+      "to": "steward-role",
+      "type": "performed-by"
+    },
+    "perf-send-to-desk-orchestrator-role": {
+      "from": "send-to-desk",
+      "to": "orchestrator-role",
+      "type": "performed-by"
+    },
+    "perf-answer-at-desk-operator-role": {
+      "from": "answer-at-desk",
+      "to": "operator-role",
+      "type": "performed-by"
+    },
+    "perf-start-run-orchestrator-role": {
+      "from": "start-run",
+      "to": "orchestrator-role",
+      "type": "performed-by"
+    },
+    "perf-end-attempt-orchestrator-role": {
+      "from": "end-attempt",
+      "to": "orchestrator-role",
+      "type": "performed-by"
+    },
+    "perf-return-run-worker-role": {
+      "from": "return-run",
+      "to": "worker-role",
+      "type": "performed-by"
+    },
+    "perf-raise-obstruction-worker-role": {
+      "from": "raise-obstruction",
+      "to": "worker-role",
+      "type": "performed-by"
+    },
+    "perf-raise-obstruction-orchestrator-role": {
+      "from": "raise-obstruction",
+      "to": "orchestrator-role",
+      "type": "performed-by"
+    },
+    "perf-raise-obstruction-steward-role": {
+      "from": "raise-obstruction",
+      "to": "steward-role",
+      "type": "performed-by"
+    },
+    "perf-rule-on-flag-auditor-role": {
+      "from": "rule-on-flag",
+      "to": "auditor-role",
+      "type": "performed-by"
+    },
+    "about-flag-as-intention": {
+      "from": "flag-as-intention",
+      "to": "flag",
+      "type": "about"
+    },
+    "src-flag-as-intention": {
+      "from": "flag-as-intention",
+      "to": "session-2026-09-16-ladder",
+      "type": "informs"
     }
   },
   "changes": [
@@ -12259,6 +12366,221 @@
             "from": "running-policy-separates-delegates",
             "type": "supports",
             "to": "agent-definition"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 58,
+      "at": "2026-09-16T06:34:57.578609+00:00",
+      "actor": "assistant",
+      "reason": "Handover update 2026-09-16: who performs each operation; rejected flag-as-intention kept with reason",
+      "edits": [
+        {
+          "collection": "edges",
+          "id": "perf-file-intention-operator-role",
+          "before": null,
+          "after": {
+            "from": "file-intention",
+            "to": "operator-role",
+            "type": "performed-by"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "perf-file-intention-worker-role",
+          "before": null,
+          "after": {
+            "from": "file-intention",
+            "to": "worker-role",
+            "type": "performed-by"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "perf-reassess-intention-steward-role",
+          "before": null,
+          "after": {
+            "from": "reassess-intention",
+            "to": "steward-role",
+            "type": "performed-by"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "perf-create-record-steward-role",
+          "before": null,
+          "after": {
+            "from": "create-record",
+            "to": "steward-role",
+            "type": "performed-by"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "perf-choose-work-steward-role",
+          "before": null,
+          "after": {
+            "from": "choose-work",
+            "to": "steward-role",
+            "type": "performed-by"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "perf-settle-intention-steward-role",
+          "before": null,
+          "after": {
+            "from": "settle-intention",
+            "to": "steward-role",
+            "type": "performed-by"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "perf-settle-intention-operator-role",
+          "before": null,
+          "after": {
+            "from": "settle-intention",
+            "to": "operator-role",
+            "type": "performed-by"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "perf-send-to-desk-steward-role",
+          "before": null,
+          "after": {
+            "from": "send-to-desk",
+            "to": "steward-role",
+            "type": "performed-by"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "perf-send-to-desk-orchestrator-role",
+          "before": null,
+          "after": {
+            "from": "send-to-desk",
+            "to": "orchestrator-role",
+            "type": "performed-by"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "perf-answer-at-desk-operator-role",
+          "before": null,
+          "after": {
+            "from": "answer-at-desk",
+            "to": "operator-role",
+            "type": "performed-by"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "perf-start-run-orchestrator-role",
+          "before": null,
+          "after": {
+            "from": "start-run",
+            "to": "orchestrator-role",
+            "type": "performed-by"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "perf-end-attempt-orchestrator-role",
+          "before": null,
+          "after": {
+            "from": "end-attempt",
+            "to": "orchestrator-role",
+            "type": "performed-by"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "perf-return-run-worker-role",
+          "before": null,
+          "after": {
+            "from": "return-run",
+            "to": "worker-role",
+            "type": "performed-by"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "perf-raise-obstruction-worker-role",
+          "before": null,
+          "after": {
+            "from": "raise-obstruction",
+            "to": "worker-role",
+            "type": "performed-by"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "perf-raise-obstruction-orchestrator-role",
+          "before": null,
+          "after": {
+            "from": "raise-obstruction",
+            "to": "orchestrator-role",
+            "type": "performed-by"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "perf-raise-obstruction-steward-role",
+          "before": null,
+          "after": {
+            "from": "raise-obstruction",
+            "to": "steward-role",
+            "type": "performed-by"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "perf-rule-on-flag-auditor-role",
+          "before": null,
+          "after": {
+            "from": "rule-on-flag",
+            "to": "auditor-role",
+            "type": "performed-by"
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "flag-as-intention",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "withdrawn",
+            "text": "Rejected for now: a flag could be an intention whose steward is the auditor, leaving the desk item as the only obstruction shape. Blake: 'I don't like the idea of a flag becoming an intention, but I'm open to it slightly.'",
+            "meta": {
+              "title": "Flag as intention (rejected)",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "review_state": "current",
+              "provenance": "2026-09-16"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-flag-as-intention",
+          "before": null,
+          "after": {
+            "from": "flag-as-intention",
+            "to": "flag",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "src-flag-as-intention",
+          "before": null,
+          "after": {
+            "from": "flag-as-intention",
+            "to": "session-2026-09-16-ladder",
+            "type": "informs"
           }
         }
       ]
