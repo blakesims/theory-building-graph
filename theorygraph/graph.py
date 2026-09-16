@@ -53,11 +53,16 @@ def theory_view(g,keep=()):
     nodes={i:n for i,n in sorted(g['nodes'].items()) if i in keep or not is_evidence(g,n)}
     return {**g,'nodes':nodes,'edges':{i:e for i,e in sorted(g['edges'].items()) if e['from'] in nodes and e['to'] in nodes}}
 
-def questions(g, limit=30, historical=False):
+def claims(g, status=None):
+    nodes={i:n for i,n in sorted(g['nodes'].items()) if n['type']=='claim' and (status is None or n.get('status')==status)}
+    return {'revision':g['revision'],'total':len(nodes),'nodes':nodes}
+
+def questions(g, limit=30, historical=False, status=None):
     if limit < 1: raise GraphError('limit must be >= 1')
     states={}; nodes={}; totals=collections.Counter()
     all_questions={i:n for i,n in sorted(g['nodes'].items()) if n['type']=='question'}
     for i,n in all_questions.items():
+        if status is not None and n.get('status')!=status: continue
         if review_state(n)=='historical':
             state='historical'
             if not historical: continue
@@ -571,7 +576,8 @@ def main():
     q=sub.add_parser('readiness',help='Explicit prerequisites and independent answer resolution');q.add_argument('id')
     q=sub.add_parser('impact',help='Transitive dependent IDs and bounded dependency path witnesses');q.add_argument('id');q.add_argument('--limit',type=int,default=100);q.add_argument('--offset',type=int,default=0);q.add_argument('--path-limit',type=int,default=8)
     q=sub.add_parser('export',help='Canonical sorted JSON snapshot')
-    q=sub.add_parser('questions',help='Question inventory with declared status');q.add_argument('--limit',type=int,default=30,help='Maximum question rows');q.add_argument('--historical',action='store_true',help='Include retired questions')
+    q=sub.add_parser('claims',help='List claims, including withdrawn history, with full text');q.add_argument('--status',choices=('accepted','proposed','withdrawn'))
+    q=sub.add_parser('questions',help='Question inventory with declared status');q.add_argument('--limit',type=int,default=30,help='Maximum question rows');q.add_argument('--historical',action='store_true',help='Include retired questions');q.add_argument('--status',choices=('open','answered','retired'))
     q=sub.add_parser('review',help='Review a node and its direct reasoning context, or list review queue');q.add_argument('id',nargs='?',help='Node id, title or alias');q.add_argument('--limit',type=int,default=30,help='Maximum nodes');q.add_argument('--edge-limit',type=int,default=60,help='Maximum edges')
     q=sub.add_parser('search',help='Basic matching of id, title, alias, type, text and state');q.add_argument('query');q.add_argument('--limit',type=int,default=20,help='Maximum results')
     q=sub.add_parser('node',help='Read a node with all incident edge references');q.add_argument('id',help='Node id, title or alias');q.add_argument('--historical',action='store_true',help='Include historical neighbors')
@@ -633,7 +639,8 @@ def main():
             elif a.cmd=='export': result=g
             elif a.cmd=='overview': result=overview(g,a.evidence)
             elif a.cmd=='frontier': result=frontier(g)
-            elif a.cmd=='questions': result=questions(g,a.limit,a.historical)
+            elif a.cmd=='claims': result=claims(g,a.status)
+            elif a.cmd=='questions': result=questions(g,a.limit,a.historical,a.status)
             elif a.cmd=='check': result=check_view(check(g),a.all)
             elif a.cmd=='anchors': result={'revision':g['revision'],'nodes':{i:n for i,n in sorted(g['nodes'].items()) if n['type'] in ('entity','operation')}}
             elif a.cmd=='review': result=review(g,resolve(g,a.id) if a.id else None,a.limit,a.edge_limit,a.evidence)
@@ -646,7 +653,7 @@ def main():
         if a.cmd not in writes.TYPED | {'apply','reviewed','where','sync','config'}:
             result=tracecheck.annotate(g,result)
             result.setdefault('revision',g['revision'])
-        if not a.full and a.cmd in ('node','walk','neighbors','search','review','questions','anchors'): result=compact_read(result,g)
+        if not a.full and a.cmd in ('node','walk','neighbors','search','review','claims','questions','anchors'): result=compact_read(result,g)
         result=public_read(result)
         if not a.json and 'summary' in result and 'revision' in result:
             tail=f" · synced {result['sync']['committed'] or 'HEAD'}" if result.get('sync') else ' · not synced (--no-sync)' if result.get('sync_skipped') else ''
