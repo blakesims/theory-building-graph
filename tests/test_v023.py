@@ -95,6 +95,46 @@ class StatusListings(TemporaryGraph):
             self.assertFalse(data['truncated'])
 
 
+class RetireAnchors(TemporaryGraph):
+    def test_retirement_is_audited_and_default_reads_hide_retired_anchors(self):
+        model = fixture(['claim'])
+        model['edge_types']['potential-conflict'] = {}
+        for kind in ('entity', 'operation'):
+            model['nodes'][kind] = {'type': kind, 'text': 'Old ' + kind, 'status': 'defined',
+                                    'meta': {'title': 'Original title'}}
+            edge(model, 'claim', kind, 'potential-conflict')
+        self.path.write_text(json.dumps(model))
+        for kind in ('entity', 'operation'):
+            out = self.cli('retire', kind, '--reason', 'No longer part of the design').stdout
+            self.assertIn('retired ' + kind, out)
+            saved = graph.load(self.path)
+            node = saved['nodes'][kind]
+            self.assertEqual(node['meta']['review_state'], 'historical')
+            self.assertEqual(node['meta']['review_reason'], 'No longer part of the design')
+            self.assertEqual(node['meta']['title'], 'Original title')
+            self.assertEqual(node['status'], 'defined')
+            self.assertEqual(saved['changes'][-1]['reason'], 'No longer part of the design')
+            for command in (('anchors',), ('search', kind)):
+                self.assertNotIn(kind, json.loads(self.cli(*command, '--json').stdout)['nodes'])
+                self.assertIn(kind, json.loads(self.cli(*command, '--historical', '--json').stdout)['nodes'])
+            current = json.loads(self.cli('frontier', '--json').stdout)
+            historical = json.loads(self.cli('frontier', '--historical', '--json').stdout)
+            self.assertNotIn(kind, [e['to'] for e in current['unresolved_conflicts']])
+            self.assertIn(kind, [e['to'] for e in historical['unresolved_conflicts']])
+        self.assertEqual(graph.load(self.path)['edges'], model['edges'])
+
+    def test_retire_requires_an_anchor_and_reason_and_supports_dry_run(self):
+        self.cli('entity', 'add', 'subject', 'Subject', '--reason', 'anchor')
+        self.cli('claim', 'add', 'claim', 'Claim', '--about', 'subject', '--reason', 'proposal')
+        before = self.path.read_bytes()
+        self.cli('retire', 'subject', ok=False)
+        self.cli('retire', 'missing', '--reason', 'invalid', ok=False)
+        self.cli('retire', 'claim', '--reason', 'invalid', ok=False)
+        dry = json.loads(self.cli('retire', 'subject', '--reason', 'preview', '--dry-run', '--json').stdout)
+        self.assertTrue(dry['dry_run']); self.assertFalse(dry['written'])
+        self.assertEqual(self.path.read_bytes(), before)
+
+
 class DirtyRepositorySync(TemporaryGraph):
     def git(self, cwd, *args):
         result = subprocess.run(['git', '-C', str(cwd), *args], capture_output=True, text=True, env=self.env)

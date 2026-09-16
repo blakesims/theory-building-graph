@@ -135,7 +135,7 @@ def resolve(g, value):
     if matches: raise GraphError('Ambiguous name; use an id: '+', '.join(matches))
     raise GraphError('Unknown node: '+value+' (try anchors or search)')
 
-def search(g, query, limit=20, evidence=False):
+def search(g, query, limit=20, evidence=False, historical=False):
     if limit < 1: raise GraphError('limit must be >= 1')
     if not evidence: g=theory_view(g)
     def tokens(text):
@@ -145,6 +145,7 @@ def search(g, query, limit=20, evidence=False):
     terms=tokens(query)
     matches=[]
     for i,n in sorted(g['nodes'].items()):
+        if not historical and review_state(n)=='historical': continue
         meta=n.get('meta') or {}
         hay=' '.join([i,n['type'],n['text'],n.get('status',''),review_state(n),str(meta.get('title','')),' '.join(meta.get('aliases',[]))])
         words=tokens(hay)
@@ -342,9 +343,9 @@ def check_view(result, all_findings=False):
     informational=[f for f in result['findings'] if f.get('severity')=='informational']
     return {**result,'findings':[f for f in result['findings'] if f.get('severity')!='informational'],'informational_counts':dict(sorted(collections.Counter(f['code'] for f in informational).items()))}
 
-def frontier(g, limit=30, changes=5):
-    """One session opener: what is open, unreviewed, proposed, flagged or stale. Historical and evidence nodes excluded."""
-    view=theory_view(g); live={i:n for i,n in view['nodes'].items() if review_state(n)!='historical'}
+def frontier(g, limit=30, changes=5, historical=False):
+    """One session opener: what is open, unreviewed, proposed, flagged or stale. Evidence excluded, history opt-in."""
+    view=theory_view(g); live={i:n for i,n in view['nodes'].items() if historical or review_state(n)!='historical'}
     title=lambda n:(n.get('meta') or {}).get('title') or n['text']
     def question_readiness(nid): return 'blocked' if dependency.readiness(g,nid)['readiness']=='blocked' else 'ready'
     open_questions=[{'id':i,'title':title(n),'resolution':dependency.resolution(g,i)['resolution'],'readiness':question_readiness(i)} for i,n in live.items() if n['type']=='question' and n.get('status')!='retired' and dependency.resolution(g,i)['resolution']!='answered']
@@ -573,13 +574,14 @@ def main():
     p.add_argument('--version', action='version', version='tg '+__version__)
     sub=p.add_subparsers(dest='cmd',required=True)
     for name in ('overview','types','anchors','check','frontier','where'): sub.add_parser(name,help={'anchors':'List entity and operation anchors','check':'Check declared tensions and structural consistency; informational findings are counted unless --all','frontier':'Session opener: open questions, needs-review, proposed claims, findings, conflicts, stale evidence, recent changes','where':'Engine root, registry, and which rule selected the graph'}.get(name,name))
+    for name in ('anchors','frontier'): sub.choices[name].add_argument('--historical',action='store_true',help='Include historical nodes')
     q=sub.add_parser('readiness',help='Explicit prerequisites and independent answer resolution');q.add_argument('id')
     q=sub.add_parser('impact',help='Transitive dependent IDs and bounded dependency path witnesses');q.add_argument('id');q.add_argument('--limit',type=int,default=100);q.add_argument('--offset',type=int,default=0);q.add_argument('--path-limit',type=int,default=8)
     q=sub.add_parser('export',help='Canonical sorted JSON snapshot')
     q=sub.add_parser('claims',help='List claims, including withdrawn history, with full text');q.add_argument('--status',choices=('accepted','proposed','withdrawn'))
     q=sub.add_parser('questions',help='Question inventory with declared status');q.add_argument('--limit',type=int,default=30,help='Maximum question rows');q.add_argument('--historical',action='store_true',help='Include retired questions');q.add_argument('--status',choices=('open','answered','retired'))
     q=sub.add_parser('review',help='Review a node and its direct reasoning context, or list review queue');q.add_argument('id',nargs='?',help='Node id, title or alias');q.add_argument('--limit',type=int,default=30,help='Maximum nodes');q.add_argument('--edge-limit',type=int,default=60,help='Maximum edges')
-    q=sub.add_parser('search',help='Basic matching of id, title, alias, type, text and state');q.add_argument('query');q.add_argument('--limit',type=int,default=20,help='Maximum results')
+    q=sub.add_parser('search',help='Basic matching of id, title, alias, type, text and state');q.add_argument('query');q.add_argument('--limit',type=int,default=20,help='Maximum results');q.add_argument('--historical',action='store_true',help='Include historical nodes')
     q=sub.add_parser('node',help='Read a node with all incident edge references');q.add_argument('id',help='Node id, title or alias');q.add_argument('--historical',action='store_true',help='Include historical neighbors')
     for name in ('walk','neighbors'):
         q=sub.add_parser(name,help='Bounded directed traversal; anchors stop expansion unless selected as root')
@@ -638,14 +640,14 @@ def main():
             elif a.cmd=='impact': result=dependency.impact(g,[resolve(g,a.id)],a.limit,a.offset,a.path_limit)
             elif a.cmd=='export': result=g
             elif a.cmd=='overview': result=overview(g,a.evidence)
-            elif a.cmd=='frontier': result=frontier(g)
+            elif a.cmd=='frontier': result=frontier(g,historical=a.historical)
             elif a.cmd=='claims': result=claims(g,a.status)
             elif a.cmd=='questions': result=questions(g,a.limit,a.historical,a.status)
             elif a.cmd=='check': result=check_view(check(g),a.all)
-            elif a.cmd=='anchors': result={'revision':g['revision'],'nodes':{i:n for i,n in sorted(g['nodes'].items()) if n['type'] in ('entity','operation')}}
+            elif a.cmd=='anchors': result={'revision':g['revision'],'nodes':{i:n for i,n in sorted(g['nodes'].items()) if n['type'] in ('entity','operation') and (a.historical or review_state(n)!='historical')}}
             elif a.cmd=='review': result=review(g,resolve(g,a.id) if a.id else None,a.limit,a.edge_limit,a.evidence)
             elif a.cmd=='types': result={k:g[k] for k in ('node_types','edge_types')}
-            elif a.cmd=='search': result=search(g,a.query,a.limit,a.evidence)
+            elif a.cmd=='search': result=search(g,a.query,a.limit,a.evidence,a.historical)
             elif a.cmd in ('walk','neighbors'): result=walk(g,a.id,a.depth,a.direction,a.limit,a.edge_limit,not a.historical,a.anchors,a.relations,a.evidence)
             elif a.cmd=='node':
                 nid=resolve(g,a.id);r=walk(g,nid,1,limit=200,edge_limit=500,current=not a.historical,evidence=True);result={'revision':g['revision'],'nodes':{nid:g['nodes'][nid]},'edges':{i:e for i,e in r['edges'].items() if nid in (e['from'],e['to'])},'neighbor_bodies':'omitted; use walk','truncated':r['truncated'],'edge_truncated':r['edge_truncated']}

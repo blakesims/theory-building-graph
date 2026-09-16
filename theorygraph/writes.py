@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 from . import projects
 
-TYPED = {'claim', 'question', 'entity', 'operation', 'source', 'withdraw', 'answer', 'edge', 'set'}
+TYPED = {'claim', 'question', 'entity', 'operation', 'source', 'withdraw', 'retire', 'answer', 'edge', 'set'}
 KINDS = ('verbatim', 'paraphrase', 'session-paraphrase', 'assistant-proposal')
 
 
@@ -41,6 +41,8 @@ def parsers(sub):
         audit_arguments(p)
     p = sub.add_parser('withdraw', help='Withdraw a claim, retaining history')
     p.add_argument('id'); p.add_argument('--superseded-by'); audit_arguments(p)
+    p = sub.add_parser('retire', help='Retire an entity or operation, retaining history')
+    p.add_argument('id'); audit_arguments(p)
     p = sub.add_parser('answer', help='Link a claim and declare accepted full coverage answered')
     p.add_argument('id'); p.add_argument('--with', dest='claim', required=True)
     p.add_argument('--coverage', choices=('full', 'partial'), default='full'); audit_arguments(p)
@@ -153,6 +155,10 @@ def build(g, a):
         summary = f'added {a.cmd} {a.id}'
     elif a.cmd == 'withdraw':
         withdraw(a.id, a.superseded_by); summary = 'withdrew ' + a.id
+    elif a.cmd == 'retire':
+        require(a.id, ('entity', 'operation'))
+        emit('update', 'nodes', a.id, {'meta': {'review_state': 'historical', 'review_reason': a.reason}})
+        summary = 'retired ' + a.id
     elif a.cmd == 'answer':
         answer(a.id, a.claim, a.coverage); summary = 'answered ' + a.id if work['nodes'][a.id].get('status') == 'answered' else 'linked answer to ' + a.id
     elif a.cmd == 'edge':
