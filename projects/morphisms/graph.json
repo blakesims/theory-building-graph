@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 44,
+  "revision": 45,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1611,6 +1611,17 @@
       "meta": {
         "review_state": "current",
         "title": "start run",
+        "author": "assistant",
+        "source_kind": "assistant-proposal"
+      }
+    },
+    "return-run": {
+      "type": "operation",
+      "status": "defined",
+      "text": "The worker ends its run with an outcome: done, or blocked with reason and evidence. Rest of a run wakes the orchestrator.",
+      "meta": {
+        "review_state": "current",
+        "title": "return run",
         "author": "assistant",
         "source_kind": "assistant-proposal"
       }
@@ -3331,6 +3342,11 @@
       "from": "start-run",
       "type": "acts-on",
       "to": "record-type"
+    },
+    "return-run-acts-on-run": {
+      "from": "return-run",
+      "type": "acts-on",
+      "to": "run"
     }
   },
   "changes": [
@@ -11097,6 +11113,40 @@
             "from": "start-run",
             "type": "acts-on",
             "to": "record-type"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 45,
+      "at": "2026-09-16T06:33:13.658421+00:00",
+      "actor": "assistant",
+      "reason": "Handover update 2026-09-16: ladder and obstruction model, delegates, frame",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "return-run",
+          "before": null,
+          "after": {
+            "type": "operation",
+            "status": "defined",
+            "text": "The worker ends its run with an outcome: done, or blocked with reason and evidence. Rest of a run wakes the orchestrator.",
+            "meta": {
+              "review_state": "current",
+              "title": "return run",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "return-run-acts-on-run",
+          "before": null,
+          "after": {
+            "from": "return-run",
+            "type": "acts-on",
+            "to": "run"
           }
         }
       ]
