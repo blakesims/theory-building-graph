@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 48,
+  "revision": 49,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1655,6 +1655,17 @@
       "meta": {
         "review_state": "current",
         "title": "operator is terminal resolver",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
+      }
+    },
+    "flag-is-an-obstruction": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "A flag is the representation of an obstruction that arose during the attempted manifestation of an intention, and says the contract is the problem. Its resolver is the auditor.",
+      "meta": {
+        "review_state": "current",
+        "title": "flag is an obstruction",
         "author": "Blake",
         "source_kind": "session-paraphrase"
       }
@@ -3423,6 +3434,26 @@
     },
     "operator-is-terminal-resolver-extracted-from-session-2026-09-16-ladder": {
       "from": "operator-is-terminal-resolver",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-ladder"
+    },
+    "flag-is-an-obstruction-about-flag": {
+      "from": "flag-is-an-obstruction",
+      "type": "about",
+      "to": "flag"
+    },
+    "flag-is-an-obstruction-about-contract": {
+      "from": "flag-is-an-obstruction",
+      "type": "about",
+      "to": "contract"
+    },
+    "flag-is-an-obstruction-governs-raise-obstruction": {
+      "from": "flag-is-an-obstruction",
+      "type": "governs",
+      "to": "raise-obstruction"
+    },
+    "flag-is-an-obstruction-extracted-from-session-2026-09-16-ladder": {
+      "from": "flag-is-an-obstruction",
       "type": "extracted-from",
       "to": "session-2026-09-16-ladder"
     }
@@ -11385,6 +11416,70 @@
           "before": null,
           "after": {
             "from": "operator-is-terminal-resolver",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-ladder"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 49,
+      "at": "2026-09-16T06:33:42.367461+00:00",
+      "actor": "assistant",
+      "reason": "Handover update 2026-09-16: ladder and obstruction model, delegates, frame",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "flag-is-an-obstruction",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "A flag is the representation of an obstruction that arose during the attempted manifestation of an intention, and says the contract is the problem. Its resolver is the auditor.",
+            "meta": {
+              "review_state": "current",
+              "title": "flag is an obstruction",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "flag-is-an-obstruction-about-flag",
+          "before": null,
+          "after": {
+            "from": "flag-is-an-obstruction",
+            "type": "about",
+            "to": "flag"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "flag-is-an-obstruction-about-contract",
+          "before": null,
+          "after": {
+            "from": "flag-is-an-obstruction",
+            "type": "about",
+            "to": "contract"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "flag-is-an-obstruction-governs-raise-obstruction",
+          "before": null,
+          "after": {
+            "from": "flag-is-an-obstruction",
+            "type": "governs",
+            "to": "raise-obstruction"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "flag-is-an-obstruction-extracted-from-session-2026-09-16-ladder",
+          "before": null,
+          "after": {
+            "from": "flag-is-an-obstruction",
             "type": "extracted-from",
             "to": "session-2026-09-16-ladder"
           }
