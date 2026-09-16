@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 81,
+  "revision": 88,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1177,7 +1177,7 @@
     },
     "abandonment-schema": {
       "type": "question",
-      "status": "open",
+      "status": "answered",
       "text": "When a record is abandoned rather than walked to a terminal state, what is the schema choice: a terminal state inside the dimension, or an archive outside it? Both grounding cases (M1688, M1689) had to be archived.",
       "meta": {
         "title": "How is abandonment represented",
@@ -1456,7 +1456,7 @@
     },
     "intention-history-mechanism": {
       "type": "question",
-      "status": "open",
+      "status": "answered",
       "text": "Is the intention's history the same append-only event mechanism the kernel already uses for records, or its own? Blake leans to the same mechanism: no overwritten fields, as close to a record's event log as possible.",
       "meta": {
         "title": "Same event mechanism as records?",
@@ -1468,7 +1468,7 @@
     },
     "assistant-vs-architect": {
       "type": "question",
-      "status": "open",
+      "status": "answered",
       "text": "What separates the assistant from the architect? Session 2 (2026-09-14, F10) said responsibility, not duration. On 2026-09-16 Blake described them by half-life: desk cleared daily, assistant hours, architect weeks and persistent. Are both true, or has the earlier statement been revised?",
       "meta": {
         "title": "Assistant versus architect",
@@ -1742,7 +1742,7 @@
     },
     "delegates-are-co-seats": {
       "type": "claim",
-      "status": "proposed",
+      "status": "accepted",
       "text": "The assistant and the architect are not actors. They are the operator with a co-seat on one of the operator's own items: the assistant on a desk item for hours, the architect on an intention the operator has taken (the dials route architecture decisions to the desk) for weeks. A design session is the operator stewarding one intention with a co-seat; the theory graph is that seat's ledger. Any user-defined agent has three coordinates: which operator item it shares, how it is driven, how long it lives. Blake: 'yes, that's pretty good'.",
       "meta": {
         "review_state": "needs-review",
@@ -1907,6 +1907,50 @@
       "meta": {
         "review_state": "current",
         "title": "sorter standing",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
+      }
+    },
+    "session-2026-09-16-logs": {
+      "type": "source",
+      "status": "recorded",
+      "text": "Blake, 2026-09-16, verbatim: \"Yeah, that's fine. I agree with your recommendations there.\" On the history mechanism: \"it seems heavy because the kernel, sure, it has event-log mechanisms for records, but intentions are not records. They're materially different. But anyway, surely we can reuse some of the same machinery. I guess that's the point. Philosophically, it's basically the same idea.\" On strata: \"Workers' actions append to the event log (the record event log). Stewards' events append to the intention log. Operators' actions append to the desk items log. Is that roughly what we're talking about? And we can extend that to the other agents.\" On the sorter: \"let's just say it's canonical. ... It's just up to the user when they click run\" and \"the sorter creates intentions? Doesn't really feel nice, does it? It's like we've got this loop.\"",
+      "meta": {
+        "review_state": "current",
+        "title": "session 2026 09 16 logs",
+        "author": "Blake",
+        "source_kind": "verbatim"
+      }
+    },
+    "abandonment-is-archive": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "An abandoned record is archived outside its dimensions, not walked to a terminal state inside one. The archive event carries the handover reason; rest, not success, is what the steward sees.",
+      "meta": {
+        "review_state": "current",
+        "title": "abandonment is archive",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
+      }
+    },
+    "intention-history-reuses-record-events": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "An intention's history uses the kernel's append-only event machinery, the same mechanism records use, though an intention is not a record. No overwritten fields; each actor's actions on an item append to that item's log.",
+      "meta": {
+        "review_state": "current",
+        "title": "intention history reuses record events",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
+      }
+    },
+    "one-log-per-item-kind": {
+      "type": "claim",
+      "status": "proposed",
+      "text": "Each item kind has its own append-only log, written by the actions of whoever claims it: worker and orchestrator actions append to the record log (a run is a span of it, not a log of its own), steward actions to the intention log, operator actions to the desk item log. Other agents extend the same pattern.",
+      "meta": {
+        "review_state": "current",
+        "title": "one log per item kind",
         "author": "Blake",
         "source_kind": "session-paraphrase"
       }
@@ -4171,6 +4215,93 @@
       "from": "sorter-is-canonical-optional",
       "type": "potential-conflict",
       "to": "delegates-are-co-seats"
+    },
+    "delegates-are-co-seats-extracted-from-session-2026-09-16-logs": {
+      "from": "delegates-are-co-seats",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-logs"
+    },
+    "abandonment-is-archive-about-record-type": {
+      "from": "abandonment-is-archive",
+      "type": "about",
+      "to": "record-type"
+    },
+    "abandonment-is-archive-depends-on-archive-reason-is-handover": {
+      "from": "abandonment-is-archive",
+      "type": "depends-on",
+      "to": "archive-reason-is-handover"
+    },
+    "abandonment-is-archive-depends-on-terminal-means-rest": {
+      "from": "abandonment-is-archive",
+      "type": "depends-on",
+      "to": "terminal-means-rest"
+    },
+    "abandonment-is-archive-extracted-from-session-2026-09-16-logs": {
+      "from": "abandonment-is-archive",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-logs"
+    },
+    "abandonment-is-archive-answers-abandonment-schema": {
+      "from": "abandonment-is-archive",
+      "type": "answers",
+      "to": "abandonment-schema",
+      "coverage": "full"
+    },
+    "intention-history-reuses-record-events-about-intention-type": {
+      "from": "intention-history-reuses-record-events",
+      "type": "about",
+      "to": "intention-type"
+    },
+    "intention-history-reuses-record-events-extracted-from-session-2026-09-16-logs": {
+      "from": "intention-history-reuses-record-events",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-logs"
+    },
+    "intention-history-reuses-record-events-answers-intention-history-mechanism": {
+      "from": "intention-history-reuses-record-events",
+      "type": "answers",
+      "to": "intention-history-mechanism",
+      "coverage": "full"
+    },
+    "intention-history-reuses-record-events-supports-intention-carries-history": {
+      "from": "intention-history-reuses-record-events",
+      "type": "supports",
+      "to": "intention-carries-history"
+    },
+    "one-log-per-item-kind-about-record-type": {
+      "from": "one-log-per-item-kind",
+      "type": "about",
+      "to": "record-type"
+    },
+    "one-log-per-item-kind-about-intention-type": {
+      "from": "one-log-per-item-kind",
+      "type": "about",
+      "to": "intention-type"
+    },
+    "one-log-per-item-kind-about-desk-item": {
+      "from": "one-log-per-item-kind",
+      "type": "about",
+      "to": "desk-item"
+    },
+    "one-log-per-item-kind-about-run": {
+      "from": "one-log-per-item-kind",
+      "type": "about",
+      "to": "run"
+    },
+    "one-log-per-item-kind-depends-on-one-actor-one-item-kind-v2": {
+      "from": "one-log-per-item-kind",
+      "type": "depends-on",
+      "to": "one-actor-one-item-kind-v2"
+    },
+    "one-log-per-item-kind-depends-on-intention-history-reuses-record-events": {
+      "from": "one-log-per-item-kind",
+      "type": "depends-on",
+      "to": "intention-history-reuses-record-events"
+    },
+    "one-log-per-item-kind-extracted-from-session-2026-09-16-logs": {
+      "from": "one-log-per-item-kind",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-logs"
     }
   },
   "changes": [
@@ -14096,6 +14227,410 @@
             }
           },
           "automatic": "conflict-review"
+        }
+      ]
+    },
+    {
+      "revision": 82,
+      "at": "2026-09-16T08:20:32.397560+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16 ruled Q-A, Q-B, Q-C as recommended: co-seats accepted, abandonment is archive, intention history reuses the record event machinery",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "session-2026-09-16-logs",
+          "before": null,
+          "after": {
+            "type": "source",
+            "status": "recorded",
+            "text": "Blake, 2026-09-16, verbatim: \"Yeah, that's fine. I agree with your recommendations there.\" On the history mechanism: \"it seems heavy because the kernel, sure, it has event-log mechanisms for records, but intentions are not records. They're materially different. But anyway, surely we can reuse some of the same machinery. I guess that's the point. Philosophically, it's basically the same idea.\" On strata: \"Workers' actions append to the event log (the record event log). Stewards' events append to the intention log. Operators' actions append to the desk items log. Is that roughly what we're talking about? And we can extend that to the other agents.\" On the sorter: \"let's just say it's canonical. ... It's just up to the user when they click run\" and \"the sorter creates intentions? Doesn't really feel nice, does it? It's like we've got this loop.\"",
+            "meta": {
+              "review_state": "current",
+              "title": "session 2026 09 16 logs",
+              "author": "Blake",
+              "source_kind": "verbatim"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 83,
+      "at": "2026-09-16T08:20:32.498886+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16 ruled Q-A, Q-B, Q-C as recommended: co-seats accepted, abandonment is archive, intention history reuses the record event machinery",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "delegates-are-co-seats",
+          "before": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "The assistant and the architect are not actors. They are the operator with a co-seat on one of the operator's own items: the assistant on a desk item for hours, the architect on an intention the operator has taken (the dials route architecture decisions to the desk) for weeks. A design session is the operator stewarding one intention with a co-seat; the theory graph is that seat's ledger. Any user-defined agent has three coordinates: which operator item it shares, how it is driven, how long it lives. Blake: 'yes, that's pretty good'.",
+            "meta": {
+              "review_state": "needs-review",
+              "title": "delegates are co seats",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "review_reason": "Review relation added: sorter-is-canonical-optional-potential-conflict-delegates-are-co-seats"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "The assistant and the architect are not actors. They are the operator with a co-seat on one of the operator's own items: the assistant on a desk item for hours, the architect on an intention the operator has taken (the dials route architecture decisions to the desk) for weeks. A design session is the operator stewarding one intention with a co-seat; the theory graph is that seat's ledger. Any user-defined agent has three coordinates: which operator item it shares, how it is driven, how long it lives. Blake: 'yes, that's pretty good'.",
+            "meta": {
+              "review_state": "needs-review",
+              "title": "delegates are co seats",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "review_reason": "Review relation added: sorter-is-canonical-optional-potential-conflict-delegates-are-co-seats"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 84,
+      "at": "2026-09-16T08:20:32.607516+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16 ruled Q-A, Q-B, Q-C as recommended: co-seats accepted, abandonment is archive, intention history reuses the record event machinery",
+      "edits": [
+        {
+          "collection": "edges",
+          "id": "delegates-are-co-seats-extracted-from-session-2026-09-16-logs",
+          "before": null,
+          "after": {
+            "from": "delegates-are-co-seats",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-logs"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 85,
+      "at": "2026-09-16T08:20:32.711549+00:00",
+      "actor": "assistant",
+      "reason": "Answered by delegates-are-co-seats: they differ by which operator item they share; duration follows. 'Responsibility, not duration' named the first coordinate.",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "assistant-vs-architect",
+          "before": {
+            "type": "question",
+            "status": "open",
+            "text": "What separates the assistant from the architect? Session 2 (2026-09-14, F10) said responsibility, not duration. On 2026-09-16 Blake described them by half-life: desk cleared daily, assistant hours, architect weeks and persistent. Are both true, or has the earlier statement been revised?",
+            "meta": {
+              "title": "Assistant versus architect",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "answer_shape": "verdict",
+              "review_state": "current"
+            }
+          },
+          "after": {
+            "type": "question",
+            "status": "answered",
+            "text": "What separates the assistant from the architect? Session 2 (2026-09-14, F10) said responsibility, not duration. On 2026-09-16 Blake described them by half-life: desk cleared daily, assistant hours, architect weeks and persistent. Are both true, or has the earlier statement been revised?",
+            "meta": {
+              "title": "Assistant versus architect",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "answer_shape": "verdict",
+              "review_state": "current"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 86,
+      "at": "2026-09-16T08:20:32.825974+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16 ruled Q-A, Q-B, Q-C as recommended: co-seats accepted, abandonment is archive, intention history reuses the record event machinery",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "abandonment-is-archive",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "An abandoned record is archived outside its dimensions, not walked to a terminal state inside one. The archive event carries the handover reason; rest, not success, is what the steward sees.",
+            "meta": {
+              "review_state": "current",
+              "title": "abandonment is archive",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "abandonment-is-archive-about-record-type",
+          "before": null,
+          "after": {
+            "from": "abandonment-is-archive",
+            "type": "about",
+            "to": "record-type"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "abandonment-is-archive-depends-on-archive-reason-is-handover",
+          "before": null,
+          "after": {
+            "from": "abandonment-is-archive",
+            "type": "depends-on",
+            "to": "archive-reason-is-handover"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "abandonment-is-archive-depends-on-terminal-means-rest",
+          "before": null,
+          "after": {
+            "from": "abandonment-is-archive",
+            "type": "depends-on",
+            "to": "terminal-means-rest"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "abandonment-is-archive-extracted-from-session-2026-09-16-logs",
+          "before": null,
+          "after": {
+            "from": "abandonment-is-archive",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-logs"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "abandonment-is-archive-answers-abandonment-schema",
+          "before": null,
+          "after": {
+            "from": "abandonment-is-archive",
+            "type": "answers",
+            "to": "abandonment-schema",
+            "coverage": "full"
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "abandonment-schema",
+          "before": {
+            "type": "question",
+            "status": "open",
+            "text": "When a record is abandoned rather than walked to a terminal state, what is the schema choice: a terminal state inside the dimension, or an archive outside it? Both grounding cases (M1688, M1689) had to be archived.",
+            "meta": {
+              "title": "How is abandonment represented",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "answer_shape": "condition",
+              "review_state": "current"
+            }
+          },
+          "after": {
+            "type": "question",
+            "status": "answered",
+            "text": "When a record is abandoned rather than walked to a terminal state, what is the schema choice: a terminal state inside the dimension, or an archive outside it? Both grounding cases (M1688, M1689) had to be archived.",
+            "meta": {
+              "title": "How is abandonment represented",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "answer_shape": "condition",
+              "review_state": "current"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 87,
+      "at": "2026-09-16T08:20:32.933911+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16 ruled Q-A, Q-B, Q-C as recommended: co-seats accepted, abandonment is archive, intention history reuses the record event machinery",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "intention-history-reuses-record-events",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "An intention's history uses the kernel's append-only event machinery, the same mechanism records use, though an intention is not a record. No overwritten fields; each actor's actions on an item append to that item's log.",
+            "meta": {
+              "review_state": "current",
+              "title": "intention history reuses record events",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-history-reuses-record-events-about-intention-type",
+          "before": null,
+          "after": {
+            "from": "intention-history-reuses-record-events",
+            "type": "about",
+            "to": "intention-type"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-history-reuses-record-events-extracted-from-session-2026-09-16-logs",
+          "before": null,
+          "after": {
+            "from": "intention-history-reuses-record-events",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-logs"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-history-reuses-record-events-answers-intention-history-mechanism",
+          "before": null,
+          "after": {
+            "from": "intention-history-reuses-record-events",
+            "type": "answers",
+            "to": "intention-history-mechanism",
+            "coverage": "full"
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "intention-history-mechanism",
+          "before": {
+            "type": "question",
+            "status": "open",
+            "text": "Is the intention's history the same append-only event mechanism the kernel already uses for records, or its own? Blake leans to the same mechanism: no overwritten fields, as close to a record's event log as possible.",
+            "meta": {
+              "title": "Same event mechanism as records?",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "answer_shape": "verdict",
+              "review_state": "current"
+            }
+          },
+          "after": {
+            "type": "question",
+            "status": "answered",
+            "text": "Is the intention's history the same append-only event mechanism the kernel already uses for records, or its own? Blake leans to the same mechanism: no overwritten fields, as close to a record's event log as possible.",
+            "meta": {
+              "title": "Same event mechanism as records?",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "answer_shape": "verdict",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-history-reuses-record-events-supports-intention-carries-history",
+          "before": null,
+          "after": {
+            "from": "intention-history-reuses-record-events",
+            "type": "supports",
+            "to": "intention-carries-history"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 88,
+      "at": "2026-09-16T08:20:33.040529+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16 ruled Q-A, Q-B, Q-C as recommended: co-seats accepted, abandonment is archive, intention history reuses the record event machinery; Blake asked 'is that roughly what we're talking about', so proposed until confirmed. Assistant refinement: the run has no separate log",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "one-log-per-item-kind",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "Each item kind has its own append-only log, written by the actions of whoever claims it: worker and orchestrator actions append to the record log (a run is a span of it, not a log of its own), steward actions to the intention log, operator actions to the desk item log. Other agents extend the same pattern.",
+            "meta": {
+              "review_state": "current",
+              "title": "one log per item kind",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-log-per-item-kind-about-record-type",
+          "before": null,
+          "after": {
+            "from": "one-log-per-item-kind",
+            "type": "about",
+            "to": "record-type"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-log-per-item-kind-about-intention-type",
+          "before": null,
+          "after": {
+            "from": "one-log-per-item-kind",
+            "type": "about",
+            "to": "intention-type"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-log-per-item-kind-about-desk-item",
+          "before": null,
+          "after": {
+            "from": "one-log-per-item-kind",
+            "type": "about",
+            "to": "desk-item"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-log-per-item-kind-about-run",
+          "before": null,
+          "after": {
+            "from": "one-log-per-item-kind",
+            "type": "about",
+            "to": "run"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-log-per-item-kind-depends-on-one-actor-one-item-kind-v2",
+          "before": null,
+          "after": {
+            "from": "one-log-per-item-kind",
+            "type": "depends-on",
+            "to": "one-actor-one-item-kind-v2"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-log-per-item-kind-depends-on-intention-history-reuses-record-events",
+          "before": null,
+          "after": {
+            "from": "one-log-per-item-kind",
+            "type": "depends-on",
+            "to": "intention-history-reuses-record-events"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-log-per-item-kind-extracted-from-session-2026-09-16-logs",
+          "before": null,
+          "after": {
+            "from": "one-log-per-item-kind",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-logs"
+          }
         }
       ]
     }
