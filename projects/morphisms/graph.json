@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 67,
+  "revision": 81,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1584,7 +1584,7 @@
     "flag": {
       "type": "entity",
       "status": "defined",
-      "text": "An obstruction that arose during an attempt and says the contract itself is the problem. Resolver: the auditor. Not tooling or environment blockage (session 1 F3).",
+      "text": "A marker that the contract blocked a run: the worker could not do the work as the contract stands. Resolver: the auditor. Never about the record, the worker, tooling or environment (session 1 F3).",
       "meta": {
         "review_state": "current",
         "title": "flag",
@@ -1631,7 +1631,7 @@
     "raise-obstruction": {
       "type": "operation",
       "status": "defined",
-      "text": "An obstructed actor raises an obstruction off the ladder: a desk item (resolver operator) or a flag (resolver auditor). It names the rungs it is about and which of them are frozen while it is open.",
+      "text": "A blocked actor raises an obstruction off the ladder: a desk item (resolver operator) for what the orchestrator or steward cannot settle, or a flag (resolver auditor) only when the contract blocks the run. It names the rungs it is about and which of them are frozen while it is open.",
       "meta": {
         "review_state": "current",
         "title": "raise obstruction",
@@ -1663,13 +1663,14 @@
     },
     "flag-is-an-obstruction": {
       "type": "claim",
-      "status": "accepted",
+      "status": "withdrawn",
       "text": "A flag is the representation of an obstruction that arose during the attempted manifestation of an intention, and says the contract is the problem. Its resolver is the auditor.",
       "meta": {
-        "review_state": "current",
+        "review_state": "historical",
         "title": "flag is an obstruction",
         "author": "Blake",
-        "source_kind": "session-paraphrase"
+        "source_kind": "session-paraphrase",
+        "superseded_by": "flag-is-a-contract-block"
       }
     },
     "contract-changes-are-not-records": {
@@ -1720,7 +1721,7 @@
     "attempt-obstruction-dual": {
       "type": "claim",
       "status": "proposed",
-      "text": "Two shapes cover everything that happens to an intention: it moves (an attempt: record, run) or it stops (an obstruction: desk item, flag). Attempts go down the ladder, are born from the claimer above, are claimed by a doer, rest when the walk ends, and wake the claimer above. Obstructions go sideways, are born from the obstructed claimer, are claimed by a resolver, rest when answered, and wake the raiser. Fundamental objects: intention, attempt, obstruction.",
+      "text": "Two shapes cover everything that happens to an intention on the ladder: it moves (an attempt: record, run) or it is blocked (an obstruction: a desk item, or a flag when the contract is the cause). Attempts go down the ladder, are born from the claimer above, are claimed by a doer, rest when the walk ends, and wake the claimer above. Obstructions go sideways, are born from the blocked claimer, are claimed by a resolver, rest when answered, and wake the raiser. An observation is neither: it is a new intention entering the front door.",
       "meta": {
         "review_state": "current",
         "title": "attempt obstruction dual",
@@ -1744,10 +1745,11 @@
       "status": "proposed",
       "text": "The assistant and the architect are not actors. They are the operator with a co-seat on one of the operator's own items: the assistant on a desk item for hours, the architect on an intention the operator has taken (the dials route architecture decisions to the desk) for weeks. A design session is the operator stewarding one intention with a co-seat; the theory graph is that seat's ledger. Any user-defined agent has three coordinates: which operator item it shares, how it is driven, how long it lives. Blake: 'yes, that's pretty good'.",
       "meta": {
-        "review_state": "current",
+        "review_state": "needs-review",
         "title": "delegates are co seats",
         "author": "assistant",
-        "source_kind": "assistant-proposal"
+        "source_kind": "assistant-proposal",
+        "review_reason": "Review relation added: sorter-is-canonical-optional-potential-conflict-delegates-are-co-seats"
       }
     },
     "running-policy-separates-delegates": {
@@ -1802,6 +1804,109 @@
       "meta": {
         "review_state": "current",
         "title": "record rest skips orchestrator",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
+      }
+    },
+    "session-2026-09-16-flag-observation": {
+      "type": "source",
+      "status": "recorded",
+      "text": "Blake, 2026-09-16, verbatim: \"a flag is when they are blocked by the contract and they really have to be blocked. A block without a flag is that they're blocked because of the record, and a friction item is not blocked. It's actually a potential inbox item to be created into an intention, but we need a consumer for that.\" \"a flag is never meant to indicate that something is wrong with the record, that the agent is blocked, or that the worker is obstructed.\" \"what is friction? ... I don't like that. It should be observations. Observations are good. So it's observations about the code, and in this case, morphisms is a special case because it also includes observations about the thing you are using yourself, because we're dogfooding.\" On the sorter: \"maybe it's both. They can decide when they spawn that agent, if they use that agent, but the agent comes preinstalled ... 'click here to turn on recursive improvement in the code base.' It's an advanced feature, and they have to select the model.\" \"if the workers always return a structured JSON field in their return envelope ... we are storing this data canonically. Then it makes sense to at least offer this as a canonical agent.\" On whether the sorter is required: \"I'm not sure if I'm ready to answer that question; it might be filed as an open question for now.\"",
+      "meta": {
+        "review_state": "current",
+        "title": "session 2026 09 16 flag observation",
+        "author": "Blake",
+        "source_kind": "verbatim"
+      }
+    },
+    "observation": {
+      "type": "entity",
+      "status": "defined",
+      "text": "What a worker noticed without being blocked: about the code it is working on and, in Morphisms' own installation, about the tool it is using. Returned as a structured field of the run's envelope; not an obstruction and not on the ladder.",
+      "meta": {
+        "review_state": "current",
+        "title": "observation",
+        "author": "Blake",
+        "source_kind": "session-paraphrase",
+        "aliases": [
+          "friction"
+        ]
+      }
+    },
+    "sorter-role": {
+      "type": "entity",
+      "status": "defined",
+      "text": "The agent that stands between worker observations and the steward: reads the envelope's observation field, judges which are distinct and worth filing, and files intentions at the front door. Today: the nightly friction sweep in tools/.",
+      "meta": {
+        "review_state": "current",
+        "title": "sorter role",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
+      }
+    },
+    "sort-observations": {
+      "type": "operation",
+      "status": "defined",
+      "text": "The sorter reads observations from returned envelopes, judges which are distinct and worth the steward's attention, and files each as an intention. A barrier against noise, not a decision about work.",
+      "meta": {
+        "review_state": "current",
+        "title": "sort observations",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
+      }
+    },
+    "flag-is-a-contract-block": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "A flag is raised only when a run is blocked by the contract: the worker cannot do the work as the contract stands, raises the flag, and comes to rest. A flag is never about the record or the worker. Resolver: the auditor.",
+      "meta": {
+        "review_state": "current",
+        "title": "flag is a contract block",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
+      }
+    },
+    "record-block-is-not-a-flag": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "A run blocked by the record itself, a defective plan or a wrong premise, is a plain blocked return to the orchestrator. It is not a flag.",
+      "meta": {
+        "review_state": "current",
+        "title": "record block is not a flag",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
+      }
+    },
+    "observations-are-not-obstructions": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "What a worker notices without being blocked is an observation, not an obstruction. It rides home in the envelope and enters the front door as an intention through the sorter; the worker never raises it on the ladder. The word friction is retired.",
+      "meta": {
+        "review_state": "current",
+        "title": "observations are not obstructions",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
+      }
+    },
+    "sorter-is-canonical-optional": {
+      "type": "claim",
+      "status": "proposed",
+      "text": "The sorter ships preinstalled and canonical because the envelope field it reads is canonical, but it is switched on by the user as an advanced feature (recursive improvement of the code base) with a model the user chooses. It is not one of the required actors.",
+      "meta": {
+        "review_state": "needs-review",
+        "title": "sorter is canonical optional",
+        "author": "Blake",
+        "source_kind": "session-paraphrase",
+        "review_reason": "Review relation added: sorter-is-canonical-optional-potential-conflict-delegates-are-co-seats"
+      }
+    },
+    "sorter-standing": {
+      "type": "question",
+      "status": "open",
+      "text": "Is the sorter a required actor, so that every installation has four, or an optional preinstalled one that a plain user may run without? Blake 2026-09-16: not ready to answer; leans optional and preinstalled.",
+      "meta": {
+        "review_state": "current",
+        "title": "sorter standing",
         "author": "Blake",
         "source_kind": "session-paraphrase"
       }
@@ -3951,6 +4056,121 @@
       "from": "attempt-ladder",
       "type": "extracted-from",
       "to": "session-2026-09-16-record-claimer"
+    },
+    "sort-observations-acts-on-observation": {
+      "from": "sort-observations",
+      "type": "acts-on",
+      "to": "observation"
+    },
+    "sort-observations-acts-on-intention-type": {
+      "from": "sort-observations",
+      "type": "acts-on",
+      "to": "intention-type"
+    },
+    "flag-is-a-contract-block-about-flag": {
+      "from": "flag-is-a-contract-block",
+      "type": "about",
+      "to": "flag"
+    },
+    "flag-is-a-contract-block-about-contract": {
+      "from": "flag-is-a-contract-block",
+      "type": "about",
+      "to": "contract"
+    },
+    "flag-is-a-contract-block-about-run": {
+      "from": "flag-is-a-contract-block",
+      "type": "about",
+      "to": "run"
+    },
+    "flag-is-a-contract-block-governs-raise-obstruction": {
+      "from": "flag-is-a-contract-block",
+      "type": "governs",
+      "to": "raise-obstruction"
+    },
+    "flag-is-a-contract-block-extracted-from-session-2026-09-16-flag-observation": {
+      "from": "flag-is-a-contract-block",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-flag-observation"
+    },
+    "flag-is-a-contract-block-revises-flag-is-an-obstruction": {
+      "from": "flag-is-a-contract-block",
+      "type": "revises",
+      "to": "flag-is-an-obstruction"
+    },
+    "record-block-is-not-a-flag-about-run": {
+      "from": "record-block-is-not-a-flag",
+      "type": "about",
+      "to": "run"
+    },
+    "record-block-is-not-a-flag-about-record-type": {
+      "from": "record-block-is-not-a-flag",
+      "type": "about",
+      "to": "record-type"
+    },
+    "record-block-is-not-a-flag-about-orchestrator-role": {
+      "from": "record-block-is-not-a-flag",
+      "type": "about",
+      "to": "orchestrator-role"
+    },
+    "record-block-is-not-a-flag-extracted-from-session-2026-09-16-flag-observation": {
+      "from": "record-block-is-not-a-flag",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-flag-observation"
+    },
+    "record-block-is-not-a-flag-supports-orchestrator-judges-then-asks": {
+      "from": "record-block-is-not-a-flag",
+      "type": "supports",
+      "to": "orchestrator-judges-then-asks"
+    },
+    "observations-are-not-obstructions-about-observation": {
+      "from": "observations-are-not-obstructions",
+      "type": "about",
+      "to": "observation"
+    },
+    "observations-are-not-obstructions-about-run": {
+      "from": "observations-are-not-obstructions",
+      "type": "about",
+      "to": "run"
+    },
+    "observations-are-not-obstructions-extracted-from-session-2026-09-16-flag-observation": {
+      "from": "observations-are-not-obstructions",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-flag-observation"
+    },
+    "observations-are-not-obstructions-supports-everything-enters-as-intention": {
+      "from": "observations-are-not-obstructions",
+      "type": "supports",
+      "to": "everything-enters-as-intention"
+    },
+    "sorter-is-canonical-optional-about-sorter-role": {
+      "from": "sorter-is-canonical-optional",
+      "type": "about",
+      "to": "sorter-role"
+    },
+    "sorter-is-canonical-optional-extracted-from-session-2026-09-16-flag-observation": {
+      "from": "sorter-is-canonical-optional",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-flag-observation"
+    },
+    "sorter-standing-about-sorter-role": {
+      "from": "sorter-standing",
+      "type": "about",
+      "to": "sorter-role"
+    },
+    "sorter-is-canonical-optional-raises-sorter-standing": {
+      "from": "sorter-is-canonical-optional",
+      "type": "raises",
+      "to": "sorter-standing"
+    },
+    "attempt-obstruction-dual-about-observation": {
+      "from": "attempt-obstruction-dual",
+      "type": "about",
+      "to": "observation"
+    },
+    "sorter-is-canonical-optional-potential-conflict-delegates-are-co-seats": {
+      "from": "sorter-is-canonical-optional",
+      "type": "potential-conflict",
+      "to": "delegates-are-co-seats"
     }
   },
   "changes": [
@@ -13226,6 +13446,656 @@
             "type": "extracted-from",
             "to": "session-2026-09-16-record-claimer"
           }
+        }
+      ]
+    },
+    {
+      "revision": 68,
+      "at": "2026-09-16T08:15:30.596676+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: flag narrowed to a contract block; record blocks are plain; the rest are observations via a sorter",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "session-2026-09-16-flag-observation",
+          "before": null,
+          "after": {
+            "type": "source",
+            "status": "recorded",
+            "text": "Blake, 2026-09-16, verbatim: \"a flag is when they are blocked by the contract and they really have to be blocked. A block without a flag is that they're blocked because of the record, and a friction item is not blocked. It's actually a potential inbox item to be created into an intention, but we need a consumer for that.\" \"a flag is never meant to indicate that something is wrong with the record, that the agent is blocked, or that the worker is obstructed.\" \"what is friction? ... I don't like that. It should be observations. Observations are good. So it's observations about the code, and in this case, morphisms is a special case because it also includes observations about the thing you are using yourself, because we're dogfooding.\" On the sorter: \"maybe it's both. They can decide when they spawn that agent, if they use that agent, but the agent comes preinstalled ... 'click here to turn on recursive improvement in the code base.' It's an advanced feature, and they have to select the model.\" \"if the workers always return a structured JSON field in their return envelope ... we are storing this data canonically. Then it makes sense to at least offer this as a canonical agent.\" On whether the sorter is required: \"I'm not sure if I'm ready to answer that question; it might be filed as an open question for now.\"",
+            "meta": {
+              "review_state": "current",
+              "title": "session 2026 09 16 flag observation",
+              "author": "Blake",
+              "source_kind": "verbatim"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 69,
+      "at": "2026-09-16T08:15:30.674864+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: flag narrowed to a contract block; record blocks are plain; the rest are observations via a sorter",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "observation",
+          "before": null,
+          "after": {
+            "type": "entity",
+            "status": "defined",
+            "text": "What a worker noticed without being blocked: about the code it is working on and, in Morphisms' own installation, about the tool it is using. Returned as a structured field of the run's envelope; not an obstruction and not on the ladder.",
+            "meta": {
+              "review_state": "current",
+              "title": "observation",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "aliases": [
+                "friction"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 70,
+      "at": "2026-09-16T08:15:30.753927+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: flag narrowed to a contract block; record blocks are plain; the rest are observations via a sorter",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "sorter-role",
+          "before": null,
+          "after": {
+            "type": "entity",
+            "status": "defined",
+            "text": "The agent that stands between worker observations and the steward: reads the envelope's observation field, judges which are distinct and worth filing, and files intentions at the front door. Today: the nightly friction sweep in tools/.",
+            "meta": {
+              "review_state": "current",
+              "title": "sorter role",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 71,
+      "at": "2026-09-16T08:15:30.874699+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: flag narrowed to a contract block; record blocks are plain; the rest are observations via a sorter",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "sort-observations",
+          "before": null,
+          "after": {
+            "type": "operation",
+            "status": "defined",
+            "text": "The sorter reads observations from returned envelopes, judges which are distinct and worth the steward's attention, and files each as an intention. A barrier against noise, not a decision about work.",
+            "meta": {
+              "review_state": "current",
+              "title": "sort observations",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "sort-observations-acts-on-observation",
+          "before": null,
+          "after": {
+            "from": "sort-observations",
+            "type": "acts-on",
+            "to": "observation"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "sort-observations-acts-on-intention-type",
+          "before": null,
+          "after": {
+            "from": "sort-observations",
+            "type": "acts-on",
+            "to": "intention-type"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 72,
+      "at": "2026-09-16T08:15:30.985442+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: flag narrowed to a contract block; record blocks are plain; the rest are observations via a sorter",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "flag-is-a-contract-block",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "A flag is raised only when a run is blocked by the contract: the worker cannot do the work as the contract stands, raises the flag, and comes to rest. A flag is never about the record or the worker. Resolver: the auditor.",
+            "meta": {
+              "review_state": "current",
+              "title": "flag is a contract block",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "flag-is-a-contract-block-about-flag",
+          "before": null,
+          "after": {
+            "from": "flag-is-a-contract-block",
+            "type": "about",
+            "to": "flag"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "flag-is-a-contract-block-about-contract",
+          "before": null,
+          "after": {
+            "from": "flag-is-a-contract-block",
+            "type": "about",
+            "to": "contract"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "flag-is-a-contract-block-about-run",
+          "before": null,
+          "after": {
+            "from": "flag-is-a-contract-block",
+            "type": "about",
+            "to": "run"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "flag-is-a-contract-block-governs-raise-obstruction",
+          "before": null,
+          "after": {
+            "from": "flag-is-a-contract-block",
+            "type": "governs",
+            "to": "raise-obstruction"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "flag-is-a-contract-block-extracted-from-session-2026-09-16-flag-observation",
+          "before": null,
+          "after": {
+            "from": "flag-is-a-contract-block",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-flag-observation"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "flag-is-a-contract-block-revises-flag-is-an-obstruction",
+          "before": null,
+          "after": {
+            "from": "flag-is-a-contract-block",
+            "type": "revises",
+            "to": "flag-is-an-obstruction"
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "flag-is-an-obstruction",
+          "before": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "A flag is the representation of an obstruction that arose during the attempted manifestation of an intention, and says the contract is the problem. Its resolver is the auditor.",
+            "meta": {
+              "review_state": "current",
+              "title": "flag is an obstruction",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "withdrawn",
+            "text": "A flag is the representation of an obstruction that arose during the attempted manifestation of an intention, and says the contract is the problem. Its resolver is the auditor.",
+            "meta": {
+              "review_state": "historical",
+              "title": "flag is an obstruction",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "superseded_by": "flag-is-a-contract-block"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 73,
+      "at": "2026-09-16T08:15:31.076412+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: flag narrowed to a contract block; record blocks are plain; the rest are observations via a sorter",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "record-block-is-not-a-flag",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "A run blocked by the record itself, a defective plan or a wrong premise, is a plain blocked return to the orchestrator. It is not a flag.",
+            "meta": {
+              "review_state": "current",
+              "title": "record block is not a flag",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "record-block-is-not-a-flag-about-run",
+          "before": null,
+          "after": {
+            "from": "record-block-is-not-a-flag",
+            "type": "about",
+            "to": "run"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "record-block-is-not-a-flag-about-record-type",
+          "before": null,
+          "after": {
+            "from": "record-block-is-not-a-flag",
+            "type": "about",
+            "to": "record-type"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "record-block-is-not-a-flag-about-orchestrator-role",
+          "before": null,
+          "after": {
+            "from": "record-block-is-not-a-flag",
+            "type": "about",
+            "to": "orchestrator-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "record-block-is-not-a-flag-extracted-from-session-2026-09-16-flag-observation",
+          "before": null,
+          "after": {
+            "from": "record-block-is-not-a-flag",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-flag-observation"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "record-block-is-not-a-flag-supports-orchestrator-judges-then-asks",
+          "before": null,
+          "after": {
+            "from": "record-block-is-not-a-flag",
+            "type": "supports",
+            "to": "orchestrator-judges-then-asks"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 74,
+      "at": "2026-09-16T08:15:31.168776+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: flag narrowed to a contract block; record blocks are plain; the rest are observations via a sorter",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "observations-are-not-obstructions",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "What a worker notices without being blocked is an observation, not an obstruction. It rides home in the envelope and enters the front door as an intention through the sorter; the worker never raises it on the ladder. The word friction is retired.",
+            "meta": {
+              "review_state": "current",
+              "title": "observations are not obstructions",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "observations-are-not-obstructions-about-observation",
+          "before": null,
+          "after": {
+            "from": "observations-are-not-obstructions",
+            "type": "about",
+            "to": "observation"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "observations-are-not-obstructions-about-run",
+          "before": null,
+          "after": {
+            "from": "observations-are-not-obstructions",
+            "type": "about",
+            "to": "run"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "observations-are-not-obstructions-extracted-from-session-2026-09-16-flag-observation",
+          "before": null,
+          "after": {
+            "from": "observations-are-not-obstructions",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-flag-observation"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "observations-are-not-obstructions-supports-everything-enters-as-intention",
+          "before": null,
+          "after": {
+            "from": "observations-are-not-obstructions",
+            "type": "supports",
+            "to": "everything-enters-as-intention"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 75,
+      "at": "2026-09-16T08:15:31.287174+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: flag narrowed to a contract block; record blocks are plain; the rest are observations via a sorter; Blake: leaning, not ruled",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "sorter-is-canonical-optional",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "The sorter ships preinstalled and canonical because the envelope field it reads is canonical, but it is switched on by the user as an advanced feature (recursive improvement of the code base) with a model the user chooses. It is not one of the required actors.",
+            "meta": {
+              "review_state": "current",
+              "title": "sorter is canonical optional",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "sorter-is-canonical-optional-about-sorter-role",
+          "before": null,
+          "after": {
+            "from": "sorter-is-canonical-optional",
+            "type": "about",
+            "to": "sorter-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "sorter-is-canonical-optional-extracted-from-session-2026-09-16-flag-observation",
+          "before": null,
+          "after": {
+            "from": "sorter-is-canonical-optional",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-flag-observation"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 76,
+      "at": "2026-09-16T08:15:31.381782+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: flag narrowed to a contract block; record blocks are plain; the rest are observations via a sorter",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "sorter-standing",
+          "before": null,
+          "after": {
+            "type": "question",
+            "status": "open",
+            "text": "Is the sorter a required actor, so that every installation has four, or an optional preinstalled one that a plain user may run without? Blake 2026-09-16: not ready to answer; leans optional and preinstalled.",
+            "meta": {
+              "review_state": "current",
+              "title": "sorter standing",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "sorter-standing-about-sorter-role",
+          "before": null,
+          "after": {
+            "from": "sorter-standing",
+            "type": "about",
+            "to": "sorter-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "sorter-is-canonical-optional-raises-sorter-standing",
+          "before": null,
+          "after": {
+            "from": "sorter-is-canonical-optional",
+            "type": "raises",
+            "to": "sorter-standing"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 77,
+      "at": "2026-09-16T08:15:31.467160+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: flag narrowed to a contract block; record blocks are plain; the rest are observations via a sorter",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "flag",
+          "before": {
+            "type": "entity",
+            "status": "defined",
+            "text": "An obstruction that arose during an attempt and says the contract itself is the problem. Resolver: the auditor. Not tooling or environment blockage (session 1 F3).",
+            "meta": {
+              "review_state": "current",
+              "title": "flag",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          },
+          "after": {
+            "type": "entity",
+            "status": "defined",
+            "text": "A marker that the contract blocked a run: the worker could not do the work as the contract stands. Resolver: the auditor. Never about the record, the worker, tooling or environment (session 1 F3).",
+            "meta": {
+              "review_state": "current",
+              "title": "flag",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 78,
+      "at": "2026-09-16T08:15:31.549282+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: flag narrowed to a contract block; record blocks are plain; the rest are observations via a sorter",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "raise-obstruction",
+          "before": {
+            "type": "operation",
+            "status": "defined",
+            "text": "An obstructed actor raises an obstruction off the ladder: a desk item (resolver operator) or a flag (resolver auditor). It names the rungs it is about and which of them are frozen while it is open.",
+            "meta": {
+              "review_state": "current",
+              "title": "raise obstruction",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          },
+          "after": {
+            "type": "operation",
+            "status": "defined",
+            "text": "A blocked actor raises an obstruction off the ladder: a desk item (resolver operator) for what the orchestrator or steward cannot settle, or a flag (resolver auditor) only when the contract blocks the run. It names the rungs it is about and which of them are frozen while it is open.",
+            "meta": {
+              "review_state": "current",
+              "title": "raise obstruction",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 79,
+      "at": "2026-09-16T08:15:31.650744+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: flag narrowed to a contract block; record blocks are plain; the rest are observations via a sorter; narrowed obstruction to block",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "attempt-obstruction-dual",
+          "before": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "Two shapes cover everything that happens to an intention: it moves (an attempt: record, run) or it stops (an obstruction: desk item, flag). Attempts go down the ladder, are born from the claimer above, are claimed by a doer, rest when the walk ends, and wake the claimer above. Obstructions go sideways, are born from the obstructed claimer, are claimed by a resolver, rest when answered, and wake the raiser. Fundamental objects: intention, attempt, obstruction.",
+            "meta": {
+              "review_state": "current",
+              "title": "attempt obstruction dual",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "Two shapes cover everything that happens to an intention on the ladder: it moves (an attempt: record, run) or it is blocked (an obstruction: a desk item, or a flag when the contract is the cause). Attempts go down the ladder, are born from the claimer above, are claimed by a doer, rest when the walk ends, and wake the claimer above. Obstructions go sideways, are born from the blocked claimer, are claimed by a resolver, rest when answered, and wake the raiser. An observation is neither: it is a new intention entering the front door.",
+            "meta": {
+              "review_state": "current",
+              "title": "attempt obstruction dual",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 80,
+      "at": "2026-09-16T08:15:31.728838+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: flag narrowed to a contract block; record blocks are plain; the rest are observations via a sorter",
+      "edits": [
+        {
+          "collection": "edges",
+          "id": "attempt-obstruction-dual-about-observation",
+          "before": null,
+          "after": {
+            "from": "attempt-obstruction-dual",
+            "type": "about",
+            "to": "observation"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 81,
+      "at": "2026-09-16T08:15:31.829189+00:00",
+      "actor": "assistant",
+      "reason": "delegates-are-co-seats says any user-defined agent shares an operator item and is operator-driven; the sorter is user-enabled but system-driven and shares no operator item. Either the sorter is a third kind of agent or the three-coordinate rule needs a slot for it.",
+      "edits": [
+        {
+          "collection": "edges",
+          "id": "sorter-is-canonical-optional-potential-conflict-delegates-are-co-seats",
+          "before": null,
+          "after": {
+            "from": "sorter-is-canonical-optional",
+            "type": "potential-conflict",
+            "to": "delegates-are-co-seats"
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "delegates-are-co-seats",
+          "before": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "The assistant and the architect are not actors. They are the operator with a co-seat on one of the operator's own items: the assistant on a desk item for hours, the architect on an intention the operator has taken (the dials route architecture decisions to the desk) for weeks. A design session is the operator stewarding one intention with a co-seat; the theory graph is that seat's ledger. Any user-defined agent has three coordinates: which operator item it shares, how it is driven, how long it lives. Blake: 'yes, that's pretty good'.",
+            "meta": {
+              "review_state": "current",
+              "title": "delegates are co seats",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "The assistant and the architect are not actors. They are the operator with a co-seat on one of the operator's own items: the assistant on a desk item for hours, the architect on an intention the operator has taken (the dials route architecture decisions to the desk) for weeks. A design session is the operator stewarding one intention with a co-seat; the theory graph is that seat's ledger. Any user-defined agent has three coordinates: which operator item it shares, how it is driven, how long it lives. Blake: 'yes, that's pretty good'.",
+            "meta": {
+              "review_state": "needs-review",
+              "title": "delegates are co seats",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "review_reason": "Review relation added: sorter-is-canonical-optional-potential-conflict-delegates-are-co-seats"
+            }
+          },
+          "automatic": "conflict-review"
+        },
+        {
+          "collection": "nodes",
+          "id": "sorter-is-canonical-optional",
+          "before": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "The sorter ships preinstalled and canonical because the envelope field it reads is canonical, but it is switched on by the user as an advanced feature (recursive improvement of the code base) with a model the user chooses. It is not one of the required actors.",
+            "meta": {
+              "review_state": "current",
+              "title": "sorter is canonical optional",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "The sorter ships preinstalled and canonical because the envelope field it reads is canonical, but it is switched on by the user as an advanced feature (recursive improvement of the code base) with a model the user chooses. It is not one of the required actors.",
+            "meta": {
+              "review_state": "needs-review",
+              "title": "sorter is canonical optional",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "review_reason": "Review relation added: sorter-is-canonical-optional-potential-conflict-delegates-are-co-seats"
+            }
+          },
+          "automatic": "conflict-review"
         }
       ]
     }
