@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 43,
+  "revision": 44,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1602,6 +1602,17 @@
         "aliases": [
           "frame"
         ]
+      }
+    },
+    "start-run": {
+      "type": "operation",
+      "status": "defined",
+      "text": "The orchestrator starts a worker on a record at a node. Births a run.",
+      "meta": {
+        "review_state": "current",
+        "title": "start run",
+        "author": "assistant",
+        "source_kind": "assistant-proposal"
       }
     }
   },
@@ -3310,6 +3321,16 @@
       "from": "desk-item-shows-intention",
       "type": "about",
       "to": "desk-item"
+    },
+    "start-run-acts-on-run": {
+      "from": "start-run",
+      "type": "acts-on",
+      "to": "run"
+    },
+    "start-run-acts-on-record-type": {
+      "from": "start-run",
+      "type": "acts-on",
+      "to": "record-type"
     }
   },
   "changes": [
@@ -11032,6 +11053,50 @@
           "before": null,
           "after": {
             "description": "Operation → the role that performs it. Lets a reader walk from a role to what it does."
+          }
+        }
+      ]
+    },
+    {
+      "revision": 44,
+      "at": "2026-09-16T06:33:06.897308+00:00",
+      "actor": "assistant",
+      "reason": "Handover update 2026-09-16: ladder and obstruction model, delegates, frame",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "start-run",
+          "before": null,
+          "after": {
+            "type": "operation",
+            "status": "defined",
+            "text": "The orchestrator starts a worker on a record at a node. Births a run.",
+            "meta": {
+              "review_state": "current",
+              "title": "start run",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "start-run-acts-on-run",
+          "before": null,
+          "after": {
+            "from": "start-run",
+            "type": "acts-on",
+            "to": "run"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "start-run-acts-on-record-type",
+          "before": null,
+          "after": {
+            "from": "start-run",
+            "type": "acts-on",
+            "to": "record-type"
           }
         }
       ]
