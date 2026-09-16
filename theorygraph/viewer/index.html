@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Theory graph · Morphisms</title>
+<title>Theory graph</title>
 <script>
 /* Resolve the theme before first paint so there is no flash. */
 (function(){try{var t=localStorage.getItem('tg-theme');var dark=t==='dark'||(t!=='light'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=dark?'dark':'light'}catch(e){document.documentElement.dataset.theme='light'}})();
@@ -166,13 +166,34 @@ kbd{font:11px ui-monospace,monospace;border:1px solid var(--line);border-bottom-
   .drawer{width:min(360px,calc(100vw - 20px));right:10px;top:10px;bottom:10px}
   .legend{display:none}
 }
+/* Project switcher */
+#project-button{display:flex;align-items:baseline;gap:8px;max-width:340px;padding:5px 10px}
+#project-button .name{font-size:15px;font-weight:600;letter-spacing:-.01em}
+#project-button .caret{color:var(--muted);font-size:10px}
+#project-button .meta{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+#project-menu{position:absolute;left:14px;top:50px;z-index:30;width:380px;max-height:70vh;overflow:auto;background:var(--paper);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);padding:6px}
+#project-menu[hidden]{display:none}
+#project-menu .head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:6px 8px 8px;font-size:11px;color:var(--muted);border-bottom:1px solid var(--line)}
+.project-row{display:block;width:100%;text-align:left;border:0;border-radius:6px;background:transparent;padding:8px 9px;line-height:1.35}
+.project-row+.project-row{margin-top:1px}
+.project-row:hover,.project-row:focus-visible{background:var(--paper-2)}
+.project-row[aria-current=true]{background:var(--accent-bg);color:var(--accent-ink)}
+.project-row .line{display:flex;align-items:baseline;gap:8px}
+.project-row .name{font-weight:600}
+.project-row kbd{margin-left:auto;font:inherit;font-size:10px;color:var(--muted);border:1px solid var(--line);border-radius:3px;padding:0 4px}
+.project-row .stats{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;margin-top:2px}
+.project-row .stats b{font-weight:600;color:var(--accent-ink)}
+[data-theme=dark] .project-row .stats b{color:var(--accent)}
+.project-row .where{display:block;font-size:11px;color:var(--muted);margin-top:2px;overflow-wrap:anywhere;opacity:.8}
+#project-menu .foot{padding:7px 9px 4px;font-size:11px;color:var(--muted);border-top:1px solid var(--line);margin-top:4px}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
 </style>
 </head>
 <body>
 <header>
   <button id="lens-toggle" aria-pressed="true" aria-label="Show or hide the find panel" title="Find and filter (/)">☰ Find</button>
-  <h1>Theory graph <span>Morphisms</span></h1>
+  <button id="project-button" aria-haspopup="listbox" aria-expanded="false" aria-controls="project-menu" title="Switch graph (p)"><span class="name">Theory graph</span><span class="caret">▾</span><span class="meta"></span></button>
+  <div id="project-menu" role="listbox" aria-label="Theory graphs" hidden></div>
   <div class="toolbar-group"><button id="whole" aria-pressed="true">Whole graph</button><button id="near" aria-pressed="false" disabled>Neighborhood</button></div>
   <div class="spacer"></div>
   <span id="live" role="status">Connecting…</span>
@@ -208,7 +229,7 @@ kbd{font:11px ui-monospace,monospace;border:1px solid var(--line);border-bottom-
   <div id="scope-canvas" class="statusline"></div>
   <div class="map-tools"><button id="zoom-in" aria-label="Zoom in">＋</button><button id="zoom-out" aria-label="Zoom out">−</button><button id="fit">Fit</button></div>
   <div class="legend" aria-label="Node types"><span><i class="sw entity"></i>Entity</span><span><i class="sw operation"></i>Operation</span><span><i class="sw claim"></i>Claim</span><span><i class="sw question"></i>Question</span><span><i class="sw case"></i>Case</span><span><i class="sw source"></i>Source</span><span><i class="sw trace"></i>Trace</span><span><i class="sw check-result"></i>Check</span></div>
-  <div id="hint">Click a node or relation · double-click for neighborhood · <kbd>/</kbd> search · <kbd>Esc</kbd> clear</div>
+  <div id="hint">Click a node or relation · double-click for neighborhood · <kbd>/</kbd> search · <kbd>p</kbd> switch graph · <kbd>Esc</kbd> clear</div>
   <aside id="inspector" class="drawer" aria-label="Node details" hidden><button class="close" aria-label="Close details">×</button><div id="detail"></div></aside>
   <aside id="activity" class="drawer" aria-label="Graph information" hidden><button class="close" aria-label="Close panel">×</button><h2 id="activity-title"></h2><div id="activity-body"></div></aside>
 </div>
@@ -232,7 +253,8 @@ const snippet=(text,max)=>{text=(text||'').replace(/\s+/g,' ').trim();return tex
 
 const state={selected:'',selectedEdge:'',mode:'whole',revision:-1,snapshot:{nodes:{},edges:{}},requestId:0,first:true,activityKind:null,positions:new Map(),
   types:{node_types:{},edge_types:{}},questionStates:{},resolutions:{},findings:[],codeNodes:new Map(),auxRevision:-1,
-  facets:new Set(),codes:new Set(),hiddenTypes:new Set(),hiddenRelations:new Set(),hideOthers:false,query:'',matched:new Set(),remote:null};
+  facets:new Set(),codes:new Set(),hiddenTypes:new Set(),hiddenRelations:new Set(),hideOthers:false,query:'',matched:new Set(),remote:null,
+  project:new URLSearchParams(location.search).get('p')||''};
 const snapshot=()=>state.snapshot;
 
 /* ---------- Theme ---------- */
@@ -293,11 +315,13 @@ if(window.cytoscapeFcose)cytoscape.use(window.cytoscapeFcose);
 const cy=cytoscape({container:$('canvas'),elements:[],minZoom:.1,maxZoom:3.5,wheelSensitivity:.22,selectionType:'single',boxSelectionEnabled:false,style:buildStyle()});
 window.cy=cy;
 
-async function api(url){const r=await fetch(url,{cache:'no-store'});const j=await r.json();if(!r.ok)throw Error(j.error||r.statusText);return j}
+async function api(url){const u=new URL(url,location.origin);if(state.project)u.searchParams.set('project',state.project);const r=await fetch(u,{cache:'no-store'});const j=await r.json();if(!r.ok)throw Error(j.error||r.statusText);return j}
+/* Every URL we push keeps the project, so a link names both the graph and the node. */
+const basePath=()=>location.pathname+(state.project?'?p='+encodeURIComponent(state.project):'');
 
 /* ---------- Selection ---------- */
 function closePanels(){$('inspector').hidden=true;$('activity').hidden=true;state.activityKind=null}
-function clearSelection(){state.selected='';state.selectedEdge='';cy.elements().unselect().removeClass('faded emphasis picked');$('near').disabled=true;closePanels();history.replaceState(null,'',location.pathname);renderResults()}
+function clearSelection(){state.selected='';state.selectedEdge='';cy.elements().unselect().removeClass('faded emphasis picked');$('near').disabled=true;closePanels();history.replaceState(null,'',basePath());renderResults()}
 function highlight(){
   cy.batch(()=>{
     cy.elements().removeClass('faded emphasis picked').unselect();
@@ -307,8 +331,8 @@ function highlight(){
   });
   $('near').disabled=!cy.$id(state.selected).length;
 }
-function choose(id,inspect=true){state.selected=id;state.selectedEdge='';history.replaceState(null,'','#'+encodeURIComponent(id));highlight();if(inspect)showNode(id);if(state.mode==='near')refresh(true);renderResults()}
-function chooseEdge(eid){state.selectedEdge=eid;state.selected='';history.replaceState(null,'',location.pathname);highlight();showEdge(eid)}
+function choose(id,inspect=true){state.selected=id;state.selectedEdge='';history.replaceState(null,'',basePath()+'#'+encodeURIComponent(id));highlight();if(inspect)showNode(id);if(state.mode==='near')refresh(true);renderResults()}
+function chooseEdge(eid){state.selectedEdge=eid;state.selected='';history.replaceState(null,'',basePath());highlight();showEdge(eid)}
 cy.on('tap','node',e=>choose(e.target.id()));
 cy.on('tap','edge',e=>chooseEdge(e.target.data('edgeId')));
 cy.on('dbltap','node',e=>{choose(e.target.id());selectMode('near')});
@@ -745,6 +769,78 @@ async function showActivity(kind){
   }catch(e){body.replaceChildren(el('p',e.message))}
 }
 
+/* ---------- Project switcher ---------- */
+/* One server holds every registered graph. The project is part of the URL, so a
+   link carries the graph as well as the node. Switching resets the view but not
+   the theme or layout preference. */
+let catalog={projects:[],registry:''};
+const currentProject=()=>catalog.projects.find(p=>p.name===state.project)||null;
+
+async function loadCatalog(){
+  try{
+    const r=await fetch('/api/projects',{cache:'no-store'});catalog=await r.json();
+    if(!state.project||!catalog.projects.some(p=>p.name===state.project))state.project=catalog.served||catalog.default||'';
+  }catch(e){catalog={projects:[],registry:'registry unreadable'}}
+  renderProjectButton();renderProjectMenu();
+}
+function renderProjectButton(){
+  const p=currentProject(),b=$('project-button');
+  b.querySelector('.name').textContent=p?p.name:'Theory graph';
+  b.querySelector('.meta').textContent=p&&p.exists?'r'+p.revision+' · '+p.nodes+' nodes':(p?'unreadable':'');
+  document.title=p?'Theory graph · '+p.name:'Theory graph';
+}
+function renderProjectMenu(){
+  const menu=$('project-menu');menu.replaceChildren();
+  const head=el('div','');head.className='head';
+  head.append(el('span',catalog.projects.length+' graph'+(catalog.projects.length===1?'':'s')),el('span','↑↓ move · ↵ open · esc close'));
+  menu.append(head);
+  catalog.projects.forEach((p,i)=>{
+    const row=el('button','');row.className='project-row';row.type='button';row.setAttribute('role','option');
+    row.setAttribute('aria-current',String(p.name===state.project));
+    const line=el('div','');line.className='line';
+    line.append(el('span',p.name,'name'));
+    if(p.default)line.append(el('span','default','stats'));
+    if(i<9)line.append(el('kbd',String(i+1)));
+    row.append(line);
+    if(p.exists&&!p.error){
+      const stats=el('div','');stats.className='stats';
+      stats.append(document.createTextNode('r'+p.revision+' · '+p.nodes+' nodes · '+p.edges+' relations'));
+      if(p.open_questions){stats.append(document.createTextNode(' · '));stats.append(el('b',p.open_questions+' open'))}
+      if(p.needs_review){stats.append(document.createTextNode(' · '));stats.append(el('b',p.needs_review+' to review'))}
+      row.append(stats);
+    }else row.append(el('div',p.error||'file missing','stats'));
+    row.append(el('span',p.display_path,'where'));
+    row.onclick=()=>switchProject(p.name);
+    menu.append(row);
+  });
+  if(catalog.registry)menu.append(el('div','registry '+catalog.registry,'foot'));
+}
+function projectMenuOpen(){return !$('project-menu').hidden}
+function openProjectMenu(){
+  $('project-menu').hidden=false;$('project-button').setAttribute('aria-expanded','true');
+  const rows=[...$('project-menu').querySelectorAll('.project-row')];
+  (rows.find(r=>r.getAttribute('aria-current')==='true')||rows[0])?.focus();
+}
+function closeProjectMenu(refocus=false){
+  $('project-menu').hidden=true;$('project-button').setAttribute('aria-expanded','false');
+  if(refocus)$('project-button').focus();
+}
+function switchProject(name){
+  if(!name)return;
+  if(name===state.project)return closeProjectMenu(true);
+  state.project=name;
+  history.replaceState(null,'',location.pathname+'?p='+encodeURIComponent(name));
+  state.selected='';state.selectedEdge='';state.revision=-1;state.auxRevision=-1;state.first=true;state.mode='whole';
+  state.positions.clear();state.snapshot={nodes:{},edges:{}};state.matched.clear();
+  state.facets.clear();state.codes.clear();state.hiddenTypes.clear();state.hiddenRelations.clear();
+  state.query='';$('search').value='';$('near').disabled=true;
+  $('whole').setAttribute('aria-pressed','true');$('near').setAttribute('aria-pressed','false');
+  closePanels();closeProjectMenu();cy.elements().remove();
+  $('live').textContent='Loading '+name+'…';$('live').className='';
+  renderProjectButton();renderProjectMenu();
+  refresh(true);
+}
+
 /* ---------- Wiring ---------- */
 let searchTimer;
 $('search').oninput=()=>{clearTimeout(searchTimer);searchTimer=setTimeout(()=>{state.query=$('search').value;applyFilters()},120)};
@@ -764,6 +860,17 @@ $('all-frontier').onclick=e=>{e.preventDefault();e.stopPropagation();for(const f
 $('hide-others').onchange=()=>{state.hideOthers=$('hide-others').checked;applyFilters();if(state.hideOthers)fitView()};
 $('lens-toggle').onclick=()=>{const lens=$('lens');lens.hidden=!lens.hidden;$('lens-toggle').setAttribute('aria-pressed',String(!lens.hidden));store.set('tg-lens',lens.hidden?'0':'1')};
 $('theme').onclick=()=>{const order=['auto','light','dark'];applyTheme(order[(order.indexOf(themePreference())+1)%3])};
+$('project-button').onclick=()=>projectMenuOpen()?closeProjectMenu(true):openProjectMenu();
+$('project-menu').addEventListener('keydown',e=>{
+  if(e.key==='Escape'){e.stopPropagation();return closeProjectMenu(true)}
+  if(e.key!=='ArrowDown'&&e.key!=='ArrowUp')return;
+  const rows=[...$('project-menu').querySelectorAll('.project-row')],i=rows.indexOf(document.activeElement);
+  if(i<0)return;e.preventDefault();
+  const next=rows[(i+(e.key==='ArrowDown'?1:rows.length-1))%rows.length];next?.focus();
+});
+document.addEventListener('pointerdown',e=>{
+  if(projectMenuOpen()&&!$('project-menu').contains(e.target)&&!$('project-button').contains(e.target))closeProjectMenu();
+});
 document.querySelectorAll('.close').forEach(b=>b.onclick=closePanels);
 $('whole').onclick=()=>selectMode('whole');$('near').onclick=()=>selectMode('near');
 $('historical').onchange=()=>{state.auxRevision=-1;refresh(true)};
@@ -777,6 +884,11 @@ $('zoom-in').onclick=()=>cy.zoom({level:cy.zoom()*1.25,renderedPosition:{x:cy.wi
 $('zoom-out').onclick=()=>cy.zoom({level:cy.zoom()/1.25,renderedPosition:{x:cy.width()/2,y:cy.height()/2}});
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|SELECT|TEXTAREA)$/.test(document.activeElement?.tagName);
+  if(e.key==='Escape'&&projectMenuOpen()){e.preventDefault();return closeProjectMenu(true)}
+  if(e.key==='p'&&!typing&&!e.metaKey&&!e.ctrlKey&&!e.altKey){e.preventDefault();return projectMenuOpen()?closeProjectMenu(true):openProjectMenu()}
+  if(!typing&&!e.metaKey&&!e.ctrlKey&&!e.altKey&&/^[1-9]$/.test(e.key)&&catalog.projects.length>1){
+    const p=catalog.projects[Number(e.key)-1];if(p){e.preventDefault();return switchProject(p.name)}
+  }
   if(e.key==='Escape'){closePanels();$('options').open=false;if(!typing)clearSelection()}
   if(e.key==='/'&&!typing){e.preventDefault();if($('lens').hidden)$('lens-toggle').click();$('search').focus();$('search').select()}
 });
@@ -788,7 +900,7 @@ applyTheme(themePreference());
 state.layout=store.get('tg-layout')||'hubs';$('layout').value=state.layout;
 if(store.get('tg-lens')==='0'||innerWidth<820){$('lens').hidden=true;$('lens-toggle').setAttribute('aria-pressed','false')}
 state.selected=decodeURIComponent(location.hash.slice(1));
-refresh();
+loadCatalog().then(refresh);
 setInterval(async()=>{try{const s=await api('/api/status');if(s.revision!==state.revision)refresh();else{$('live').textContent='Live · r'+state.revision;$('live').className=''}}catch{$('live').textContent='Disconnected · retrying';$('live').className='error'}},1500);
 </script>
 </body>

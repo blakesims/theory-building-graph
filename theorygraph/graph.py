@@ -487,6 +487,38 @@ def compact(data, full=False):
     return '\n'.join(lines)
 
 def serve(path,port,host='127.0.0.1'):
+    """Serve every registered project from one process.
+
+    The graph named on the command line is the default, but any registered
+    project is reachable with ?project=NAME. Names are looked up in the
+    registry, never joined onto a path, so a request cannot read an arbitrary
+    file. Writes are still CLI-only.
+    """
+    default_path=Path(path).resolve()
+    def catalog():
+        reg=projects.read_registry(); rows=[]
+        for name,p in sorted(reg['projects'].items()):
+            file=Path(p); row={'name':name,'path':str(file),'display_path':display_path(file),
+                'exists':file.is_file(),'default':name==reg.get('default'),
+                'current':file.resolve()==default_path if file.exists() else False}
+            if row['exists']:
+                try:
+                    g=load(file); nodes=g['nodes']
+                    row['revision']=g.get('revision'); row['nodes']=len(nodes); row['edges']=len(g['edges'])
+                    row['open_questions']=sum(1 for n in nodes.values() if n.get('type')=='question' and n.get('status')=='open')
+                    row['needs_review']=sum(1 for n in nodes.values() if n.get('meta',{}).get('review_state')=='needs-review')
+                except (GraphError,ValueError,OSError): row['error']='unreadable'
+            rows.append(row)
+        served=next((r['name'] for r in rows if r['current']),None)
+        return {'registry':str(projects.REGISTRY),'default':reg.get('default'),'served':served,'projects':rows}
+    def display_path(file):
+        try: return '~/'+str(file.relative_to(Path.home()))
+        except ValueError: return str(file)
+    def graph_for(name):
+        """Registry name to graph file. Unknown or blank falls back to the served graph."""
+        if not name: return default_path
+        try: return projects.lookup(name)
+        except projects.ProjectError as e: raise GraphError(str(e))
     class Handler(BaseHTTPRequestHandler):
         def do_GET(self):
             parsed=urlparse(self.path); params=parse_qs(parsed.query)
@@ -498,7 +530,8 @@ def serve(path,port,host='127.0.0.1'):
                     name=route[len('/vendor/'):]; file=HERE/'viewer'/'vendor'/name
                     if '/' in name or not name.endswith('.js') or not file.is_file(): return self.send(b'Not found','text/plain',404)
                     return self.send(file.read_bytes(),'application/javascript')
-                g=load(path)
+                if route=='/api/projects': return self.send(json.dumps(catalog(),ensure_ascii=False).encode(),'application/json')
+                g=load(graph_for(p('project',None)))
                 if route=='/api/status': result=overview(g)
                 elif route=='/api/walk': result=walk(g,p('id',next(iter(g['nodes']),'')),int(p('depth','2')),p('direction','both'),min(200,int(p('limit','40'))),min(500,int(p('edge_limit','100'))),p('current','1')=='1',p('anchors','stop'),p('relations',None))
                 elif route=='/api/graph': result=graph_view(g,p('current','1')=='1',min(2000,int(p('limit','500'))),min(10000,int(p('edge_limit','2000'))))
@@ -521,7 +554,9 @@ def serve(path,port,host='127.0.0.1'):
         def send(self,data,ctype,code=200):
             self.send_response(code); self.send_header('Content-Type',ctype); self.send_header('Cache-Control','no-store'); self.send_header('Content-Length',str(len(data))); self.end_headers(); self.wfile.write(data)
         def log_message(self,*a): pass
-    print(f'Theory graph: http://{host}:{port} · {path}',flush=True)
+    names=', '.join(r['name'] for r in catalog()['projects']) or 'none registered'
+    print(f'Theory graph: http://{host}:{port} · default {path}',flush=True)
+    print(f'Projects reachable from this one server: {names}',flush=True)
     ThreadingHTTPServer((host,port),Handler).serve_forever()
 
 def main():
@@ -555,7 +590,7 @@ def main():
     q=sub.add_parser('new',help='Create a new project graph from the template and register it');q.add_argument('name');q.add_argument('--dir',type=Path,default=None,help='Directory for graph.json (default: ./theory)');q.add_argument('--no-register',action='store_true')
     q=sub.add_parser('register',help='Register an existing graph.json under a name');q.add_argument('name');q.add_argument('path',type=Path);q.add_argument('--default',action='store_true',help='Also make it the default project')
     q=sub.add_parser('use',help='Set the default project');q.add_argument('name')
-    q=sub.add_parser('serve',help='Serve this graph project only');q.add_argument('--port',type=int,default=8767,help='Local port; graph default8767, original notebook separate on8766');q.add_argument('--host',default='127.0.0.1',help='Bind address; 127.0.0.1 keeps it local, 0.0.0.0 reaches other hosts (reads only, no write endpoints)')
+    q=sub.add_parser('serve',help='Serve every registered project; this one is the default');q.add_argument('--port',type=int,default=8767,help='Local port; graph default8767, original notebook separate on8766');q.add_argument('--host',default='127.0.0.1',help='Bind address; 127.0.0.1 keeps it local, 0.0.0.0 reaches other hosts (reads only, no write endpoints)')
     # Normalize these global flags so they also work after subcommands.
     argv=sys.argv[1:]; front=[];rest=[];i=0
     while i<len(argv):
