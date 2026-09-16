@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 45,
+  "revision": 46,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1622,6 +1622,17 @@
       "meta": {
         "review_state": "current",
         "title": "return run",
+        "author": "assistant",
+        "source_kind": "assistant-proposal"
+      }
+    },
+    "raise-obstruction": {
+      "type": "operation",
+      "status": "defined",
+      "text": "An obstructed actor raises an obstruction off the ladder: a desk item (resolver operator) or a flag (resolver auditor). It names the rungs it is about and which of them are frozen while it is open.",
+      "meta": {
+        "review_state": "current",
+        "title": "raise obstruction",
         "author": "assistant",
         "source_kind": "assistant-proposal"
       }
@@ -3347,6 +3358,16 @@
       "from": "return-run",
       "type": "acts-on",
       "to": "run"
+    },
+    "raise-obstruction-acts-on-desk-item": {
+      "from": "raise-obstruction",
+      "type": "acts-on",
+      "to": "desk-item"
+    },
+    "raise-obstruction-acts-on-flag": {
+      "from": "raise-obstruction",
+      "type": "acts-on",
+      "to": "flag"
     }
   },
   "changes": [
@@ -11147,6 +11168,50 @@
             "from": "return-run",
             "type": "acts-on",
             "to": "run"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 46,
+      "at": "2026-09-16T06:33:20.691240+00:00",
+      "actor": "assistant",
+      "reason": "Handover update 2026-09-16: ladder and obstruction model, delegates, frame",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "raise-obstruction",
+          "before": null,
+          "after": {
+            "type": "operation",
+            "status": "defined",
+            "text": "An obstructed actor raises an obstruction off the ladder: a desk item (resolver operator) or a flag (resolver auditor). It names the rungs it is about and which of them are frozen while it is open.",
+            "meta": {
+              "review_state": "current",
+              "title": "raise obstruction",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "raise-obstruction-acts-on-desk-item",
+          "before": null,
+          "after": {
+            "from": "raise-obstruction",
+            "type": "acts-on",
+            "to": "desk-item"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "raise-obstruction-acts-on-flag",
+          "before": null,
+          "after": {
+            "from": "raise-obstruction",
+            "type": "acts-on",
+            "to": "flag"
           }
         }
       ]
