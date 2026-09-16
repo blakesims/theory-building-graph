@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 32,
+  "revision": 33,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -97,6 +97,10 @@
     },
     "acts-on": {
       "description": "Operation → the entity it reads or changes. Lets a reader walk from an entity to the operations on it."
+    },
+    "extracted-from": {
+      "description": "Interpretation was extracted from the source. Source fingerprints bind saved evidence; the source needs no accepted standing.",
+      "invalidation": "dependent-to-prerequisite"
     }
   },
   "nodes": {
@@ -1509,6 +1513,17 @@
         "aliases": [
           "worker turn"
         ]
+      }
+    },
+    "one-actor-one-item-kind": {
+      "type": "claim",
+      "status": "proposed",
+      "text": "Each actor claims exactly one kind of item and no other: the steward claims intentions, the orchestrator claims runs, the worker claims records, the operator claims desk items. Any actor's judgment may birth items of another kind, but claiming is exclusive. An intention can birth many records and many desk items.",
+      "meta": {
+        "review_state": "current",
+        "title": "one actor one item kind",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
       }
     }
   },
@@ -3137,6 +3152,46 @@
       "from": "assistant-vs-architect",
       "to": "session-2026-09-16-required",
       "type": "informs"
+    },
+    "one-actor-one-item-kind-about-steward-role": {
+      "from": "one-actor-one-item-kind",
+      "type": "about",
+      "to": "steward-role"
+    },
+    "one-actor-one-item-kind-about-orchestrator-role": {
+      "from": "one-actor-one-item-kind",
+      "type": "about",
+      "to": "orchestrator-role"
+    },
+    "one-actor-one-item-kind-about-operator-role": {
+      "from": "one-actor-one-item-kind",
+      "type": "about",
+      "to": "operator-role"
+    },
+    "one-actor-one-item-kind-about-intention-type": {
+      "from": "one-actor-one-item-kind",
+      "type": "about",
+      "to": "intention-type"
+    },
+    "one-actor-one-item-kind-about-desk-item": {
+      "from": "one-actor-one-item-kind",
+      "type": "about",
+      "to": "desk-item"
+    },
+    "one-actor-one-item-kind-about-run": {
+      "from": "one-actor-one-item-kind",
+      "type": "about",
+      "to": "run"
+    },
+    "one-actor-one-item-kind-about-record-type": {
+      "from": "one-actor-one-item-kind",
+      "type": "about",
+      "to": "record-type"
+    },
+    "one-actor-one-item-kind-extracted-from-session-2026-09-16-claimability": {
+      "from": "one-actor-one-item-kind",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-claimability"
     }
   },
   "changes": [
@@ -10473,6 +10528,119 @@
                 "worker turn"
               ]
             }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 33,
+      "at": "2026-09-16T04:30:35.693071+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: desk items are separate from intentions; one actor claims one item kind",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "one-actor-one-item-kind",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "Each actor claims exactly one kind of item and no other: the steward claims intentions, the orchestrator claims runs, the worker claims records, the operator claims desk items. Any actor's judgment may birth items of another kind, but claiming is exclusive. An intention can birth many records and many desk items.",
+            "meta": {
+              "review_state": "current",
+              "title": "one actor one item kind",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-about-steward-role",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind",
+            "type": "about",
+            "to": "steward-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-about-orchestrator-role",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind",
+            "type": "about",
+            "to": "orchestrator-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-about-operator-role",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind",
+            "type": "about",
+            "to": "operator-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-about-intention-type",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind",
+            "type": "about",
+            "to": "intention-type"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-about-desk-item",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind",
+            "type": "about",
+            "to": "desk-item"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-about-run",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind",
+            "type": "about",
+            "to": "run"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-about-record-type",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind",
+            "type": "about",
+            "to": "record-type"
+          }
+        },
+        {
+          "collection": "edge_types",
+          "id": "extracted-from",
+          "before": null,
+          "after": {
+            "description": "Interpretation was extracted from the source. Source fingerprints bind saved evidence; the source needs no accepted standing.",
+            "invalidation": "dependent-to-prerequisite"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-extracted-from-session-2026-09-16-claimability",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-claimability"
           }
         }
       ]
