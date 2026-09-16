@@ -174,7 +174,7 @@ def check(g):
     for eid,e in sorted(g['edges'].items()):
         a,b=g['nodes'][e['from']],g['nodes'][e['to']]
         if e['type']=='answers' and e.get('coverage') not in ('full','partial','unknown'): add('answer-coverage','Answer lacks explicit full/partial/unknown coverage.',[e['from'],e['to']],[eid])
-        if a['type'] in ('claim','question') and not dependency.retired(a) and e['type'] in ('depends-on','answers','revises') and dependency.retired(b):
+        if a['type'] in ('claim','question') and not dependency.retired(a) and e['type'] in ('depends-on','answers') and dependency.retired(b):
             add('retired-target',f"Current {a['type']} {e['from']} has {e['type']} target {e['to']}, which is withdrawn or retired.",[e['from'],e['to']],[eid])
         if review_state(a)=='historical' or review_state(b)=='historical': continue
         if e['type'] in ('potential-conflict','contradicts'): add('potential-conflict' if e['type']=='potential-conflict' else 'declared-contradiction','Declared tension between current claims; inspect wording, conditions and authority. Not an automatically proven contradiction.',[e['from'],e['to']],[eid])
