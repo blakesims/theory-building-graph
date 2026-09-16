@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 38,
+  "revision": 39,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1546,6 +1546,20 @@
         "title": "session 2026 09 16 ladder",
         "author": "Blake",
         "source_kind": "verbatim"
+      }
+    },
+    "worker-role": {
+      "type": "entity",
+      "status": "defined",
+      "text": "The agent role that performs one run: a contract-governed turn on a record at a node. Constrained by packet, schema and legal edges.",
+      "meta": {
+        "review_state": "current",
+        "title": "worker role",
+        "author": "assistant",
+        "source_kind": "assistant-proposal",
+        "aliases": [
+          "worker"
+        ]
       }
     }
   },
@@ -10854,6 +10868,33 @@
               "title": "session 2026 09 16 ladder",
               "author": "Blake",
               "source_kind": "verbatim"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 39,
+      "at": "2026-09-16T06:32:30.084235+00:00",
+      "actor": "assistant",
+      "reason": "Handover update 2026-09-16: ladder and obstruction model, delegates, frame",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "worker-role",
+          "before": null,
+          "after": {
+            "type": "entity",
+            "status": "defined",
+            "text": "The agent role that performs one run: a contract-governed turn on a record at a node. Constrained by packet, schema and legal edges.",
+            "meta": {
+              "review_state": "current",
+              "title": "worker role",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "aliases": [
+                "worker"
+              ]
             }
           }
         }
