@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 17,
+  "revision": 18,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -971,6 +971,70 @@
         "provenance": "Claude Code session 2026-09-15, answer to stopping-authority.",
         "modality": "must ask, in general",
         "scope": "'In general' is preserved: exceptions are not specified. 'Desk' is not modelled as an entity.",
+        "review_state": "current"
+      }
+    },
+    "intention-type": {
+      "type": "entity",
+      "status": "provisional",
+      "text": "The continuing concern that work is undertaken to address. A record is one contract-governed attempt at it; several records may serve one intention.",
+      "meta": {
+        "title": "Intention",
+        "aliases": [
+          "intention",
+          "intake",
+          "intent"
+        ],
+        "author": "assistant",
+        "source_kind": "assistant-paraphrase",
+        "provenance": "Worklog 2026-09-14 notes 01 and 02 and the model notebook. Name is provisional: the lexicon's ratified word is intake (2026-09-10); Blake preferred intention and steward on 2026-09-14 without ratifying either.",
+        "review_state": "current"
+      }
+    },
+    "worklog-2026-09-14": {
+      "type": "source",
+      "status": "recorded",
+      "text": "Worklog notes docs/worklog/2026-09-14/01 (session 1: method, cases, facts F1-F6) and 02 (session 2: stewardship loop, facts F1-F10, candidate model), plus the notebook subagent-artifacts/2026-09-14/morphisms-agent-model-notebook.html. Both notes are assistant paraphrases of the conversation; nothing in them is ratified unless marked.",
+      "meta": {
+        "title": "Worklog notes, 14 September",
+        "author": "assistant",
+        "source_kind": "paraphrase",
+        "review_state": "current"
+      }
+    },
+    "completion-does-not-settle": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "A record completing does not settle its intention. An intention is settled only by a judgment that the concern is satisfied or withdrawn.",
+      "meta": {
+        "title": "Completion does not settle the intention",
+        "author": "Blake",
+        "source_kind": "assistant-paraphrase",
+        "provenance": "Session 2 F1: Blake corrected the assistant for treating this as a discovery; it was established on 2026-09-10. Reaffirmed in the 2026-09-16 session when the bullet list was read back.",
+        "review_state": "current"
+      }
+    },
+    "intention-status-set": {
+      "type": "claim",
+      "status": "proposed",
+      "text": "An intention's outcome status is one of open, satisfied, withdrawn. Steward attention (ready, claimed, waiting) is a separate state machine from that outcome.",
+      "meta": {
+        "title": "Intention status set",
+        "author": "assistant",
+        "source_kind": "assistant-proposal",
+        "provenance": "Notebook State changes tab, marked there as a candidate. Not ratified.",
+        "review_state": "current"
+      }
+    },
+    "intention-carries-history": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "An intention carries its history: discussion entries, linked records, decisions and blocked-work evidence. A report that chosen work no longer serves the intention returns to that same intention with the work's history; it does not create a new intention.",
+      "meta": {
+        "title": "The intention carries the history",
+        "author": "Blake",
+        "source_kind": "assistant-paraphrase",
+        "provenance": "Session 2 F5 and the rejected alternative 'making every human-facing matter an intention'. Reaffirmed 2026-09-16 when the bullet list was read back.",
         "review_state": "current"
       }
     }
@@ -2062,6 +2126,61 @@
         "author": "assistant",
         "rationale": "Rejects autonomous ending at a threshold. The steward handoff after a failed attempt stays covered by steward-chooses-next-work."
       }
+    },
+    "about-completion-does-not-settle": {
+      "from": "completion-does-not-settle",
+      "to": "intention-type",
+      "type": "about"
+    },
+    "about-intention-status-set": {
+      "from": "intention-status-set",
+      "to": "intention-type",
+      "type": "about"
+    },
+    "about-intention-carries-history": {
+      "from": "intention-carries-history",
+      "to": "intention-type",
+      "type": "about"
+    },
+    "src-completion-does-not-settle": {
+      "from": "completion-does-not-settle",
+      "to": "worklog-2026-09-14",
+      "type": "informs"
+    },
+    "src-intention-status-set": {
+      "from": "intention-status-set",
+      "to": "worklog-2026-09-14",
+      "type": "informs"
+    },
+    "src-intention-carries-history": {
+      "from": "intention-carries-history",
+      "to": "worklog-2026-09-14",
+      "type": "informs"
+    },
+    "about-persistent-intention-intention": {
+      "from": "persistent-intention",
+      "to": "intention-type",
+      "type": "about"
+    },
+    "about-completion-wakes-intention": {
+      "from": "completion-wakes-steward",
+      "to": "intention-type",
+      "type": "about"
+    },
+    "about-steward-planning-intention": {
+      "from": "steward-planning",
+      "to": "intention-type",
+      "type": "about"
+    },
+    "about-cancellation-wakeup-intention": {
+      "from": "cancellation-wakeup",
+      "to": "intention-type",
+      "type": "about"
+    },
+    "about-replacement-authority-intention": {
+      "from": "replacement-authority",
+      "to": "intention-type",
+      "type": "about"
     }
   },
   "changes": [
@@ -6935,6 +7054,213 @@
             }
           },
           "automatic": "dependency-review"
+        }
+      ]
+    },
+    {
+      "revision": 18,
+      "at": "2026-09-16T03:13:20.620453+00:00",
+      "actor": "assistant",
+      "reason": "Add the intention anchor the existing claims already refer to, plus three claims Blake read back and agreed on 2026-09-16",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "intention-type",
+          "before": null,
+          "after": {
+            "type": "entity",
+            "status": "provisional",
+            "text": "The continuing concern that work is undertaken to address. A record is one contract-governed attempt at it; several records may serve one intention.",
+            "meta": {
+              "title": "Intention",
+              "aliases": [
+                "intention",
+                "intake",
+                "intent"
+              ],
+              "author": "assistant",
+              "source_kind": "assistant-paraphrase",
+              "provenance": "Worklog 2026-09-14 notes 01 and 02 and the model notebook. Name is provisional: the lexicon's ratified word is intake (2026-09-10); Blake preferred intention and steward on 2026-09-14 without ratifying either.",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "worklog-2026-09-14",
+          "before": null,
+          "after": {
+            "type": "source",
+            "status": "recorded",
+            "text": "Worklog notes docs/worklog/2026-09-14/01 (session 1: method, cases, facts F1-F6) and 02 (session 2: stewardship loop, facts F1-F10, candidate model), plus the notebook subagent-artifacts/2026-09-14/morphisms-agent-model-notebook.html. Both notes are assistant paraphrases of the conversation; nothing in them is ratified unless marked.",
+            "meta": {
+              "title": "Worklog notes, 14 September",
+              "author": "assistant",
+              "source_kind": "paraphrase",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "completion-does-not-settle",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "A record completing does not settle its intention. An intention is settled only by a judgment that the concern is satisfied or withdrawn.",
+            "meta": {
+              "title": "Completion does not settle the intention",
+              "author": "Blake",
+              "source_kind": "assistant-paraphrase",
+              "provenance": "Session 2 F1: Blake corrected the assistant for treating this as a discovery; it was established on 2026-09-10. Reaffirmed in the 2026-09-16 session when the bullet list was read back.",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "intention-status-set",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "An intention's outcome status is one of open, satisfied, withdrawn. Steward attention (ready, claimed, waiting) is a separate state machine from that outcome.",
+            "meta": {
+              "title": "Intention status set",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "provenance": "Notebook State changes tab, marked there as a candidate. Not ratified.",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "intention-carries-history",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "An intention carries its history: discussion entries, linked records, decisions and blocked-work evidence. A report that chosen work no longer serves the intention returns to that same intention with the work's history; it does not create a new intention.",
+            "meta": {
+              "title": "The intention carries the history",
+              "author": "Blake",
+              "source_kind": "assistant-paraphrase",
+              "provenance": "Session 2 F5 and the rejected alternative 'making every human-facing matter an intention'. Reaffirmed 2026-09-16 when the bullet list was read back.",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-completion-does-not-settle",
+          "before": null,
+          "after": {
+            "from": "completion-does-not-settle",
+            "to": "intention-type",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-intention-status-set",
+          "before": null,
+          "after": {
+            "from": "intention-status-set",
+            "to": "intention-type",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-intention-carries-history",
+          "before": null,
+          "after": {
+            "from": "intention-carries-history",
+            "to": "intention-type",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "src-completion-does-not-settle",
+          "before": null,
+          "after": {
+            "from": "completion-does-not-settle",
+            "to": "worklog-2026-09-14",
+            "type": "informs"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "src-intention-status-set",
+          "before": null,
+          "after": {
+            "from": "intention-status-set",
+            "to": "worklog-2026-09-14",
+            "type": "informs"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "src-intention-carries-history",
+          "before": null,
+          "after": {
+            "from": "intention-carries-history",
+            "to": "worklog-2026-09-14",
+            "type": "informs"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-persistent-intention-intention",
+          "before": null,
+          "after": {
+            "from": "persistent-intention",
+            "to": "intention-type",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-completion-wakes-intention",
+          "before": null,
+          "after": {
+            "from": "completion-wakes-steward",
+            "to": "intention-type",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-steward-planning-intention",
+          "before": null,
+          "after": {
+            "from": "steward-planning",
+            "to": "intention-type",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-cancellation-wakeup-intention",
+          "before": null,
+          "after": {
+            "from": "cancellation-wakeup",
+            "to": "intention-type",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-replacement-authority-intention",
+          "before": null,
+          "after": {
+            "from": "replacement-authority",
+            "to": "intention-type",
+            "type": "about"
+          }
         }
       ]
     }
