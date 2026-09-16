@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 64,
+  "revision": 67,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1707,8 +1707,8 @@
     },
     "attempt-ladder": {
       "type": "claim",
-      "status": "proposed",
-      "text": "One relation, 'is one attempt at', repeated: a record is one attempt at an intention; a run is one attempt at a record's node. Claimed by steward, orchestrator, worker respectively. When a rung comes to rest, the claimer one rung up is woken: run rest wakes the orchestrator, record rest wakes the steward. Note: on the ladder the orchestrator claims the record and the worker claims the run; Blake's phrasing was 'the (record, worker) pair is claimable by the orchestrator', the same fact seen from the run.",
+      "status": "accepted",
+      "text": "One relation, 'is one attempt at', repeated: a record is one attempt at an intention; a run is one attempt at a record's node. Claimed by steward, orchestrator, worker respectively. When a rung comes to rest, the claimer one rung up is woken: run rest wakes the orchestrator, record rest wakes the steward.",
       "meta": {
         "review_state": "current",
         "title": "attempt ladder",
@@ -3946,6 +3946,11 @@
       "from": "record-rest-skips-orchestrator",
       "type": "supports",
       "to": "rest-wakes-steward"
+    },
+    "attempt-ladder-extracted-from-session-2026-09-16-record-claimer": {
+      "from": "attempt-ladder",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-record-claimer"
     }
   },
   "changes": [
@@ -13130,6 +13135,96 @@
               "source_kind": "assistant-proposal",
               "review_reason": "Tension resolved by Blake's ruling; the ladder's actor-to-rung pairing is the ruled one"
             }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 65,
+      "at": "2026-09-16T07:09:58.575990+00:00",
+      "actor": "assistant",
+      "reason": "Drop the stale note about Blake's earlier phrasing; the pairing is now ruled (r62)",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "attempt-ladder",
+          "before": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "One relation, 'is one attempt at', repeated: a record is one attempt at an intention; a run is one attempt at a record's node. Claimed by steward, orchestrator, worker respectively. When a rung comes to rest, the claimer one rung up is woken: run rest wakes the orchestrator, record rest wakes the steward. Note: on the ladder the orchestrator claims the record and the worker claims the run; Blake's phrasing was 'the (record, worker) pair is claimable by the orchestrator', the same fact seen from the run.",
+            "meta": {
+              "review_state": "current",
+              "title": "attempt ladder",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "review_reason": "Tension resolved by Blake's ruling; the ladder's actor-to-rung pairing is the ruled one"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "One relation, 'is one attempt at', repeated: a record is one attempt at an intention; a run is one attempt at a record's node. Claimed by steward, orchestrator, worker respectively. When a rung comes to rest, the claimer one rung up is woken: run rest wakes the orchestrator, record rest wakes the steward.",
+            "meta": {
+              "review_state": "current",
+              "title": "attempt ladder",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "review_reason": "Tension resolved by Blake's ruling; the ladder's actor-to-rung pairing is the ruled one"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 66,
+      "at": "2026-09-16T07:09:58.677152+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: 'i think this is fine' after the record-claimer ruling; supported by one-actor-one-item-kind-v2 and record-rest-skips-orchestrator",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "attempt-ladder",
+          "before": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "One relation, 'is one attempt at', repeated: a record is one attempt at an intention; a run is one attempt at a record's node. Claimed by steward, orchestrator, worker respectively. When a rung comes to rest, the claimer one rung up is woken: run rest wakes the orchestrator, record rest wakes the steward.",
+            "meta": {
+              "review_state": "current",
+              "title": "attempt ladder",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "review_reason": "Tension resolved by Blake's ruling; the ladder's actor-to-rung pairing is the ruled one"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "One relation, 'is one attempt at', repeated: a record is one attempt at an intention; a run is one attempt at a record's node. Claimed by steward, orchestrator, worker respectively. When a rung comes to rest, the claimer one rung up is woken: run rest wakes the orchestrator, record rest wakes the steward.",
+            "meta": {
+              "review_state": "current",
+              "title": "attempt ladder",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "review_reason": "Tension resolved by Blake's ruling; the ladder's actor-to-rung pairing is the ruled one"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 67,
+      "at": "2026-09-16T07:09:58.784960+00:00",
+      "actor": "assistant",
+      "reason": "Ruling source for the ladder's actor pairing",
+      "edits": [
+        {
+          "collection": "edges",
+          "id": "attempt-ladder-extracted-from-session-2026-09-16-record-claimer",
+          "before": null,
+          "after": {
+            "from": "attempt-ladder",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-record-claimer"
           }
         }
       ]
