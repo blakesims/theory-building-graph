@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 53,
+  "revision": 54,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1710,6 +1710,17 @@
       "meta": {
         "review_state": "current",
         "title": "attempt ladder",
+        "author": "assistant",
+        "source_kind": "assistant-proposal"
+      }
+    },
+    "attempt-obstruction-dual": {
+      "type": "claim",
+      "status": "proposed",
+      "text": "Two shapes cover everything that happens to an intention: it moves (an attempt: record, run) or it stops (an obstruction: desk item, flag). Attempts go down the ladder, are born from the claimer above, are claimed by a doer, rest when the walk ends, and wake the claimer above. Obstructions go sideways, are born from the obstructed claimer, are claimed by a resolver, rest when answered, and wake the raiser. Fundamental objects: intention, attempt, obstruction.",
+      "meta": {
+        "review_state": "current",
+        "title": "attempt obstruction dual",
         "author": "assistant",
         "source_kind": "assistant-proposal"
       }
@@ -3580,6 +3591,31 @@
       "from": "attempt-ladder",
       "type": "supports",
       "to": "rest-wakes-steward"
+    },
+    "attempt-obstruction-dual-about-intention-type": {
+      "from": "attempt-obstruction-dual",
+      "type": "about",
+      "to": "intention-type"
+    },
+    "attempt-obstruction-dual-about-record-type": {
+      "from": "attempt-obstruction-dual",
+      "type": "about",
+      "to": "record-type"
+    },
+    "attempt-obstruction-dual-about-desk-item": {
+      "from": "attempt-obstruction-dual",
+      "type": "about",
+      "to": "desk-item"
+    },
+    "attempt-obstruction-dual-about-flag": {
+      "from": "attempt-obstruction-dual",
+      "type": "about",
+      "to": "flag"
+    },
+    "attempt-obstruction-dual-extracted-from-session-2026-09-16-ladder": {
+      "from": "attempt-obstruction-dual",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-ladder"
     }
   },
   "changes": [
@@ -11862,6 +11898,80 @@
             "from": "attempt-ladder",
             "type": "supports",
             "to": "rest-wakes-steward"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 54,
+      "at": "2026-09-16T06:34:16.201441+00:00",
+      "actor": "assistant",
+      "reason": "Handover update 2026-09-16: ladder and obstruction model, delegates, frame",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "attempt-obstruction-dual",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "Two shapes cover everything that happens to an intention: it moves (an attempt: record, run) or it stops (an obstruction: desk item, flag). Attempts go down the ladder, are born from the claimer above, are claimed by a doer, rest when the walk ends, and wake the claimer above. Obstructions go sideways, are born from the obstructed claimer, are claimed by a resolver, rest when answered, and wake the raiser. Fundamental objects: intention, attempt, obstruction.",
+            "meta": {
+              "review_state": "current",
+              "title": "attempt obstruction dual",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "attempt-obstruction-dual-about-intention-type",
+          "before": null,
+          "after": {
+            "from": "attempt-obstruction-dual",
+            "type": "about",
+            "to": "intention-type"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "attempt-obstruction-dual-about-record-type",
+          "before": null,
+          "after": {
+            "from": "attempt-obstruction-dual",
+            "type": "about",
+            "to": "record-type"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "attempt-obstruction-dual-about-desk-item",
+          "before": null,
+          "after": {
+            "from": "attempt-obstruction-dual",
+            "type": "about",
+            "to": "desk-item"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "attempt-obstruction-dual-about-flag",
+          "before": null,
+          "after": {
+            "from": "attempt-obstruction-dual",
+            "type": "about",
+            "to": "flag"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "attempt-obstruction-dual-extracted-from-session-2026-09-16-ladder",
+          "before": null,
+          "after": {
+            "from": "attempt-obstruction-dual",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-ladder"
           }
         }
       ]
