@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 88,
+  "revision": 94,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1745,11 +1745,11 @@
       "status": "accepted",
       "text": "The assistant and the architect are not actors. They are the operator with a co-seat on one of the operator's own items: the assistant on a desk item for hours, the architect on an intention the operator has taken (the dials route architecture decisions to the desk) for weeks. A design session is the operator stewarding one intention with a co-seat; the theory graph is that seat's ledger. Any user-defined agent has three coordinates: which operator item it shares, how it is driven, how long it lives. Blake: 'yes, that's pretty good'.",
       "meta": {
-        "review_state": "needs-review",
+        "review_state": "current",
         "title": "delegates are co seats",
         "author": "assistant",
         "source_kind": "assistant-proposal",
-        "review_reason": "Review relation added: sorter-is-canonical-optional-potential-conflict-delegates-are-co-seats"
+        "review_reason": "Tension dissolved: the sorter is not an agent, so the three-coordinate rule is untouched"
       }
     },
     "running-policy-separates-delegates": {
@@ -1822,7 +1822,7 @@
     "observation": {
       "type": "entity",
       "status": "defined",
-      "text": "What a worker noticed without being blocked: about the code it is working on and, in Morphisms' own installation, about the tool it is using. Returned as a structured field of the run's envelope; not an obstruction and not on the ladder.",
+      "text": "A machine-readable type of intention filed by a worker that noticed something without being blocked: about the code it is working on and, in Morphisms' own installation, about the tool it is using. Signature: filed by which worker, of what kind. One of the steward's inboxes.",
       "meta": {
         "review_state": "current",
         "title": "observation",
@@ -1879,13 +1879,14 @@
     },
     "observations-are-not-obstructions": {
       "type": "claim",
-      "status": "accepted",
+      "status": "withdrawn",
       "text": "What a worker notices without being blocked is an observation, not an obstruction. It rides home in the envelope and enters the front door as an intention through the sorter; the worker never raises it on the ladder. The word friction is retired.",
       "meta": {
-        "review_state": "current",
+        "review_state": "historical",
         "title": "observations are not obstructions",
         "author": "Blake",
-        "source_kind": "session-paraphrase"
+        "source_kind": "session-paraphrase",
+        "superseded_by": "observation-is-a-typed-intention"
       }
     },
     "sorter-is-canonical-optional": {
@@ -1951,6 +1952,50 @@
       "meta": {
         "review_state": "current",
         "title": "one log per item kind",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
+      }
+    },
+    "session-2026-09-16-inbox": {
+      "type": "source",
+      "status": "recorded",
+      "text": "Blake, 2026-09-16, verbatim: \"Yeah, it's not an actor. I think what it is is a type of intention, and it's a machine-readable type.\" \"For now, we'll keep the friction envelope for internal morphisms dog food, but in general we could ask the workers to propose intentions to improve the code base as they go, filing intentions. When they file one, it will have a certain signature, a certain type, maybe recursive or filed by worker one. It's essentially just one of the inboxes, and the steward may, or may not, it's up to the user, take that as an inbox item.\" \"there would be some recency dials that the user would select, and they would basically click 'process.' It would spin up the agent, give an approximation based on historical data about how much this is going to cost, depending on what model they're using.\" \"the steward would be handling this inbox at a high volume ... we don't have another actor. That's very good.\"",
+      "meta": {
+        "review_state": "current",
+        "title": "session 2026 09 16 inbox",
+        "author": "Blake",
+        "source_kind": "verbatim"
+      }
+    },
+    "observation-is-a-typed-intention": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "An observation is a machine-readable type of intention, filed by the worker at the front door with a signature: which worker filed it and what kind it is. It is one of the steward's inboxes, not a separate object and not on the ladder. For now the friction envelope stays for Morphisms' own dogfood.",
+      "meta": {
+        "review_state": "current",
+        "title": "observation is a typed intention",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
+      }
+    },
+    "worker-inbox-under-user-dials": {
+      "type": "claim",
+      "status": "proposed",
+      "text": "The steward processes the worker-filed inbox at volume only when the user turns it on: recency dials bound how far back it reads, a cost estimate from historical data is shown before it runs, and the user picks the model. Off by default; an old backlog is never replayed whole.",
+      "meta": {
+        "review_state": "current",
+        "title": "worker inbox under user dials",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
+      }
+    },
+    "process-worker-inbox": {
+      "type": "operation",
+      "status": "defined",
+      "text": "The steward reads worker-filed intentions within the user's recency window, discards or merges the noise, and reassesses the rest. Turned on by the user; costed before it runs.",
+      "meta": {
+        "review_state": "current",
+        "title": "process worker inbox",
         "author": "Blake",
         "source_kind": "session-paraphrase"
       }
@@ -4302,6 +4347,71 @@
       "from": "one-log-per-item-kind",
       "type": "extracted-from",
       "to": "session-2026-09-16-logs"
+    },
+    "observation-is-a-typed-intention-about-observation": {
+      "from": "observation-is-a-typed-intention",
+      "type": "about",
+      "to": "observation"
+    },
+    "observation-is-a-typed-intention-about-intention-type": {
+      "from": "observation-is-a-typed-intention",
+      "type": "about",
+      "to": "intention-type"
+    },
+    "observation-is-a-typed-intention-about-worker-role": {
+      "from": "observation-is-a-typed-intention",
+      "type": "about",
+      "to": "worker-role"
+    },
+    "observation-is-a-typed-intention-extracted-from-session-2026-09-16-inbox": {
+      "from": "observation-is-a-typed-intention",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-inbox"
+    },
+    "observation-is-a-typed-intention-revises-observations-are-not-obstructions": {
+      "from": "observation-is-a-typed-intention",
+      "type": "revises",
+      "to": "observations-are-not-obstructions"
+    },
+    "observation-is-a-typed-intention-supports-everything-enters-as-intention": {
+      "from": "observation-is-a-typed-intention",
+      "type": "supports",
+      "to": "everything-enters-as-intention"
+    },
+    "worker-inbox-under-user-dials-about-steward-role": {
+      "from": "worker-inbox-under-user-dials",
+      "type": "about",
+      "to": "steward-role"
+    },
+    "worker-inbox-under-user-dials-about-observation": {
+      "from": "worker-inbox-under-user-dials",
+      "type": "about",
+      "to": "observation"
+    },
+    "worker-inbox-under-user-dials-depends-on-observation-is-a-typed-intention": {
+      "from": "worker-inbox-under-user-dials",
+      "type": "depends-on",
+      "to": "observation-is-a-typed-intention"
+    },
+    "worker-inbox-under-user-dials-depends-on-dials-configure-steward": {
+      "from": "worker-inbox-under-user-dials",
+      "type": "depends-on",
+      "to": "dials-configure-steward"
+    },
+    "worker-inbox-under-user-dials-extracted-from-session-2026-09-16-inbox": {
+      "from": "worker-inbox-under-user-dials",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-inbox"
+    },
+    "process-worker-inbox-acts-on-observation": {
+      "from": "process-worker-inbox",
+      "type": "acts-on",
+      "to": "observation"
+    },
+    "process-worker-inbox-acts-on-intention-type": {
+      "from": "process-worker-inbox",
+      "type": "acts-on",
+      "to": "intention-type"
     }
   },
   "changes": [
@@ -14630,6 +14740,335 @@
             "from": "one-log-per-item-kind",
             "type": "extracted-from",
             "to": "session-2026-09-16-logs"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 89,
+      "at": "2026-09-16T08:25:56.418289+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: the sorter is not an actor; an observation is a machine-readable type of intention filed by the worker; the steward works that inbox under user dials",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "session-2026-09-16-inbox",
+          "before": null,
+          "after": {
+            "type": "source",
+            "status": "recorded",
+            "text": "Blake, 2026-09-16, verbatim: \"Yeah, it's not an actor. I think what it is is a type of intention, and it's a machine-readable type.\" \"For now, we'll keep the friction envelope for internal morphisms dog food, but in general we could ask the workers to propose intentions to improve the code base as they go, filing intentions. When they file one, it will have a certain signature, a certain type, maybe recursive or filed by worker one. It's essentially just one of the inboxes, and the steward may, or may not, it's up to the user, take that as an inbox item.\" \"there would be some recency dials that the user would select, and they would basically click 'process.' It would spin up the agent, give an approximation based on historical data about how much this is going to cost, depending on what model they're using.\" \"the steward would be handling this inbox at a high volume ... we don't have another actor. That's very good.\"",
+            "meta": {
+              "review_state": "current",
+              "title": "session 2026 09 16 inbox",
+              "author": "Blake",
+              "source_kind": "verbatim"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 90,
+      "at": "2026-09-16T08:25:56.535220+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: the sorter is not an actor; an observation is a machine-readable type of intention filed by the worker; the steward works that inbox under user dials",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "observation-is-a-typed-intention",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "An observation is a machine-readable type of intention, filed by the worker at the front door with a signature: which worker filed it and what kind it is. It is one of the steward's inboxes, not a separate object and not on the ladder. For now the friction envelope stays for Morphisms' own dogfood.",
+            "meta": {
+              "review_state": "current",
+              "title": "observation is a typed intention",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "observation-is-a-typed-intention-about-observation",
+          "before": null,
+          "after": {
+            "from": "observation-is-a-typed-intention",
+            "type": "about",
+            "to": "observation"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "observation-is-a-typed-intention-about-intention-type",
+          "before": null,
+          "after": {
+            "from": "observation-is-a-typed-intention",
+            "type": "about",
+            "to": "intention-type"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "observation-is-a-typed-intention-about-worker-role",
+          "before": null,
+          "after": {
+            "from": "observation-is-a-typed-intention",
+            "type": "about",
+            "to": "worker-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "observation-is-a-typed-intention-extracted-from-session-2026-09-16-inbox",
+          "before": null,
+          "after": {
+            "from": "observation-is-a-typed-intention",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-inbox"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "observation-is-a-typed-intention-revises-observations-are-not-obstructions",
+          "before": null,
+          "after": {
+            "from": "observation-is-a-typed-intention",
+            "type": "revises",
+            "to": "observations-are-not-obstructions"
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "observations-are-not-obstructions",
+          "before": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "What a worker notices without being blocked is an observation, not an obstruction. It rides home in the envelope and enters the front door as an intention through the sorter; the worker never raises it on the ladder. The word friction is retired.",
+            "meta": {
+              "review_state": "current",
+              "title": "observations are not obstructions",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "withdrawn",
+            "text": "What a worker notices without being blocked is an observation, not an obstruction. It rides home in the envelope and enters the front door as an intention through the sorter; the worker never raises it on the ladder. The word friction is retired.",
+            "meta": {
+              "review_state": "historical",
+              "title": "observations are not obstructions",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "superseded_by": "observation-is-a-typed-intention"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "observation-is-a-typed-intention-supports-everything-enters-as-intention",
+          "before": null,
+          "after": {
+            "from": "observation-is-a-typed-intention",
+            "type": "supports",
+            "to": "everything-enters-as-intention"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 91,
+      "at": "2026-09-16T08:25:56.693619+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: the sorter is not an actor; an observation is a machine-readable type of intention filed by the worker; the steward works that inbox under user dials; mechanism sketch, proposed until Blake confirms the shape",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "worker-inbox-under-user-dials",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "The steward processes the worker-filed inbox at volume only when the user turns it on: recency dials bound how far back it reads, a cost estimate from historical data is shown before it runs, and the user picks the model. Off by default; an old backlog is never replayed whole.",
+            "meta": {
+              "review_state": "current",
+              "title": "worker inbox under user dials",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "worker-inbox-under-user-dials-about-steward-role",
+          "before": null,
+          "after": {
+            "from": "worker-inbox-under-user-dials",
+            "type": "about",
+            "to": "steward-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "worker-inbox-under-user-dials-about-observation",
+          "before": null,
+          "after": {
+            "from": "worker-inbox-under-user-dials",
+            "type": "about",
+            "to": "observation"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "worker-inbox-under-user-dials-depends-on-observation-is-a-typed-intention",
+          "before": null,
+          "after": {
+            "from": "worker-inbox-under-user-dials",
+            "type": "depends-on",
+            "to": "observation-is-a-typed-intention"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "worker-inbox-under-user-dials-depends-on-dials-configure-steward",
+          "before": null,
+          "after": {
+            "from": "worker-inbox-under-user-dials",
+            "type": "depends-on",
+            "to": "dials-configure-steward"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "worker-inbox-under-user-dials-extracted-from-session-2026-09-16-inbox",
+          "before": null,
+          "after": {
+            "from": "worker-inbox-under-user-dials",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-inbox"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 92,
+      "at": "2026-09-16T08:25:56.780265+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: the sorter is not an actor; an observation is a machine-readable type of intention filed by the worker; the steward works that inbox under user dials",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "process-worker-inbox",
+          "before": null,
+          "after": {
+            "type": "operation",
+            "status": "defined",
+            "text": "The steward reads worker-filed intentions within the user's recency window, discards or merges the noise, and reassesses the rest. Turned on by the user; costed before it runs.",
+            "meta": {
+              "review_state": "current",
+              "title": "process worker inbox",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "process-worker-inbox-acts-on-observation",
+          "before": null,
+          "after": {
+            "from": "process-worker-inbox",
+            "type": "acts-on",
+            "to": "observation"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "process-worker-inbox-acts-on-intention-type",
+          "before": null,
+          "after": {
+            "from": "process-worker-inbox",
+            "type": "acts-on",
+            "to": "intention-type"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 93,
+      "at": "2026-09-16T08:25:56.894458+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: the sorter is not an actor; an observation is a machine-readable type of intention filed by the worker; the steward works that inbox under user dials",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "observation",
+          "before": {
+            "type": "entity",
+            "status": "defined",
+            "text": "What a worker noticed without being blocked: about the code it is working on and, in Morphisms' own installation, about the tool it is using. Returned as a structured field of the run's envelope; not an obstruction and not on the ladder.",
+            "meta": {
+              "review_state": "current",
+              "title": "observation",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "aliases": [
+                "friction"
+              ]
+            }
+          },
+          "after": {
+            "type": "entity",
+            "status": "defined",
+            "text": "A machine-readable type of intention filed by a worker that noticed something without being blocked: about the code it is working on and, in Morphisms' own installation, about the tool it is using. Signature: filed by which worker, of what kind. One of the steward's inboxes.",
+            "meta": {
+              "review_state": "current",
+              "title": "observation",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "aliases": [
+                "friction"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 94,
+      "at": "2026-09-16T08:25:57.148257+00:00",
+      "actor": "assistant",
+      "reason": "Tension dissolved: the sorter is not an agent, so the three-coordinate rule is untouched",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "delegates-are-co-seats",
+          "before": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "The assistant and the architect are not actors. They are the operator with a co-seat on one of the operator's own items: the assistant on a desk item for hours, the architect on an intention the operator has taken (the dials route architecture decisions to the desk) for weeks. A design session is the operator stewarding one intention with a co-seat; the theory graph is that seat's ledger. Any user-defined agent has three coordinates: which operator item it shares, how it is driven, how long it lives. Blake: 'yes, that's pretty good'.",
+            "meta": {
+              "review_state": "needs-review",
+              "title": "delegates are co seats",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "review_reason": "Review relation added: sorter-is-canonical-optional-potential-conflict-delegates-are-co-seats"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "The assistant and the architect are not actors. They are the operator with a co-seat on one of the operator's own items: the assistant on a desk item for hours, the architect on an intention the operator has taken (the dials route architecture decisions to the desk) for weeks. A design session is the operator stewarding one intention with a co-seat; the theory graph is that seat's ledger. Any user-defined agent has three coordinates: which operator item it shares, how it is driven, how long it lives. Blake: 'yes, that's pretty good'.",
+            "meta": {
+              "review_state": "current",
+              "title": "delegates are co seats",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "review_reason": "Tension dissolved: the sorter is not an agent, so the three-coordinate rule is untouched"
+            }
           }
         }
       ]
