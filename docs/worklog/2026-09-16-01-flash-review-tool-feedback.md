@@ -40,6 +40,7 @@ reviewers was low, so focus prompts worked.
    3 informational" line would show that the check ran.
 8. Entities and operations have no retired state (found by the assistant, same day).
 9. No derived table of who-claims-what / who-performs-what: a `roles` command that walks each role to its performed-by operations and their acts-on entities would print the table the model keeps only in prose (Blake asked for it 2026-09-16).
+10. `tg sync` refuses to run when the graph's repo has unrelated unstaged changes (`git pull --rebase` needs a clean tree). Now that graphs live inside working repos this is the common case; sync should rebase with autostash or fetch-and-check instead of failing.
 
 ## Verdict
 
