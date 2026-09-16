@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 23,
+  "revision": 24,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1196,6 +1196,81 @@
         "author": "Blake",
         "source_kind": "session-paraphrase",
         "provenance": "Blake 2026-09-16: keep the archive as the handover, keep it simple, do not add to the intention. Kernel fact checked in `mor task archive --help`.",
+        "review_state": "current"
+      }
+    },
+    "session-2026-09-16-dials": {
+      "type": "source",
+      "status": "recorded",
+      "text": "Blake, 2026-09-16, verbatim excerpts: \"there are dials which are extremely useful. They basically are my weights across different axes that are configurable by the user in terms of what should come to my desk and what the steward can automatically handle.\" \"I can change the number of dials, the wording of the dial, and the weight from 0 to 10.\" \"Not everything has to go through my desk.\" \"as long as there is a trace about why it came to me, then I can control it, right? You can only improve things that you can measure.\" \"the fact that it came to me is perfect because now it tells me how the steward reads it and interprets my meaning, my words. Then I can change the configuration.\" \"I don't want the graph to contain highly specific things unless they provide extremely useful case studies.\"",
+      "meta": {
+        "title": "Session 2026-09-16: dials and the desk",
+        "author": "Blake",
+        "source_kind": "verbatim",
+        "review_state": "current"
+      }
+    },
+    "operator-role": {
+      "type": "entity",
+      "status": "provisional",
+      "text": "The human who owns the product and settles what the steward sends up. A formal actor like the agent roles, not a channel. Blake today.",
+      "meta": {
+        "title": "Operator",
+        "aliases": [
+          "operator",
+          "Blake"
+        ],
+        "author": "assistant",
+        "source_kind": "assistant-paraphrase",
+        "provenance": "Direction D1733 (the operator is a formal actor) and session 2 F9.",
+        "review_state": "current"
+      }
+    },
+    "dials-configure-steward": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "The steward's autonomy is bounded by dials: operator-authored sentences, each with a weight from 0 to 10, saying what should reach the operator and what the steward may handle itself. The steward weighs an intention against them and either files work directly or sends the intention to the operator. The set of dials is open; the operator adds, rewords and reweights them.",
+      "meta": {
+        "title": "Dials configure the steward",
+        "author": "Blake",
+        "source_kind": "session-paraphrase",
+        "provenance": "2026-09-16. Live file: .mor/desk-dials.json in morphisms-main, three dials today (end-user impact 10, task size 8, architecture decision 8). This is what 'within the user configuration' in steward-planning means.",
+        "review_state": "current"
+      }
+    },
+    "desk-is-operator-list": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "The desk is the operator's list of items on which the operator owes the next action. It is an interface, not an agent and not a contract node. Answering at the desk or in an agent thread are two interfaces to the same durable item, and the answer must be recorded against that item.",
+      "meta": {
+        "title": "The desk is the operator's list",
+        "author": "Blake",
+        "source_kind": "session-paraphrase",
+        "provenance": "Session 2 F9 (2026-09-14); reaffirmed 2026-09-16 when deciding not to make the desk an entity.",
+        "review_state": "current"
+      }
+    },
+    "desk-arrival-carries-trace": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "Every item that reaches the desk carries a trace of why: which dials the steward weighed and how it read the operator's words. A wrong arrival is not a failure of the system but its feedback: it shows the operator how the steward interprets a dial, and the operator corrects the dial. You can only improve what you can measure.",
+      "meta": {
+        "title": "A desk arrival carries its trace",
+        "author": "Blake",
+        "source_kind": "session-paraphrase",
+        "provenance": "2026-09-16; exact words in session-2026-09-16-dials.",
+        "review_state": "current"
+      }
+    },
+    "case-tri1634": {
+      "type": "case",
+      "status": "recorded",
+      "text": "TRI1634 (September 2026): a deterministic, verifiable doctor-command bug with no divergence in user-facing behaviour reached the desk and sat two days. It scored 10 on the 'end-user impact' dial because the sentence was read literally. Blake: 'I don't care about this. Why is this coming to me?' The trace showed how the steward read the dial; the fix is the dial wording, not the steward. Case study for desk-arrival-carries-trace and dials-configure-steward.",
+      "meta": {
+        "title": "Case TRI1634: a literal dial reading",
+        "author": "assistant",
+        "source_kind": "assistant-paraphrase",
+        "provenance": "Session 1 case 1 (docs/worklog/2026-09-14/01) and Blake's 2026-09-16 comment.",
         "review_state": "current"
       }
     }
@@ -2531,6 +2606,71 @@
       "from": "archive-reason-is-handover",
       "to": "orchestrator-handover-artifact",
       "type": "supports"
+    },
+    "about-dials-steward": {
+      "from": "dials-configure-steward",
+      "to": "steward-role",
+      "type": "about"
+    },
+    "about-dials-operator": {
+      "from": "dials-configure-steward",
+      "to": "operator-role",
+      "type": "about"
+    },
+    "gov-dials-choose-work": {
+      "from": "dials-configure-steward",
+      "to": "choose-work",
+      "type": "governs"
+    },
+    "supports-dials-steward-planning": {
+      "from": "dials-configure-steward",
+      "to": "steward-planning",
+      "type": "informs"
+    },
+    "src-dials": {
+      "from": "dials-configure-steward",
+      "to": "session-2026-09-16-dials",
+      "type": "supports"
+    },
+    "about-desk-operator": {
+      "from": "desk-is-operator-list",
+      "to": "operator-role",
+      "type": "about"
+    },
+    "src-desk": {
+      "from": "desk-is-operator-list",
+      "to": "worklog-2026-09-14",
+      "type": "supports"
+    },
+    "about-trace-operator": {
+      "from": "desk-arrival-carries-trace",
+      "to": "operator-role",
+      "type": "about"
+    },
+    "about-trace-steward": {
+      "from": "desk-arrival-carries-trace",
+      "to": "steward-role",
+      "type": "about"
+    },
+    "src-trace": {
+      "from": "desk-arrival-carries-trace",
+      "to": "session-2026-09-16-dials",
+      "type": "supports"
+    },
+    "case-tri1634-supports-trace": {
+      "from": "case-tri1634",
+      "to": "desk-arrival-carries-trace",
+      "type": "supports"
+    },
+    "case-tri1634-supports-dials": {
+      "from": "case-tri1634",
+      "to": "dials-configure-steward",
+      "type": "supports"
+    },
+    "about-tri1634-operator": {
+      "from": "case-tri1634",
+      "to": "operator-role",
+      "type": "about"
     }
   },
   "changes": [
@@ -8668,6 +8808,249 @@
             "semantic_version": 2
           },
           "automatic": "semantic-version"
+        }
+      ]
+    },
+    {
+      "revision": 24,
+      "at": "2026-09-16T03:49:55.587944+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: dials configure the steward, the desk is the operator list, every desk arrival carries its trace; operator added as an anchor; TRI1634 as the case study",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "session-2026-09-16-dials",
+          "before": null,
+          "after": {
+            "type": "source",
+            "status": "recorded",
+            "text": "Blake, 2026-09-16, verbatim excerpts: \"there are dials which are extremely useful. They basically are my weights across different axes that are configurable by the user in terms of what should come to my desk and what the steward can automatically handle.\" \"I can change the number of dials, the wording of the dial, and the weight from 0 to 10.\" \"Not everything has to go through my desk.\" \"as long as there is a trace about why it came to me, then I can control it, right? You can only improve things that you can measure.\" \"the fact that it came to me is perfect because now it tells me how the steward reads it and interprets my meaning, my words. Then I can change the configuration.\" \"I don't want the graph to contain highly specific things unless they provide extremely useful case studies.\"",
+            "meta": {
+              "title": "Session 2026-09-16: dials and the desk",
+              "author": "Blake",
+              "source_kind": "verbatim",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "operator-role",
+          "before": null,
+          "after": {
+            "type": "entity",
+            "status": "provisional",
+            "text": "The human who owns the product and settles what the steward sends up. A formal actor like the agent roles, not a channel. Blake today.",
+            "meta": {
+              "title": "Operator",
+              "aliases": [
+                "operator",
+                "Blake"
+              ],
+              "author": "assistant",
+              "source_kind": "assistant-paraphrase",
+              "provenance": "Direction D1733 (the operator is a formal actor) and session 2 F9.",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "dials-configure-steward",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "The steward's autonomy is bounded by dials: operator-authored sentences, each with a weight from 0 to 10, saying what should reach the operator and what the steward may handle itself. The steward weighs an intention against them and either files work directly or sends the intention to the operator. The set of dials is open; the operator adds, rewords and reweights them.",
+            "meta": {
+              "title": "Dials configure the steward",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "provenance": "2026-09-16. Live file: .mor/desk-dials.json in morphisms-main, three dials today (end-user impact 10, task size 8, architecture decision 8). This is what 'within the user configuration' in steward-planning means.",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "desk-is-operator-list",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "The desk is the operator's list of items on which the operator owes the next action. It is an interface, not an agent and not a contract node. Answering at the desk or in an agent thread are two interfaces to the same durable item, and the answer must be recorded against that item.",
+            "meta": {
+              "title": "The desk is the operator's list",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "provenance": "Session 2 F9 (2026-09-14); reaffirmed 2026-09-16 when deciding not to make the desk an entity.",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "desk-arrival-carries-trace",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "Every item that reaches the desk carries a trace of why: which dials the steward weighed and how it read the operator's words. A wrong arrival is not a failure of the system but its feedback: it shows the operator how the steward interprets a dial, and the operator corrects the dial. You can only improve what you can measure.",
+            "meta": {
+              "title": "A desk arrival carries its trace",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "provenance": "2026-09-16; exact words in session-2026-09-16-dials.",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "case-tri1634",
+          "before": null,
+          "after": {
+            "type": "case",
+            "status": "recorded",
+            "text": "TRI1634 (September 2026): a deterministic, verifiable doctor-command bug with no divergence in user-facing behaviour reached the desk and sat two days. It scored 10 on the 'end-user impact' dial because the sentence was read literally. Blake: 'I don't care about this. Why is this coming to me?' The trace showed how the steward read the dial; the fix is the dial wording, not the steward. Case study for desk-arrival-carries-trace and dials-configure-steward.",
+            "meta": {
+              "title": "Case TRI1634: a literal dial reading",
+              "author": "assistant",
+              "source_kind": "assistant-paraphrase",
+              "provenance": "Session 1 case 1 (docs/worklog/2026-09-14/01) and Blake's 2026-09-16 comment.",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-dials-steward",
+          "before": null,
+          "after": {
+            "from": "dials-configure-steward",
+            "to": "steward-role",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-dials-operator",
+          "before": null,
+          "after": {
+            "from": "dials-configure-steward",
+            "to": "operator-role",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "gov-dials-choose-work",
+          "before": null,
+          "after": {
+            "from": "dials-configure-steward",
+            "to": "choose-work",
+            "type": "governs"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "supports-dials-steward-planning",
+          "before": null,
+          "after": {
+            "from": "dials-configure-steward",
+            "to": "steward-planning",
+            "type": "informs"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "src-dials",
+          "before": null,
+          "after": {
+            "from": "dials-configure-steward",
+            "to": "session-2026-09-16-dials",
+            "type": "supports"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-desk-operator",
+          "before": null,
+          "after": {
+            "from": "desk-is-operator-list",
+            "to": "operator-role",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "src-desk",
+          "before": null,
+          "after": {
+            "from": "desk-is-operator-list",
+            "to": "worklog-2026-09-14",
+            "type": "supports"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-trace-operator",
+          "before": null,
+          "after": {
+            "from": "desk-arrival-carries-trace",
+            "to": "operator-role",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-trace-steward",
+          "before": null,
+          "after": {
+            "from": "desk-arrival-carries-trace",
+            "to": "steward-role",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "src-trace",
+          "before": null,
+          "after": {
+            "from": "desk-arrival-carries-trace",
+            "to": "session-2026-09-16-dials",
+            "type": "supports"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "case-tri1634-supports-trace",
+          "before": null,
+          "after": {
+            "from": "case-tri1634",
+            "to": "desk-arrival-carries-trace",
+            "type": "supports"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "case-tri1634-supports-dials",
+          "before": null,
+          "after": {
+            "from": "case-tri1634",
+            "to": "dials-configure-steward",
+            "type": "supports"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-tri1634-operator",
+          "before": null,
+          "after": {
+            "from": "case-tri1634",
+            "to": "operator-role",
+            "type": "about"
+          }
         }
       ]
     }
