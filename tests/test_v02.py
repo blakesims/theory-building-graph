@@ -276,8 +276,8 @@ class Autosync(unittest.TestCase):
         self.cli('-p','demo','config','autosync','on')
         (self.repo/'unrelated.txt').write_text('Keep staged')
         self.git(self.repo,'add','unrelated.txt')
-        r=self.cli('-p','demo','entity','add','a','A','--reason','local ruling',ok=False)
-        self.assertIn('saved locally',r.stderr)
+        r=self.cli('-p','demo','entity','add','a','A','--reason','local ruling')
+        self.assertIn('synced',r.stdout)
         self.assertEqual(self.git(self.repo,'diff','--cached','--name-only'),'unrelated.txt')
         self.assertEqual(self.git(self.repo,'show','--pretty=','--name-only','HEAD'),'graph.json')
 

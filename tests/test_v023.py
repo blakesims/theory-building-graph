@@ -95,5 +95,66 @@ class StatusListings(TemporaryGraph):
             self.assertFalse(data['truncated'])
 
 
+class DirtyRepositorySync(TemporaryGraph):
+    def git(self, cwd, *args):
+        result = subprocess.run(['git', '-C', str(cwd), *args], capture_output=True, text=True, env=self.env)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        return result.stdout.strip()
+
+    def setUp(self):
+        super().setUp()
+        root = Path(self.tmp.name)
+        self.env.update(GIT_AUTHOR_NAME='test', GIT_AUTHOR_EMAIL='t@example.invalid',
+                        GIT_COMMITTER_NAME='test', GIT_COMMITTER_EMAIL='t@example.invalid')
+        self.remote = root / 'remote.git'; self.repo = root / 'repo'; self.other = root / 'other'
+        self.git(root, 'init', '--bare', str(self.remote))
+        self.git(root, 'clone', str(self.remote), str(self.repo))
+        self.path = self.repo / 'graph.json'
+        self.path.write_bytes((ROOT / 'theorygraph/template.json').read_bytes())
+        self.unrelated = self.repo / 'work.txt'; self.unrelated.write_text('original\n')
+        self.git(self.repo, 'add', 'graph.json', 'work.txt'); self.git(self.repo, 'commit', '-m', 'initial')
+        self.git(self.repo, 'push', '-u', 'origin', 'HEAD')
+        self.git(root, 'clone', str(self.remote), str(self.other))
+        self.unrelated.write_text('unsaved user work\n')
+
+    def test_sync_rebases_graph_with_unrelated_unstaged_work(self):
+        (self.other / 'remote.txt').write_text('remote work\n')
+        self.git(self.other, 'add', 'remote.txt'); self.git(self.other, 'commit', '-m', 'remote change')
+        self.git(self.other, 'push')
+        self.cli('entity', 'add', 'subject', 'Subject', '--reason', 'local graph change')
+        self.cli('sync')
+        self.assertEqual(self.unrelated.read_text(), 'unsaved user work\n')
+        self.assertEqual(self.git(self.repo, 'status', '--porcelain', '--', 'work.txt'), 'M work.txt')
+        self.assertEqual(self.git(self.repo, 'diff', '--cached', '--name-only'), '')
+        self.assertEqual(self.git(self.repo, 'show', '--pretty=', '--name-only', 'HEAD'), 'graph.json')
+        self.assertEqual(self.git(self.repo, 'rev-parse', 'HEAD'), self.git(self.remote, 'rev-parse', 'HEAD'))
+
+    def test_autostash_conflict_is_not_reported_as_success(self):
+        (self.other / 'work.txt').write_text('remote work conflicts with local work\n')
+        self.git(self.other, 'commit', '-am', 'remote work'); self.git(self.other, 'push')
+        remote_head = self.git(self.remote, 'rev-parse', 'HEAD')
+        self.cli('entity', 'add', 'subject', 'Subject', '--reason', 'local graph change')
+        result = self.cli('sync', ok=False)
+        self.assertIn('Autostash restore conflicted; not pushed', result.stderr)
+        self.assertIn('work.txt', result.stderr)
+        self.assertEqual(self.git(self.remote, 'rev-parse', 'HEAD'), remote_head)
+        self.assertIn('unsaved user work', self.git(self.repo, 'stash', 'show', '-p'))
+
+    def test_graph_conflict_keeps_local_graph_and_unrelated_work(self):
+        remote_graph = self.other / 'graph.json'
+        model = json.loads(remote_graph.read_text()); model['revision'] = 99
+        remote_graph.write_text(json.dumps(model))
+        self.git(self.other, 'commit', '-am', 'remote graph'); self.git(self.other, 'push')
+        remote_head = self.git(self.remote, 'rev-parse', 'HEAD')
+        self.cli('entity', 'add', 'subject', 'Subject', '--reason', 'local graph change')
+        local = self.path.read_bytes()
+        result = self.cli('sync', ok=False)
+        self.assertIn('Conflicting files: graph.json', result.stderr)
+        self.assertEqual(self.path.read_bytes(), local)
+        self.assertEqual(self.unrelated.read_text(), 'unsaved user work\n')
+        self.assertEqual(self.git(self.remote, 'rev-parse', 'HEAD'), remote_head)
+        self.assertFalse((self.repo / '.git/rebase-merge').exists())
+
+
 if __name__ == '__main__':
     unittest.main()

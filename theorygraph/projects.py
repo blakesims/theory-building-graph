@@ -142,8 +142,8 @@ def git_root(path):
 def sync(graph_path, message=None):
     """Commit the graph file if it changed, pull with rebase, push. Never forces.
 
-    The local commit happens first because a rebase refuses a dirty tree; on a
-    conflict the rebase is aborted and the local commit is kept for hand merging.
+    Only the graph is staged and committed. Autostash preserves unrelated dirty
+    work during rebase. On conflict the local commit is kept for hand merging.
     """
     graph_path = Path(graph_path).resolve(); root = git_root(graph_path)
     if not root: raise ProjectError(f'{graph_path} is not inside a git repository')
@@ -161,10 +161,13 @@ def sync(graph_path, message=None):
             except (OSError, ValueError, KeyError, TypeError): message = f'Update {rel}'
         git('add', '--', rel); git('commit', '-q', '-m', message, '--', rel)
         committed = git('rev-parse', '--short', 'HEAD').stdout.strip()
-    r = git('pull', '--rebase', check=False)
+    r = git('pull', '--rebase', '--autostash', check=False)
     if r.returncode:
         conflicts = git('diff', '--name-only', '--diff-filter=U', check=False).stdout.strip()
         git('rebase', '--abort', check=False)
         raise ProjectError(f'Pull/rebase failed; local commit kept. Conflicting files: {conflicts or "none reported"}. Repository: {root}, graph: {rel}. '+(r.stderr or r.stdout).strip()[-800:])
+    conflicts = git('diff', '--name-only', '--diff-filter=U').stdout.strip()
+    if conflicts:
+        raise ProjectError(f'Autostash restore conflicted; not pushed. Conflicting files: {conflicts}. Repository: {root}. Resolve the working tree before retrying sync.')
     git('push')
     return {'repository': root, 'graph': rel, 'committed': committed, 'message': message if committed else None, 'steps': steps}
