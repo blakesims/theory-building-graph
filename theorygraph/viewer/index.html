@@ -15,7 +15,7 @@
   --accent:#216783;--accent-ink:#154e65;--accent-bg:#e1edf2;--focus:#4687a0;--shadow:0 6px 24px rgba(35,48,60,.16);
   --warn:#b5832a;--warn-bg:#faf4e6;--danger:#b3412e;--danger-bg:#f9ebe8;--ok:#3f8a5a;
   --entity:#226a89;--operation:#98700b;--claim:#5f8470;--question:#8f5fa4;--case:#b26b47;--source:#697886;--trace:#467d84;--check-result:#586889;--evidence:#b26b47;
-  --r-supports:#3f8a5a;--r-challenges:#c0432f;--r-potential-conflict:#c0432f;--r-answers:#8f5fa4;--r-revises:#d07a1a;--r-raises:#a97fbd;--r-motivates:#6e8fa3;--r-informs:#8ea3b1;--r-about:#b3bec6;--r-governs:#8a97a1;--r-checks:#4e8f97;--r-default:#a9b5be;
+  --r-supports:#3f8a5a;--r-challenges:#c0432f;--r-potential-conflict:#c0432f;--r-answers:#8f5fa4;--r-revises:#d07a1a;--r-raises:#a97fbd;--r-motivates:#6e8fa3;--r-informs:#8ea3b1;--r-about:#b3bec6;--r-governs:#8a97a1;--r-checks:#4e8f97;--r-acts-on:#98700b;--r-depends-on:#216783;--r-default:#a9b5be;
   --label:#2c3a44;--label-outline:#f3f5f7;--hub-label:#ffffff;--select-ring:#142e40;--match-ring:#1f7a9c;--dim:0.16;
 }
 [data-theme=dark]{
@@ -24,7 +24,7 @@
   --accent:#6fb8d8;--accent-ink:#c3e4f2;--accent-bg:#1f3541;--focus:#7cc2df;--shadow:0 8px 28px rgba(0,0,0,.55);
   --warn:#d9a441;--warn-bg:#2e2716;--danger:#e0705c;--danger-bg:#34201c;--ok:#5fb37c;
   --entity:#3a93bd;--operation:#c9981f;--claim:#79a68a;--question:#b287c9;--case:#d18a5f;--source:#8a99a7;--trace:#5aa3ad;--check-result:#7f90b4;--evidence:#d18a5f;
-  --r-supports:#5fb37c;--r-challenges:#e0705c;--r-potential-conflict:#e0705c;--r-answers:#b287c9;--r-revises:#e6963a;--r-raises:#b99bcc;--r-motivates:#7fa4ba;--r-informs:#6f8796;--r-about:#454f58;--r-governs:#5f6f7b;--r-checks:#5aa3ad;--r-default:#4a5661;
+  --r-supports:#5fb37c;--r-challenges:#e0705c;--r-potential-conflict:#e0705c;--r-answers:#b287c9;--r-revises:#e6963a;--r-raises:#b99bcc;--r-motivates:#7fa4ba;--r-informs:#6f8796;--r-about:#454f58;--r-governs:#5f6f7b;--r-checks:#5aa3ad;--r-acts-on:#c9981f;--r-depends-on:#6fb8d8;--r-default:#4a5661;
   --label:#d7dee4;--label-outline:#12161a;--hub-label:#0e1418;--select-ring:#f2f6f8;--match-ring:#7cc2df;--dim:0.14;
 }
 *{box-sizing:border-box}
@@ -224,7 +224,7 @@ const el=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefine
 const cssVar=name=>getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 const store={get(k){try{return localStorage.getItem(k)}catch{return null}},set(k,v){try{localStorage.setItem(k,v)}catch{}}};
 const TYPE_ORDER=['entity','operation','claim','question','case','evidence','source','trace','check-result'];
-const RELATION_STYLE={'potential-conflict':'dashed',challenges:'solid',revises:'dotted',checks:'dotted',answers:'solid'};
+const RELATION_STYLE={'potential-conflict':'dashed',challenges:'solid',revises:'dotted',checks:'dotted',answers:'solid','acts-on':'dashed','depends-on':'dashed'};
 const OPEN_STATES=new Set(['open','candidate-answer','partial-answer']);
 const rs=n=>n?.meta?.review_state||'current';
 const caption=(id,n)=>n?.meta?.title||id;
@@ -276,6 +276,7 @@ function buildStyle(){
     {selector:'edge[kind="challenges"]',style:{width:2.2,opacity:.95}},
     {selector:'edge[kind="answers"]',style:{width:1.8,opacity:.8}},
     {selector:'edge[kind="answers"][coverage="partial"]',style:{'line-style':'dashed'}},
+    {selector:'edge[kind="acts-on"],edge[kind="depends-on"]',style:{label:'data(label)',opacity:.9,width:1.8}},
     {selector:'edge[kind="revises"]',style:{width:1.8,opacity:.85}},
     {selector:'edge.labelled',style:{label:'data(label)'}},
     {selector:'.faded',style:{opacity:.2}},

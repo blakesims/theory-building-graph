@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.1
+
+- Report entities that have no operation acting on them.
+- Add typed `--acts-on` and `--depends-on` relation flags.
+- Show `acts-on` and `depends-on` as labelled dashed edges in the viewer.
+- Show ready or blocked status for each open question in `frontier`.
+
 ## 0.2.0
 
 - Declared question status is authoritative. Answer structure is optional advice.

@@ -8,6 +8,9 @@
    "coverage_required": true,
    "description": "Claim offers full, partial or unknown coverage of a question. The question's declared status is authoritative."
   },
+  "acts-on": {
+   "description": "Operation acts on the target entity."
+  },
   "challenges": {
    "description": "Source disputes or supplies a potential counterexample to the target claim."
   },

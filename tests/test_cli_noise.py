@@ -23,9 +23,9 @@ class CheckPresentation(unittest.TestCase):
         self.assertNotIn('untested-claim',full['counts']);self.assertIn('unanchored-claim',full['counts'])
         view=g.check_view(full)
         self.assertTrue(all(f['severity']!='informational' for f in view['findings']))
-        self.assertEqual(view['informational_counts'],{'orphan-anchor':1})
+        self.assertEqual(view['informational_counts'],{'entity-without-operations':1,'orphan-anchor':1})
         self.assertEqual(g.check_view(full,True),full)
-        text=g.compact(view);self.assertIn('1 orphan-anchor (informational; --all to list)',text);self.assertIn('unanchored-claim',text)
+        text=g.compact(view);self.assertIn('1 orphan-anchor (informational; --all to list)',text);self.assertIn('1 entity-without-operations (informational; --all to list)',text);self.assertIn('unanchored-claim',text)
     def test_cli_all_flag(self):
         with tempfile.TemporaryDirectory() as t:
             p=Path(t)/'graph.json';p.write_text(json.dumps(fixture(['A'])))
@@ -136,7 +136,7 @@ class Frontier(unittest.TestCase):
         self.assertEqual([n['id'] for n in f['proposed_claims']],['B'])  # H (historical) excluded
         self.assertTrue(all(x['code']!='untested-claim' for x in f['findings']));self.assertIn('unanchored-claim',{x['code'] for x in f['findings']})
         self.assertEqual([c['revision'] for c in f['recent_changes']],[3,4,5,6,7]);self.assertEqual(f['evidence_stale'],0)
-        text=g.compact(f);self.assertIn('frontier',text);self.assertIn('open questions',text);self.assertIn('QUESTION  STATUS  TEXT',text)
+        text=g.compact(f);self.assertIn('frontier',text);self.assertIn('open questions',text);self.assertIn('QUESTION  STATUS  READINESS  TEXT',text)
     def test_cli(self):
         with tempfile.TemporaryDirectory() as t:
             p=Path(t)/'graph.json';p.write_text(json.dumps(fixture(['A','Q'])))

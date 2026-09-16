@@ -1,5 +1,5 @@
 {
-  "version": "0.2.0",
+  "version": "0.2.1",
   "scope": "Current mechanical contract plus preserved historical receipt integrity. No new independent agent trial is claimed.",
   "superseded": {
     "D05": "Modality remains independent, but editing enforcement no longer flags dependents.",
@@ -19,6 +19,7 @@
     "V203": ["test_v02.TypedWrites.test_only_new_conflict_edges_flag_both_endpoints", "test_v02.TypedWrites.test_conflicts_on_new_nodes_and_no_transitive_flag", "test_dependency.DependencyTests.test_chain_transitive_preserves_acceptance", "test_dependency.DependencyTests.test_review_without_version_bookkeeping"],
     "V204": ["test_v02.TypedWrites.test_ruling_one_revision_and_exact_history", "test_v02.TypedWrites.test_replacement_preserves_partial_payload_and_declared_status", "test_v02.TypedWrites.test_all_typed_dry_runs_have_no_side_effects", "test_v02.TypedWrites.test_errors_are_atomic_and_name_unknown_id", "test_v02.TypedWrites.test_question_raised_by_and_answer_commands", "test_v02.TypedWrites.test_automatic_expect_prevents_overwrite", "test_v02.TypedWrites.test_actor_defaults_overrides_and_multiple_anchors"],
     "V205": ["test_v02.Autosync.test_default_off_per_project_and_every_write_path", "test_v02.Autosync.test_conflict_keeps_local_write_and_reports_file", "test_v02.Autosync.test_unrelated_staged_work_is_never_committed", "test_v02.Autosync.test_saved_evaluation_syncs_and_requires_reason"],
-    "V206": ["test_v02.TypedWrites.test_quiet_reads_full_metadata_and_legacy_fields"]
+    "V206": ["test_v02.TypedWrites.test_quiet_reads_full_metadata_and_legacy_fields"],
+    "V207": ["test_v021.OperationsAndDependencies.test_template_declares_both_relations", "test_v021.OperationsAndDependencies.test_typed_flags_add_all_requested_edges_atomically", "test_v021.OperationsAndDependencies.test_flags_reject_unknown_or_wrong_type_without_writing", "test_v021.FindingsAndFrontier.test_entity_without_operations_is_informational_and_directional", "test_v021.FindingsAndFrontier.test_frontier_open_questions_have_ready_or_blocked_column", "test_v021.ViewerRelations.test_acts_on_and_depends_on_are_dashed_labelled_and_colored"]
   }
 }

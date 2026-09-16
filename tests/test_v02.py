@@ -39,7 +39,7 @@ class TypedWrites(unittest.TestCase):
     def test_declared_answer_is_authoritative_everywhere(self):
         g = self.load(); g['nodes']['q']['meta'].update(answer_shape='condition', required_parts=['when'])
         self.path.write_text(json.dumps(g))
-        self.assertEqual(graph.check(g)['findings'], [])
+        self.assertEqual([f['code'] for f in graph.check(g)['findings']], ['entity-without-operations'])
         self.assertEqual(graph.questions(g)['question_states']['q'], 'answered')
         self.assertEqual(graph.frontier(g)['open_questions'], [])
         self.assertEqual(graph.frontier(g)['answered_questions'][0]['resolution'], 'answered')

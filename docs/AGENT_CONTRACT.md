@@ -42,10 +42,10 @@ whole command. `--about` or `--governs` is required for claims and questions.
 
 ```sh
 tg entity add ID "text" [--alias A ...] --reason "..."
-tg operation add ID "text" --reason "..."
+tg operation add ID "text" [--acts-on ENTITY ...] --reason "..."
 tg source add SRC "exact words" --kind verbatim [--author NAME] --reason "..."
-tg claim add ID "one proposition" --about ANCHOR [--status accepted|proposed] --reason "..."
-tg question add Q "question" --about ANCHOR [--raised-by CLAIM] --reason "..."
+tg claim add ID "one proposition" --about ANCHOR [--depends-on NODE ...] [--status accepted|proposed] --reason "..."
+tg question add Q "question" --about ANCHOR [--depends-on NODE ...] [--raised-by CLAIM] --reason "..."
 tg answer Q --with CLAIM [--coverage full|partial] --reason "..."
 tg withdraw OLD [--superseded-by NEW] --reason "..."
 tg edge add FROM TYPE TO --reason "..."
@@ -81,8 +81,8 @@ Readiness concerns explicit prerequisites. Retired prerequisites remain blockers
 
 Relations point claim/question → subject for `about`/`governs`, claim → question
 for `answers`/`raises`, new → old for `revises`, interpretation → source for
-`extracted-from`, and dependent → prerequisite for `depends-on`.
-Topic links and support are not mandatory prerequisites.
+`extracted-from`, operation → entity for `acts-on`, and dependent → prerequisite for
+`depends-on`. Topic links and support are not mandatory prerequisites.
 
 New `potential-conflict` and `challenges` edges mark both endpoints for review.
 These are hypotheses, not proofs. Account for that effect before writing. Clear the

@@ -27,6 +27,7 @@ def parsers(sub):
         if kind in ('claim', 'question'):
             p.add_argument('--about', nargs='+', action='extend', default=[])
             p.add_argument('--governs', nargs='+', action='extend', default=[])
+            p.add_argument('--depends-on', nargs='+', action='extend', default=[])
         if kind == 'claim':
             p.add_argument('--status', choices=('accepted', 'proposed'), default='proposed')
             p.add_argument('--source'); p.add_argument('--answers')
@@ -36,6 +37,7 @@ def parsers(sub):
             p.add_argument('--supports', nargs='+', action='extend', default=[])
         elif kind == 'question': p.add_argument('--raised-by')
         elif kind == 'entity': p.add_argument('--alias', nargs='+', action='extend', default=[])
+        elif kind == 'operation': p.add_argument('--acts-on', nargs='+', action='extend', default=[])
         audit_arguments(p)
     p = sub.add_parser('withdraw', help='Withdraw a claim, retaining history')
     p.add_argument('id'); p.add_argument('--superseded-by'); audit_arguments(p)
@@ -125,6 +127,12 @@ def build(g, a):
                 require(nid, ('entity', 'operation')); link(a.id, 'about', nid)
             for nid in a.governs:
                 require(nid, ('operation',)); link(a.id, 'governs', nid)
+        if a.cmd in ('claim', 'question'):
+            for nid in a.depends_on:
+                require(nid); link(a.id, 'depends-on', nid)
+        if a.cmd == 'operation':
+            for nid in a.acts_on:
+                require(nid, ('entity',)); link(a.id, 'acts-on', nid)
         if a.cmd == 'question' and a.raised_by:
             require(a.raised_by, ('claim',)); link(a.raised_by, 'raises', a.id)
         if a.cmd == 'claim':

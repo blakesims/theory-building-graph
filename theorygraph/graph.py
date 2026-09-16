@@ -162,7 +162,7 @@ def history(g,limit=10,full=False):
 
 def check(g):
     findings=[]
-    def add(code,message,nodes,edges=None): findings.append({'code':code,'severity':'review','message':message,'nodes':nodes,'edges':edges or []})
+    def add(code,message,nodes,edges=None,severity='review'): findings.append({'code':code,'severity':severity,'message':message,'nodes':nodes,'edges':edges or []})
     for eid,e in sorted(g['edges'].items()):
         a,b=g['nodes'][e['from']],g['nodes'][e['to']]
         if e['type']=='answers' and e.get('coverage') not in ('full','partial','unknown'): add('answer-coverage','Answer lacks explicit full/partial/unknown coverage.',[e['from'],e['to']],[eid])
@@ -171,6 +171,8 @@ def check(g):
     for i,n in sorted(g['nodes'].items()):
         if review_state(n)=='historical': continue
         if n['type']=='claim' and not any(e['from']==i and e['type'] in ('about','governs') for e in g['edges'].values()): add('unanchored-claim','Claim has no entity or operation anchor.',[i])
+        if n['type']=='entity' and not any(e['to']==i and e['type']=='acts-on' and g['nodes'][e['from']]['type']=='operation' for e in g['edges'].values()):
+            add('entity-without-operations','Entity has no incoming acts-on edge from an operation.',[i],severity='informational')
     findings.extend(dependency.findings(g))
     try:
         from . import formalcheck
@@ -335,7 +337,8 @@ def frontier(g, limit=30, changes=5):
     """One session opener: what is open, unreviewed, proposed, flagged or stale. Historical and evidence nodes excluded."""
     view=theory_view(g); live={i:n for i,n in view['nodes'].items() if review_state(n)!='historical'}
     title=lambda n:(n.get('meta') or {}).get('title') or n['text']
-    open_questions=[{'id':i,'title':title(n),'resolution':dependency.resolution(g,i)['resolution'],'readiness':dependency.readiness(g,i)['readiness']} for i,n in live.items() if n['type']=='question' and n.get('status')!='retired' and dependency.resolution(g,i)['resolution']!='answered']
+    def question_readiness(nid): return 'blocked' if dependency.readiness(g,nid)['readiness']=='blocked' else 'ready'
+    open_questions=[{'id':i,'title':title(n),'resolution':dependency.resolution(g,i)['resolution'],'readiness':question_readiness(i)} for i,n in live.items() if n['type']=='question' and n.get('status')!='retired' and dependency.resolution(g,i)['resolution']!='answered']
     needs_review=[{'id':i,'type':n['type'],'review_reason':(n.get('meta') or {}).get('review_reason','')} for i,n in live.items() if review_state(n)=='needs-review']
     proposed=[{'id':i,'text':n['text']} for i,n in live.items() if n['type']=='claim' and n.get('status')=='proposed']
     findings=[{'code':f['code'],'nodes':f['nodes'],'message':f['message']} for f in check(g)['findings'] if f.get('severity')!='informational']
@@ -436,7 +439,9 @@ def compact(data, full=False):
             if items: lines.extend([title, table(headers, [values(x) for x in items])])
         for key, label in (('open_questions', 'open questions'), ('answered_questions', 'answered questions')):
             if data.get(key):
-                lines.extend([label, table(('QUESTION','STATUS','TEXT'), [(q['id'],q['resolution'],q['title']) for q in data[key]])])
+                headers=('QUESTION','STATUS','READINESS','TEXT') if key=='open_questions' else ('QUESTION','STATUS','TEXT')
+                rows=[(q['id'],q['resolution'],q['readiness'],q['title']) for q in data[key]] if key=='open_questions' else [(q['id'],q['resolution'],q['title']) for q in data[key]]
+                lines.extend([label, table(headers, rows)])
         section('needs review',data['needs_review'],('NODE','TYPE','REASON'),lambda n:(n['id'],n['type'],n['review_reason']))
         section('proposed claims',data['proposed_claims'],('CLAIM','TEXT'),lambda n:(n['id'],n['text']))
         section('findings',data['findings'],('FINDING','NODES','MESSAGE'),lambda f:(f['code'],', '.join(f['nodes']),f['message']))
