@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 55,
+  "revision": 56,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1732,6 +1732,17 @@
       "meta": {
         "review_state": "current",
         "title": "contract is the frame",
+        "author": "assistant",
+        "source_kind": "assistant-proposal"
+      }
+    },
+    "delegates-are-co-seats": {
+      "type": "claim",
+      "status": "proposed",
+      "text": "The assistant and the architect are not actors. They are the operator with a co-seat on one of the operator's own items: the assistant on a desk item for hours, the architect on an intention the operator has taken (the dials route architecture decisions to the desk) for weeks. A design session is the operator stewarding one intention with a co-seat; the theory graph is that seat's ledger. Any user-defined agent has three coordinates: which operator item it shares, how it is driven, how long it lives. Blake: 'yes, that's pretty good'.",
+      "meta": {
+        "review_state": "current",
+        "title": "delegates are co seats",
         "author": "assistant",
         "source_kind": "assistant-proposal"
       }
@@ -3642,6 +3653,32 @@
       "from": "contract-is-the-frame",
       "type": "supports",
       "to": "contract-changes-are-not-records"
+    },
+    "delegates-are-co-seats-about-operator-role": {
+      "from": "delegates-are-co-seats",
+      "type": "about",
+      "to": "operator-role"
+    },
+    "delegates-are-co-seats-about-desk-item": {
+      "from": "delegates-are-co-seats",
+      "type": "about",
+      "to": "desk-item"
+    },
+    "delegates-are-co-seats-about-intention-type": {
+      "from": "delegates-are-co-seats",
+      "type": "about",
+      "to": "intention-type"
+    },
+    "delegates-are-co-seats-extracted-from-session-2026-09-16-ladder": {
+      "from": "delegates-are-co-seats",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-ladder"
+    },
+    "delegates-are-co-seats-answers-assistant-vs-architect": {
+      "from": "delegates-are-co-seats",
+      "type": "answers",
+      "to": "assistant-vs-architect",
+      "coverage": "partial"
     }
   },
   "changes": [
@@ -12052,6 +12089,81 @@
             "from": "contract-is-the-frame",
             "type": "supports",
             "to": "contract-changes-are-not-records"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 56,
+      "at": "2026-09-16T06:34:29.448738+00:00",
+      "actor": "assistant",
+      "reason": "Handover update 2026-09-16: ladder and obstruction model, delegates, frame",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "delegates-are-co-seats",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "The assistant and the architect are not actors. They are the operator with a co-seat on one of the operator's own items: the assistant on a desk item for hours, the architect on an intention the operator has taken (the dials route architecture decisions to the desk) for weeks. A design session is the operator stewarding one intention with a co-seat; the theory graph is that seat's ledger. Any user-defined agent has three coordinates: which operator item it shares, how it is driven, how long it lives. Blake: 'yes, that's pretty good'.",
+            "meta": {
+              "review_state": "current",
+              "title": "delegates are co seats",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "delegates-are-co-seats-about-operator-role",
+          "before": null,
+          "after": {
+            "from": "delegates-are-co-seats",
+            "type": "about",
+            "to": "operator-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "delegates-are-co-seats-about-desk-item",
+          "before": null,
+          "after": {
+            "from": "delegates-are-co-seats",
+            "type": "about",
+            "to": "desk-item"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "delegates-are-co-seats-about-intention-type",
+          "before": null,
+          "after": {
+            "from": "delegates-are-co-seats",
+            "type": "about",
+            "to": "intention-type"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "delegates-are-co-seats-extracted-from-session-2026-09-16-ladder",
+          "before": null,
+          "after": {
+            "from": "delegates-are-co-seats",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-ladder"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "delegates-are-co-seats-answers-assistant-vs-architect",
+          "before": null,
+          "after": {
+            "from": "delegates-are-co-seats",
+            "type": "answers",
+            "to": "assistant-vs-architect",
+            "coverage": "partial"
           }
         }
       ]
