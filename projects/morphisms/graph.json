@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 107,
+  "revision": 115,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1304,7 +1304,7 @@
     },
     "intention-schema": {
       "type": "question",
-      "status": "open",
+      "status": "answered",
       "text": "What is the schema of an intention: its fields, its history, and where the steward's dial reading and the operator's answers are written? Foundational. Not answerable until the operations on an intention are known.",
       "meta": {
         "title": "The schema of an intention",
@@ -2038,8 +2038,8 @@
     },
     "intention-schema-draft": {
       "type": "claim",
-      "status": "proposed",
-      "text": "Draft schema of an intention. Identity and filing: id, the filed text, filed_by (anyone: operator, agent, worker, outside), kind (the machine-readable signature, e.g. observation). Two states: outcome (open, satisfied, withdrawn) and steward attention (ready, claimed, waiting). History: one append-only event log on the kernel's record-event machinery, events for filed, claimed, reassessed, record linked, record rest, sent to desk, desk answered, settled; each dated with actor and payload. Links: the records that are attempts at it; the desk items it birthed, each carrying its own log (discussion and the operator's answers) and the dials trace written at send-to-desk. The intention holds no artifacts and no discussion of its own.",
+      "status": "accepted",
+      "text": "Schema of an intention. Identity and filing: id, the filed text, filed_by (anyone: operator, agent, worker, outside), kind (from a fixed shipped set; observation is one value). One state: ready, claimed, waiting, satisfied, withdrawn; the last two are rest. History: one append-only event log on the kernel's record-event machinery, events for filed, claimed, reassessed (choice and reason as payload), record linked, record rest, sent to desk (dials trace as payload), desk answered, settled; each dated with actor. Links: the records that are attempts at it; the desk items it birthed, each carrying its own log (discussion and the operator's answers). No artifacts and no discussion of its own. Not a record.",
       "meta": {
         "review_state": "current",
         "title": "intention schema draft",
@@ -2060,7 +2060,7 @@
     },
     "reassessment-reasoning-location": {
       "type": "question",
-      "status": "open",
+      "status": "answered",
       "text": "Where does the steward's reasoning at reassessment live: as the payload of the reassessed event on the intention log, or somewhere else? The dials trace already lives on the send-to-desk event.",
       "meta": {
         "review_state": "current",
@@ -2115,13 +2115,46 @@
     },
     "intention-single-state": {
       "type": "claim",
-      "status": "proposed",
+      "status": "accepted",
       "text": "An intention has one state, not two: ready, claimed, waiting, satisfied, withdrawn. Open is just 'not yet satisfied or withdrawn'; attention values are the live substates of open. Satisfied and withdrawn are rest. A record coming to rest moves waiting to ready; a new filing starts at ready.",
       "meta": {
         "review_state": "current",
         "title": "intention single state",
         "author": "assistant",
         "source_kind": "assistant-proposal"
+      }
+    },
+    "session-2026-09-16-schema-close": {
+      "type": "source",
+      "status": "recorded",
+      "text": "Blake, 2026-09-16, verbatim: \"It might be a no-op in the sense that the steward wakes up, sees, 'Oh, this record is done, but that's okay because everything else has already been filed,' so it moves it back. It's an unnecessary wake, but it requires judgment anyway, so that's fine.\" \"question 10, I'm fine with your recommendation. Let's try to copy the same patterns we've already established.\" \"I'm fine with what you said there: intentions as a type of record.\" (i.e. agreed with the recommendation that an intention is not a record)",
+      "meta": {
+        "review_state": "current",
+        "title": "session 2026 09 16 schema close",
+        "author": "Blake",
+        "source_kind": "verbatim"
+      }
+    },
+    "reassessment-reason-on-event": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "Each reassessment appends one event to the intention's log carrying the steward's choice (more work, wait, send to desk, settle) and its reason as the payload, the same pattern as the dials trace on the send-to-desk event. There is no second place for the steward's reasoning.",
+      "meta": {
+        "review_state": "current",
+        "title": "reassessment reason on event",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
+      }
+    },
+    "intention-is-not-a-record": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "An intention is not a record. It reuses the record's machinery (event log, one state dimension with rest states) but not its governance: no contract, no store, no orchestrator claim, no artifacts. Making it a record would put it inside the frame it sits above.",
+      "meta": {
+        "review_state": "current",
+        "title": "intention is not a record",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
       }
     }
   },
@@ -4711,6 +4744,62 @@
       "from": "intention-single-state",
       "type": "revises",
       "to": "intention-status-set"
+    },
+    "intention-single-state-extracted-from-session-2026-09-16-schema-close": {
+      "from": "intention-single-state",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-schema-close"
+    },
+    "reassessment-reason-on-event-about-intention-type": {
+      "from": "reassessment-reason-on-event",
+      "type": "about",
+      "to": "intention-type"
+    },
+    "reassessment-reason-on-event-about-steward-role": {
+      "from": "reassessment-reason-on-event",
+      "type": "about",
+      "to": "steward-role"
+    },
+    "reassessment-reason-on-event-governs-reassess-intention": {
+      "from": "reassessment-reason-on-event",
+      "type": "governs",
+      "to": "reassess-intention"
+    },
+    "reassessment-reason-on-event-extracted-from-session-2026-09-16-schema-close": {
+      "from": "reassessment-reason-on-event",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-schema-close"
+    },
+    "reassessment-reason-on-event-answers-reassessment-reasoning-location": {
+      "from": "reassessment-reason-on-event",
+      "type": "answers",
+      "to": "reassessment-reasoning-location",
+      "coverage": "full"
+    },
+    "intention-is-not-a-record-about-intention-type": {
+      "from": "intention-is-not-a-record",
+      "type": "about",
+      "to": "intention-type"
+    },
+    "intention-is-not-a-record-about-record-type": {
+      "from": "intention-is-not-a-record",
+      "type": "about",
+      "to": "record-type"
+    },
+    "intention-is-not-a-record-about-contract": {
+      "from": "intention-is-not-a-record",
+      "type": "about",
+      "to": "contract"
+    },
+    "intention-is-not-a-record-extracted-from-session-2026-09-16-schema-close": {
+      "from": "intention-is-not-a-record",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-schema-close"
+    },
+    "intention-is-not-a-record-supports-contract-is-the-frame": {
+      "from": "intention-is-not-a-record",
+      "type": "supports",
+      "to": "contract-is-the-frame"
     }
   },
   "changes": [
@@ -16232,6 +16321,363 @@
             "from": "intention-single-state",
             "type": "revises",
             "to": "intention-status-set"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 108,
+      "at": "2026-09-16T09:00:33.222480+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: single five-value state accepted (unnecessary wakes are fine, judgment is needed anyway); reassessment reason lives on the reassessed event; intention is not a record",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "session-2026-09-16-schema-close",
+          "before": null,
+          "after": {
+            "type": "source",
+            "status": "recorded",
+            "text": "Blake, 2026-09-16, verbatim: \"It might be a no-op in the sense that the steward wakes up, sees, 'Oh, this record is done, but that's okay because everything else has already been filed,' so it moves it back. It's an unnecessary wake, but it requires judgment anyway, so that's fine.\" \"question 10, I'm fine with your recommendation. Let's try to copy the same patterns we've already established.\" \"I'm fine with what you said there: intentions as a type of record.\" (i.e. agreed with the recommendation that an intention is not a record)",
+            "meta": {
+              "review_state": "current",
+              "title": "session 2026 09 16 schema close",
+              "author": "Blake",
+              "source_kind": "verbatim"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 109,
+      "at": "2026-09-16T09:00:33.311340+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: single five-value state accepted (unnecessary wakes are fine, judgment is needed anyway); reassessment reason lives on the reassessed event; intention is not a record",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "intention-single-state",
+          "before": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "An intention has one state, not two: ready, claimed, waiting, satisfied, withdrawn. Open is just 'not yet satisfied or withdrawn'; attention values are the live substates of open. Satisfied and withdrawn are rest. A record coming to rest moves waiting to ready; a new filing starts at ready.",
+            "meta": {
+              "review_state": "current",
+              "title": "intention single state",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "An intention has one state, not two: ready, claimed, waiting, satisfied, withdrawn. Open is just 'not yet satisfied or withdrawn'; attention values are the live substates of open. Satisfied and withdrawn are rest. A record coming to rest moves waiting to ready; a new filing starts at ready.",
+            "meta": {
+              "review_state": "current",
+              "title": "intention single state",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 110,
+      "at": "2026-09-16T09:00:33.389097+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: single five-value state accepted (unnecessary wakes are fine, judgment is needed anyway); reassessment reason lives on the reassessed event; intention is not a record",
+      "edits": [
+        {
+          "collection": "edges",
+          "id": "intention-single-state-extracted-from-session-2026-09-16-schema-close",
+          "before": null,
+          "after": {
+            "from": "intention-single-state",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-schema-close"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 111,
+      "at": "2026-09-16T09:00:33.464128+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: single five-value state accepted (unnecessary wakes are fine, judgment is needed anyway); reassessment reason lives on the reassessed event; intention is not a record",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "reassessment-reason-on-event",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "Each reassessment appends one event to the intention's log carrying the steward's choice (more work, wait, send to desk, settle) and its reason as the payload, the same pattern as the dials trace on the send-to-desk event. There is no second place for the steward's reasoning.",
+            "meta": {
+              "review_state": "current",
+              "title": "reassessment reason on event",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "reassessment-reason-on-event-about-intention-type",
+          "before": null,
+          "after": {
+            "from": "reassessment-reason-on-event",
+            "type": "about",
+            "to": "intention-type"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "reassessment-reason-on-event-about-steward-role",
+          "before": null,
+          "after": {
+            "from": "reassessment-reason-on-event",
+            "type": "about",
+            "to": "steward-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "reassessment-reason-on-event-governs-reassess-intention",
+          "before": null,
+          "after": {
+            "from": "reassessment-reason-on-event",
+            "type": "governs",
+            "to": "reassess-intention"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "reassessment-reason-on-event-extracted-from-session-2026-09-16-schema-close",
+          "before": null,
+          "after": {
+            "from": "reassessment-reason-on-event",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-schema-close"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "reassessment-reason-on-event-answers-reassessment-reasoning-location",
+          "before": null,
+          "after": {
+            "from": "reassessment-reason-on-event",
+            "type": "answers",
+            "to": "reassessment-reasoning-location",
+            "coverage": "full"
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "reassessment-reasoning-location",
+          "before": {
+            "type": "question",
+            "status": "open",
+            "text": "Where does the steward's reasoning at reassessment live: as the payload of the reassessed event on the intention log, or somewhere else? The dials trace already lives on the send-to-desk event.",
+            "meta": {
+              "review_state": "current",
+              "title": "reassessment reasoning location",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          },
+          "after": {
+            "type": "question",
+            "status": "answered",
+            "text": "Where does the steward's reasoning at reassessment live: as the payload of the reassessed event on the intention log, or somewhere else? The dials trace already lives on the send-to-desk event.",
+            "meta": {
+              "review_state": "current",
+              "title": "reassessment reasoning location",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 112,
+      "at": "2026-09-16T09:00:33.553864+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: single five-value state accepted (unnecessary wakes are fine, judgment is needed anyway); reassessment reason lives on the reassessed event; intention is not a record",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "intention-is-not-a-record",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "An intention is not a record. It reuses the record's machinery (event log, one state dimension with rest states) but not its governance: no contract, no store, no orchestrator claim, no artifacts. Making it a record would put it inside the frame it sits above.",
+            "meta": {
+              "review_state": "current",
+              "title": "intention is not a record",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-is-not-a-record-about-intention-type",
+          "before": null,
+          "after": {
+            "from": "intention-is-not-a-record",
+            "type": "about",
+            "to": "intention-type"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-is-not-a-record-about-record-type",
+          "before": null,
+          "after": {
+            "from": "intention-is-not-a-record",
+            "type": "about",
+            "to": "record-type"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-is-not-a-record-about-contract",
+          "before": null,
+          "after": {
+            "from": "intention-is-not-a-record",
+            "type": "about",
+            "to": "contract"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-is-not-a-record-extracted-from-session-2026-09-16-schema-close",
+          "before": null,
+          "after": {
+            "from": "intention-is-not-a-record",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-schema-close"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-is-not-a-record-supports-contract-is-the-frame",
+          "before": null,
+          "after": {
+            "from": "intention-is-not-a-record",
+            "type": "supports",
+            "to": "contract-is-the-frame"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 113,
+      "at": "2026-09-16T09:00:33.644346+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: single five-value state accepted (unnecessary wakes are fine, judgment is needed anyway); reassessment reason lives on the reassessed event; intention is not a record; fold in the rulings on kind, state, artifacts, reasoning",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "intention-schema-draft",
+          "before": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "Draft schema of an intention. Identity and filing: id, the filed text, filed_by (anyone: operator, agent, worker, outside), kind (the machine-readable signature, e.g. observation). Two states: outcome (open, satisfied, withdrawn) and steward attention (ready, claimed, waiting). History: one append-only event log on the kernel's record-event machinery, events for filed, claimed, reassessed, record linked, record rest, sent to desk, desk answered, settled; each dated with actor and payload. Links: the records that are attempts at it; the desk items it birthed, each carrying its own log (discussion and the operator's answers) and the dials trace written at send-to-desk. The intention holds no artifacts and no discussion of its own.",
+            "meta": {
+              "review_state": "current",
+              "title": "intention schema draft",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "Schema of an intention. Identity and filing: id, the filed text, filed_by (anyone: operator, agent, worker, outside), kind (from a fixed shipped set; observation is one value). One state: ready, claimed, waiting, satisfied, withdrawn; the last two are rest. History: one append-only event log on the kernel's record-event machinery, events for filed, claimed, reassessed (choice and reason as payload), record linked, record rest, sent to desk (dials trace as payload), desk answered, settled; each dated with actor. Links: the records that are attempts at it; the desk items it birthed, each carrying its own log (discussion and the operator's answers). No artifacts and no discussion of its own. Not a record.",
+            "meta": {
+              "review_state": "current",
+              "title": "intention schema draft",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 114,
+      "at": "2026-09-16T09:00:33.726600+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: single five-value state accepted (unnecessary wakes are fine, judgment is needed anyway); reassessment reason lives on the reassessed event; intention is not a record; every slot now rests on an accepted claim",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "intention-schema-draft",
+          "before": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "Schema of an intention. Identity and filing: id, the filed text, filed_by (anyone: operator, agent, worker, outside), kind (from a fixed shipped set; observation is one value). One state: ready, claimed, waiting, satisfied, withdrawn; the last two are rest. History: one append-only event log on the kernel's record-event machinery, events for filed, claimed, reassessed (choice and reason as payload), record linked, record rest, sent to desk (dials trace as payload), desk answered, settled; each dated with actor. Links: the records that are attempts at it; the desk items it birthed, each carrying its own log (discussion and the operator's answers). No artifacts and no discussion of its own. Not a record.",
+            "meta": {
+              "review_state": "current",
+              "title": "intention schema draft",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "Schema of an intention. Identity and filing: id, the filed text, filed_by (anyone: operator, agent, worker, outside), kind (from a fixed shipped set; observation is one value). One state: ready, claimed, waiting, satisfied, withdrawn; the last two are rest. History: one append-only event log on the kernel's record-event machinery, events for filed, claimed, reassessed (choice and reason as payload), record linked, record rest, sent to desk (dials trace as payload), desk answered, settled; each dated with actor. Links: the records that are attempts at it; the desk items it birthed, each carrying its own log (discussion and the operator's answers). No artifacts and no discussion of its own. Not a record.",
+            "meta": {
+              "review_state": "current",
+              "title": "intention schema draft",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 115,
+      "at": "2026-09-16T09:00:33.817173+00:00",
+      "actor": "assistant",
+      "reason": "Answered by intention-schema-draft, now accepted; its five prerequisites are all ruled",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "intention-schema",
+          "before": {
+            "type": "question",
+            "status": "open",
+            "text": "What is the schema of an intention: its fields, its history, and where the steward's dial reading and the operator's answers are written? Foundational. Not answerable until the operations on an intention are known.",
+            "meta": {
+              "title": "The schema of an intention",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "answer_shape": "exploration",
+              "provenance": "2026-09-16, raised when asking where a desk arrival's trace lives.",
+              "review_state": "current"
+            }
+          },
+          "after": {
+            "type": "question",
+            "status": "answered",
+            "text": "What is the schema of an intention: its fields, its history, and where the steward's dial reading and the operator's answers are written? Foundational. Not answerable until the operations on an intention are known.",
+            "meta": {
+              "title": "The schema of an intention",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "answer_shape": "exploration",
+              "provenance": "2026-09-16, raised when asking where a desk arrival's trace lives.",
+              "review_state": "current"
+            }
           }
         }
       ]
