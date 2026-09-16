@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 96,
+  "revision": 97,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1838,10 +1838,11 @@
       "status": "defined",
       "text": "The agent that stands between worker observations and the steward: reads the envelope's observation field, judges which are distinct and worth filing, and files intentions at the front door. Today: the nightly friction sweep in tools/.",
       "meta": {
-        "review_state": "current",
+        "review_state": "historical",
         "title": "sorter role",
         "author": "Blake",
-        "source_kind": "session-paraphrase"
+        "source_kind": "session-paraphrase",
+        "review_reason": "Blake 2026-09-16: the sorter is not an actor; superseded by the steward working its inbox (process-worker-inbox)"
       }
     },
     "sort-observations": {
@@ -1849,10 +1850,11 @@
       "status": "defined",
       "text": "The sorter reads observations from returned envelopes, judges which are distinct and worth the steward's attention, and files each as an intention. A barrier against noise, not a decision about work.",
       "meta": {
-        "review_state": "current",
+        "review_state": "historical",
         "title": "sort observations",
         "author": "Blake",
-        "source_kind": "session-paraphrase"
+        "source_kind": "session-paraphrase",
+        "review_reason": "Superseded by process-worker-inbox on the steward"
       }
     },
     "flag-is-a-contract-block": {
@@ -4267,11 +4269,6 @@
       "from": "attempt-obstruction-dual",
       "type": "about",
       "to": "observation"
-    },
-    "sorter-is-canonical-optional-potential-conflict-delegates-are-co-seats": {
-      "from": "sorter-is-canonical-optional",
-      "type": "potential-conflict",
-      "to": "delegates-are-co-seats"
     },
     "delegates-are-co-seats-extracted-from-session-2026-09-16-logs": {
       "from": "delegates-are-co-seats",
@@ -15276,6 +15273,78 @@
               "superseded_by": "sorter-is-not-an-actor"
             }
           }
+        }
+      ]
+    },
+    {
+      "revision": 97,
+      "at": "2026-09-16T08:26:24.312620+00:00",
+      "actor": "assistant",
+      "reason": "Retire the sorter entity and operation as historical and drop the moot tension; its source claim is withdrawn",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "sorter-role",
+          "before": {
+            "type": "entity",
+            "status": "defined",
+            "text": "The agent that stands between worker observations and the steward: reads the envelope's observation field, judges which are distinct and worth filing, and files intentions at the front door. Today: the nightly friction sweep in tools/.",
+            "meta": {
+              "review_state": "current",
+              "title": "sorter role",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          },
+          "after": {
+            "type": "entity",
+            "status": "defined",
+            "text": "The agent that stands between worker observations and the steward: reads the envelope's observation field, judges which are distinct and worth filing, and files intentions at the front door. Today: the nightly friction sweep in tools/.",
+            "meta": {
+              "review_state": "historical",
+              "title": "sorter role",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "review_reason": "Blake 2026-09-16: the sorter is not an actor; superseded by the steward working its inbox (process-worker-inbox)"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "sort-observations",
+          "before": {
+            "type": "operation",
+            "status": "defined",
+            "text": "The sorter reads observations from returned envelopes, judges which are distinct and worth the steward's attention, and files each as an intention. A barrier against noise, not a decision about work.",
+            "meta": {
+              "review_state": "current",
+              "title": "sort observations",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          },
+          "after": {
+            "type": "operation",
+            "status": "defined",
+            "text": "The sorter reads observations from returned envelopes, judges which are distinct and worth the steward's attention, and files each as an intention. A barrier against noise, not a decision about work.",
+            "meta": {
+              "review_state": "historical",
+              "title": "sort observations",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "review_reason": "Superseded by process-worker-inbox on the steward"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "sorter-is-canonical-optional-potential-conflict-delegates-are-co-seats",
+          "before": {
+            "from": "sorter-is-canonical-optional",
+            "type": "potential-conflict",
+            "to": "delegates-are-co-seats"
+          },
+          "after": null
         }
       ]
     }
