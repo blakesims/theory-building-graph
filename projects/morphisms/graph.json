@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 51,
+  "revision": 52,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1688,6 +1688,17 @@
       "meta": {
         "review_state": "current",
         "title": "everything enters as intention",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
+      }
+    },
+    "obstruction-links-many-rungs": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "An obstruction is off the ladder and points at whatever it stopped: one or many records, across one or many intentions. Its fields are who raised it, who resolves it, which rungs it is about, and which of those are frozen while it is open. These are fields, not kinds.",
+      "meta": {
+        "review_state": "current",
+        "title": "obstruction links many rungs",
         "author": "Blake",
         "source_kind": "session-paraphrase"
       }
@@ -3511,6 +3522,26 @@
     },
     "everything-enters-as-intention-extracted-from-session-2026-09-16-ladder": {
       "from": "everything-enters-as-intention",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-ladder"
+    },
+    "obstruction-links-many-rungs-about-desk-item": {
+      "from": "obstruction-links-many-rungs",
+      "type": "about",
+      "to": "desk-item"
+    },
+    "obstruction-links-many-rungs-about-flag": {
+      "from": "obstruction-links-many-rungs",
+      "type": "about",
+      "to": "flag"
+    },
+    "obstruction-links-many-rungs-governs-raise-obstruction": {
+      "from": "obstruction-links-many-rungs",
+      "type": "governs",
+      "to": "raise-obstruction"
+    },
+    "obstruction-links-many-rungs-extracted-from-session-2026-09-16-ladder": {
+      "from": "obstruction-links-many-rungs",
       "type": "extracted-from",
       "to": "session-2026-09-16-ladder"
     }
@@ -11655,6 +11686,70 @@
           "before": null,
           "after": {
             "from": "everything-enters-as-intention",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-ladder"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 52,
+      "at": "2026-09-16T06:34:02.694128+00:00",
+      "actor": "assistant",
+      "reason": "Handover update 2026-09-16: ladder and obstruction model, delegates, frame",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "obstruction-links-many-rungs",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "An obstruction is off the ladder and points at whatever it stopped: one or many records, across one or many intentions. Its fields are who raised it, who resolves it, which rungs it is about, and which of those are frozen while it is open. These are fields, not kinds.",
+            "meta": {
+              "review_state": "current",
+              "title": "obstruction links many rungs",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "obstruction-links-many-rungs-about-desk-item",
+          "before": null,
+          "after": {
+            "from": "obstruction-links-many-rungs",
+            "type": "about",
+            "to": "desk-item"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "obstruction-links-many-rungs-about-flag",
+          "before": null,
+          "after": {
+            "from": "obstruction-links-many-rungs",
+            "type": "about",
+            "to": "flag"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "obstruction-links-many-rungs-governs-raise-obstruction",
+          "before": null,
+          "after": {
+            "from": "obstruction-links-many-rungs",
+            "type": "governs",
+            "to": "raise-obstruction"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "obstruction-links-many-rungs-extracted-from-session-2026-09-16-ladder",
+          "before": null,
+          "after": {
+            "from": "obstruction-links-many-rungs",
             "type": "extracted-from",
             "to": "session-2026-09-16-ladder"
           }
