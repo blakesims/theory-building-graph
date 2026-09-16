@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 20,
+  "revision": 22,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -131,7 +131,7 @@
     "completion-wakes-steward": {
       "type": "claim",
       "text": "Completion of any linked record makes its intention available for steward reassessment, even while other records run. Extra computation is an accepted cost of the simple rule.",
-      "status": "accepted",
+      "status": "withdrawn",
       "meta": {
         "title": "Every record completion wakes the steward",
         "author": "Blake",
@@ -140,10 +140,12 @@
         "source_sha256": "4cd9a2d52ad0e0ca51c24d62b688640fb024064dbc0651f586c15c738190b89d",
         "review": "Reconstructed paraphrase; not newly ratified wording.",
         "review_state": "current",
-        "review_reason": "Successful completion still wakes steward; agreed failed-attempt handoff additionally covers ended failed work. No blanket decision about all cancellation cases.",
+        "review_reason": "Generalized 2026-09-16 by rest-wakes-steward: rest (completed or abandoned) and unprocessed new intentions, not completion alone.",
         "legacy_status": "user-stated",
-        "source_kind": "assistant-paraphrase"
-      }
+        "source_kind": "assistant-paraphrase",
+        "superseded_by": "rest-wakes-steward"
+      },
+      "semantic_version": 2
     },
     "durable-responsibility": {
       "type": "claim",
@@ -270,13 +272,12 @@
         "source_file": "/Users/blake/Documents/Codex/2026-09-14/realtime-voice-chat/outputs/Theory Graph Trial/Nodes/Q - Does cancellation also wake the steward.md",
         "source_sha256": "c4be1ed8842a60f8b0727aff9fac528c435d922b395d6b2cd58f518d28fe9cef",
         "review": "Reconstructed paraphrase; not newly ratified wording.",
-        "review_state": "needs-review",
-        "review_reason": "Answer changed: end-degraded-attempt",
+        "review_state": "current",
+        "review_reason": "Answered in full by rest-wakes-steward; the old partial answers are historical",
         "legacy_status": "open",
         "source_kind": "assistant-paraphrase",
         "review_roots": [
-          "end-degraded-attempt",
-          "stopping-authority"
+          "completion-wakes-steward"
         ]
       }
     },
@@ -1110,6 +1111,77 @@
         "author": "Blake",
         "source_kind": "session-paraphrase",
         "provenance": "2026-09-16. Rejects the configurable N-failures idea that the earlier claim's 'stopping threshold' wording assumed. The ask-the-operator-first substance of that claim stands.",
+        "review_state": "current"
+      }
+    },
+    "session-2026-09-16-rest": {
+      "type": "source",
+      "status": "recorded",
+      "text": "Blake, 2026-09-16, verbatim excerpts: \"The terminal node in one of the dimensions of a store does not necessarily always mean that the work was completed successfully. ... it means that the movement of this record through this dimension has come to rest.\" \"what completed means is that there is no more movement of this thing through that dimension.\" \"the steward should be woken if the record has completed, or in this case, if the record has been abandoned. I don't know what our schema choice is here; this is an open question.\" \"the steward waking conditions are on a new intention that has been filed and not processed.\" \"The operator will not be the handover mechanism from the orchestrator to the steward. Instead, there should be some kind of artifact or reference note, probably written by the orchestrator, that will explain what went wrong, why, and what the orchestrator's recommendation is. Ultimately, it's up to the steward what to do.\" \"Maybe the archive has a note, and that note is the handover from orchestrator to steward.\"",
+      "meta": {
+        "title": "Session 2026-09-16: rest, wake, handover",
+        "author": "Blake",
+        "source_kind": "verbatim",
+        "review_state": "current"
+      }
+    },
+    "terminal-means-rest": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "A terminal state in a dimension means the record's movement through that dimension has come to rest, not that the work succeeded. An investigation that finds no problem ends at rest. A record archived before reaching a terminal state has also come to rest.",
+      "meta": {
+        "title": "Terminal means rest, not success",
+        "author": "Blake",
+        "source_kind": "session-paraphrase",
+        "provenance": "A standing Morphisms philosophy restated 2026-09-16; exact words in session-2026-09-16-rest.",
+        "review_state": "current"
+      }
+    },
+    "rest-wakes-steward": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "The steward becomes claimable for an intention when any linked record comes to rest, whether completed or abandoned, and when a new intention has been filed and not yet processed. This generalizes the earlier completion-only rule; the extra computation stays an accepted cost.",
+      "meta": {
+        "title": "Rest wakes the steward",
+        "author": "Blake",
+        "source_kind": "session-paraphrase",
+        "provenance": "2026-09-16; generalizes completion-wakes-steward using terminal-means-rest.",
+        "review_state": "current"
+      }
+    },
+    "orchestrator-handover-artifact": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "The operator is not the handover channel from orchestrator to steward. When an attempt is given back, the orchestrator writes a durable handover: what went wrong, why, and its recommendation, with references to the events, plans and linked records it saw. The steward reads it and decides what to do next.",
+      "meta": {
+        "title": "The orchestrator writes the handover",
+        "author": "Blake",
+        "source_kind": "session-paraphrase",
+        "provenance": "2026-09-16; exact words in session-2026-09-16-rest.",
+        "review_state": "current"
+      }
+    },
+    "abandonment-schema": {
+      "type": "question",
+      "status": "open",
+      "text": "When a record is abandoned rather than walked to a terminal state, what is the schema choice: a terminal state inside the dimension, or an archive outside it? Both grounding cases (M1688, M1689) had to be archived.",
+      "meta": {
+        "title": "How is abandonment represented",
+        "author": "Blake",
+        "source_kind": "session-paraphrase",
+        "answer_shape": "condition",
+        "review_state": "current"
+      }
+    },
+    "handover-location": {
+      "type": "question",
+      "status": "open",
+      "text": "Where does the orchestrator's handover note live: as the note on the record's archive, or on the intention above the record? Blake leans to the archive note being the handover.",
+      "meta": {
+        "title": "Where the handover lives",
+        "author": "Blake",
+        "source_kind": "session-paraphrase",
+        "answer_shape": "condition",
         "review_state": "current"
       }
     }
@@ -2335,6 +2407,95 @@
       "from": "orchestrator-judges-then-asks",
       "to": "session-2026-09-16-record-creation",
       "type": "supports"
+    },
+    "about-rest-record": {
+      "from": "terminal-means-rest",
+      "to": "record-type",
+      "type": "about"
+    },
+    "src-rest": {
+      "from": "terminal-means-rest",
+      "to": "session-2026-09-16-rest",
+      "type": "supports"
+    },
+    "about-rest-wakes-intention": {
+      "from": "rest-wakes-steward",
+      "to": "intention-type",
+      "type": "about"
+    },
+    "about-rest-wakes-steward": {
+      "from": "rest-wakes-steward",
+      "to": "steward-role",
+      "type": "about"
+    },
+    "revises-rest-completion": {
+      "from": "rest-wakes-steward",
+      "to": "completion-wakes-steward",
+      "type": "revises",
+      "meta": {
+        "reason": "Completion was a special case of coming to rest."
+      }
+    },
+    "dep-rest-wakes-terminal": {
+      "from": "rest-wakes-steward",
+      "to": "terminal-means-rest",
+      "type": "supports"
+    },
+    "answers-rest-cancellation": {
+      "from": "rest-wakes-steward",
+      "to": "cancellation-wakeup",
+      "type": "answers",
+      "coverage": "full",
+      "meta": {
+        "answer": {
+          "verdict": "yes: an abandoned record has come to rest, and rest wakes the steward"
+        }
+      }
+    },
+    "src-rest-wakes": {
+      "from": "rest-wakes-steward",
+      "to": "session-2026-09-16-rest",
+      "type": "supports"
+    },
+    "about-handover-orchestrator": {
+      "from": "orchestrator-handover-artifact",
+      "to": "orchestrator-role",
+      "type": "about"
+    },
+    "about-handover-steward": {
+      "from": "orchestrator-handover-artifact",
+      "to": "steward-role",
+      "type": "about"
+    },
+    "src-handover": {
+      "from": "orchestrator-handover-artifact",
+      "to": "session-2026-09-16-rest",
+      "type": "supports"
+    },
+    "about-abandonment-record": {
+      "from": "abandonment-schema",
+      "to": "record-type",
+      "type": "about"
+    },
+    "raises-rest-abandonment": {
+      "from": "rest-wakes-steward",
+      "to": "abandonment-schema",
+      "type": "raises"
+    },
+    "about-handover-loc-record": {
+      "from": "handover-location",
+      "to": "record-type",
+      "type": "about"
+    },
+    "about-handover-loc-intention": {
+      "from": "handover-location",
+      "to": "intention-type",
+      "type": "about"
+    },
+    "raises-handover-loc": {
+      "from": "orchestrator-handover-artifact",
+      "to": "handover-location",
+      "type": "raises"
     }
   },
   "changes": [
@@ -7892,6 +8053,463 @@
               ]
             },
             "semantic_version": 2
+          }
+        }
+      ]
+    },
+    {
+      "revision": 21,
+      "at": "2026-09-16T03:30:25.727013+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: terminal means rest, rest wakes the steward, orchestrator writes the handover; two schema questions opened",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "session-2026-09-16-rest",
+          "before": null,
+          "after": {
+            "type": "source",
+            "status": "recorded",
+            "text": "Blake, 2026-09-16, verbatim excerpts: \"The terminal node in one of the dimensions of a store does not necessarily always mean that the work was completed successfully. ... it means that the movement of this record through this dimension has come to rest.\" \"what completed means is that there is no more movement of this thing through that dimension.\" \"the steward should be woken if the record has completed, or in this case, if the record has been abandoned. I don't know what our schema choice is here; this is an open question.\" \"the steward waking conditions are on a new intention that has been filed and not processed.\" \"The operator will not be the handover mechanism from the orchestrator to the steward. Instead, there should be some kind of artifact or reference note, probably written by the orchestrator, that will explain what went wrong, why, and what the orchestrator's recommendation is. Ultimately, it's up to the steward what to do.\" \"Maybe the archive has a note, and that note is the handover from orchestrator to steward.\"",
+            "meta": {
+              "title": "Session 2026-09-16: rest, wake, handover",
+              "author": "Blake",
+              "source_kind": "verbatim",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "terminal-means-rest",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "A terminal state in a dimension means the record's movement through that dimension has come to rest, not that the work succeeded. An investigation that finds no problem ends at rest. A record archived before reaching a terminal state has also come to rest.",
+            "meta": {
+              "title": "Terminal means rest, not success",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "provenance": "A standing Morphisms philosophy restated 2026-09-16; exact words in session-2026-09-16-rest.",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "rest-wakes-steward",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "The steward becomes claimable for an intention when any linked record comes to rest, whether completed or abandoned, and when a new intention has been filed and not yet processed. This generalizes the earlier completion-only rule; the extra computation stays an accepted cost.",
+            "meta": {
+              "title": "Rest wakes the steward",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "provenance": "2026-09-16; generalizes completion-wakes-steward using terminal-means-rest.",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "orchestrator-handover-artifact",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "The operator is not the handover channel from orchestrator to steward. When an attempt is given back, the orchestrator writes a durable handover: what went wrong, why, and its recommendation, with references to the events, plans and linked records it saw. The steward reads it and decides what to do next.",
+            "meta": {
+              "title": "The orchestrator writes the handover",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "provenance": "2026-09-16; exact words in session-2026-09-16-rest.",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "abandonment-schema",
+          "before": null,
+          "after": {
+            "type": "question",
+            "status": "open",
+            "text": "When a record is abandoned rather than walked to a terminal state, what is the schema choice: a terminal state inside the dimension, or an archive outside it? Both grounding cases (M1688, M1689) had to be archived.",
+            "meta": {
+              "title": "How is abandonment represented",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "answer_shape": "condition",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "handover-location",
+          "before": null,
+          "after": {
+            "type": "question",
+            "status": "open",
+            "text": "Where does the orchestrator's handover note live: as the note on the record's archive, or on the intention above the record? Blake leans to the archive note being the handover.",
+            "meta": {
+              "title": "Where the handover lives",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "answer_shape": "condition",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "completion-wakes-steward",
+          "before": {
+            "type": "claim",
+            "text": "Completion of any linked record makes its intention available for steward reassessment, even while other records run. Extra computation is an accepted cost of the simple rule.",
+            "status": "accepted",
+            "meta": {
+              "title": "Every record completion wakes the steward",
+              "author": "Blake",
+              "provenance": "Blake explicitly chose this trigger.",
+              "source_file": "/Users/blake/Documents/Codex/2026-09-14/realtime-voice-chat/outputs/Theory Graph Trial/Nodes/C - Every record completion wakes the steward.md",
+              "source_sha256": "4cd9a2d52ad0e0ca51c24d62b688640fb024064dbc0651f586c15c738190b89d",
+              "review": "Reconstructed paraphrase; not newly ratified wording.",
+              "review_state": "current",
+              "review_reason": "Successful completion still wakes steward; agreed failed-attempt handoff additionally covers ended failed work. No blanket decision about all cancellation cases.",
+              "legacy_status": "user-stated",
+              "source_kind": "assistant-paraphrase"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "text": "Completion of any linked record makes its intention available for steward reassessment, even while other records run. Extra computation is an accepted cost of the simple rule.",
+            "status": "withdrawn",
+            "meta": {
+              "title": "Every record completion wakes the steward",
+              "author": "Blake",
+              "provenance": "Blake explicitly chose this trigger.",
+              "source_file": "/Users/blake/Documents/Codex/2026-09-14/realtime-voice-chat/outputs/Theory Graph Trial/Nodes/C - Every record completion wakes the steward.md",
+              "source_sha256": "4cd9a2d52ad0e0ca51c24d62b688640fb024064dbc0651f586c15c738190b89d",
+              "review": "Reconstructed paraphrase; not newly ratified wording.",
+              "review_state": "current",
+              "review_reason": "Generalized 2026-09-16 by rest-wakes-steward: rest (completed or abandoned) and unprocessed new intentions, not completion alone.",
+              "legacy_status": "user-stated",
+              "source_kind": "assistant-paraphrase",
+              "superseded_by": "rest-wakes-steward"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-rest-record",
+          "before": null,
+          "after": {
+            "from": "terminal-means-rest",
+            "to": "record-type",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "src-rest",
+          "before": null,
+          "after": {
+            "from": "terminal-means-rest",
+            "to": "session-2026-09-16-rest",
+            "type": "supports"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-rest-wakes-intention",
+          "before": null,
+          "after": {
+            "from": "rest-wakes-steward",
+            "to": "intention-type",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-rest-wakes-steward",
+          "before": null,
+          "after": {
+            "from": "rest-wakes-steward",
+            "to": "steward-role",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "revises-rest-completion",
+          "before": null,
+          "after": {
+            "from": "rest-wakes-steward",
+            "to": "completion-wakes-steward",
+            "type": "revises",
+            "meta": {
+              "reason": "Completion was a special case of coming to rest."
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "dep-rest-wakes-terminal",
+          "before": null,
+          "after": {
+            "from": "rest-wakes-steward",
+            "to": "terminal-means-rest",
+            "type": "supports"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "answers-rest-cancellation",
+          "before": null,
+          "after": {
+            "from": "rest-wakes-steward",
+            "to": "cancellation-wakeup",
+            "type": "answers",
+            "coverage": "full",
+            "meta": {
+              "answer": {
+                "verdict": "yes: an abandoned record has come to rest, and rest wakes the steward"
+              }
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "src-rest-wakes",
+          "before": null,
+          "after": {
+            "from": "rest-wakes-steward",
+            "to": "session-2026-09-16-rest",
+            "type": "supports"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-handover-orchestrator",
+          "before": null,
+          "after": {
+            "from": "orchestrator-handover-artifact",
+            "to": "orchestrator-role",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-handover-steward",
+          "before": null,
+          "after": {
+            "from": "orchestrator-handover-artifact",
+            "to": "steward-role",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "src-handover",
+          "before": null,
+          "after": {
+            "from": "orchestrator-handover-artifact",
+            "to": "session-2026-09-16-rest",
+            "type": "supports"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-abandonment-record",
+          "before": null,
+          "after": {
+            "from": "abandonment-schema",
+            "to": "record-type",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "raises-rest-abandonment",
+          "before": null,
+          "after": {
+            "from": "rest-wakes-steward",
+            "to": "abandonment-schema",
+            "type": "raises"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-handover-loc-record",
+          "before": null,
+          "after": {
+            "from": "handover-location",
+            "to": "record-type",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-handover-loc-intention",
+          "before": null,
+          "after": {
+            "from": "handover-location",
+            "to": "intention-type",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "raises-handover-loc",
+          "before": null,
+          "after": {
+            "from": "orchestrator-handover-artifact",
+            "to": "handover-location",
+            "type": "raises"
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "completion-wakes-steward",
+          "before": {
+            "type": "claim",
+            "text": "Completion of any linked record makes its intention available for steward reassessment, even while other records run. Extra computation is an accepted cost of the simple rule.",
+            "status": "withdrawn",
+            "meta": {
+              "title": "Every record completion wakes the steward",
+              "author": "Blake",
+              "provenance": "Blake explicitly chose this trigger.",
+              "source_file": "/Users/blake/Documents/Codex/2026-09-14/realtime-voice-chat/outputs/Theory Graph Trial/Nodes/C - Every record completion wakes the steward.md",
+              "source_sha256": "4cd9a2d52ad0e0ca51c24d62b688640fb024064dbc0651f586c15c738190b89d",
+              "review": "Reconstructed paraphrase; not newly ratified wording.",
+              "review_state": "current",
+              "review_reason": "Generalized 2026-09-16 by rest-wakes-steward: rest (completed or abandoned) and unprocessed new intentions, not completion alone.",
+              "legacy_status": "user-stated",
+              "source_kind": "assistant-paraphrase",
+              "superseded_by": "rest-wakes-steward"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "text": "Completion of any linked record makes its intention available for steward reassessment, even while other records run. Extra computation is an accepted cost of the simple rule.",
+            "status": "withdrawn",
+            "meta": {
+              "title": "Every record completion wakes the steward",
+              "author": "Blake",
+              "provenance": "Blake explicitly chose this trigger.",
+              "source_file": "/Users/blake/Documents/Codex/2026-09-14/realtime-voice-chat/outputs/Theory Graph Trial/Nodes/C - Every record completion wakes the steward.md",
+              "source_sha256": "4cd9a2d52ad0e0ca51c24d62b688640fb024064dbc0651f586c15c738190b89d",
+              "review": "Reconstructed paraphrase; not newly ratified wording.",
+              "review_state": "current",
+              "review_reason": "Generalized 2026-09-16 by rest-wakes-steward: rest (completed or abandoned) and unprocessed new intentions, not completion alone.",
+              "legacy_status": "user-stated",
+              "source_kind": "assistant-paraphrase",
+              "superseded_by": "rest-wakes-steward"
+            },
+            "semantic_version": 2
+          },
+          "automatic": "semantic-version"
+        },
+        {
+          "collection": "nodes",
+          "id": "cancellation-wakeup",
+          "before": {
+            "type": "question",
+            "text": "If a record is cancelled or scrapped without successful completion, what makes the intention available for reassessment? The completion rule alone does not settle this.",
+            "status": "open",
+            "meta": {
+              "title": "Does cancellation also wake the steward",
+              "author": "session reconstruction",
+              "provenance": "Assistant raised this edge case; no user resolution is recorded.",
+              "source_file": "/Users/blake/Documents/Codex/2026-09-14/realtime-voice-chat/outputs/Theory Graph Trial/Nodes/Q - Does cancellation also wake the steward.md",
+              "source_sha256": "c4be1ed8842a60f8b0727aff9fac528c435d922b395d6b2cd58f518d28fe9cef",
+              "review": "Reconstructed paraphrase; not newly ratified wording.",
+              "review_state": "needs-review",
+              "review_reason": "Answer changed: end-degraded-attempt",
+              "legacy_status": "open",
+              "source_kind": "assistant-paraphrase",
+              "review_roots": [
+                "end-degraded-attempt",
+                "stopping-authority"
+              ]
+            }
+          },
+          "after": {
+            "type": "question",
+            "text": "If a record is cancelled or scrapped without successful completion, what makes the intention available for reassessment? The completion rule alone does not settle this.",
+            "status": "open",
+            "meta": {
+              "title": "Does cancellation also wake the steward",
+              "author": "session reconstruction",
+              "provenance": "Assistant raised this edge case; no user resolution is recorded.",
+              "source_file": "/Users/blake/Documents/Codex/2026-09-14/realtime-voice-chat/outputs/Theory Graph Trial/Nodes/Q - Does cancellation also wake the steward.md",
+              "source_sha256": "c4be1ed8842a60f8b0727aff9fac528c435d922b395d6b2cd58f518d28fe9cef",
+              "review": "Reconstructed paraphrase; not newly ratified wording.",
+              "review_state": "needs-review",
+              "review_reason": "Decision relation changed: answers-rest-cancellation",
+              "legacy_status": "open",
+              "source_kind": "assistant-paraphrase",
+              "review_roots": [
+                "completion-wakes-steward"
+              ]
+            }
+          },
+          "automatic": "dependency-review"
+        }
+      ]
+    },
+    {
+      "revision": 22,
+      "at": "2026-09-16T03:30:25.788276+00:00",
+      "actor": "assistant",
+      "reason": "Answered in full by rest-wakes-steward; the old partial answers are historical",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "cancellation-wakeup",
+          "before": {
+            "type": "question",
+            "text": "If a record is cancelled or scrapped without successful completion, what makes the intention available for reassessment? The completion rule alone does not settle this.",
+            "status": "open",
+            "meta": {
+              "title": "Does cancellation also wake the steward",
+              "author": "session reconstruction",
+              "provenance": "Assistant raised this edge case; no user resolution is recorded.",
+              "source_file": "/Users/blake/Documents/Codex/2026-09-14/realtime-voice-chat/outputs/Theory Graph Trial/Nodes/Q - Does cancellation also wake the steward.md",
+              "source_sha256": "c4be1ed8842a60f8b0727aff9fac528c435d922b395d6b2cd58f518d28fe9cef",
+              "review": "Reconstructed paraphrase; not newly ratified wording.",
+              "review_state": "needs-review",
+              "review_reason": "Decision relation changed: answers-rest-cancellation",
+              "legacy_status": "open",
+              "source_kind": "assistant-paraphrase",
+              "review_roots": [
+                "completion-wakes-steward"
+              ]
+            }
+          },
+          "after": {
+            "type": "question",
+            "text": "If a record is cancelled or scrapped without successful completion, what makes the intention available for reassessment? The completion rule alone does not settle this.",
+            "status": "open",
+            "meta": {
+              "title": "Does cancellation also wake the steward",
+              "author": "session reconstruction",
+              "provenance": "Assistant raised this edge case; no user resolution is recorded.",
+              "source_file": "/Users/blake/Documents/Codex/2026-09-14/realtime-voice-chat/outputs/Theory Graph Trial/Nodes/Q - Does cancellation also wake the steward.md",
+              "source_sha256": "c4be1ed8842a60f8b0727aff9fac528c435d922b395d6b2cd58f518d28fe9cef",
+              "review": "Reconstructed paraphrase; not newly ratified wording.",
+              "review_state": "current",
+              "review_reason": "Answered in full by rest-wakes-steward; the old partial answers are historical",
+              "legacy_status": "open",
+              "source_kind": "assistant-paraphrase",
+              "review_roots": [
+                "completion-wakes-steward"
+              ]
+            }
           }
         }
       ]
