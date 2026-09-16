@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 34,
+  "revision": 35,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -3228,6 +3228,11 @@
       "from": "thread-question-mirrors-to-desk",
       "type": "supports",
       "to": "desk-is-operator-list"
+    },
+    "send-to-desk-acts-on-desk-item": {
+      "from": "send-to-desk",
+      "type": "acts-on",
+      "to": "desk-item"
     }
   },
   "changes": [
@@ -10751,6 +10756,24 @@
             "from": "thread-question-mirrors-to-desk",
             "type": "supports",
             "to": "desk-is-operator-list"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 35,
+      "at": "2026-09-16T04:30:49.164223+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: desk items are separate from intentions; one actor claims one item kind",
+      "edits": [
+        {
+          "collection": "edges",
+          "id": "send-to-desk-acts-on-desk-item",
+          "before": null,
+          "after": {
+            "from": "send-to-desk",
+            "type": "acts-on",
+            "to": "desk-item"
           }
         }
       ]
