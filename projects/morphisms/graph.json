@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 35,
+  "revision": 36,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -3231,6 +3231,11 @@
     },
     "send-to-desk-acts-on-desk-item": {
       "from": "send-to-desk",
+      "type": "acts-on",
+      "to": "desk-item"
+    },
+    "answer-at-desk-acts-on-desk-item": {
+      "from": "answer-at-desk",
       "type": "acts-on",
       "to": "desk-item"
     }
@@ -10772,6 +10777,24 @@
           "before": null,
           "after": {
             "from": "send-to-desk",
+            "type": "acts-on",
+            "to": "desk-item"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 36,
+      "at": "2026-09-16T04:30:55.744933+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: desk items are separate from intentions; one actor claims one item kind",
+      "edits": [
+        {
+          "collection": "edges",
+          "id": "answer-at-desk-acts-on-desk-item",
+          "before": null,
+          "after": {
+            "from": "answer-at-desk",
             "type": "acts-on",
             "to": "desk-item"
           }
