@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 94,
+  "revision": 96,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1891,19 +1891,20 @@
     },
     "sorter-is-canonical-optional": {
       "type": "claim",
-      "status": "proposed",
+      "status": "withdrawn",
       "text": "The sorter ships preinstalled and canonical because the envelope field it reads is canonical, but it is switched on by the user as an advanced feature (recursive improvement of the code base) with a model the user chooses. It is not one of the required actors.",
       "meta": {
-        "review_state": "needs-review",
+        "review_state": "current",
         "title": "sorter is canonical optional",
         "author": "Blake",
         "source_kind": "session-paraphrase",
-        "review_reason": "Review relation added: sorter-is-canonical-optional-potential-conflict-delegates-are-co-seats"
+        "review_reason": "Withdrawn and superseded by sorter-is-not-an-actor; tension moot",
+        "superseded_by": "sorter-is-not-an-actor"
       }
     },
     "sorter-standing": {
       "type": "question",
-      "status": "open",
+      "status": "answered",
       "text": "Is the sorter a required actor, so that every installation has four, or an optional preinstalled one that a plain user may run without? Blake 2026-09-16: not ready to answer; leans optional and preinstalled.",
       "meta": {
         "review_state": "current",
@@ -1996,6 +1997,17 @@
       "meta": {
         "review_state": "current",
         "title": "process worker inbox",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
+      }
+    },
+    "sorter-is-not-an-actor": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "There is no sorter actor. Filtering worker-filed intentions is the steward working one of its inboxes; the required actors stay three.",
+      "meta": {
+        "review_state": "current",
+        "title": "sorter is not an actor",
         "author": "Blake",
         "source_kind": "session-paraphrase"
       }
@@ -4412,6 +4424,32 @@
       "from": "process-worker-inbox",
       "type": "acts-on",
       "to": "intention-type"
+    },
+    "sorter-is-not-an-actor-about-steward-role": {
+      "from": "sorter-is-not-an-actor",
+      "type": "about",
+      "to": "steward-role"
+    },
+    "sorter-is-not-an-actor-extracted-from-session-2026-09-16-inbox": {
+      "from": "sorter-is-not-an-actor",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-inbox"
+    },
+    "sorter-is-not-an-actor-revises-sorter-is-canonical-optional": {
+      "from": "sorter-is-not-an-actor",
+      "type": "revises",
+      "to": "sorter-is-canonical-optional"
+    },
+    "sorter-is-not-an-actor-answers-sorter-standing": {
+      "from": "sorter-is-not-an-actor",
+      "type": "answers",
+      "to": "sorter-standing",
+      "coverage": "full"
+    },
+    "sorter-is-not-an-actor-supports-required-actors": {
+      "from": "sorter-is-not-an-actor",
+      "type": "supports",
+      "to": "required-actors"
     }
   },
   "changes": [
@@ -15068,6 +15106,174 @@
               "author": "assistant",
               "source_kind": "assistant-proposal",
               "review_reason": "Tension dissolved: the sorter is not an agent, so the three-coordinate rule is untouched"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 95,
+      "at": "2026-09-16T08:26:05.242491+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: the sorter is not an actor; an observation is a machine-readable type of intention filed by the worker; the steward works that inbox under user dials",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "sorter-is-not-an-actor",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "There is no sorter actor. Filtering worker-filed intentions is the steward working one of its inboxes; the required actors stay three.",
+            "meta": {
+              "review_state": "current",
+              "title": "sorter is not an actor",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "sorter-is-not-an-actor-about-steward-role",
+          "before": null,
+          "after": {
+            "from": "sorter-is-not-an-actor",
+            "type": "about",
+            "to": "steward-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "sorter-is-not-an-actor-extracted-from-session-2026-09-16-inbox",
+          "before": null,
+          "after": {
+            "from": "sorter-is-not-an-actor",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-inbox"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "sorter-is-not-an-actor-revises-sorter-is-canonical-optional",
+          "before": null,
+          "after": {
+            "from": "sorter-is-not-an-actor",
+            "type": "revises",
+            "to": "sorter-is-canonical-optional"
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "sorter-is-canonical-optional",
+          "before": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "The sorter ships preinstalled and canonical because the envelope field it reads is canonical, but it is switched on by the user as an advanced feature (recursive improvement of the code base) with a model the user chooses. It is not one of the required actors.",
+            "meta": {
+              "review_state": "needs-review",
+              "title": "sorter is canonical optional",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "review_reason": "Review relation added: sorter-is-canonical-optional-potential-conflict-delegates-are-co-seats"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "withdrawn",
+            "text": "The sorter ships preinstalled and canonical because the envelope field it reads is canonical, but it is switched on by the user as an advanced feature (recursive improvement of the code base) with a model the user chooses. It is not one of the required actors.",
+            "meta": {
+              "review_state": "historical",
+              "title": "sorter is canonical optional",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "review_reason": "Review relation added: sorter-is-canonical-optional-potential-conflict-delegates-are-co-seats",
+              "superseded_by": "sorter-is-not-an-actor"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "sorter-is-not-an-actor-answers-sorter-standing",
+          "before": null,
+          "after": {
+            "from": "sorter-is-not-an-actor",
+            "type": "answers",
+            "to": "sorter-standing",
+            "coverage": "full"
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "sorter-standing",
+          "before": {
+            "type": "question",
+            "status": "open",
+            "text": "Is the sorter a required actor, so that every installation has four, or an optional preinstalled one that a plain user may run without? Blake 2026-09-16: not ready to answer; leans optional and preinstalled.",
+            "meta": {
+              "review_state": "current",
+              "title": "sorter standing",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          },
+          "after": {
+            "type": "question",
+            "status": "answered",
+            "text": "Is the sorter a required actor, so that every installation has four, or an optional preinstalled one that a plain user may run without? Blake 2026-09-16: not ready to answer; leans optional and preinstalled.",
+            "meta": {
+              "review_state": "current",
+              "title": "sorter standing",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "sorter-is-not-an-actor-supports-required-actors",
+          "before": null,
+          "after": {
+            "from": "sorter-is-not-an-actor",
+            "type": "supports",
+            "to": "required-actors"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 96,
+      "at": "2026-09-16T08:26:16.240391+00:00",
+      "actor": "assistant",
+      "reason": "Withdrawn and superseded by sorter-is-not-an-actor; tension moot",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "sorter-is-canonical-optional",
+          "before": {
+            "type": "claim",
+            "status": "withdrawn",
+            "text": "The sorter ships preinstalled and canonical because the envelope field it reads is canonical, but it is switched on by the user as an advanced feature (recursive improvement of the code base) with a model the user chooses. It is not one of the required actors.",
+            "meta": {
+              "review_state": "historical",
+              "title": "sorter is canonical optional",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "review_reason": "Review relation added: sorter-is-canonical-optional-potential-conflict-delegates-are-co-seats",
+              "superseded_by": "sorter-is-not-an-actor"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "withdrawn",
+            "text": "The sorter ships preinstalled and canonical because the envelope field it reads is canonical, but it is switched on by the user as an advanced feature (recursive improvement of the code base) with a model the user chooses. It is not one of the required actors.",
+            "meta": {
+              "review_state": "current",
+              "title": "sorter is canonical optional",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "review_reason": "Withdrawn and superseded by sorter-is-not-an-actor; tension moot",
+              "superseded_by": "sorter-is-not-an-actor"
             }
           }
         }
