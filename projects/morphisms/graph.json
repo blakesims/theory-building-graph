@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 56,
+  "revision": 57,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1743,6 +1743,17 @@
       "meta": {
         "review_state": "current",
         "title": "delegates are co seats",
+        "author": "assistant",
+        "source_kind": "assistant-proposal"
+      }
+    },
+    "running-policy-separates-delegates": {
+      "type": "claim",
+      "status": "proposed",
+      "text": "What separates the contract writer, assistant and architect from an ordinary worker is only the running policy P = (start, drive): the operator drives them turn by turn. Nothing about what they claim differs.",
+      "meta": {
+        "review_state": "current",
+        "title": "running policy separates delegates",
         "author": "assistant",
         "source_kind": "assistant-proposal"
       }
@@ -3679,6 +3690,26 @@
       "type": "answers",
       "to": "assistant-vs-architect",
       "coverage": "partial"
+    },
+    "running-policy-separates-delegates-about-operator-role": {
+      "from": "running-policy-separates-delegates",
+      "type": "about",
+      "to": "operator-role"
+    },
+    "running-policy-separates-delegates-about-worker-role": {
+      "from": "running-policy-separates-delegates",
+      "type": "about",
+      "to": "worker-role"
+    },
+    "running-policy-separates-delegates-extracted-from-session-2026-09-16-ladder": {
+      "from": "running-policy-separates-delegates",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-ladder"
+    },
+    "running-policy-separates-delegates-supports-agent-definition": {
+      "from": "running-policy-separates-delegates",
+      "type": "supports",
+      "to": "agent-definition"
     }
   },
   "changes": [
@@ -12164,6 +12195,70 @@
             "type": "answers",
             "to": "assistant-vs-architect",
             "coverage": "partial"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 57,
+      "at": "2026-09-16T06:34:36.307125+00:00",
+      "actor": "assistant",
+      "reason": "Handover update 2026-09-16: ladder and obstruction model, delegates, frame",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "running-policy-separates-delegates",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "What separates the contract writer, assistant and architect from an ordinary worker is only the running policy P = (start, drive): the operator drives them turn by turn. Nothing about what they claim differs.",
+            "meta": {
+              "review_state": "current",
+              "title": "running policy separates delegates",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "running-policy-separates-delegates-about-operator-role",
+          "before": null,
+          "after": {
+            "from": "running-policy-separates-delegates",
+            "type": "about",
+            "to": "operator-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "running-policy-separates-delegates-about-worker-role",
+          "before": null,
+          "after": {
+            "from": "running-policy-separates-delegates",
+            "type": "about",
+            "to": "worker-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "running-policy-separates-delegates-extracted-from-session-2026-09-16-ladder",
+          "before": null,
+          "after": {
+            "from": "running-policy-separates-delegates",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-ladder"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "running-policy-separates-delegates-supports-agent-definition",
+          "before": null,
+          "after": {
+            "from": "running-policy-separates-delegates",
+            "type": "supports",
+            "to": "agent-definition"
           }
         }
       ]
