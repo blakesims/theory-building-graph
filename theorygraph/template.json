@@ -6,7 +6,7 @@
   },
   "answers": {
    "coverage_required": true,
-   "description": "Claim offers full, partial or unknown coverage of a question. Only a current accepted full answer resolves it; partial answers preserve the remainder."
+   "description": "Claim offers full, partial or unknown coverage of a question. The question's declared status is authoritative."
   },
   "challenges": {
    "description": "Source disputes or supplies a potential counterexample to the target claim."
@@ -15,12 +15,12 @@
    "description": "A saved computation checked this input; does not imply support or acceptance."
   },
   "depends-on": {
-   "description": "Dependent statement requires the prerequisite to hold; a semantic change to the prerequisite marks the dependent for review.",
+   "description": "Dependent statement requires the prerequisite to hold. Impact and readiness are explicit reads.",
    "invalidation": "dependent-to-prerequisite",
    "readiness": true
   },
   "extracted-from": {
-   "description": "Interpretation was extracted from the source; a corrected source marks the extraction for review. The source needs no accepted standing.",
+   "description": "Interpretation was extracted from the source. Source fingerprints bind saved evidence; the source needs no accepted standing.",
    "invalidation": "dependent-to-prerequisite"
   },
   "governs": {

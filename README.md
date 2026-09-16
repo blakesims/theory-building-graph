@@ -24,7 +24,7 @@ tg -p my-program search owner     # discover stable IDs
 tg -p my-program review ID        # statement and direct reasoning context
 tg -p my-program questions        # question inventory
 tg -p my-program check            # structural and supported pattern findings
-tg -p my-program apply edits.json --actor assistant --reason 'Record decision' --expect 0
+tg -p my-program claim add RULE "text" --about SUBJECT --reason 'Record proposal'
 tg -p my-program reviewed ID --reason 'Reviewed the tension'
 tg -p my-program history          # audited revisions
 tg -p my-program serve            # http://127.0.0.1:8767
@@ -36,11 +36,21 @@ Use a new project, never somebody else's live theory:
 
 ```sh
 tg new example --dir /tmp/theory-example
-printf '%s\n' '[{"op":"add","collection":"nodes","id":"owner","value":{"type":"entity","status":"declared","text":"The person responsible for this program."}}]' > /tmp/theory-edit.json
-tg -p example apply /tmp/theory-edit.json --actor assistant --reason 'Name the subject' --expect 0 --dry-run
-tg -p example apply /tmp/theory-edit.json --actor assistant --reason 'Name the subject' --expect 0
-tg -p example review owner
+tg -p example entity add owner "The program owner." --reason 'Name the subject'
+tg -p example source add decision "The owner approves releases." --kind verbatim --author user --reason 'Preserve the decision'
+tg -p example question add release-authority "Who approves releases?" --about owner --reason 'Record the question'
+tg -p example claim add owner-approves "The owner approves releases." --about owner --source decision --kind paraphrase --status accepted --answers release-authority --reason 'Record the explicit decision'
+tg -p example questions
 ```
+
+Each typed write is one audited revision. `--dry-run` previews its effects without
+writing. Claims default to proposed until affirmed. `--revises OLD --withdraw-old`
+records a replacement and preserves its history. `tg apply` remains the JSON escape
+hatch. A question's declared status is authoritative, not inferred from metadata.
+
+`tg -p example config autosync on` makes successful writes commit and push with the
+write reason. Default is off. It pulls with rebase before pushing and never forces.
+A sync failure leaves the write saved locally and reports the problem.
 
 ## Selection and boundaries
 
@@ -58,7 +68,8 @@ supplied patterns and evidence. Graph/prose trials have not established superior
 ## Verify and navigate
 
 `make test` runs unit, receipt and acceptance checks. It validates saved agent
-observations, not fresh paid model trials. `make baseline` checks a temporary copy
+observations, not fresh paid model trials. Superseded v0.1 requirements are reported
+separately from the six v0.2 checks. `make baseline` checks a temporary copy
 of the live graph. Tests and all archived trial artifacts live under `tests/`.
 `tests/relocations.json` records every cleanup move without rewriting hash-bound
 inputs or receipts. Historical decisions and findings live in `docs/worklog/`.

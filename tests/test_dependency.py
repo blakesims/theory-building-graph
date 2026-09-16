@@ -32,7 +32,7 @@ class DependencyTests(unittest.TestCase):
         model=fixture();edge(model,'B','A');edge(model,'C','B');edge(model,'Q','C');self.put(model)
         after=self.edit('A',text='new premise')
         self.assertEqual(d.impact(after,['A'])['affected'],['B','C','Q'])
-        for n in ['B','C','Q']:self.assertEqual(d.currency(after['nodes'][n]),'needs-review')
+        for n in ['B','C','Q']:self.assertEqual(d.currency(after['nodes'][n]),'current')
         self.assertEqual(after['nodes']['B']['status'],'accepted')
         self.assertEqual(d.impact(after,['A'])['explanations']['Q']['paths'][0]['nodes'],['Q','C','B','A'])
         self.assertEqual(model['nodes']['A']['text'],'A')
@@ -49,31 +49,31 @@ class DependencyTests(unittest.TestCase):
     def test_withdrawn_premise_remains_blocker(self):
         model=fixture();edge(model,'B','A');edge(model,'Q','B');self.put(model)
         after=self.edit('A',status='withdrawn',meta={'review_state':'historical'})
-        self.assertEqual(d.currency(after['nodes']['B']),'needs-review')
+        self.assertEqual(d.currency(after['nodes']['B']),'current')
         blockers=d.readiness(after,'Q')['blockers'];self.assertTrue(any(b['node']=='A' and b['reason']=='withdrawn' for b in blockers))
     def test_source_extraction_chain(self):
         model=fixture(['S','X','C','R']);model['nodes']['S']['type']='source';model['nodes']['X']['type']='extraction';model['nodes']['R']['type']='check-result'
         edge(model,'X','S','extracted-from');edge(model,'C','X');edge(model,'R','C');self.put(model)
         after=self.edit('S',text='corrected source')
-        for n in ['X','C','R']:self.assertEqual(d.currency(after['nodes'][n]),'needs-review')
+        for n in ['X','C','R']:self.assertEqual(d.currency(after['nodes'][n]),'current')
         self.assertEqual(after['changes'][0]['edits'][0]['before']['text'],'S')
     def test_presentation_no_invalidation(self):
         model=fixture();edge(model,'B','A');self.put(model);before=d.fingerprint(model['nodes']['A'])
         after=self.edit('A',meta={'layout':{'x':42},'color':'blue','title':'Pretty title'})
         self.assertEqual(before,d.fingerprint(after['nodes']['A']));self.assertEqual(d.currency(after['nodes']['B']),'current')
         self.assertNotIn('semantic_version',after['nodes']['A'])
-    def test_rereview_exact_version(self):
+    def test_review_without_version_bookkeeping(self):
         model=fixture();edge(model,'B','A');self.put(model)
-        after=self.edit('A',text='v2');self.assertEqual(d.currency(after['nodes']['B']),'needs-review')
-        after=self.edit('B',meta={'review_state':'current'})
-        self.assertEqual(after['nodes']['B']['meta']['reviewed_inputs']['A'],d.fingerprint(after['nodes']['A']))
-        self.assertEqual(after['nodes']['B']['meta']['reviewed_input_versions']['A'],2)
-        after=self.edit('A',text='v3');self.assertEqual(d.currency(after['nodes']['B']),'needs-review')
-        self.assertNotEqual(after['nodes']['B']['meta']['reviewed_inputs']['A'],d.fingerprint(after['nodes']['A']))
+        self.edit('A',text='v2')
+        self.edit('B',meta={'review_state':'current'})
+        after=self.edit('A',text='v3')
+        self.assertEqual(d.currency(after['nodes']['B']),'current')
+        self.assertNotIn('reviewed_inputs',after['nodes']['B']['meta'])
+        self.assertNotIn('semantic_version',after['nodes']['A'])
     def test_enforcement_independent_axes(self):
         model=fixture();model['nodes']['A'].update(modality='only',enforcement='guidance');model['nodes']['B']['type']='check-result';edge(model,'B','A');self.put(model)
         after=self.edit('A',enforcement='runtime-check')
-        self.assertEqual(after['nodes']['A']['modality'],'only');self.assertEqual(after['nodes']['A']['status'],'accepted');self.assertEqual(d.currency(after['nodes']['B']),'needs-review')
+        self.assertEqual(after['nodes']['A']['modality'],'only');self.assertEqual(after['nodes']['A']['status'],'accepted');self.assertEqual(d.currency(after['nodes']['B']),'current')
     def test_path_bound_and_pagination(self):
         model=fixture(['A']+[f'N{i:03}' for i in range(100)])
         for nid in model['nodes']:
@@ -83,12 +83,12 @@ class DependencyTests(unittest.TestCase):
     def test_custom_relation_semantics_explicit(self):
         model=fixture();model['edge_types']['derived-from']={'invalidation':'dependent-to-prerequisite','readiness':True}
         edge(model,'B','A','derived-from');self.put(model)
-        after=self.edit('A',text='changed');self.assertEqual(d.currency(after['nodes']['B']),'needs-review')
+        after=self.edit('A',text='changed');self.assertEqual(d.currency(after['nodes']['B']),'current')
     def test_semantic_deletion_rejected_retire_allowed(self):
         model=fixture();model['nodes']['B']['pattern']={'kind':'exclusive_actor','allowed_role':'A','operation':'C'};self.put(model);before=self.path.read_bytes()
         with self.assertRaises(g.GraphError):g.apply(self.path,[{'op':'delete','collection':'nodes','id':'A'}],'test','bad delete')
         self.assertEqual(self.path.read_bytes(),before)
-        edge(model,'B','A');self.put(model);after=self.edit('A',meta={'review_state':'historical'});self.assertEqual(d.currency(after['nodes']['B']),'needs-review')
+        edge(model,'B','A');self.put(model);after=self.edit('A',meta={'review_state':'historical'});self.assertEqual(d.currency(after['nodes']['B']),'current')
     def test_alias_reuse_and_ambiguity(self):
         model=fixture();model['nodes']['A'].update(type='entity',meta={'aliases':['steward']});model['nodes']['B']['meta']={'aliases':['reviewer']};model['nodes']['C']['meta']={'aliases':['reviewer']}
         self.assertEqual(g.resolve(model,'steward'),'A');self.assertEqual(len(model['nodes']),4)
@@ -110,10 +110,10 @@ class QuestionTests(unittest.TestCase):
         r=d.readiness(model,'Q');self.assertEqual({x['node']:x['reason'] for x in r['blockers']},{'A':'not-accepted','B':'stale','C':'withdrawn'})
     def test_retired_answer_not_prerequisite(self):
         model=fixture();edge(model,'Q','A');model['nodes']['B']['status']='withdrawn';edge(model,'B','Q','answers',coverage='full');edge(model,'C','Q','answers',coverage='full')
-        r=d.readiness(model,'Q');self.assertEqual(r['readiness'],'ready');self.assertEqual(r['resolution'],'answered');self.assertEqual(r['answers'],['C'])
+        r=d.readiness(model,'Q',advisory=True);self.assertEqual(r['readiness'],'ready');self.assertEqual(r['resolution'],'open');self.assertEqual(r['answer_advice']['answers'],['C'])
     def test_partial_remainder(self):
         model=fixture();model['nodes']['Q']['required_parts']=['failed','cancelled'];edge(model,'A','Q','answers',coverage='partial',covers=['failed'])
-        r=d.readiness(model,'Q');self.assertEqual(r['resolution'],'partial-answer');self.assertEqual(r['unresolved'],['cancelled'])
+        r=d.readiness(model,'Q',advisory=True);self.assertEqual(r['resolution'],'open');self.assertEqual(r['answer_advice']['assessment'],'partial-answer');self.assertEqual(r['answer_advice']['unresolved'],['cancelled'])
     def test_any_group(self):
         model=fixture();model['nodes']['B']['status']='withdrawn';edge(model,'Q','A',any_group='choice');edge(model,'Q','B',any_group='choice')
         self.assertEqual(d.readiness(model,'Q')['readiness'],'ready')
@@ -129,23 +129,24 @@ class QuestionTests(unittest.TestCase):
         model['nodes']['Q4']['meta']={'review_state':'historical'};edge(model,'A','Q2','answers',coverage='partial');edge(model,'A','Q3','answers',coverage='full')
         r=g.questions(model,limit=2);self.assertEqual((r['included_questions'],r['total_questions'],r['historical_excluded']),(3,4,1));self.assertTrue(r['truncated']);self.assertEqual(len(r['nodes']),2)
         self.assertEqual(g.questions(model,historical=True)['included_questions'],4)
-    def test_shapes_not_interchangeable(self):
-        model=fixture(['A','Q','Q2','Q3']);model['nodes']['A']['text']='yes'
+    def test_optional_shapes_are_advice_only(self):
+        model=fixture(['A','Q','Q2','Q3'])
         for nid,shape in [('Q','verdict'),('Q2','condition'),('Q3','exploration')]:
-            model['nodes'][nid].update(type='question',status='open',answer_shape=shape);edge(model,'A',nid,'answers',coverage='full')
-        self.assertEqual(d.resolution(model,'Q')['resolution'],'answered')
-        self.assertEqual(d.resolution(model,'Q2')['resolution'],'candidate-answer');self.assertEqual(d.resolution(model,'Q3')['resolution'],'candidate-answer')
-        model['edges']['A-answers-Q2']['answer']={'condition':'threshold exceeded'};self.assertEqual(d.resolution(model,'Q2')['resolution'],'answered')
-        model['edges']['A-answers-Q3']['answer']={'findings':['Missing scope'], 'complete':True};self.assertEqual(d.resolution(model,'Q3')['resolution'],'answered')
-    def test_stale_answer_not_resolved(self):
-        model=fixture();model['nodes']['A']['meta']={'review_state':'needs-review'};edge(model,'A','Q','answers',coverage='full')
-        r=d.resolution(model,'Q');self.assertEqual(r['resolution'],'candidate-answer');self.assertEqual(r['stale_answers'],['A'])
+            model['nodes'][nid].update(type='question',status='answered',answer_shape=shape)
+            edge(model,'A',nid,'answers',coverage='full')
+            self.assertEqual(d.resolution(model,nid)['resolution'],'answered')
+        self.assertEqual(d.readiness(model,'Q2',advisory=True)['answer_advice']['assessment'],'candidate-answer')
+        self.assertNotIn('answer-state-drift',g.check(model)['counts'])
+    def test_stale_answer_does_not_override_declaration(self):
+        model=fixture();model['nodes']['Q']['status']='answered'
+        model['nodes']['A']['meta']={'review_state':'needs-review'};edge(model,'A','Q','answers',coverage='full')
+        r=d.readiness(model,'Q',advisory=True);self.assertEqual(r['resolution'],'answered');self.assertEqual(r['answer_advice']['stale_answers'],['A'])
 
 
 class GapTests(unittest.TestCase):
     def test_gaps_and_repairs(self):
         model=fixture(['A','Q','E','O']);model['nodes']['E']['type']='entity';model['nodes']['O']['type']='operation'
-        codes={f['code'] for f in g.check(model)['findings']};self.assertTrue({'orphan-anchor','ungoverned-operation','unanchored-claim','unconnected-question','untested-claim'}<=codes)
+        codes={f['code'] for f in g.check(model)['findings']};self.assertTrue({'orphan-anchor','ungoverned-operation','unanchored-claim','unconnected-question'}<=codes)
         edge(model,'A','E','about');edge(model,'A','O','governs');edge(model,'Q','E','about');model['nodes']['T']={'type':'trace','text':'Synthetic fixture'};edge(model,'T','A','supports')
         codes={f['code'] for f in g.check(model)['findings']};self.assertFalse({'orphan-anchor','ungoverned-operation','unanchored-claim','unconnected-question','untested-claim'}&codes)
     def test_revision_requires_explicit_retirement(self):
@@ -154,7 +155,7 @@ class GapTests(unittest.TestCase):
         model['nodes']['A']['status']='withdrawn';self.assertNotIn('unresolved-revision',{f['code'] for f in g.check(model)['findings']})
     def test_suppression_visible_and_no_answer_drift(self):
         model=fixture();model['nodes']['Q']['status']='answered';model['nodes']['Q']['meta']={'incomplete_by_design':True}
-        r=g.check(model);self.assertGreater(r['suppressed_count'],0);self.assertIn('answer-state-drift',r['counts'])
+        r=g.check(model);self.assertGreater(r['suppressed_count'],0);self.assertNotIn('answer-state-drift',r['counts'])
     def test_deterministic_checks(self):
         model=fixture();edge(model,'B','A','revises')
         other=copy.deepcopy(model);other['nodes']=dict(reversed(list(other['nodes'].items())));other['edges']=dict(reversed(list(other['edges'].items())))
@@ -173,7 +174,7 @@ class IntegrationTests(unittest.TestCase):
             compact=subprocess.check_output(base);full=subprocess.check_output(base+['--full'])
             result=json.loads(compact);self.assertLess(len(compact),4000);self.assertGreater(len(full),20000)
             self.assertEqual(result['nodes']['A']['pattern'],model['nodes']['A']['pattern']);self.assertEqual(result['nodes']['A']['provenance'],{'sources':['C']})
-            self.assertEqual(result['metadata_omitted']['A'],['long_source'])
+            self.assertNotIn('metadata_omitted',result);self.assertNotIn('long_source',result['nodes']['A']['meta'])
     def test_formal_model_audited_cli_shape(self):
         model=fixture();model['nodes']['A']['pattern']={'kind':'authority','modality':'only','role':'B','operation':'C','scope':'local'}
         with tempfile.TemporaryDirectory() as directory:
@@ -181,7 +182,7 @@ class IntegrationTests(unittest.TestCase):
             g.apply(path,[{'op':'add','collection':'formal_model','id':'scopes','value':{'local':{'members':['here']}}},
                           {'op':'add','collection':'formal_model','id':'role_disjoint','value':[['B','C']]}],'test','declare semantics')
             after=g.load(path);self.assertEqual(after['formal_model']['role_disjoint'],[['B','C']]);self.assertEqual(after['revision'],1)
-            self.assertEqual(d.currency(after['nodes']['A']),'needs-review');self.assertTrue(g.history(after)['changes'])
+            self.assertEqual(d.currency(after['nodes']['A']),'current');self.assertTrue(g.history(after)['changes'])
             old=path.read_bytes()
             with self.assertRaisesRegex(g.GraphError,'scope reference'):
                 g.apply(path,[{'op':'update','collection':'formal_model','id':'scopes','value':{}}],'test','invalid removal')
@@ -223,7 +224,7 @@ class AcceptanceIntegrationTests(unittest.TestCase):
             path=Path(directory)/'graph.json';path.write_text(json.dumps(model));result=tracecheck.evaluate(model,'P','T')
             g.save_evaluation(path,model,result,'receipt');receipt=copy.deepcopy(g.load(path)['nodes']['receipt']['result'])
             g.apply(path,[{'op':'update','collection':'nodes','id':'P','value':{'status':'withdrawn','meta':{'review_state':'historical'}}}],'test','withdraw permission')
-            after=g.load(path);self.assertNotIn('policy-conflict',g.check(after)['counts']);self.assertEqual(d.currency(after['nodes']['D']),'needs-review')
+            after=g.load(path);self.assertNotIn('policy-conflict',g.check(after)['counts']);self.assertEqual(d.currency(after['nodes']['D']),'current')
             self.assertEqual(after['nodes']['receipt']['result'],receipt);self.assertEqual(tracecheck.result_state(after,receipt),'stale')
     def test_R05_large_hub_explicit_bounds(self):
         names=['hub']+[f'C{i:04}' for i in range(1000)];model=fixture(names);model['nodes']['hub']['type']='entity'

@@ -19,20 +19,20 @@ def with_trace(model):
 
 class CheckPresentation(unittest.TestCase):
     def test_informational_counted_review_listed(self):
-        model=fixture(['A','B']);full=g.check(model)
-        self.assertIn('untested-claim',full['counts']);self.assertIn('unanchored-claim',full['counts'])
+        model=fixture(['A','B']);model['nodes']['E']={'type':'entity','text':'orphan'};full=g.check(model)
+        self.assertNotIn('untested-claim',full['counts']);self.assertIn('unanchored-claim',full['counts'])
         view=g.check_view(full)
         self.assertTrue(all(f['severity']!='informational' for f in view['findings']))
-        self.assertEqual(view['informational_counts'],{'untested-claim':2})
+        self.assertEqual(view['informational_counts'],{'orphan-anchor':1})
         self.assertEqual(g.check_view(full,True),full)
-        text=g.compact(view);self.assertIn('2 untested-claim (informational; --all to list)',text);self.assertIn('unanchored-claim',text)
+        text=g.compact(view);self.assertIn('1 orphan-anchor (informational; --all to list)',text);self.assertIn('unanchored-claim',text)
     def test_cli_all_flag(self):
         with tempfile.TemporaryDirectory() as t:
             p=Path(t)/'graph.json';p.write_text(json.dumps(fixture(['A'])))
             code,out,_=run('--file',str(p),'--json','check');data=json.loads(out)
-            self.assertEqual(code,0);self.assertEqual(data['informational_counts'],{'untested-claim':1});self.assertEqual([f['code'] for f in data['findings']],['unanchored-claim'])
+            self.assertEqual(code,0);self.assertEqual(data['informational_counts'],{});self.assertEqual([f['code'] for f in data['findings']],['unanchored-claim'])
             code,out,_=run('--file',str(p),'check','--all','--json');data=json.loads(out)
-            self.assertNotIn('informational_counts',data);self.assertEqual(sorted(f['code'] for f in data['findings']),['unanchored-claim','untested-claim'])
+            self.assertNotIn('informational_counts',data);self.assertEqual(sorted(f['code'] for f in data['findings']),['unanchored-claim'])
 
 
 class EvidenceFiltering(unittest.TestCase):
@@ -83,8 +83,8 @@ class DryRun(unittest.TestCase):
         self.assertTrue(r['dry_run']);self.assertFalse(r['written']);self.assertEqual((r['revision_before'],r['revision_after']),(0,1))
         self.assertEqual(self.path.read_bytes(),self.before);self.assertFalse((Path(self.tmp.name)/'graph.json.lock').exists())
         flagged={n['id']:n['review_reason'] for n in r['newly_needs_review']}
-        self.assertEqual(set(flagged),{'A','B','Q'});self.assertIn('B',flagged['A']);self.assertIn('N-answers-Q',flagged['Q'])
-        self.assertIn({'id':'Q','before':'open','after':'answered'},r['question_resolution_changed'])
+        self.assertEqual(flagged,{})
+        self.assertEqual(r['question_resolution_changed'],[])
         self.assertIn('unanchored-claim',{f['code'] for f in r['findings_added'] if 'N' in f['nodes']})
         self.assertIn('unconnected-question',{f['code'] for f in r['findings_removed']})
         self.assertEqual([e['action'] for e in r['edits'][:3]],['update','add','add'])
@@ -119,7 +119,7 @@ class Reviewed(unittest.TestCase):
             r=g.reviewed(p,['A','A'],'looked at B; A still holds',actor='reviewer',expected=0)
             self.assertEqual(r['reviewed'],['A']);after=g.load(p)
             self.assertEqual(after['revision'],1);self.assertEqual(d.currency(after['nodes']['A']),'current')
-            self.assertEqual(after['nodes']['A']['meta']['review_reason'],'looked at B; A still holds');self.assertIn('reviewed_inputs',after['nodes']['A']['meta'])
+            self.assertEqual(after['nodes']['A']['meta']['review_reason'],'looked at B; A still holds');self.assertNotIn('reviewed_inputs',after['nodes']['A']['meta'])
             self.assertEqual(after['changes'][-1]['actor'],'reviewer')
             code,out,_=run('--file',str(p),'reviewed','A','--reason','again','--json');self.assertEqual(code,0);self.assertEqual(json.loads(out)['revision'],2)
             code,_,err=run('--file',str(p),'reviewed','nope','--reason','x');self.assertEqual(code,1);self.assertIn('Unknown node',err)
@@ -136,12 +136,12 @@ class Frontier(unittest.TestCase):
         self.assertEqual([n['id'] for n in f['proposed_claims']],['B'])  # H (historical) excluded
         self.assertTrue(all(x['code']!='untested-claim' for x in f['findings']));self.assertIn('unanchored-claim',{x['code'] for x in f['findings']})
         self.assertEqual([c['revision'] for c in f['recent_changes']],[3,4,5,6,7]);self.assertEqual(f['evidence_stale'],0)
-        text=g.compact(f);self.assertIn('frontier:',text);self.assertIn('open questions',text);self.assertIn('Q [open; no-dependencies]',text)
+        text=g.compact(f);self.assertIn('frontier',text);self.assertIn('open questions',text);self.assertIn('QUESTION  STATUS  TEXT',text)
     def test_cli(self):
         with tempfile.TemporaryDirectory() as t:
             p=Path(t)/'graph.json';p.write_text(json.dumps(fixture(['A','Q'])))
             code,out,_=run('--file',str(p),'--json','frontier');data=json.loads(out);self.assertEqual(code,0);self.assertEqual(data['counts']['open_questions'],1)
-            code,out,_=run('--file',str(p),'frontier');self.assertEqual(code,0);self.assertIn('frontier:',out)
+            code,out,_=run('--file',str(p),'frontier');self.assertEqual(code,0);self.assertIn('frontier',out)
 
 
 class Where(unittest.TestCase):

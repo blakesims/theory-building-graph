@@ -26,9 +26,10 @@ class MaintenanceProtocolTests(unittest.TestCase):
    graph.apply(path,[{'op':'update','collection':'nodes','id':'C01','value':{'text':'Deliberately bad revised meaning for a negative semantic control.','meta':{'review_state':'current','source_ref':'S04'}}},{'op':'add','collection':'nodes','id':'S04','value':{'type':'source','text':'Synthetic new source'}}],'synthetic-self-test','Test grader mechanics')
    (out/'graph'/'maintenance-report.json').write_text('{}')
    with contextlib.redirect_stdout(io.StringIO()):after=m.grade(out,'graph')
-   self.assertEqual(after['mechanical_failures'],[])
+   # The preserved v0.1 rubric expects automatic flags, deliberately absent in v0.2.
+   self.assertEqual(after['mechanical_failures'],['exact_dependents_need_review'])
    self.assertEqual(after['semantic_review']['status'],'pending-independent-review')
-   # Even mechanical success with a wrong root is never presented as semantic success.
+   # A wrong root is never presented as semantic success.
    self.assertNotIn('overall_pass',after)
  def test_stream_metrics_counts_actual_ids(self):
   messages=[{'type':'assistant','message':{'content':[{'type':'tool_use','id':'a','name':'Read'}]}},{'type':'assistant','message':{'content':[{'type':'tool_use','id':'a','name':'Read'}]}},{'type':'assistant','message':{'content':[{'type':'tool_use','id':'b','name':'Edit'}]}},{'type':'user','message':{'content':[{'type':'tool_result','tool_use_id':'b','is_error':True}]}},{'type':'result','usage':{'input_tokens':20}}]

@@ -5,7 +5,6 @@ import hashlib
 import json
 
 RETIRED = {'withdrawn', 'rejected', 'retired', 'superseded'}
-SHAPES = {'verdict', 'condition', 'exploration'}
 SEMANTIC_META = {'assumptions', 'enforcement', 'modality', 'answer_shape', 'required_parts',
                  'pattern_standing', 'pattern_scope', 'source_kind', 'synthetic', 'identity_key',
                  'roles', 'role', 'entity_kind', 'scope', 'polarity'}
@@ -84,13 +83,21 @@ def impact(g, roots, limit=100, offset=0, path_limit=8):
 
 
 def resolution(g, nid):
+    """Authored status is authoritative. Evidence never overrides a decision."""
+    n = g['nodes'][nid]
+    return {'resolution': 'retired' if retired(n) else n.get('status', 'open')}
+
+
+def answer_advice(g, nid):
+    """Optional evidence advice, consumed only by the explicit readiness read."""
     n = g['nodes'][nid]
     if retired(n):
-        return {'resolution': 'retired', 'answers': [], 'unresolved': []}
+        return {'assessment': 'retired', 'answers': [], 'unresolved': []}
     shape = n.get('answer_shape', (n.get('meta') or {}).get('answer_shape', 'verdict'))
     accepted, candidates, stale, partial = [], [], [], []
     diagnostics = []
     required = n.get('required_parts', (n.get('meta') or {}).get('required_parts', []))
+    required = [x for x in required if isinstance(x, str)] if isinstance(required, list) else []
     covered = set()
     for eid, e in sorted(g['edges'].items()):
         if e['type'] != 'answers' or e['to'] != nid:
@@ -104,6 +111,7 @@ def resolution(g, nid):
         if a.get('status') != 'accepted':
             continue
         payload = e.get('answer', a.get('answer', {}))
+        payload = payload if isinstance(payload, dict) else {}
         shaped = shape == 'verdict' or (shape == 'condition' and bool(payload.get('condition'))) or (shape == 'exploration' and bool(payload.get('findings')) and payload.get('complete') is True)
         if not shaped:
             diagnostics.append({'answer':e['from'],'reason':'unresolved-condition-hole' if shape=='condition' else 'unresolved-exploration-task'})
@@ -111,17 +119,19 @@ def resolution(g, nid):
         if e.get('coverage') == 'full':
             accepted.append(e['from']); covered.update(required)
         elif e.get('coverage') == 'partial':
-            partial.append(e['from']); covered.update(e.get('covers', []))
+            partial.append(e['from'])
+            covers = e.get('covers', [])
+            if isinstance(covers, list): covered.update(x for x in covers if isinstance(x, str))
     if accepted: state = 'answered'
     elif partial: state = 'partial-answer'
     elif candidates: state = 'candidate-answer'
     else: state = 'open'
-    return {'resolution': state, 'answer_shape': shape, 'answers': sorted(set(accepted + partial)),
+    return {'assessment': state, 'message': 'current accepted full answer edge' if accepted else 'no current accepted full answer edge', 'answer_shape': shape, 'answers': sorted(set(accepted + partial)),
             'candidates': sorted(set(candidates)), 'stale_answers': sorted(set(stale)),
             'unresolved': sorted(set(required) - covered), 'diagnostics':diagnostics, 'review_state': currency(n)}
 
 
-def readiness(g, nid):
+def readiness(g, nid, advisory=False):
     if nid not in g['nodes']: raise ValueError('Unknown node: ' + nid)
     adj = adjacency(g)
     memo = {}
@@ -163,7 +173,8 @@ def readiness(g, nid):
     deps = [eid for eid, _ in adj[nid] if g['edges'][eid]['type'] == 'depends-on' or g['edge_types'][g['edges'][eid]['type']].get('readiness')]
     return {'node': nid, 'readiness': 'blocked' if blockers else 'ready' if deps else 'no-dependencies',
             'blockers': blockers, 'dependencies': deps, 'satisfied_by': sorted(chosen[nid]),
-            **(resolution(g, nid) if g['nodes'][nid]['type'] == 'question' else {})}
+            **(resolution(g, nid) if g['nodes'][nid]['type'] == 'question' else {}),
+            **({'answer_advice': answer_advice(g, nid)} if advisory and g['nodes'][nid]['type'] == 'question' else {})}
 
 
 def cycles(g, relation):
@@ -206,18 +217,6 @@ def findings(g):
         if n['type'] == 'operation' and not any(e['type'] == 'governs' and e['to'] == nid for _, e in refs): add('ungoverned-operation', nid, 'Operation has no governing claim.')
         if n['type'] == 'question':
             if not refs: add('unconnected-question', nid, 'Question has no subject, answer or dependency.')
-            derived=resolution(g,nid)['resolution']
-            stored=n.get('status')
-            if (stored in {'answered','complete'} and derived!='answered') or (stored=='open' and derived=='answered' and currency(n)=='current'):
-                add('answer-state-drift',nid,'Stored question state disagrees with its derived answer resolution.','review')
-                out[-1].update(stored_state=stored,derived_resolution=derived)
-
-        if n['type']=='claim' and n.get('status')=='accepted':
-            from . import tracecheck
-            coverage=tracecheck.coverage(g,nid)
-            if not coverage['has_coverage']:
-                add('untested-claim',nid,'Accepted claim has no current evaluation or explicitly declared case evidence; this is a coverage gap.')
-                out[-1]['coverage']=coverage
     for kind, code in [('depends-on', 'dependency-cycle'), ('revises', 'revision-cycle')]:
         for c in cycles(g, kind): add(code, c['nodes'], 'Dependency review group.' if kind == 'depends-on' else 'Invalid revision ordering.', 'review', c['edges'])
     return out
@@ -262,99 +261,39 @@ def validate(g):
         if 'invalidation' in definition and definition['invalidation'] not in ('none','dependent-to-prerequisite'):raise ValueError('Unsupported invalidation semantics on '+relation)
         if 'readiness' in definition and not isinstance(definition['readiness'],bool):raise ValueError('readiness declaration must be boolean on '+relation)
     for nid, n in g['nodes'].items():
-        for field in ('trace','provenance','result','answer'):
+        for field in ('trace','provenance','result'):
             if field in n and not isinstance(n[field],dict):raise ValueError(field+' must be an object on '+nid)
         if 'references' in n and (not isinstance(n['references'],list) or any(not isinstance(r,str) for r in n['references'])):raise ValueError('references must be string IDs on '+nid)
-        shape = n.get('answer_shape', (n.get('meta') or {}).get('answer_shape'))
-        if shape is not None and shape not in SHAPES: raise ValueError('Unknown answer shape on ' + nid)
         for ref in n.get('references', []):
             if ref not in g['nodes']: raise ValueError('Unknown semantic reference ' + str(ref) + ' on ' + nid)
     for eid, e in dependency_edges(g):
         if 'requires' in e and (not isinstance(e['requires'], list) or not e['requires'] or any(not isinstance(x,str) for x in e['requires'])): raise ValueError('requires must be nonempty status list: ' + eid)
         if 'requires' in e:
             target = g['nodes'][e['to']]
-            is_question = target['type'] == 'question'
-            allowed = ({'open', 'candidate-answer', 'partial-answer', 'answered', 'retired'}
-                       if is_question else g['node_types'][target['type']].get('states'))
+            allowed = g['node_types'][target['type']].get('states')
             if allowed is not None:
                 invalid = sorted(set(e['requires']) - set(allowed))
                 if invalid:
-                    domain = 'question resolution' if is_question else target['type'] + ' declared states'
+                    domain = target['type'] + ' declared states'
                     raise ValueError('Invalid requires on ' + eid + ' for ' + domain + ': ' +
                                      ', '.join(invalid) + '; allowed: ' + ', '.join(sorted(allowed)) +
                                      '. No automatic migration: review the intended requirement and explicitly correct the edge.')
         if e.get('any_group') is not None and not isinstance(e['any_group'], str): raise ValueError('any_group must be a string: ' + eid)
 
 
-def refresh(original, g, edits, reviewed):
-    """Apply transitive currency changes; receipts bind explicit re-review to final inputs."""
-    roots = set()
+def refresh(original, g, edits):
+    """Only newly added review hypotheses flag their two endpoints."""
     reasons = collections.defaultdict(list)
     for edit in list(edits):
-        before, after, key = edit['before'], edit['after'], edit['id']
-        if edit['collection'] == 'nodes' and before and after:
-            if fingerprint(before) != fingerprint(after) or retired(before)!=retired(after) or (currency(before) != currency(after) and currency(after) != 'current'):
-                roots.add(key)
-                if fingerprint(before) != fingerprint(after):
-                    version_before=copy.deepcopy(g['nodes'][key])
-                    g['nodes'][key]['semantic_version'] = before.get('semantic_version', 1) + 1
-                    edits.append({'collection':'nodes','id':key,'before':version_before,'after':copy.deepcopy(g['nodes'][key]),'automatic':'semantic-version'})
-        elif edit['collection'] == 'edge_types':
-            def declaration_signature(value):return ((value or {}).get('invalidation')=='dependent-to-prerequisite',bool((value or {}).get('readiness')))
-            if declaration_signature(before)!=declaration_signature(after):
-                for snapshot in (original,g):
-                    for eid,edge in snapshot['edges'].items():
-                        if edge['type']==key:
-                            roots.add(edge['from']);reasons[edge['from']].append('Dependency relation semantics changed: '+key)
-        elif edit['collection'] == 'formal_model':
-            # The model is explicit semantic input. Scope-only edits can be narrowed by stable IDs.
-            changed_scopes=set()
-            if key=='scopes' and isinstance(before or {},dict) and isinstance(after or {},dict):
-                changed_scopes={k for k in set(before or {})|set(after or {}) if (before or {}).get(k)!=(after or {}).get(k)}
-            for nid,node in g['nodes'].items():
-                pattern=node.get('pattern') or {}
-                if pattern and (key!='scopes' or pattern.get('scope') in changed_scopes):
-                    roots.add(nid); reasons[nid].append('Formal model input changed: '+key)
-        elif edit['collection'] == 'edges':
-            for edge in (before, after):
-                if not edge: continue
-                if edge['type'] in {'depends-on', 'extracted-from'} or any(snapshot['edge_types'].get(edge['type'],{}).get('invalidation')=='dependent-to-prerequisite' for snapshot in (original,g)):
-                    roots.add(edge['from']); reasons[edge['from']].append('Dependency changed: ' + key)
-                # Answer edits affect local interpretation only, not readiness dependencies.
-                elif edge['type'] in {'answers', 'revises', 'challenges', 'potential-conflict'}:
-                    reasons[edge['to']].append('Decision relation changed: ' + key)
-    # Use both snapshots so replacing a dependency cannot hide the former premise's impact.
-    affected = set()
-    for snapshot in (original, g):
-        affected.update(affected_ids(snapshot,roots))
-    for key in roots:
-        if key in original['nodes'] and key in g['nodes']:
-            reasons[key].append('Semantic content or currency changed.')
-        for snapshot in (original, g):
-            for edge in snapshot['edges'].values():
-                if edge['type'] == 'answers' and edge['from'] == key:
-                    reasons[edge['to']].append('Answer changed: ' + key)
-    for key in affected: reasons[key].append('Declared semantic prerequisite changed: ' + ', '.join(sorted(roots)))
-    for key in sorted(reasons):
-        if key in reviewed or key not in original['nodes'] or key not in g['nodes'] or retired(g['nodes'][key]): continue
-        before = copy.deepcopy(g['nodes'][key])
-        meta = g['nodes'][key].setdefault('meta', {})
-        meta.update(review_state='needs-review', review_reason=' '.join(dict.fromkeys(reasons[key])))
-        # Paths remain queryable without repeating potentially huge path sets on each node.
-        meta['review_roots'] = sorted(roots)
-        edits.append({'collection': 'nodes', 'id': key, 'before': before, 'after': copy.deepcopy(g['nodes'][key]), 'automatic': 'dependency-review'})
-    for key in sorted(reviewed):
-        if key not in g['nodes'] or currency(g['nodes'][key]) != 'current': continue
-        receipts = {}
-        versions = {}
-        for eid, edge in dependency_edges(g):
-            if edge['from'] != key: continue
-            receipts[edge['to']] = fingerprint(g['nodes'][edge['to']])
-            before = copy.deepcopy(edge)
-            edge['input_fingerprint'] = receipts[edge['to']]
-            versions[edge['to']] = g['nodes'][edge['to']].get('semantic_version',1)
-            edge['input_version'] = versions[edge['to']]
-            if before != edge: edits.append({'collection': 'edges', 'id': eid, 'before': before, 'after': copy.deepcopy(edge), 'automatic': 'review-receipt'})
-        if receipts:
-            before = copy.deepcopy(g['nodes'][key]); g['nodes'][key].setdefault('meta', {}).update(reviewed_inputs=receipts,reviewed_input_versions=versions)
-            edits.append({'collection': 'nodes', 'id': key, 'before': before, 'after': copy.deepcopy(g['nodes'][key]), 'automatic': 'review-receipt'})
+        edge = g['edges'].get(edit['id'])
+        if (edit['collection'] == 'edges' and edit['before'] is None and edge
+                and edit['id'] not in original['edges'] and edit['id'] in g['edges']
+                and edge['type'] in {'potential-conflict', 'challenges'}):
+            for nid in (edge['from'], edge['to']):
+                reasons[nid].append('Review relation added: ' + edit['id'])
+    for nid, why in sorted(reasons.items()):
+        before = copy.deepcopy(g['nodes'][nid])
+        g['nodes'][nid].setdefault('meta', {}).update(
+            review_state='needs-review', review_reason=' '.join(why))
+        edits.append({'collection': 'nodes', 'id': nid, 'before': before,
+                      'after': copy.deepcopy(g['nodes'][nid]), 'automatic': 'conflict-review'})

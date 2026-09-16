@@ -44,6 +44,8 @@ def main():
     parser.add_argument('--case', action='append', help='Run only these case IDs (repeatable)')
     args = parser.parse_args()
     spec = json.loads((ROOT/'acceptance'/'cases.json').read_text())
+    current = json.loads((ROOT/'tests/acceptance/v02.json').read_text())
+    superseded = current['superseded']
     selected = [c for c in spec['cases'] if not args.case or c['id'] in args.case]
     unknown = set(args.case or []) - {c['id'] for c in selected}
     if unknown: parser.error('Unknown cases: '+', '.join(sorted(unknown)))
@@ -55,7 +57,7 @@ def main():
                 raise ValueError(f'Unknown mapped case {key} in {path}')
             maps[key].append(dict(mapping, mapping_source=path.name))
     criteria_spec=json.loads((ROOT/'acceptance'/'criteria.json').read_text())['criteria']
-    names = sorted({name for c in selected for m in maps[c['id']] for name in m.get('tests', [])} | {name for c in criteria_spec for name in c.get('additional_tests',[])})
+    names = sorted({name for c in selected if c['id'] not in superseded for m in maps[c['id']] for name in m.get('tests', [])} | {name for c in criteria_spec for name in c.get('additional_tests',[])} | {name for tests in current['cases'].values() for name in tests})
     start = time.monotonic()
     log = io.StringIO()
     # Mappings name tests as module.Class.method with the module at repo root; tests now live in tests/.
@@ -70,12 +72,13 @@ def main():
         agent_required = 'agent' in c.get('mechanism','')
         evidence=agent_evidence(ROOT,mapped,c['id'])
         if agent_required and not evidence['full']: full=False
-        if not tests: status = 'not-implemented'
+        if c['id'] in superseded: status = 'superseded'
+        elif not tests: status = 'not-implemented'
         elif any(s == 'failed' for s in outcomes.values()): status = 'failed'
         elif any(s != 'passed' for s in outcomes.values()): status = 'not-run'
         elif not full: status = 'partial'
         else: status = 'passed'
-        cases.append({'id': c['id'], 'title': c['title'], 'mechanism': c['mechanism'], 'status': status, 'tests': outcomes, 'coverage_claims': mapped,'agent_evidence_required':agent_required,'agent_receipts':evidence['valid_receipts'],'agent_receipt_errors':evidence['errors']})
+        cases.append({'id': c['id'], 'title': c['title'], 'mechanism': c['mechanism'], 'status': status, 'tests': outcomes, 'coverage_claims': mapped,'agent_evidence_required':agent_required,'agent_receipts':evidence['valid_receipts'],'agent_receipt_errors':evidence['errors'], **({'superseded_reason':superseded[c['id']]} if c['id'] in superseded else {})})
     counts = dict(collections.Counter(c['status'] for c in cases))
     case_status={c['id']:c['status'] for c in cases}
     criteria=[]
@@ -83,9 +86,12 @@ def main():
         dependencies={key:case_status.get(key,'not-run') for key in criterion['cases']}
         extra={key:result.outcomes.get(key,'not-run') for key in criterion.get('additional_tests',[])}
         criterion_passed=all(v=='passed' for v in [*dependencies.values(),*extra.values()])
-        criteria.append({**criterion,'status':'passed' if criterion_passed else 'incomplete','case_status':dependencies,'additional_test_status':extra})
+        status = 'superseded' if 'superseded' in dependencies.values() and all(v in ('passed','superseded') for v in dependencies.values()) and all(v=='passed' for v in extra.values()) else 'passed' if criterion_passed else 'incomplete'
+        criteria.append({**criterion,'status':status,'case_status':dependencies,'additional_test_status':extra})
+    current_results = {case: {'status': 'passed' if all(result.outcomes.get(name)=='passed' for name in tests) else 'failed', 'tests': {name: result.outcomes.get(name, 'not-run') for name in tests}} for case,tests in current['cases'].items()}
     report = {'suite_version': spec['suite_version'], 'case_count': len(cases), 'counts': counts,
-              'all_passed': result.wasSuccessful() and all(v=='passed' for v in result.outcomes.values()) and bool(cases) and all(c['status']=='passed' for c in cases) and (bool(args.case) or all(c['status']=='passed' for c in criteria)),
+              'all_passed': result.wasSuccessful() and all(v=='passed' for v in result.outcomes.values()) and bool(cases) and all(c['status'] in ('passed','superseded') for c in cases) and all(v['status']=='passed' for v in current_results.values()) and (bool(args.case) or all(c['status'] in ('passed','superseded') for c in criteria)),
+              'current_version': current['version'], 'current_scope': current['scope'], 'current_cases': current_results,
               'criteria':criteria,'criteria_counts':dict(collections.Counter(c['status'] for c in criteria)),
               'unique_test_count': len(names), 'elapsed_seconds': round(time.monotonic()-start, 3),
               'files_sha256': {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(list(ROOT.glob('theorygraph/*.py'))+list(ROOT.glob('tests/*.py'))+list(ROOT.glob('acceptance/*.py')))},
@@ -93,7 +99,7 @@ def main():
               'cases': cases, 'test_log': log.getvalue()}
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(json.dumps(report, indent=2)+'\n')
-    print(json.dumps({'counts': counts, 'all_passed': report['all_passed'], 'tests': len(names), 'criteria_counts':report['criteria_counts'], 'report': str(args.report)}, indent=2))
+    print(json.dumps({'counts': counts, 'all_passed': report['all_passed'], 'tests': len(names), 'criteria_counts':report['criteria_counts'], 'current_cases':{k:v['status'] for k,v in current_results.items()}, 'report': str(args.report)}, indent=2))
     if not result.wasSuccessful(): print(log.getvalue(), file=sys.stderr)
     return 0 if report['all_passed'] else 1
 

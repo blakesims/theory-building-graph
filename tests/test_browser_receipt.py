@@ -10,7 +10,7 @@ class BrowserReceipt(unittest.TestCase):
         folder=ROOT/'reviews'/'browser'/'current';r=json.loads((folder/'receipt.json').read_text())
         self.assertTrue(r['passed']);self.assertTrue(r['live_graph_unchanged']);self.assertTrue(r['synthetic'])
         for name,digest in r['files_sha256'].items():
-            p={'index.html':ROOT/'theorygraph'/'viewer'/'index.html','graph.py':folder/'graph.py'}.get(name,folder/name)
+            p={'index.html':folder/'index.html','graph.py':folder/'graph.py'}.get(name,folder/name)
             self.assertEqual(hashlib.sha256(p.read_bytes()).hexdigest(),digest,name)
         for name,digest in r['screenshots'].items():self.assertEqual(hashlib.sha256((folder/name).read_bytes()).hexdigest(),digest)
         commands=json.loads((folder/'commands.json').read_text())

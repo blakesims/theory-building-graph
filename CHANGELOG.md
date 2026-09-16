@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.0
+
+- Declared question status is authoritative. Answer structure is optional advice.
+- Accepted claims no longer produce an untested-claim finding.
+- Only new potential-conflict and challenges edges automatically flag review.
+- Typed write commands record one ruling in one audited revision, with dry runs.
+- Optional per-project autosync commits and pushes writes using their reasons.
+- Reads omit metadata bookkeeping and show questions in compact tables.
+
 ## 0.1.0
 
 - Local JSON graphs with typed entities, operations, claims, sources and questions.

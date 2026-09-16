@@ -25,17 +25,17 @@ class Tests(unittest.TestCase):
   self.apply([{'op':'add','collection':'node_types','id':'idea','value':{'description':'new'}},{'op':'update','collection':'nodes','id':'a','value':{'type':'idea','extra':{'anything':True}}}]);self.assertTrue(m.load(self.path)['nodes']['a']['extra']['anything'])
  def test_edge_limit(self):
   r=m.walk(self.g,'a',4,edge_limit=1);self.assertTrue(r['edge_truncated']);self.assertEqual(len(r['edges']),1)
- def test_review_invalidation(self):
+ def test_answer_update_does_not_flag_review(self):
   self.g['nodes']['b']['type']='question';self.g['node_types']['question']={};self.g['edge_types']['answers']={};self.g['edges']['ab']['type']='answers';self.path.write_text(json.dumps(self.g))
   self.apply([{'op':'update','collection':'nodes','id':'a','value':{'text':'revised'}}])
-  g=m.load(self.path);self.assertEqual(m.review_state(g['nodes']['b']),'needs-review');self.assertEqual(m.questions(g)['counts'],{'needs-review':1})
+  g=m.load(self.path);self.assertEqual(m.review_state(g['nodes']['b']),'current');self.assertEqual(m.questions(g)['counts'],{'open':1})
   self.apply([{'op':'update','collection':'nodes','id':'a','value':{'meta':{'review_state':'historical'}}},{'op':'update','collection':'nodes','id':'b','value':{'meta':{'review_state':'current'}}}])
   g=m.load(self.path);self.assertEqual(m.questions(g)['counts'],{'open':1});self.assertNotIn('a',m.walk(g,'b',2,current=True)['nodes'])
  def test_metadata_no_invalidation(self):
   self.apply([{'op':'update','collection':'nodes','id':'a','value':{'meta':{'source':'added citation'}}}]);g=m.load(self.path);self.assertEqual(len(g['changes'][0]['edits']),1);self.assertEqual(m.review_state(g['nodes']['a']),'current')
- def test_answer_edge_flags_target(self):
+ def test_answer_edge_does_not_flag_target(self):
   self.g['edge_types']['answers']={};self.path.write_text(json.dumps(self.g))
-  self.apply([{'op':'add','collection':'edges','id':'answer','value':{'type':'answers','from':'a','to':'b'}}]);self.assertEqual(m.review_state(m.load(self.path)['nodes']['b']),'needs-review')
+  self.apply([{'op':'add','collection':'edges','id':'answer','value':{'type':'answers','from':'a','to':'b'}}]);self.assertEqual(m.review_state(m.load(self.path)['nodes']['b']),'current')
  def test_corrupt(self):
   self.path.write_text('{')
   with self.assertRaises(ValueError):m.load(self.path)
@@ -57,8 +57,9 @@ class ReviewUpgradeTests(unittest.TestCase):
  def setUp(self):
   self.g={'version':1,'revision':0,'node_types':{'claim':{'states':['accepted','proposed']},'question':{'states':['open','answered']},'entity':{}},'edge_types':{'answers':{'coverage_required':True},'about':{}},'nodes':{'c':{'type':'claim','text':'statement','status':'accepted'},'q':{'type':'question','text':'question','status':'open'},'hub':{'type':'entity','text':'hub','meta':{'title':'Steward','aliases':['steward'] }},'other':{'type':'claim','text':'other','status':'proposed'}},'edges':{'answer':{'from':'c','to':'q','type':'answers','coverage':'partial'},'anchor':{'from':'c','to':'hub','type':'about'},'other-anchor':{'from':'other','to':'hub','type':'about'}},'changes':[]}
  def test_partial_full_and_historical_counts(self):
-  self.assertEqual(m.questions(self.g)['counts'],{'partial-answer':1})
-  self.g['edges']['answer']['coverage']='full';self.assertEqual(m.questions(self.g)['counts'],{'answered':1})
+  self.assertEqual(m.questions(self.g)['counts'],{'open':1})
+  self.g['edges']['answer']['coverage']='full';self.assertEqual(m.questions(self.g)['counts'],{'open':1})
+  self.g['nodes']['q']['status']='answered';self.assertEqual(m.questions(self.g)['counts'],{'answered':1})
   self.g['nodes']['q']['meta']={'review_state':'historical'}
   r=m.questions(self.g);self.assertEqual(r['total_questions'],1);self.assertEqual(r['historical_excluded'],1);self.assertEqual(r['included_questions'],0)
  def test_state_validation_and_answer_coverage(self):

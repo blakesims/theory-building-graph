@@ -6,7 +6,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse, parse_qs
 from . import tracecheck
 from . import dependency
-from . import projects, __version__
+from . import projects, writes, __version__
 HERE = Path(__file__).resolve().parent
 
 class GraphError(Exception): pass
@@ -62,15 +62,7 @@ def questions(g, limit=30, historical=False):
             state='historical'
             if not historical: continue
         else:
-            answers=[e for e in g['edges'].values() if e['to']==i and e['type']=='answers' and review_state(g['nodes'][e['from']])!='historical']
-            accepted=[e for e in answers if g['nodes'][e['from']].get('status')=='accepted']
-            if review_state(n)=='needs-review': state='needs-review'
-            elif any(e.get('coverage')=='full' and review_state(g['nodes'][e['from']])=='current' for e in accepted): state='answered'
-            elif any(review_state(g['nodes'][e['from']])=='needs-review' for e in answers): state='needs-review'
-            elif any(e.get('coverage')=='partial' for e in accepted): state='partial-answer'
-            elif answers: state='candidate-answer'
-            else: state='open'
-        if state not in ('needs-review','historical'): state=dependency.resolution(g,i)['resolution']
+            state=dependency.resolution(g,i)['resolution']
         states[i]=state; nodes[i]=n; totals[state]+=1
     ids=sorted(nodes)[:limit]
     return {'revision':g['revision'],'total_questions':len(all_questions),'included_questions':len(nodes),'historical_excluded':sum(review_state(n)=='historical' for n in all_questions.values()) if not historical else 0,'counts':dict(totals),'question_states':{i:states[i] for i in ids},'truncated':len(nodes)>limit,'nodes':{i:nodes[i] for i in ids},'resolutions':{i:dependency.resolution(g,i) for i in ids},'readiness':{i:dependency.readiness(g,i) for i in ids}}
@@ -242,8 +234,7 @@ def simulate(g, ops, actor, reason):
         edits.append({'collection':collection,'id':key,'before':before,'after':copy.deepcopy(after)})
     # Validate before automatic interpretation; malformed JSON must be an atomic domain error.
     validate(g)
-    reviewed={o['id'] for o in ops if o.get('collection')=='nodes' and 'review_state' in (o.get('value',{}).get('meta') or {})}
-    dependency.refresh(original,g,edits,reviewed)
+    dependency.refresh(original,g,edits)
     # Deleting a named semantic input must not leave a surviving opaque pattern dangling.
     deleted=set(original['nodes'])-set(g['nodes'])
     def node_references(node):
@@ -351,10 +342,11 @@ def frontier(g, limit=30, changes=5):
     conflicts=[{'edge':i,'from':e['from'],'to':e['to']} for i,e in view['edges'].items() if e['type'] in ('potential-conflict','contradicts') and not (e.get('meta') or {}).get('resolution') and e['from'] in live and e['to'] in live]
     stale=sum(1 for i,n in g['nodes'].items() if n.get('type')=='check-result' and isinstance(n.get('result'),dict) and review_state(n)!='historical' and tracecheck.result_state(g,n['result'])!='current')
     recent=[{'revision':c['revision'],'actor':c['actor'],'reason':c['reason']} for c in g['changes'][-changes:]]
-    sections={'open_questions':open_questions,'needs_review':needs_review,'proposed_claims':proposed,'findings':findings,'unresolved_conflicts':conflicts}
+    answered_questions=[{'id':i,'title':title(n),'resolution':'answered'} for i,n in live.items() if n['type']=='question' and n.get('status')=='answered']
+    sections={'open_questions':open_questions,'answered_questions':answered_questions,'needs_review':needs_review,'proposed_claims':proposed,'findings':findings,'unresolved_conflicts':conflicts}
     return {'revision':g['revision'],'counts':{k:len(v) for k,v in sections.items()}|{'evidence_stale':stale},**{k:v[:limit] for k,v in sections.items()},'truncated':any(len(v)>limit for v in sections.values()),'evidence_stale':stale,'recent_changes':recent}
 
-def save_evaluation(path,g,result,result_id=None,actor='assistant'):
+def save_evaluation(path,g,result,result_id=None,actor='assistant',reason='Save finite-trace pattern evaluation; do not change belief status'):
     result_id=result_id or f"check-{result['claim']}-{result['trace']}-r{g['revision']}"
     if result_id in g['nodes']: raise GraphError('Result id already exists; use a new id to preserve check history')
     operations=[]
@@ -367,7 +359,7 @@ def save_evaluation(path,g,result,result_id=None,actor='assistant'):
         operations.append({'op':'add','collection':'edge_types','id':'checks','value':{'description':'A saved computation checked this input; does not imply support or acceptance.'}})
     for suffix,target in [('claim',result['claim']),('trace',result['trace'])]:
         operations.append({'op':'add','collection':'edges','id':result_id+'-'+suffix,'value':{'type':'checks','from':result_id,'to':target}})
-    saved=apply(path,operations,actor,'Save finite-trace pattern evaluation; do not change belief status',g['revision'])
+    saved=apply(path,operations,actor,reason,g['revision'])
     return {**result,'saved_as':result_id,'saved_revision':saved['revision'],'result_state':'current'}
 
 def compact_read(data,g):
@@ -376,24 +368,41 @@ def compact_read(data,g):
     data=copy.deepcopy(data)
     keep=dependency.SEMANTIC_META | {'title','aliases','author','source_ref','source_refs','sources','provenance',
         'review_state','review_reason','review_roots','reviewed_inputs','reviewed_input_versions','summary','decision_reason'}
-    omitted={}
     for nid,node in data['nodes'].items():
         meta=node.get('meta') or {}
         declared=set(g['node_types'].get(node['type'],{}).get('compact_meta_fields',[]))
         hidden=sorted(set(meta)-(keep|declared))
         if hidden:
-            omitted[nid]=hidden
             node['meta']={k:v for k,v in meta.items() if k in keep|declared}
-    if omitted:
-        data['metadata_omitted']=omitted
-        data['metadata_access']='Use --full to include omitted metadata; semantic statements and patterns are not truncated.'
     return data
+
+def public_read(value):
+    """Hide obsolete bookkeeping in projections, never mutate stored history."""
+    if isinstance(value, dict):
+        result={k: public_read(v) for k,v in value.items()}
+        internal={'semantic_version','legacy_status'}
+        if 'type' in value and isinstance(value.get('text'),str):
+            for key in internal: result.pop(key,None)
+            if isinstance(result.get('meta'),dict):
+                for key in internal: result['meta'].pop(key,None)
+        if value.get('collection')=='nodes' and isinstance(value.get('fields'),list):
+            result['fields']=[key for key in value['fields'] if not isinstance(key,str) or key not in internal]
+        return result
+    if isinstance(value, list): return [public_read(v) for v in value]
+    return value
+
+
+def table(headers, rows):
+    rows = [tuple(str(value) for value in row) for row in rows]
+    widths = [max(len(headers[i]), *(len(row[i]) for row in rows)) for i in range(len(headers))] if rows else list(map(len, headers))
+    return '\n'.join('  '.join(value.ljust(widths[i]) if i < len(headers)-1 else value for i,value in enumerate(row)) for row in [headers, *rows])
+
 
 def compact(data, full=False):
     def display(v):
         return json.dumps(v,ensure_ascii=False,separators=(',',':')) if isinstance(v,(dict,list)) else str(v)
     if 'outcome' in data and 'checker_version' in data:
-        lines=[f"Pattern {data['outcome']} · {data['claim']} × {data['trace']}",data['scope']]
+        lines=([f"Revision {data['revision']}"] if 'revision' in data else [])+[f"Pattern {data['outcome']} · {data['claim']} × {data['trace']}",data['scope']]
         if data.get('synthetic'): lines.append('SYNTHETIC FIXTURE — not observed runtime evidence')
         if 'checked_events' in data: lines.append('checked events: '+display(data['checked_events']))
         for label in ('vacuous','permission_only','evidence_basis','empirical_support'):
@@ -422,15 +431,18 @@ def compact(data, full=False):
         lines.append(f"evidence becoming stale: {len(data['evidence_becoming_stale'])}"+(' ('+', '.join(data['evidence_becoming_stale'])+')' if data['evidence_becoming_stale'] else ''))
         return '\n'.join(lines)
     if 'open_questions' in data:
-        c=data['counts']; lines=[f"Revision {data['revision']} · frontier: {c['open_questions']} open questions · {c['needs_review']} needs review · {c['proposed_claims']} proposed · {c['findings']} findings · {c['unresolved_conflicts']} conflicts · {c['evidence_stale']} stale evidence"]
-        def section(title,items,fmt):
-            if items: lines.append(title); lines.extend('  '+fmt(x) for x in items)
-        section('open questions',data['open_questions'],lambda q:f"{q['id']} [{q['resolution']}; {q['readiness']}] {q['title']}")
-        section('needs review',data['needs_review'],lambda n:f"{n['id']} ({n['type']}): {n['review_reason']}")
-        section('proposed claims',data['proposed_claims'],lambda n:f"{n['id']}: {n['text']}")
-        section('findings',data['findings'],lambda f:f"{f['code']} [{', '.join(f['nodes'])}]: {f['message']}")
-        section('unresolved conflicts',data['unresolved_conflicts'],lambda e:f"{e['edge']}: {e['from']} × {e['to']}")
-        section('recent changes',data['recent_changes'],lambda ch:f"r{ch['revision']} {ch['actor']}: {ch['reason']}")
+        c=data['counts']; lines=[f"Revision {data['revision']} · frontier"]
+        def section(title,items,headers,values):
+            if items: lines.extend([title, table(headers, [values(x) for x in items])])
+        for key, label in (('open_questions', 'open questions'), ('answered_questions', 'answered questions')):
+            if data.get(key):
+                lines.extend([label, table(('QUESTION','STATUS','TEXT'), [(q['id'],q['resolution'],q['title']) for q in data[key]])])
+        section('needs review',data['needs_review'],('NODE','TYPE','REASON'),lambda n:(n['id'],n['type'],n['review_reason']))
+        section('proposed claims',data['proposed_claims'],('CLAIM','TEXT'),lambda n:(n['id'],n['text']))
+        section('findings',data['findings'],('FINDING','NODES','MESSAGE'),lambda f:(f['code'],', '.join(f['nodes']),f['message']))
+        section('unresolved conflicts',data['unresolved_conflicts'],('EDGE','FROM','TO'),lambda e:(e['edge'],e['from'],e['to']))
+        section('recent changes',data['recent_changes'],('CHANGE','ACTOR','REASON'),lambda ch:(f"r{ch['revision']}",ch['actor'],ch['reason']))
+        if data['evidence_stale']: lines.append(f"Stale evidence: {data['evidence_stale']}")
         if data.get('truncated'): lines.append('(sections truncated; use --json)')
         return '\n'.join(lines)
     if 'findings' in data:
@@ -440,7 +452,13 @@ def compact(data, full=False):
         if info: lines.extend(f"{n} {code} (informational; --all to list)" for code,n in info.items())
         return '\n'.join(lines+[data['scope']])
     if not isinstance(data.get('nodes'),dict): return '\n'.join(f'{k}: {display(v)}' for k,v in data.items())
-    lines=[' · '.join(f'{k}={display(v)}' for k,v in data.items() if k not in ('nodes','edges','distances','question_states','resolutions','readiness'))]
+    if 'question_states' in data and not full:
+        rows=[(i, data['question_states'][i], n['text']) for i,n in data['nodes'].items()]
+        lines=[f"Revision {data['revision']}", table(('QUESTION', 'STATUS', 'TEXT'), rows)]
+        if data.get('truncated'): lines.append('(questions truncated)')
+        return '\n'.join(lines)
+    lines=[f"Revision {data['revision']}"] if 'revision' in data else []
+    if data.get('truncated') or data.get('edge_truncated'): lines.append('(results truncated)')
     for i,n in data['nodes'].items():
         meta=n.get('meta') or {}
         attribution=meta.get('source_kind')
@@ -478,7 +496,7 @@ def serve(path,port,host='127.0.0.1'):
                 elif route=='/api/walk': result=walk(g,p('id',next(iter(g['nodes']),'')),int(p('depth','2')),p('direction','both'),min(200,int(p('limit','40'))),min(500,int(p('edge_limit','100'))),p('current','1')=='1',p('anchors','stop'),p('relations',None))
                 elif route=='/api/graph': result=graph_view(g,p('current','1')=='1',min(2000,int(p('limit','500'))),min(10000,int(p('edge_limit','2000'))))
                 elif route=='/api/evaluations': result=tracecheck.evaluations(g,p('id',None))
-                elif route=='/api/readiness': result=dependency.readiness(g,resolve(g,p('id','')))
+                elif route=='/api/readiness': result=dependency.readiness(g,resolve(g,p('id','')),advisory=True)
                 elif route=='/api/impact': result=dependency.impact(g,[resolve(g,p('id',''))],min(200,int(p('limit','100'))),int(p('offset','0')))
                 elif route=='/api/check': result=check(g)
                 elif route=='/api/questions': result=questions(g,min(500,int(p('limit','30'))),historical=p('historical','0')=='1')
@@ -491,7 +509,7 @@ def serve(path,port,host='127.0.0.1'):
                 elif route=='/api/history': result=history(g,min(100,int(p('limit','10'))),p('full','0')=='1')
                 elif route=='/api/types': result={k:g[k] for k in ('node_types','edge_types')}
                 else: return self.send(b'Not found','text/plain',404)
-                self.send(json.dumps(tracecheck.annotate(g,result),ensure_ascii=False).encode(),'application/json')
+                self.send(json.dumps(public_read(tracecheck.annotate(g,result)),ensure_ascii=False).encode(),'application/json')
             except (GraphError,ValueError,KeyError,OSError) as e: self.send(json.dumps({'error':str(e)}).encode(),'application/json',400)
         def send(self,data,ctype,code=200):
             self.send_response(code); self.send_header('Content-Type',ctype); self.send_header('Cache-Control','no-store'); self.send_header('Content-Length',str(len(data))); self.end_headers(); self.wfile.write(data)
@@ -508,7 +526,7 @@ def main():
     q=sub.add_parser('readiness',help='Explicit prerequisites and independent answer resolution');q.add_argument('id')
     q=sub.add_parser('impact',help='Transitive dependent IDs and bounded dependency path witnesses');q.add_argument('id');q.add_argument('--limit',type=int,default=100);q.add_argument('--offset',type=int,default=0);q.add_argument('--path-limit',type=int,default=8)
     q=sub.add_parser('export',help='Canonical sorted JSON snapshot')
-    q=sub.add_parser('questions',help='Question inventory with explicit inclusion and derived answer states');q.add_argument('--limit',type=int,default=30,help='Maximum question rows');q.add_argument('--historical',action='store_true',help='Include retired questions')
+    q=sub.add_parser('questions',help='Question inventory with declared status');q.add_argument('--limit',type=int,default=30,help='Maximum question rows');q.add_argument('--historical',action='store_true',help='Include retired questions')
     q=sub.add_parser('review',help='Review a node and its direct reasoning context, or list review queue');q.add_argument('id',nargs='?',help='Node id, title or alias');q.add_argument('--limit',type=int,default=30,help='Maximum nodes');q.add_argument('--edge-limit',type=int,default=60,help='Maximum edges')
     q=sub.add_parser('search',help='Basic matching of id, title, alias, type, text and state');q.add_argument('query');q.add_argument('--limit',type=int,default=20,help='Maximum results')
     q=sub.add_parser('node',help='Read a node with all incident edge references');q.add_argument('id',help='Node id, title or alias');q.add_argument('--historical',action='store_true',help='Include historical neighbors')
@@ -516,12 +534,15 @@ def main():
         q=sub.add_parser(name,help='Bounded directed traversal; anchors stop expansion unless selected as root')
         q.add_argument('id',help='Node id, title or alias');q.add_argument('--depth',type=int,default=1,help='Maximum hop distance');q.add_argument('--direction',choices=['both','in','out'],default='both',help='Traversal direction; edge direction is preserved');q.add_argument('--limit',type=int,default=40,help='Maximum nodes');q.add_argument('--edge-limit',type=int,default=100,help='Maximum induced edges');q.add_argument('--current',action='store_true',help='Current material (default)');q.add_argument('--historical',action='store_true',help='Include historical nodes');q.add_argument('--anchors',choices=['stop','cross','omit'],default='stop',help='Stop at anchor hubs, cross them, or omit anchor links');q.add_argument('--relations',help='Only traverse comma-separated relation types')
     q=sub.add_parser('history',help='Compact change summaries; --full restores before/after');q.add_argument('--limit',type=int,default=10,help='Maximum revisions')
-    q=sub.add_parser('apply',help='Apply an atomic audited JSON batch',description='Input: [{"op":"add|update|delete","collection":"nodes|edges|node_types|edge_types|formal_model","id":"stable-id","value":{...}}]. Node value: {"type":"claim","text":"...","status":"proposed","meta":{...}}. Edge value: {"from":"id","to":"id","type":"about","meta":{...}}. answers additionally require coverage full|partial|unknown. Updates merge fields and merge meta one level. Deletes omit value. Unknown references/types/states reject the entire batch. Explicit node meta.review_state reconciles that node in the same batch.')
-    q.add_argument('operations',help='JSON array file path or - for stdin');q.add_argument('--actor',required=True,help='Who made this edit');q.add_argument('--reason',required=True,help='Why the batch is needed');q.add_argument('--expect',type=int,help='Reject the edit if current revision differs (recommended)');q.add_argument('--dry-run',action='store_true',help='Validate and report effects without writing')
-    q=sub.add_parser('reviewed',help='Mark nodes reviewed (meta.review_state current) through the audited apply path');q.add_argument('ids',nargs='+');q.add_argument('--reason',required=True);q.add_argument('--actor',default='assistant');q.add_argument('--expect',type=int)
+    q=sub.add_parser('apply',help='Apply an atomic audited JSON batch',description='Input: [{"op":"add|update|delete","collection":"nodes|edges|node_types|edge_types|formal_model","id":"stable-id","value":{...}}]. Node value: {"type":"claim","text":"...","status":"proposed","meta":{...}}. Edge value: {"from":"id","to":"id","type":"about","meta":{...}}. answers additionally require coverage full|partial|unknown. Updates merge fields and merge meta one level. Deletes omit value. Unknown references/types/states reject the entire batch. New potential-conflict or challenges edges flag both endpoints for review.')
+    q.add_argument('operations',help='JSON array file path or - for stdin');writes.audit_arguments(q);q.add_argument('--expect',type=int,help='Reject a stale revision (default: revision read at command start)')
+    q=sub.add_parser('reviewed',help='Clear conflict review flags through the audited apply path');q.add_argument('ids',nargs='+');writes.audit_arguments(q);q.add_argument('--expect',type=int)
+    writes.parsers(sub)
+    q=sub.add_parser('config',help='Per-project settings').add_subparsers(dest='setting',required=True).add_parser('autosync')
+    q.add_argument('value',choices=('on','off'))
     q=sub.add_parser('sync',help='Commit the graph if changed, pull with rebase, push');q.add_argument('--message',default=None,help='Commit message (default: last audit reason)')
     q=sub.add_parser('evaluate',help='Check one optional pattern against a finite trace; not a proof of the claim')
-    q.add_argument('claim'); q.add_argument('trace'); q.add_argument('--save',nargs='?',const='',help='Save an audited check-result node, optionally with this new id');q.add_argument('--actor',default='assistant',help='Author of a saved evaluation')
+    q.add_argument('claim'); q.add_argument('trace'); q.add_argument('--save',nargs='?',const='',help='Save an audited check-result node, optionally with this new id');q.add_argument('--actor',default=os.environ.get('TG_ACTOR') or 'assistant',help='Author of a saved evaluation');q.add_argument('--reason',help='Required when saving an evaluation')
     q=sub.add_parser('projects',help='List registered projects and the default')
     q=sub.add_parser('new',help='Create a new project graph from the template and register it');q.add_argument('name');q.add_argument('--dir',type=Path,default=None,help='Directory for graph.json (default: ./theory)');q.add_argument('--no-register',action='store_true')
     q=sub.add_parser('register',help='Register an existing graph.json under a name');q.add_argument('name');q.add_argument('path',type=Path);q.add_argument('--default',action='store_true',help='Also make it the default project')
@@ -551,17 +572,18 @@ def main():
         a.file,selected_by=projects.resolve(a.file,a.project)
         if a.cmd=='serve': return serve(a.file,a.port,a.host)
         if a.cmd=='where': result=projects.where(a.file,selected_by,a.project)
-        elif a.cmd=='sync': result=projects.sync(a.file,a.message)
-        elif a.cmd=='reviewed': result=reviewed(a.file,a.ids,a.reason,a.actor,a.expect)
-        elif a.cmd=='apply':
-            ops=json.load(sys.stdin) if a.operations=='-' else json.loads(Path(a.operations).read_text())
-            result=dry_run(a.file,ops,a.actor,a.reason,a.expect) if a.dry_run else apply(a.file,ops,a.actor,a.reason,a.expect)
+        elif a.cmd=='sync': result=writes.synchronize(a.file,a.message)
+        elif a.cmd=='config': result=projects.configure_autosync(a.file,a.value=='on',a.project or os.environ.get('TG_PROJECT'))
+        elif a.cmd in writes.TYPED | {'apply','reviewed'}:
+            result=writes.execute(a.file,a,a.project or os.environ.get('TG_PROJECT'))
         else:
             g=load(a.file)
             if a.cmd=='evaluate':
                 result=tracecheck.evaluate(g,resolve(g,a.claim),resolve(g,a.trace))
-                if a.save is not None: result=save_evaluation(a.file,g,result,a.save or None,a.actor)
-            elif a.cmd=='readiness': result=dependency.readiness(g,resolve(g,a.id))
+                if a.save is not None:
+                    if not a.reason: raise GraphError('--reason is required when saving an evaluation')
+                    result=writes.evaluate_and_save(a.file,a,a.project or os.environ.get('TG_PROJECT'))
+            elif a.cmd=='readiness': result=dependency.readiness(g,resolve(g,a.id),advisory=True)
             elif a.cmd=='impact': result=dependency.impact(g,[resolve(g,a.id)],a.limit,a.offset,a.path_limit)
             elif a.cmd=='export': result=g
             elif a.cmd=='overview': result=overview(g,a.evidence)
@@ -576,9 +598,15 @@ def main():
             elif a.cmd=='node':
                 nid=resolve(g,a.id);r=walk(g,nid,1,limit=200,edge_limit=500,current=not a.historical,evidence=True);result={'revision':g['revision'],'nodes':{nid:g['nodes'][nid]},'edges':{i:e for i,e in r['edges'].items() if nid in (e['from'],e['to'])},'neighbor_bodies':'omitted; use walk','truncated':r['truncated'],'edge_truncated':r['edge_truncated']}
             else: result=history(g,a.limit,a.full)
-        if a.cmd not in ('apply','reviewed','where','sync'): result=tracecheck.annotate(g,result)
+        if a.cmd not in writes.TYPED | {'apply','reviewed','where','sync','config'}:
+            result=tracecheck.annotate(g,result)
+            result.setdefault('revision',g['revision'])
         if not a.full and a.cmd in ('node','walk','neighbors','search','review','questions','anchors'): result=compact_read(result,g)
-        print(json.dumps(result,ensure_ascii=False,sort_keys=True,separators=(',',':')) if a.json or a.cmd=='export' else compact(result,a.full))
+        result=public_read(result)
+        if not a.json and 'summary' in result and 'revision' in result:
+            print(f"r{result['revision']} · {result['summary']}"+(f" · synced {result['sync']['committed'] or 'HEAD'}" if result.get('sync') else ''))
+        elif not a.json and a.cmd=='config': print(f"{result['project']} · autosync {result['autosync']}")
+        else: print(json.dumps(result,ensure_ascii=False,sort_keys=True,separators=(',',':')) if a.json or a.cmd=='export' else compact(result,a.full))
     except (GraphError,projects.ProjectError,ValueError,KeyError,OSError,TypeError) as e: print('error: '+str(e),file=sys.stderr); return 1
     return 0
 if __name__=='__main__': sys.exit(main())

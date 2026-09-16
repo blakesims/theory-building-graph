@@ -435,11 +435,12 @@ function selectMode(next){state.mode=next;$('whole').setAttribute('aria-pressed'
 function questionState(id,n){return state.questionStates[id]||n.status||'unknown'}
 function tensionPartners(id){const g=snapshot();return Object.values(g.edges).filter(e=>(e.type==='potential-conflict'||e.type==='challenges')&&(e.from===id||e.to===id)).map(e=>({type:e.type,other:e.from===id?e.to:e.from,dir:e.from===id?'→':'←'}))}
 const FACETS=[
-  {id:'open',label:'Open questions',hint:'Questions whose declared status is still open',test:(id,n)=>n.type==='question'&&rs(n)!=='historical'&&OPEN_STATES.has(questionState(id,n)),reason:(id,n)=>'question · '+questionState(id,n)},
+  {id:'open',label:'Open questions',hint:'Questions not settled by a current accepted full answer',test:(id,n)=>n.type==='question'&&rs(n)!=='historical'&&OPEN_STATES.has(questionState(id,n)),reason:(id,n)=>'question · '+questionState(id,n)},
   {id:'tension',label:'Tensions',hint:'Joined by a potential-conflict or challenges relation. A recorded tension, not a proven contradiction.',test:id=>tensionPartners(id).length>0,reason:id=>tensionPartners(id).map(t=>`${t.type} ${t.dir} ${caption(t.other,snapshot().nodes[t.other])}`).join(' · ')},
   {id:'proposed',label:'Proposed claims',hint:'Claims not yet accepted',test:(id,n)=>n.type==='claim'&&n.status==='proposed',reason:()=>'claim · proposed, not accepted'},
   {id:'withdrawn',label:'Withdrawn claims',hint:'Claims that were retracted; the record stays',test:(id,n)=>n.type==='claim'&&n.status==='withdrawn',reason:(id,n)=>'withdrawn'+(n.meta?.superseded_by?' · superseded by '+n.meta.superseded_by:'')},
-  {id:'review',label:'Needs review',hint:'Endpoints of a newly recorded potential conflict or challenge',test:(id,n)=>rs(n)==='needs-review',reason:(id,n)=>'review: '+(n.meta?.review_reason||'needs review')},
+  {id:'review',label:'Needs review',hint:'Marked for review, often because a dependency changed',test:(id,n)=>rs(n)==='needs-review',reason:(id,n)=>'review: '+(n.meta?.review_reason||'needs review')},
+  {id:'stale',label:'Stale answers',hint:'Questions whose recorded answers were revised, withdrawn or flagged',test:id=>(state.resolutions[id]?.stale_answers||[]).length>0,reason:id=>'stale answer: '+state.resolutions[id].stale_answers.join(', ')},
   {id:'provisional',label:'Provisional anchors',hint:'Entities and operations whose definitions are still working definitions',test:(id,n)=>(n.type==='entity'||n.type==='operation')&&n.status==='provisional',reason:()=>'definition provisional'},
   {id:'synthetic',label:'Synthetic',hint:'Fixtures, not observed evidence',test:(id,n)=>!!n.meta?.synthetic,reason:()=>'synthetic fixture'},
   {id:'historical',label:'Historical',hint:'Superseded material (enable Include historical to load it)',test:(id,n)=>rs(n)==='historical',reason:()=>'historical'}
@@ -634,7 +635,9 @@ async function appendResponsibility(id,n,body){
       const r=await api('/api/readiness?id='+encodeURIComponent(id));
       if(state.selected!==id||!body.contains(section))return;
       section.append(el('h3','Question state'),el('p',`Readiness: ${r.readiness} · Resolution: ${r.resolution||'unknown'}`));
+      if(n.status&&r.resolution&&n.status!==r.resolution&&!(n.status==='open'&&OPEN_STATES.has(r.resolution)))section.append(el('p',`Declared status "${n.status}" differs from the derived resolution "${r.resolution}". The declaration is retained; check flags the discrepancy.`,'review-note'));
       for(const b of r.blockers||[])section.append(el('p',`${b.node||'Dependency'}: ${b.reason}`,'review-note'));
+      if(r.stale_answers?.length)section.append(el('p','Stale answers: '+r.stale_answers.join(', '),'review-note'));
     }
     const controls=el('div',undefined,'controls'),findingsSlot=el('div'),impactSlot=el('div');
     section.append(controls,findingsSlot,impactSlot);
@@ -730,8 +733,8 @@ async function showActivity(kind){
       body.append(el('p',`${q.included_questions} of ${q.total_questions} questions included · ${q.historical_excluded} historical excluded`,'scope'));
       const counts=el('div',undefined,'badges');for(const [k,v] of Object.entries(q.counts||{}))counts.append(el('span',`${k}: ${v}`,'badge'));body.append(counts);
       for(const [id,n] of Object.entries(q.nodes)){
-        const st=q.question_states[id],rd=q.readiness?.[id]||{};
-        const b=el('button',undefined,'related');b.append(el('span',caption(id,n)),el('small',`${st} · readiness ${rd.readiness||'unknown'}`));
+        const st=q.question_states[id],res=q.resolutions?.[id]||{},rd=q.readiness?.[id]||{};
+        const b=el('button',undefined,'related');b.append(el('span',caption(id,n)),el('small',`${st} · declared ${n.status} · readiness ${rd.readiness||'unknown'}${res.stale_answers?.length?' · stale: '+res.stale_answers.join(', '):''}${res.candidates?.length?' · candidates: '+res.candidates.length:''}`));
         b.onclick=()=>choose(id);body.append(b);
       }
     }else{

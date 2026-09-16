@@ -113,6 +113,27 @@ def where(graph_path, selected_by, project=None):
     return {'engine': str(HERE.parent), 'registry': str(REGISTRY), 'project': name, 'graph': str(graph_path), 'selected_by': selected_by, 'git_root': git_root(graph_path)}
 
 
+def project_name(graph_path, preferred=None):
+    reg = read_registry(); target = Path(graph_path).resolve()
+    if preferred and preferred in reg['projects'] and Path(reg['projects'][preferred]).resolve() == target:
+        return preferred
+    return next((name for name, path in reg['projects'].items() if Path(path).resolve() == target), None)
+
+
+def autosync(graph_path, project=None):
+    name = project_name(graph_path, project)
+    return read_registry().get('settings', {}).get(name, {}).get('autosync', False) is True
+
+
+def configure_autosync(graph_path, enabled, project=None):
+    name = project_name(graph_path, project)
+    if name is None: raise ProjectError('Autosync requires a registered project. Use tg register NAME PATH first.')
+    reg = read_registry()
+    reg.setdefault('settings', {}).setdefault(name, {})['autosync'] = enabled
+    write_registry(reg)
+    return {'project': name, 'autosync': 'on' if enabled else 'off'}
+
+
 def git_root(path):
     r = subprocess.run(['git', '-C', str(Path(path).resolve().parent), 'rev-parse', '--show-toplevel'], capture_output=True, text=True)
     return r.stdout.strip() if r.returncode == 0 else None
@@ -142,7 +163,8 @@ def sync(graph_path, message=None):
         committed = git('rev-parse', '--short', 'HEAD').stdout.strip()
     r = git('pull', '--rebase', check=False)
     if r.returncode:
+        conflicts = git('diff', '--name-only', '--diff-filter=U', check=False).stdout.strip()
         git('rebase', '--abort', check=False)
-        raise ProjectError(f'Rebase conflict; aborted, local commit kept. Resolve by hand in {root} (graph file: {rel}). Output: '+(r.stderr or r.stdout).strip()[-800:])
+        raise ProjectError(f'Pull/rebase failed; local commit kept. Conflicting files: {conflicts or "none reported"}. Repository: {root}, graph: {rel}. '+(r.stderr or r.stdout).strip()[-800:])
     git('push')
     return {'repository': root, 'graph': rel, 'committed': committed, 'message': message if committed else None, 'steps': steps}
