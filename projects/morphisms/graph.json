@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 39,
+  "revision": 40,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1559,6 +1559,20 @@
         "source_kind": "assistant-proposal",
         "aliases": [
           "worker"
+        ]
+      }
+    },
+    "auditor-role": {
+      "type": "entity",
+      "status": "defined",
+      "text": "The agent role that resolves flags: it rules on whether and how the contract should change. Acts on the frame, not the ladder.",
+      "meta": {
+        "review_state": "current",
+        "title": "auditor role",
+        "author": "assistant",
+        "source_kind": "assistant-proposal",
+        "aliases": [
+          "contract auditor"
         ]
       }
     }
@@ -10894,6 +10908,33 @@
               "source_kind": "assistant-proposal",
               "aliases": [
                 "worker"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 40,
+      "at": "2026-09-16T06:32:36.686144+00:00",
+      "actor": "assistant",
+      "reason": "Handover update 2026-09-16: ladder and obstruction model, delegates, frame",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "auditor-role",
+          "before": null,
+          "after": {
+            "type": "entity",
+            "status": "defined",
+            "text": "The agent role that resolves flags: it rules on whether and how the contract should change. Acts on the frame, not the ladder.",
+            "meta": {
+              "review_state": "current",
+              "title": "auditor role",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "aliases": [
+                "contract auditor"
               ]
             }
           }
