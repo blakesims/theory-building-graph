@@ -1,6 +1,6 @@
 [project]
 name = "theorygraph"
-version = "0.2.2"
+version = "0.2.3"
 description = "A local, audited theory graph for program design"
 requires-python = ">=3.10"
 dependencies = []

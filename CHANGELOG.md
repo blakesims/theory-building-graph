@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.3
+
+- Report current claims and questions whose dependency, answer or revision targets are withdrawn or retired.
+- Add full-text `claims` listings and status filters for claims and questions.
+- Let `sync` rebase with unrelated dirty work using autostash, while reporting graph and restore conflicts.
+- Add audited `retire` for entities and operations and hide historical nodes in default anchor, search and frontier reads.
+- Show explicit zero-conflict and informational finding counts in an otherwise empty frontier.
+- Store graph and writer locks in per-path runtime directories instead of beside graph files.
+- Document repo-local graph storage and the Morphisms design graph as the reference example.
+
 ## 0.2.2
 
 - Count `performed-by` as operation coverage, so roles stop showing as uncovered entities.
