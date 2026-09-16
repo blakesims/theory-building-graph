@@ -461,7 +461,7 @@ def compact(data, full=False):
         if full and e.get('meta'): lines.append('  '+json.dumps(e['meta'],ensure_ascii=False,separators=(',',':')))
     return '\n'.join(lines)
 
-def serve(path,port):
+def serve(path,port,host='127.0.0.1'):
     class Handler(BaseHTTPRequestHandler):
         def do_GET(self):
             parsed=urlparse(self.path); params=parse_qs(parsed.query)
@@ -496,8 +496,8 @@ def serve(path,port):
         def send(self,data,ctype,code=200):
             self.send_response(code); self.send_header('Content-Type',ctype); self.send_header('Cache-Control','no-store'); self.send_header('Content-Length',str(len(data))); self.end_headers(); self.wfile.write(data)
         def log_message(self,*a): pass
-    print(f'Theory graph: http://127.0.0.1:{port} · {path}',flush=True)
-    ThreadingHTTPServer(('127.0.0.1',port),Handler).serve_forever()
+    print(f'Theory graph: http://{host}:{port} · {path}',flush=True)
+    ThreadingHTTPServer((host,port),Handler).serve_forever()
 
 def main():
     p=argparse.ArgumentParser(description=__doc__,epilog='Default reads omit historical material. Use --historical to include it. JSON flags work before or after subcommands.')
@@ -525,7 +525,7 @@ def main():
     q=sub.add_parser('new',help='Create a new project graph from the template and register it');q.add_argument('name');q.add_argument('--dir',type=Path,default=None,help='Directory for graph.json (default: ./theory)');q.add_argument('--no-register',action='store_true')
     q=sub.add_parser('register',help='Register an existing graph.json under a name');q.add_argument('name');q.add_argument('path',type=Path);q.add_argument('--default',action='store_true',help='Also make it the default project')
     q=sub.add_parser('use',help='Set the default project');q.add_argument('name')
-    q=sub.add_parser('serve',help='Serve this graph project only');q.add_argument('--port',type=int,default=8767,help='Local port; graph default8767, original notebook separate on8766')
+    q=sub.add_parser('serve',help='Serve this graph project only');q.add_argument('--port',type=int,default=8767,help='Local port; graph default8767, original notebook separate on8766');q.add_argument('--host',default='127.0.0.1',help='Bind address; 127.0.0.1 keeps it local, 0.0.0.0 reaches other hosts (reads only, no write endpoints)')
     # Normalize these global flags so they also work after subcommands.
     argv=sys.argv[1:]; front=[];rest=[];i=0
     while i<len(argv):
@@ -548,7 +548,7 @@ def main():
             else: print(compact(result,True))
             return 0
         a.file,selected_by=projects.resolve(a.file,a.project)
-        if a.cmd=='serve': return serve(a.file,a.port)
+        if a.cmd=='serve': return serve(a.file,a.port,a.host)
         if a.cmd=='where': result=projects.where(a.file,selected_by,a.project)
         elif a.cmd=='sync': result=projects.sync(a.file,a.message)
         elif a.cmd=='reviewed': result=reviewed(a.file,a.ids,a.reason,a.actor,a.expect)

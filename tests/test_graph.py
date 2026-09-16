@@ -38,6 +38,18 @@ class Tests(unittest.TestCase):
  def test_corrupt(self):
   self.path.write_text('{')
   with self.assertRaises(ValueError):m.load(self.path)
+ def test_serve_host_bind(self):
+  """--host reaches the bind call; the default stays loopback so serving is opt-in for other hosts."""
+  seen={}
+  class FakeServer:
+   def __init__(self,address,handler):seen['address']=address
+   def serve_forever(self):raise KeyboardInterrupt
+  original=m.ThreadingHTTPServer;m.ThreadingHTTPServer=FakeServer
+  try:
+   for host,expected in ((None,'127.0.0.1'),('0.0.0.0','0.0.0.0'),('100.126.4.21','100.126.4.21')):
+    with self.assertRaises(KeyboardInterrupt):m.serve(self.path,8767) if host is None else m.serve(self.path,8767,host)
+    self.assertEqual(seen['address'],(expected,8767))
+  finally:m.ThreadingHTTPServer=original
 if __name__=='__main__':unittest.main()
 
 class ReviewUpgradeTests(unittest.TestCase):

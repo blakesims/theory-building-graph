@@ -7,8 +7,8 @@
   "scope": "Browser integration on isolated graph: search, question resolution, impact, scoped findings, live add+edge update, history and dark theme. Not an LLM or design evaluation.",
   "files_sha256": {
     "index.html": "20c85bc088933c8763e939c5bf2e032611501e109cf675a21636bf088eedc9e6",
-    "graph.py": "4a65d6b7330951a2b00829d4869172383e78bc1a6e58321529e9b6fe54c9f84a",
-    "commands.json": "895b551779f3597f09cdbd523b0bcccb6663042e7061c0754e0cc8b8b03cda3d",
+    "graph.py": "e6da0a3e3a811ecc9d23a03e1d6f5facf6a3a1d47f012eb550c062a211ba5cae",
+    "commands.json": "c230a33a95e4026d59ffc395086b4376a26b53ec843dc68a8f43c3e2801f7214",
     "edits.json": "8c8a27dc07612e1e70ce917578cc17e33810c8d4d174660851edb165167faabb"
   },
   "checks": [
@@ -24,8 +24,8 @@
   "expected_resolution": "partial-answer",
   "screenshots": {
     "readiness.png": "a0d1ffc08392c73cf08a75f0bdfaba381da5006d2e3b26662baa6e84bf6b375e",
-    "live-change.png": "150cb02319e01033e6350ec0e9bde54aeb11605fd36eb6827c3c7a5049e8a1dc",
-    "change-history.png": "532932100d6c16befaa5b00ce5853274fb4753323d49ef69e1c29ab086509fd3",
-    "dark-mode.png": "99fd3a4f4e139aebb467a576db7612c7c0d10b537e9514ec9162dbe41c242e88"
+    "live-change.png": "5be46a537c52ae686118f70b2c8192b82527768f77616beaf262e03a10de1c43",
+    "change-history.png": "8e8c17a2e9be5d2cd07f58a62af2078d36b661e746fb72b89c5d523d0a33122d",
+    "dark-mode.png": "507bfb0517623e078e6125a5ec1efcc1e05017ada3b326608275ed4818213282"
   }
 }
