@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 122,
+  "revision": 129,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1710,7 +1710,7 @@
     "attempt-ladder": {
       "type": "claim",
       "status": "accepted",
-      "text": "One relation, 'is one attempt at', repeated: a record is one attempt at an intention; a run is one attempt at a record's node. Claimed by steward, orchestrator, worker respectively. When a rung comes to rest, the claimer one rung up is woken: run rest wakes the orchestrator, record rest wakes the steward.",
+      "text": "One relation, 'is one attempt at', repeated: a record is one attempt at an intention; a run is one attempt at a record's node. Claimed by steward, orchestrator, worker respectively. When a rung comes to rest, the rung above becomes claimable again: run rest makes the record claimable by the orchestrator, record rest makes the intention ready for the steward.",
       "meta": {
         "review_state": "current",
         "title": "attempt ladder",
@@ -1722,7 +1722,7 @@
     "attempt-obstruction-dual": {
       "type": "claim",
       "status": "proposed",
-      "text": "On the ladder, two shapes cover what happens to an intention: it moves (an attempt: record, run) or it is blocked (an obstruction). Attempts go down the ladder, are born from the claimer above, are claimed by a doer, rest when the walk ends, and wake the claimer above. A block goes sideways to a resolver and freezes the rungs it names: a flag when the contract is the cause (resolver auditor), otherwise up to the orchestrator and, if it cannot settle it, to the desk. The desk itself is not an obstruction shape: it also receives non-blocking questions and dials-routed intentions. An observation is neither: it is a new intention entering the front door.",
+      "text": "On the ladder, two shapes cover what happens to an intention: it moves (an attempt: record, run) or it is blocked (an obstruction). Attempts go down the ladder, are born from the claimer above, are claimed by a doer, rest when the walk ends, and make the rung above claimable again. A block goes sideways to a resolver and freezes the rungs it names: a flag when the contract is the cause (resolver auditor), otherwise up to the orchestrator and, if it cannot settle it, to the desk; resolution makes the frozen rung claimable again. The desk itself is not an obstruction shape: it also receives non-blocking questions and dials-routed intentions. An observation is neither: it is a new intention entering the front door.",
       "meta": {
         "review_state": "current",
         "title": "attempt obstruction dual",
@@ -1802,7 +1802,7 @@
     "record-rest-skips-orchestrator": {
       "type": "claim",
       "status": "accepted",
-      "text": "When the last run on a record ends and the record is at rest across every dimension of its store, the orchestrator has no step: the record's rest wakes the steward directly.",
+      "text": "When the last run on a record ends and the record is at rest across every dimension of its store, the orchestrator has no step: the record's rest makes the intention ready for the steward directly.",
       "meta": {
         "review_state": "current",
         "title": "record rest skips orchestrator",
@@ -2155,6 +2155,50 @@
       "meta": {
         "review_state": "current",
         "title": "intention is not a record",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
+      }
+    },
+    "session-2026-09-16-claimability-not-waking": {
+      "type": "source",
+      "status": "recorded",
+      "text": "Blake, 2026-09-16, verbatim: \"the problem I have is 'wakes'. It's a thing that is claimable, so the agent may or may not be running. That's up to the user, right? Whether they're currently running that agent type or not.\" \"We don't have the machinery for waking an orchestrator necessarily ... I don't necessarily want to build that yet.\" \"there's going to be a user configuration basically in morphisms itself ... do we want to automatically spawn a worker for particular things? ... do you want to turn the orchestrator on? ... for the steward, do we want it to be always running or just turn it on?\" On the reframe (claimability only, running policy outside the model): \"Yes, agree. Agree. The kernel doesn't care. Yes.\" On B1: \"yes, true.\"",
+      "meta": {
+        "review_state": "current",
+        "title": "session 2026 09 16 claimability not waking",
+        "author": "Blake",
+        "source_kind": "verbatim"
+      }
+    },
+    "claimability-not-waking": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "The kernel records claimability, never wakes anyone. Birth makes an item claimable by its claimer (a new record by the orchestrator, a new flag by the auditor). Rest of a rung makes the rung above claimable again. Resolution of a block makes the frozen rung claimable again (an auditor's ruling makes the record claimable by the orchestrator under the changed contract; no worker is woken). Whether an agent is running to claim is running policy, not the model.",
+      "meta": {
+        "review_state": "current",
+        "title": "claimability not waking",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
+      }
+    },
+    "running-policy-is-user-configuration": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "Which built-in agents run, and when, is user configuration set through a CLI that is friendly to humans and agents: auto-spawn the orchestrator on a claimable record or not, keep the steward always on or run it on demand, and which intention kinds it processes. The kernel exposes claimability; this configuration decides who is there to claim.",
+      "meta": {
+        "review_state": "current",
+        "title": "running policy is user configuration",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
+      }
+    },
+    "observations-wait-for-inbox-run": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "Filing an observation-kind intention does not make the steward's inbox ready. Observations sit until the user runs the inbox under the recency dials; only then are they claimable by the steward.",
+      "meta": {
+        "review_state": "current",
+        "title": "observations wait for inbox run",
         "author": "Blake",
         "source_kind": "session-paraphrase"
       }
@@ -4802,6 +4846,91 @@
       "from": "intention-schema-draft",
       "type": "depends-on",
       "to": "intention-single-state"
+    },
+    "claimability-not-waking-about-intention-type": {
+      "from": "claimability-not-waking",
+      "type": "about",
+      "to": "intention-type"
+    },
+    "claimability-not-waking-about-record-type": {
+      "from": "claimability-not-waking",
+      "type": "about",
+      "to": "record-type"
+    },
+    "claimability-not-waking-about-run": {
+      "from": "claimability-not-waking",
+      "type": "about",
+      "to": "run"
+    },
+    "claimability-not-waking-about-flag": {
+      "from": "claimability-not-waking",
+      "type": "about",
+      "to": "flag"
+    },
+    "claimability-not-waking-extracted-from-session-2026-09-16-claimability-not-waking": {
+      "from": "claimability-not-waking",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-claimability-not-waking"
+    },
+    "claimability-not-waking-supports-attempt-ladder": {
+      "from": "claimability-not-waking",
+      "type": "supports",
+      "to": "attempt-ladder"
+    },
+    "claimability-not-waking-supports-rest-wakes-steward": {
+      "from": "claimability-not-waking",
+      "type": "supports",
+      "to": "rest-wakes-steward"
+    },
+    "running-policy-is-user-configuration-about-steward-role": {
+      "from": "running-policy-is-user-configuration",
+      "type": "about",
+      "to": "steward-role"
+    },
+    "running-policy-is-user-configuration-about-orchestrator-role": {
+      "from": "running-policy-is-user-configuration",
+      "type": "about",
+      "to": "orchestrator-role"
+    },
+    "running-policy-is-user-configuration-about-operator-role": {
+      "from": "running-policy-is-user-configuration",
+      "type": "about",
+      "to": "operator-role"
+    },
+    "running-policy-is-user-configuration-depends-on-claimability-not-waking": {
+      "from": "running-policy-is-user-configuration",
+      "type": "depends-on",
+      "to": "claimability-not-waking"
+    },
+    "running-policy-is-user-configuration-extracted-from-session-2026-09-16-claimability-not-waking": {
+      "from": "running-policy-is-user-configuration",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-claimability-not-waking"
+    },
+    "observations-wait-for-inbox-run-about-observation": {
+      "from": "observations-wait-for-inbox-run",
+      "type": "about",
+      "to": "observation"
+    },
+    "observations-wait-for-inbox-run-about-steward-role": {
+      "from": "observations-wait-for-inbox-run",
+      "type": "about",
+      "to": "steward-role"
+    },
+    "observations-wait-for-inbox-run-depends-on-observation-is-a-typed-intention": {
+      "from": "observations-wait-for-inbox-run",
+      "type": "depends-on",
+      "to": "observation-is-a-typed-intention"
+    },
+    "observations-wait-for-inbox-run-extracted-from-session-2026-09-16-claimability-not-waking": {
+      "from": "observations-wait-for-inbox-run",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-claimability-not-waking"
+    },
+    "observations-wait-for-inbox-run-supports-worker-inbox-under-user-dials": {
+      "from": "observations-wait-for-inbox-run",
+      "type": "supports",
+      "to": "worker-inbox-under-user-dials"
     }
   },
   "changes": [
@@ -16934,6 +17063,376 @@
             "from": "intention-schema-draft",
             "type": "depends-on",
             "to": "intention-single-state"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 123,
+      "at": "2026-09-16T09:30:03.908421+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: the kernel records claimability, never wakes; running policy is user configuration; B1 accepted (observations wait for the inbox run)",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "session-2026-09-16-claimability-not-waking",
+          "before": null,
+          "after": {
+            "type": "source",
+            "status": "recorded",
+            "text": "Blake, 2026-09-16, verbatim: \"the problem I have is 'wakes'. It's a thing that is claimable, so the agent may or may not be running. That's up to the user, right? Whether they're currently running that agent type or not.\" \"We don't have the machinery for waking an orchestrator necessarily ... I don't necessarily want to build that yet.\" \"there's going to be a user configuration basically in morphisms itself ... do we want to automatically spawn a worker for particular things? ... do you want to turn the orchestrator on? ... for the steward, do we want it to be always running or just turn it on?\" On the reframe (claimability only, running policy outside the model): \"Yes, agree. Agree. The kernel doesn't care. Yes.\" On B1: \"yes, true.\"",
+            "meta": {
+              "review_state": "current",
+              "title": "session 2026 09 16 claimability not waking",
+              "author": "Blake",
+              "source_kind": "verbatim"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 124,
+      "at": "2026-09-16T09:30:04.011402+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: the kernel records claimability, never wakes; running policy is user configuration; B1 accepted (observations wait for the inbox run)",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "claimability-not-waking",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "The kernel records claimability, never wakes anyone. Birth makes an item claimable by its claimer (a new record by the orchestrator, a new flag by the auditor). Rest of a rung makes the rung above claimable again. Resolution of a block makes the frozen rung claimable again (an auditor's ruling makes the record claimable by the orchestrator under the changed contract; no worker is woken). Whether an agent is running to claim is running policy, not the model.",
+            "meta": {
+              "review_state": "current",
+              "title": "claimability not waking",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "claimability-not-waking-about-intention-type",
+          "before": null,
+          "after": {
+            "from": "claimability-not-waking",
+            "type": "about",
+            "to": "intention-type"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "claimability-not-waking-about-record-type",
+          "before": null,
+          "after": {
+            "from": "claimability-not-waking",
+            "type": "about",
+            "to": "record-type"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "claimability-not-waking-about-run",
+          "before": null,
+          "after": {
+            "from": "claimability-not-waking",
+            "type": "about",
+            "to": "run"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "claimability-not-waking-about-flag",
+          "before": null,
+          "after": {
+            "from": "claimability-not-waking",
+            "type": "about",
+            "to": "flag"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "claimability-not-waking-extracted-from-session-2026-09-16-claimability-not-waking",
+          "before": null,
+          "after": {
+            "from": "claimability-not-waking",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-claimability-not-waking"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "claimability-not-waking-supports-attempt-ladder",
+          "before": null,
+          "after": {
+            "from": "claimability-not-waking",
+            "type": "supports",
+            "to": "attempt-ladder"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "claimability-not-waking-supports-rest-wakes-steward",
+          "before": null,
+          "after": {
+            "from": "claimability-not-waking",
+            "type": "supports",
+            "to": "rest-wakes-steward"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 125,
+      "at": "2026-09-16T09:30:04.113449+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: the kernel records claimability, never wakes; running policy is user configuration; B1 accepted (observations wait for the inbox run)",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "running-policy-is-user-configuration",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "Which built-in agents run, and when, is user configuration set through a CLI that is friendly to humans and agents: auto-spawn the orchestrator on a claimable record or not, keep the steward always on or run it on demand, and which intention kinds it processes. The kernel exposes claimability; this configuration decides who is there to claim.",
+            "meta": {
+              "review_state": "current",
+              "title": "running policy is user configuration",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "running-policy-is-user-configuration-about-steward-role",
+          "before": null,
+          "after": {
+            "from": "running-policy-is-user-configuration",
+            "type": "about",
+            "to": "steward-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "running-policy-is-user-configuration-about-orchestrator-role",
+          "before": null,
+          "after": {
+            "from": "running-policy-is-user-configuration",
+            "type": "about",
+            "to": "orchestrator-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "running-policy-is-user-configuration-about-operator-role",
+          "before": null,
+          "after": {
+            "from": "running-policy-is-user-configuration",
+            "type": "about",
+            "to": "operator-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "running-policy-is-user-configuration-depends-on-claimability-not-waking",
+          "before": null,
+          "after": {
+            "from": "running-policy-is-user-configuration",
+            "type": "depends-on",
+            "to": "claimability-not-waking"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "running-policy-is-user-configuration-extracted-from-session-2026-09-16-claimability-not-waking",
+          "before": null,
+          "after": {
+            "from": "running-policy-is-user-configuration",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-claimability-not-waking"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 126,
+      "at": "2026-09-16T09:30:04.214641+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: the kernel records claimability, never wakes; running policy is user configuration; B1 accepted (observations wait for the inbox run) (reviewer 2 F6: otherwise filing makes the steward ready and the off-by-default inbox is contradicted)",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "observations-wait-for-inbox-run",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "Filing an observation-kind intention does not make the steward's inbox ready. Observations sit until the user runs the inbox under the recency dials; only then are they claimable by the steward.",
+            "meta": {
+              "review_state": "current",
+              "title": "observations wait for inbox run",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "observations-wait-for-inbox-run-about-observation",
+          "before": null,
+          "after": {
+            "from": "observations-wait-for-inbox-run",
+            "type": "about",
+            "to": "observation"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "observations-wait-for-inbox-run-about-steward-role",
+          "before": null,
+          "after": {
+            "from": "observations-wait-for-inbox-run",
+            "type": "about",
+            "to": "steward-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "observations-wait-for-inbox-run-depends-on-observation-is-a-typed-intention",
+          "before": null,
+          "after": {
+            "from": "observations-wait-for-inbox-run",
+            "type": "depends-on",
+            "to": "observation-is-a-typed-intention"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "observations-wait-for-inbox-run-extracted-from-session-2026-09-16-claimability-not-waking",
+          "before": null,
+          "after": {
+            "from": "observations-wait-for-inbox-run",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-claimability-not-waking"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "observations-wait-for-inbox-run-supports-worker-inbox-under-user-dials",
+          "before": null,
+          "after": {
+            "from": "observations-wait-for-inbox-run",
+            "type": "supports",
+            "to": "worker-inbox-under-user-dials"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 127,
+      "at": "2026-09-16T09:30:04.309406+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: the kernel records claimability, never wakes; running policy is user configuration; B1 accepted (observations wait for the inbox run); 'woken' replaced by 'becomes claimable'",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "attempt-ladder",
+          "before": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "One relation, 'is one attempt at', repeated: a record is one attempt at an intention; a run is one attempt at a record's node. Claimed by steward, orchestrator, worker respectively. When a rung comes to rest, the claimer one rung up is woken: run rest wakes the orchestrator, record rest wakes the steward.",
+            "meta": {
+              "review_state": "current",
+              "title": "attempt ladder",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "review_reason": "Tension resolved by Blake's ruling; the ladder's actor-to-rung pairing is the ruled one"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "One relation, 'is one attempt at', repeated: a record is one attempt at an intention; a run is one attempt at a record's node. Claimed by steward, orchestrator, worker respectively. When a rung comes to rest, the rung above becomes claimable again: run rest makes the record claimable by the orchestrator, record rest makes the intention ready for the steward.",
+            "meta": {
+              "review_state": "current",
+              "title": "attempt ladder",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "review_reason": "Tension resolved by Blake's ruling; the ladder's actor-to-rung pairing is the ruled one"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 128,
+      "at": "2026-09-16T09:30:04.427670+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: the kernel records claimability, never wakes; running policy is user configuration; B1 accepted (observations wait for the inbox run); 'wakes' replaced by 'makes ready'",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "record-rest-skips-orchestrator",
+          "before": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "When the last run on a record ends and the record is at rest across every dimension of its store, the orchestrator has no step: the record's rest wakes the steward directly.",
+            "meta": {
+              "review_state": "current",
+              "title": "record rest skips orchestrator",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "When the last run on a record ends and the record is at rest across every dimension of its store, the orchestrator has no step: the record's rest makes the intention ready for the steward directly.",
+            "meta": {
+              "review_state": "current",
+              "title": "record rest skips orchestrator",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 129,
+      "at": "2026-09-16T09:30:04.508849+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: the kernel records claimability, never wakes; running policy is user configuration; B1 accepted (observations wait for the inbox run); wake wording removed",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "attempt-obstruction-dual",
+          "before": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "On the ladder, two shapes cover what happens to an intention: it moves (an attempt: record, run) or it is blocked (an obstruction). Attempts go down the ladder, are born from the claimer above, are claimed by a doer, rest when the walk ends, and wake the claimer above. A block goes sideways to a resolver and freezes the rungs it names: a flag when the contract is the cause (resolver auditor), otherwise up to the orchestrator and, if it cannot settle it, to the desk. The desk itself is not an obstruction shape: it also receives non-blocking questions and dials-routed intentions. An observation is neither: it is a new intention entering the front door.",
+            "meta": {
+              "review_state": "current",
+              "title": "attempt obstruction dual",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "On the ladder, two shapes cover what happens to an intention: it moves (an attempt: record, run) or it is blocked (an obstruction). Attempts go down the ladder, are born from the claimer above, are claimed by a doer, rest when the walk ends, and make the rung above claimable again. A block goes sideways to a resolver and freezes the rungs it names: a flag when the contract is the cause (resolver auditor), otherwise up to the orchestrator and, if it cannot settle it, to the desk; resolution makes the frozen rung claimable again. The desk itself is not an obstruction shape: it also receives non-blocking questions and dials-routed intentions. An observation is neither: it is a new intention entering the front door.",
+            "meta": {
+              "review_state": "current",
+              "title": "attempt obstruction dual",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
           }
         }
       ]
