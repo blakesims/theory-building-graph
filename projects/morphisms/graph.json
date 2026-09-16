@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 30,
+  "revision": 31,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1480,6 +1480,21 @@
         "title": "session 2026 09 16 claimability",
         "author": "Blake",
         "source_kind": "verbatim"
+      }
+    },
+    "desk-item": {
+      "type": "entity",
+      "status": "defined",
+      "text": "An item on the operator's desk: a question or a proposal with options, linked to the record it concerns and through it to the intention. Birthed by the steward or the orchestrator, or mirrored by the system from an agent-thread question. Claimable only by the operator.",
+      "meta": {
+        "review_state": "current",
+        "title": "desk item",
+        "author": "assistant",
+        "source_kind": "assistant-proposal",
+        "aliases": [
+          "desk item",
+          "question"
+        ]
       }
     }
   },
@@ -10388,6 +10403,34 @@
               "title": "session 2026 09 16 claimability",
               "author": "Blake",
               "source_kind": "verbatim"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 31,
+      "at": "2026-09-16T04:30:22.371738+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: desk items are separate from intentions; one actor claims one item kind",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "desk-item",
+          "before": null,
+          "after": {
+            "type": "entity",
+            "status": "defined",
+            "text": "An item on the operator's desk: a question or a proposal with options, linked to the record it concerns and through it to the intention. Birthed by the steward or the orchestrator, or mirrored by the system from an agent-thread question. Claimable only by the operator.",
+            "meta": {
+              "review_state": "current",
+              "title": "desk item",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "aliases": [
+                "desk item",
+                "question"
+              ]
             }
           }
         }
