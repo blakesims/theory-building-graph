@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 31,
+  "revision": 32,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1494,6 +1494,20 @@
         "aliases": [
           "desk item",
           "question"
+        ]
+      }
+    },
+    "run": {
+      "type": "entity",
+      "status": "defined",
+      "text": "One worker's turn on a record: the pair (record, worker). Claimable only by the orchestrator, which starts it and owns its outcome, including a blocked return.",
+      "meta": {
+        "review_state": "current",
+        "title": "run",
+        "author": "assistant",
+        "source_kind": "assistant-proposal",
+        "aliases": [
+          "worker turn"
         ]
       }
     }
@@ -10430,6 +10444,33 @@
               "aliases": [
                 "desk item",
                 "question"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 32,
+      "at": "2026-09-16T04:30:29.032737+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: desk items are separate from intentions; one actor claims one item kind",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "run",
+          "before": null,
+          "after": {
+            "type": "entity",
+            "status": "defined",
+            "text": "One worker's turn on a record: the pair (record, worker). Claimable only by the orchestrator, which starts it and owns its outcome, including a blocked return.",
+            "meta": {
+              "review_state": "current",
+              "title": "run",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "aliases": [
+                "worker turn"
               ]
             }
           }
