@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 28,
+  "revision": 29,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -270,7 +270,7 @@
     "cancellation-wakeup": {
       "type": "question",
       "text": "If a record is cancelled or scrapped without successful completion, what makes the intention available for reassessment? The completion rule alone does not settle this.",
-      "status": "open",
+      "status": "answered",
       "meta": {
         "title": "Does cancellation also wake the steward",
         "author": "session reconstruction",
@@ -10302,6 +10302,58 @@
             "from": "assistant-vs-architect",
             "to": "session-2026-09-16-required",
             "type": "informs"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 29,
+      "at": "2026-09-16T04:22:50.611480+00:00",
+      "actor": "assistant",
+      "reason": "Declared status now authoritative; this was fully answered by rest-wakes-steward on 2026-09-16",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "cancellation-wakeup",
+          "before": {
+            "type": "question",
+            "text": "If a record is cancelled or scrapped without successful completion, what makes the intention available for reassessment? The completion rule alone does not settle this.",
+            "status": "open",
+            "meta": {
+              "title": "Does cancellation also wake the steward",
+              "author": "session reconstruction",
+              "provenance": "Assistant raised this edge case; no user resolution is recorded.",
+              "source_file": "/Users/blake/Documents/Codex/2026-09-14/realtime-voice-chat/outputs/Theory Graph Trial/Nodes/Q - Does cancellation also wake the steward.md",
+              "source_sha256": "c4be1ed8842a60f8b0727aff9fac528c435d922b395d6b2cd58f518d28fe9cef",
+              "review": "Reconstructed paraphrase; not newly ratified wording.",
+              "review_state": "current",
+              "review_reason": "Answered in full by rest-wakes-steward; the old partial answers are historical",
+              "legacy_status": "open",
+              "source_kind": "assistant-paraphrase",
+              "review_roots": [
+                "completion-wakes-steward"
+              ]
+            }
+          },
+          "after": {
+            "type": "question",
+            "text": "If a record is cancelled or scrapped without successful completion, what makes the intention available for reassessment? The completion rule alone does not settle this.",
+            "status": "answered",
+            "meta": {
+              "title": "Does cancellation also wake the steward",
+              "author": "session reconstruction",
+              "provenance": "Assistant raised this edge case; no user resolution is recorded.",
+              "source_file": "/Users/blake/Documents/Codex/2026-09-14/realtime-voice-chat/outputs/Theory Graph Trial/Nodes/Q - Does cancellation also wake the steward.md",
+              "source_sha256": "c4be1ed8842a60f8b0727aff9fac528c435d922b395d6b2cd58f518d28fe9cef",
+              "review": "Reconstructed paraphrase; not newly ratified wording.",
+              "review_state": "current",
+              "review_reason": "Answered in full by rest-wakes-steward; the old partial answers are historical",
+              "legacy_status": "open",
+              "source_kind": "assistant-paraphrase",
+              "review_roots": [
+                "completion-wakes-steward"
+              ]
+            }
           }
         }
       ]
