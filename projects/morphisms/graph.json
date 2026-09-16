@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 18,
+  "revision": 20,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -478,7 +478,7 @@
     },
     "create-record": {
       "type": "operation",
-      "text": "Bring a new work record into existence. This operation alone does not specify who chooses the work or who is permitted to perform the operation.",
+      "text": "Bring a new work record into existence in a store, including a record in one store derived from a record in another. Performed only by the steward (steward-creates-every-record). Fragmenting a team node's line-items array is not this operation.",
       "status": "provisional",
       "meta": {
         "title": "Create record",
@@ -487,8 +487,10 @@
         "review_state": "current",
         "provenance": "Working anchor definitions from the user-authorized five-anchor experiment; wording is an assistant synthesis, not an additional ratified rule.",
         "legacy_status": "working-definition",
-        "source_kind": "assistant-proposal"
-      }
+        "source_kind": "assistant-proposal",
+        "review_reason": "Permission settled 2026-09-16."
+      },
+      "semantic_version": 2
     },
     "end-attempt": {
       "type": "operation",
@@ -514,8 +516,12 @@
         "author": "assistant",
         "source_kind": "assistant-proposal",
         "review_state": "current",
-        "review_reason": "User decided: the orchestrator must ask the operator first, in general.",
-        "answer_shape": "verdict"
+        "review_reason": "Still fully answered: the revised claim keeps ask-first and drops the threshold trigger",
+        "answer_shape": "verdict",
+        "review_roots": [
+          "create-record",
+          "orchestrator-asks-before-ending"
+        ]
       },
       "semantic_version": 2
     },
@@ -961,7 +967,7 @@
     },
     "orchestrator-asks-before-ending": {
       "type": "claim",
-      "status": "accepted",
+      "status": "withdrawn",
       "text": "In general, the orchestrator asks the operator before ending an unproductive attempt; it does not end the attempt on its own when a stopping threshold is reached. The request comes to the operator's desk.",
       "meta": {
         "title": "Orchestrator asks the operator before ending an attempt",
@@ -971,8 +977,11 @@
         "provenance": "Claude Code session 2026-09-15, answer to stopping-authority.",
         "modality": "must ask, in general",
         "scope": "'In general' is preserved: exceptions are not specified. 'Desk' is not modelled as an entity.",
-        "review_state": "current"
-      }
+        "review_state": "current",
+        "review_reason": "Superseded 2026-09-16 by orchestrator-judges-then-asks: the 'stopping threshold' trigger was rejected; ask-first substance carried forward.",
+        "superseded_by": "orchestrator-judges-then-asks"
+      },
+      "semantic_version": 2
     },
     "intention-type": {
       "type": "entity",
@@ -1035,6 +1044,72 @@
         "author": "Blake",
         "source_kind": "assistant-paraphrase",
         "provenance": "Session 2 F5 and the rejected alternative 'making every human-facing matter an intention'. Reaffirmed 2026-09-16 when the bullet list was read back.",
+        "review_state": "current"
+      }
+    },
+    "session-2026-09-16-record-creation": {
+      "type": "source",
+      "status": "recorded",
+      "text": "Blake, 2026-09-16, verbatim excerpts: \"the steward is always the one that creates a record. Every single record creation has to go through the steward.\" \"we want a centralized, singular location for record creation, and that is the steward.\" \"the observation-to-task materialization system is plugging a hole that exists, which the steward is going to fill properly.\" \"the steward is responsible for inter-store communication and managing, basically.\" On team nodes: \"the record is in the normal outer graph, and the sub-items are really just attributes of that record itself. ... I wouldn't even call it creation, because creation means that something new is written.\" On thresholds: \"I would rather the orchestrator just use its own intelligence to bring that to my attention.\" \"the orchestrator will decide, 'Okay, I'm probably going to ask the operator if we should give this back to the steward, and I'll pass on the notes about what went wrong, and then the steward decides.'\"",
+      "meta": {
+        "title": "Session 2026-09-16: record creation and thresholds",
+        "author": "Blake",
+        "source_kind": "verbatim",
+        "review_state": "current"
+      }
+    },
+    "steward-creates-every-record": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "Every record creation goes through the steward. The steward is the single place where records are created, so a record whose premise or approach is wrong is caught where it is chosen rather than wedging in the graph.",
+      "meta": {
+        "title": "Only the steward creates records",
+        "author": "Blake",
+        "source_kind": "session-paraphrase",
+        "provenance": "Settled 2026-09-16; exact words in session-2026-09-16-record-creation.",
+        "pattern": {
+          "kind": "exclusive_actor",
+          "operation": "create-record",
+          "allowed_role": "steward-role",
+          "scope": "all"
+        },
+        "pattern_standing": "proposed",
+        "review_state": "current"
+      }
+    },
+    "steward-owns-inter-store": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "The steward is responsible for communication between stores: turning a record in one store into a record in another (an observation into a task, a passed design review into observations). The live contract's materialization adapter and review-spawned observations are stopgaps that the steward will replace; this was never the orchestrator's job.",
+      "meta": {
+        "title": "The steward owns inter-store creation",
+        "author": "Blake",
+        "source_kind": "session-paraphrase",
+        "provenance": "Settled 2026-09-16 when the obs_to_task adapter and spawned_observation_ids in contracts/internal/morphisms/contract.mor were raised as edge cases.",
+        "review_state": "current"
+      }
+    },
+    "team-line-items-are-attributes": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "Team-node line items are not record creation. The record stays in the outer graph; its line-items array is fragmented into items by the kernel, system-owned, and run through the team system. Nothing new is written as a record, so the steward rule is not involved.",
+      "meta": {
+        "title": "Team line items are attributes, not records",
+        "author": "Blake",
+        "source_kind": "session-paraphrase",
+        "provenance": "Settled 2026-09-16 when D310 team nodes were raised as an edge case.",
+        "review_state": "current"
+      }
+    },
+    "orchestrator-judges-then-asks": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "There is no configured failure threshold. The orchestrator uses its own judgment to notice that an attempt is going wrong and brings it to the operator: it asks whether to keep trying or hand the record back to the steward, passing on notes about what went wrong. The steward then decides.",
+      "meta": {
+        "title": "No threshold: the orchestrator judges, then asks",
+        "author": "Blake",
+        "source_kind": "session-paraphrase",
+        "provenance": "2026-09-16. Rejects the configurable N-failures idea that the earlier claim's 'stopping threshold' wording assumed. The ask-the-operator-first substance of that claim stands.",
         "review_state": "current"
       }
     }
@@ -2181,6 +2256,85 @@
       "from": "replacement-authority",
       "to": "intention-type",
       "type": "about"
+    },
+    "gov-steward-creates-create-record": {
+      "from": "steward-creates-every-record",
+      "to": "create-record",
+      "type": "governs"
+    },
+    "about-steward-creates-steward": {
+      "from": "steward-creates-every-record",
+      "to": "steward-role",
+      "type": "about"
+    },
+    "about-steward-creates-record": {
+      "from": "steward-creates-every-record",
+      "to": "record-type",
+      "type": "about"
+    },
+    "src-steward-creates": {
+      "from": "steward-creates-every-record",
+      "to": "session-2026-09-16-record-creation",
+      "type": "supports"
+    },
+    "gov-inter-store-create-record": {
+      "from": "steward-owns-inter-store",
+      "to": "create-record",
+      "type": "governs"
+    },
+    "about-inter-store-steward": {
+      "from": "steward-owns-inter-store",
+      "to": "steward-role",
+      "type": "about"
+    },
+    "src-inter-store": {
+      "from": "steward-owns-inter-store",
+      "to": "session-2026-09-16-record-creation",
+      "type": "supports"
+    },
+    "about-line-items-record": {
+      "from": "team-line-items-are-attributes",
+      "to": "record-type",
+      "type": "about"
+    },
+    "src-line-items": {
+      "from": "team-line-items-are-attributes",
+      "to": "session-2026-09-16-record-creation",
+      "type": "supports"
+    },
+    "gov-judges-end-attempt": {
+      "from": "orchestrator-judges-then-asks",
+      "to": "end-attempt",
+      "type": "governs"
+    },
+    "about-judges-orchestrator": {
+      "from": "orchestrator-judges-then-asks",
+      "to": "orchestrator-role",
+      "type": "about"
+    },
+    "revises-judges-asks": {
+      "from": "orchestrator-judges-then-asks",
+      "to": "orchestrator-asks-before-ending",
+      "type": "revises",
+      "meta": {
+        "reason": "Threshold trigger rejected; orchestrator judgment replaces it."
+      }
+    },
+    "answers-judges-stopping-authority": {
+      "from": "orchestrator-judges-then-asks",
+      "to": "stopping-authority",
+      "type": "answers",
+      "coverage": "full",
+      "meta": {
+        "answer": {
+          "verdict": "asks the operator first; trigger is orchestrator judgment, not a threshold"
+        }
+      }
+    },
+    "src-judges": {
+      "from": "orchestrator-judges-then-asks",
+      "to": "session-2026-09-16-record-creation",
+      "type": "supports"
     }
   },
   "changes": [
@@ -7260,6 +7414,484 @@
             "from": "replacement-authority",
             "to": "intention-type",
             "type": "about"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 19,
+      "at": "2026-09-16T03:22:53.906849+00:00",
+      "actor": "assistant",
+      "reason": "Blake settled 2026-09-16: only the steward creates records, steward owns inter-store creation, team line items are attributes, no failure threshold",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "session-2026-09-16-record-creation",
+          "before": null,
+          "after": {
+            "type": "source",
+            "status": "recorded",
+            "text": "Blake, 2026-09-16, verbatim excerpts: \"the steward is always the one that creates a record. Every single record creation has to go through the steward.\" \"we want a centralized, singular location for record creation, and that is the steward.\" \"the observation-to-task materialization system is plugging a hole that exists, which the steward is going to fill properly.\" \"the steward is responsible for inter-store communication and managing, basically.\" On team nodes: \"the record is in the normal outer graph, and the sub-items are really just attributes of that record itself. ... I wouldn't even call it creation, because creation means that something new is written.\" On thresholds: \"I would rather the orchestrator just use its own intelligence to bring that to my attention.\" \"the orchestrator will decide, 'Okay, I'm probably going to ask the operator if we should give this back to the steward, and I'll pass on the notes about what went wrong, and then the steward decides.'\"",
+            "meta": {
+              "title": "Session 2026-09-16: record creation and thresholds",
+              "author": "Blake",
+              "source_kind": "verbatim",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "steward-creates-every-record",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "Every record creation goes through the steward. The steward is the single place where records are created, so a record whose premise or approach is wrong is caught where it is chosen rather than wedging in the graph.",
+            "meta": {
+              "title": "Only the steward creates records",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "provenance": "Settled 2026-09-16; exact words in session-2026-09-16-record-creation.",
+              "pattern": {
+                "kind": "exclusive_actor",
+                "operation": "create-record",
+                "allowed_role": "steward-role",
+                "scope": "all"
+              },
+              "pattern_standing": "proposed",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "steward-owns-inter-store",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "The steward is responsible for communication between stores: turning a record in one store into a record in another (an observation into a task, a passed design review into observations). The live contract's materialization adapter and review-spawned observations are stopgaps that the steward will replace; this was never the orchestrator's job.",
+            "meta": {
+              "title": "The steward owns inter-store creation",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "provenance": "Settled 2026-09-16 when the obs_to_task adapter and spawned_observation_ids in contracts/internal/morphisms/contract.mor were raised as edge cases.",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "team-line-items-are-attributes",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "Team-node line items are not record creation. The record stays in the outer graph; its line-items array is fragmented into items by the kernel, system-owned, and run through the team system. Nothing new is written as a record, so the steward rule is not involved.",
+            "meta": {
+              "title": "Team line items are attributes, not records",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "provenance": "Settled 2026-09-16 when D310 team nodes were raised as an edge case.",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "orchestrator-judges-then-asks",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "There is no configured failure threshold. The orchestrator uses its own judgment to notice that an attempt is going wrong and brings it to the operator: it asks whether to keep trying or hand the record back to the steward, passing on notes about what went wrong. The steward then decides.",
+            "meta": {
+              "title": "No threshold: the orchestrator judges, then asks",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "provenance": "2026-09-16. Rejects the configurable N-failures idea that the earlier claim's 'stopping threshold' wording assumed. The ask-the-operator-first substance of that claim stands.",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "orchestrator-asks-before-ending",
+          "before": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "In general, the orchestrator asks the operator before ending an unproductive attempt; it does not end the attempt on its own when a stopping threshold is reached. The request comes to the operator's desk.",
+            "meta": {
+              "title": "Orchestrator asks the operator before ending an attempt",
+              "author": "user",
+              "source_kind": "session-paraphrase",
+              "source_excerpt": "no i want the orchestrator to ask the operator in general, yes. this should come to the desk of the operator.",
+              "provenance": "Claude Code session 2026-09-15, answer to stopping-authority.",
+              "modality": "must ask, in general",
+              "scope": "'In general' is preserved: exceptions are not specified. 'Desk' is not modelled as an entity.",
+              "review_state": "current"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "withdrawn",
+            "text": "In general, the orchestrator asks the operator before ending an unproductive attempt; it does not end the attempt on its own when a stopping threshold is reached. The request comes to the operator's desk.",
+            "meta": {
+              "title": "Orchestrator asks the operator before ending an attempt",
+              "author": "user",
+              "source_kind": "session-paraphrase",
+              "source_excerpt": "no i want the orchestrator to ask the operator in general, yes. this should come to the desk of the operator.",
+              "provenance": "Claude Code session 2026-09-15, answer to stopping-authority.",
+              "modality": "must ask, in general",
+              "scope": "'In general' is preserved: exceptions are not specified. 'Desk' is not modelled as an entity.",
+              "review_state": "current",
+              "review_reason": "Superseded 2026-09-16 by orchestrator-judges-then-asks: the 'stopping threshold' trigger was rejected; ask-first substance carried forward.",
+              "superseded_by": "orchestrator-judges-then-asks"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "create-record",
+          "before": {
+            "type": "operation",
+            "text": "Bring a new work record into existence. This operation alone does not specify who chooses the work or who is permitted to perform the operation.",
+            "status": "provisional",
+            "meta": {
+              "title": "Create record",
+              "kind": "operation",
+              "author": "assistant",
+              "review_state": "current",
+              "provenance": "Working anchor definitions from the user-authorized five-anchor experiment; wording is an assistant synthesis, not an additional ratified rule.",
+              "legacy_status": "working-definition",
+              "source_kind": "assistant-proposal"
+            }
+          },
+          "after": {
+            "type": "operation",
+            "text": "Bring a new work record into existence in a store, including a record in one store derived from a record in another. Performed only by the steward (steward-creates-every-record). Fragmenting a team node's line-items array is not this operation.",
+            "status": "provisional",
+            "meta": {
+              "title": "Create record",
+              "kind": "operation",
+              "author": "assistant",
+              "review_state": "current",
+              "provenance": "Working anchor definitions from the user-authorized five-anchor experiment; wording is an assistant synthesis, not an additional ratified rule.",
+              "legacy_status": "working-definition",
+              "source_kind": "assistant-proposal",
+              "review_reason": "Permission settled 2026-09-16."
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "gov-steward-creates-create-record",
+          "before": null,
+          "after": {
+            "from": "steward-creates-every-record",
+            "to": "create-record",
+            "type": "governs"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-steward-creates-steward",
+          "before": null,
+          "after": {
+            "from": "steward-creates-every-record",
+            "to": "steward-role",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-steward-creates-record",
+          "before": null,
+          "after": {
+            "from": "steward-creates-every-record",
+            "to": "record-type",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "src-steward-creates",
+          "before": null,
+          "after": {
+            "from": "steward-creates-every-record",
+            "to": "session-2026-09-16-record-creation",
+            "type": "supports"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "gov-inter-store-create-record",
+          "before": null,
+          "after": {
+            "from": "steward-owns-inter-store",
+            "to": "create-record",
+            "type": "governs"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-inter-store-steward",
+          "before": null,
+          "after": {
+            "from": "steward-owns-inter-store",
+            "to": "steward-role",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "src-inter-store",
+          "before": null,
+          "after": {
+            "from": "steward-owns-inter-store",
+            "to": "session-2026-09-16-record-creation",
+            "type": "supports"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-line-items-record",
+          "before": null,
+          "after": {
+            "from": "team-line-items-are-attributes",
+            "to": "record-type",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "src-line-items",
+          "before": null,
+          "after": {
+            "from": "team-line-items-are-attributes",
+            "to": "session-2026-09-16-record-creation",
+            "type": "supports"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "gov-judges-end-attempt",
+          "before": null,
+          "after": {
+            "from": "orchestrator-judges-then-asks",
+            "to": "end-attempt",
+            "type": "governs"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-judges-orchestrator",
+          "before": null,
+          "after": {
+            "from": "orchestrator-judges-then-asks",
+            "to": "orchestrator-role",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "revises-judges-asks",
+          "before": null,
+          "after": {
+            "from": "orchestrator-judges-then-asks",
+            "to": "orchestrator-asks-before-ending",
+            "type": "revises",
+            "meta": {
+              "reason": "Threshold trigger rejected; orchestrator judgment replaces it."
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "answers-judges-stopping-authority",
+          "before": null,
+          "after": {
+            "from": "orchestrator-judges-then-asks",
+            "to": "stopping-authority",
+            "type": "answers",
+            "coverage": "full",
+            "meta": {
+              "answer": {
+                "verdict": "asks the operator first; trigger is orchestrator judgment, not a threshold"
+              }
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "src-judges",
+          "before": null,
+          "after": {
+            "from": "orchestrator-judges-then-asks",
+            "to": "session-2026-09-16-record-creation",
+            "type": "supports"
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "orchestrator-asks-before-ending",
+          "before": {
+            "type": "claim",
+            "status": "withdrawn",
+            "text": "In general, the orchestrator asks the operator before ending an unproductive attempt; it does not end the attempt on its own when a stopping threshold is reached. The request comes to the operator's desk.",
+            "meta": {
+              "title": "Orchestrator asks the operator before ending an attempt",
+              "author": "user",
+              "source_kind": "session-paraphrase",
+              "source_excerpt": "no i want the orchestrator to ask the operator in general, yes. this should come to the desk of the operator.",
+              "provenance": "Claude Code session 2026-09-15, answer to stopping-authority.",
+              "modality": "must ask, in general",
+              "scope": "'In general' is preserved: exceptions are not specified. 'Desk' is not modelled as an entity.",
+              "review_state": "current",
+              "review_reason": "Superseded 2026-09-16 by orchestrator-judges-then-asks: the 'stopping threshold' trigger was rejected; ask-first substance carried forward.",
+              "superseded_by": "orchestrator-judges-then-asks"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "withdrawn",
+            "text": "In general, the orchestrator asks the operator before ending an unproductive attempt; it does not end the attempt on its own when a stopping threshold is reached. The request comes to the operator's desk.",
+            "meta": {
+              "title": "Orchestrator asks the operator before ending an attempt",
+              "author": "user",
+              "source_kind": "session-paraphrase",
+              "source_excerpt": "no i want the orchestrator to ask the operator in general, yes. this should come to the desk of the operator.",
+              "provenance": "Claude Code session 2026-09-15, answer to stopping-authority.",
+              "modality": "must ask, in general",
+              "scope": "'In general' is preserved: exceptions are not specified. 'Desk' is not modelled as an entity.",
+              "review_state": "current",
+              "review_reason": "Superseded 2026-09-16 by orchestrator-judges-then-asks: the 'stopping threshold' trigger was rejected; ask-first substance carried forward.",
+              "superseded_by": "orchestrator-judges-then-asks"
+            },
+            "semantic_version": 2
+          },
+          "automatic": "semantic-version"
+        },
+        {
+          "collection": "nodes",
+          "id": "create-record",
+          "before": {
+            "type": "operation",
+            "text": "Bring a new work record into existence in a store, including a record in one store derived from a record in another. Performed only by the steward (steward-creates-every-record). Fragmenting a team node's line-items array is not this operation.",
+            "status": "provisional",
+            "meta": {
+              "title": "Create record",
+              "kind": "operation",
+              "author": "assistant",
+              "review_state": "current",
+              "provenance": "Working anchor definitions from the user-authorized five-anchor experiment; wording is an assistant synthesis, not an additional ratified rule.",
+              "legacy_status": "working-definition",
+              "source_kind": "assistant-proposal",
+              "review_reason": "Permission settled 2026-09-16."
+            }
+          },
+          "after": {
+            "type": "operation",
+            "text": "Bring a new work record into existence in a store, including a record in one store derived from a record in another. Performed only by the steward (steward-creates-every-record). Fragmenting a team node's line-items array is not this operation.",
+            "status": "provisional",
+            "meta": {
+              "title": "Create record",
+              "kind": "operation",
+              "author": "assistant",
+              "review_state": "current",
+              "provenance": "Working anchor definitions from the user-authorized five-anchor experiment; wording is an assistant synthesis, not an additional ratified rule.",
+              "legacy_status": "working-definition",
+              "source_kind": "assistant-proposal",
+              "review_reason": "Permission settled 2026-09-16."
+            },
+            "semantic_version": 2
+          },
+          "automatic": "semantic-version"
+        },
+        {
+          "collection": "nodes",
+          "id": "stopping-authority",
+          "before": {
+            "type": "question",
+            "text": "When an operator-defined stopping threshold is reached, may the orchestrator end the attempt autonomously, or must it ask the operator first?",
+            "status": "answered",
+            "meta": {
+              "title": "Who authorizes ending an attempt?",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "review_state": "current",
+              "review_reason": "User decided: the orchestrator must ask the operator first, in general.",
+              "answer_shape": "verdict"
+            },
+            "semantic_version": 2
+          },
+          "after": {
+            "type": "question",
+            "text": "When an operator-defined stopping threshold is reached, may the orchestrator end the attempt autonomously, or must it ask the operator first?",
+            "status": "answered",
+            "meta": {
+              "title": "Who authorizes ending an attempt?",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "review_state": "needs-review",
+              "review_reason": "Decision relation changed: answers-judges-stopping-authority Answer changed: orchestrator-asks-before-ending",
+              "answer_shape": "verdict",
+              "review_roots": [
+                "create-record",
+                "orchestrator-asks-before-ending"
+              ]
+            },
+            "semantic_version": 2
+          },
+          "automatic": "dependency-review"
+        }
+      ]
+    },
+    {
+      "revision": 20,
+      "at": "2026-09-16T03:22:53.989820+00:00",
+      "actor": "assistant",
+      "reason": "Still fully answered: the revised claim keeps ask-first and drops the threshold trigger",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "stopping-authority",
+          "before": {
+            "type": "question",
+            "text": "When an operator-defined stopping threshold is reached, may the orchestrator end the attempt autonomously, or must it ask the operator first?",
+            "status": "answered",
+            "meta": {
+              "title": "Who authorizes ending an attempt?",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "review_state": "needs-review",
+              "review_reason": "Decision relation changed: answers-judges-stopping-authority Answer changed: orchestrator-asks-before-ending",
+              "answer_shape": "verdict",
+              "review_roots": [
+                "create-record",
+                "orchestrator-asks-before-ending"
+              ]
+            },
+            "semantic_version": 2
+          },
+          "after": {
+            "type": "question",
+            "text": "When an operator-defined stopping threshold is reached, may the orchestrator end the attempt autonomously, or must it ask the operator first?",
+            "status": "answered",
+            "meta": {
+              "title": "Who authorizes ending an attempt?",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "review_state": "current",
+              "review_reason": "Still fully answered: the revised claim keeps ask-first and drops the threshold trigger",
+              "answer_shape": "verdict",
+              "review_roots": [
+                "create-record",
+                "orchestrator-asks-before-ending"
+              ]
+            },
+            "semantic_version": 2
           }
         }
       ]
