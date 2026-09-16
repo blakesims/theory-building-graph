@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 115,
+  "revision": 116,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1039,14 +1039,15 @@
     },
     "intention-status-set": {
       "type": "claim",
-      "status": "proposed",
+      "status": "withdrawn",
       "text": "An intention's outcome status is one of open, satisfied, withdrawn. Steward attention (ready, claimed, waiting) is a separate state machine from that outcome.",
       "meta": {
         "title": "Intention status set",
         "author": "assistant",
         "source_kind": "assistant-proposal",
         "provenance": "Notebook State changes tab, marked there as a candidate. Not ratified.",
-        "review_state": "current"
+        "review_state": "historical",
+        "superseded_by": "intention-single-state"
       }
     },
     "intention-carries-history": {
@@ -16677,6 +16678,43 @@
               "answer_shape": "exploration",
               "provenance": "2026-09-16, raised when asking where a desk arrival's trace lives.",
               "review_state": "current"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 116,
+      "at": "2026-09-16T09:00:38.966394+00:00",
+      "actor": "assistant",
+      "reason": "Superseded by the single five-value state Blake accepted",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "intention-status-set",
+          "before": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "An intention's outcome status is one of open, satisfied, withdrawn. Steward attention (ready, claimed, waiting) is a separate state machine from that outcome.",
+            "meta": {
+              "title": "Intention status set",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "provenance": "Notebook State changes tab, marked there as a candidate. Not ratified.",
+              "review_state": "current"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "withdrawn",
+            "text": "An intention's outcome status is one of open, satisfied, withdrawn. Steward attention (ready, claimed, waiting) is a separate state machine from that outcome.",
+            "meta": {
+              "title": "Intention status set",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "provenance": "Notebook State changes tab, marked there as a candidate. Not ratified.",
+              "review_state": "historical",
+              "superseded_by": "intention-single-state"
             }
           }
         }
