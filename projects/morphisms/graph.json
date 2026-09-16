@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 129,
+  "revision": 134,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1790,13 +1790,14 @@
     },
     "one-actor-one-item-kind-v2": {
       "type": "claim",
-      "status": "accepted",
+      "status": "withdrawn",
       "text": "Each actor claims exactly one kind of item and no other: the steward claims intentions, the orchestrator claims records, the worker claims runs, the operator claims desk items. Any actor's judgment may birth items of another kind, but claiming is exclusive. An intention can birth many records and many desk items.",
       "meta": {
-        "review_state": "current",
+        "review_state": "historical",
         "title": "one actor one item kind v2",
         "author": "Blake",
-        "source_kind": "session-paraphrase"
+        "source_kind": "session-paraphrase",
+        "superseded_by": "one-actor-one-item-kind-v3"
       }
     },
     "record-rest-skips-orchestrator": {
@@ -2041,7 +2042,7 @@
     "intention-schema-draft": {
       "type": "claim",
       "status": "accepted",
-      "text": "Schema of an intention. Identity and filing: id, the filed text, filed_by (anyone: operator, agent, worker, outside), kind (from a fixed shipped set; observation is one value). One state: ready, claimed, waiting, satisfied, withdrawn; the last two are rest. History: one append-only event log on the kernel's record-event machinery, events for filed, claimed, reassessed (choice and reason as payload), record linked, record rest, sent to desk (dials trace as payload), desk answered, settled; each dated with actor. Links: the records that are attempts at it; the desk items it birthed, each carrying its own log (discussion and the operator's answers). No artifacts and no discussion of its own. Not a record.",
+      "text": "Schema of an intention. Identity and filing: id, the filed text, filed_by, kind (filing origin: person-filed or agent-filed; subject is never a field). One state: ready, claimed, waiting, satisfied, withdrawn; the last two are rest. History: one append-only event log on the kernel's record-event machinery, events for filed, claimed, reassessed (choice and reason as payload), record linked, record rest, sent to desk (trace as payload), desk answered, settled; each dated with actor. Links: the records that are attempts at it; the desk items it birthed, each carrying its own log (discussion and the operator's answers). No artifacts and no discussion of its own. Not a record.",
       "meta": {
         "review_state": "current",
         "title": "intention schema draft",
@@ -2095,13 +2096,14 @@
     },
     "intention-kind-fixed-set": {
       "type": "claim",
-      "status": "accepted",
+      "status": "withdrawn",
       "text": "An intention's kind comes from a fixed set shipped with Morphisms, not a user registry, until a real need proves otherwise. Reason: a user-added kind needs an agent configured to consume it, and an unconsumed kind is a user error the system would have to alert on.",
       "meta": {
-        "review_state": "current",
+        "review_state": "historical",
         "title": "intention kind fixed set",
         "author": "Blake",
-        "source_kind": "session-paraphrase"
+        "source_kind": "session-paraphrase",
+        "superseded_by": "intention-kind-is-origin"
       }
     },
     "intention-carries-no-artifacts": {
@@ -2201,6 +2203,50 @@
         "title": "observations wait for inbox run",
         "author": "Blake",
         "source_kind": "session-paraphrase"
+      }
+    },
+    "session-2026-09-16-kind-origin": {
+      "type": "source",
+      "status": "recorded",
+      "text": "Blake, 2026-09-16, verbatim: \"This has to be extremely general. And yeah, we could introduce subtypes, for example, underneath that. But the whole point is we shouldn't be saying, 'Oh, this is a bug.' How do we know it's a bug? That's up to the steward to decide.\" \"the steward will decide what it is, what the subject is, what the subject matter is. You're exactly right. This is filing origin. Good. I like it.\" On the auditor claiming flags: \"Yeah, order to claims flags.\" (transcribed; read as 'auditor claims flags')",
+      "meta": {
+        "review_state": "current",
+        "title": "session 2026 09 16 kind origin",
+        "author": "Blake",
+        "source_kind": "verbatim"
+      }
+    },
+    "intention-kind-is-origin": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "An intention's kind is its filing origin, with two shipped values: person-filed (the operator or anyone outside) and agent-filed (an agent in the course of its work; the observation). Kind is the running policy's routing key to an inbox. Subject (bug, feature, question) is never a field: the steward decides what a filing is by reading it, and may find that a claimed bug is not one and settle the intention. Subtypes may be added under the two values later.",
+      "meta": {
+        "review_state": "current",
+        "title": "intention kind is origin",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
+      }
+    },
+    "one-actor-one-item-kind-v3": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "Each actor claims exactly one kind of item and no other: the steward claims intentions, the orchestrator claims records, the worker claims runs, the auditor claims flags, the operator claims desk items. The contract writer claims nothing; contract changes are frame work. Any actor's judgment may birth items of another kind, but claiming is exclusive. An intention can birth many records and many desk items.",
+      "meta": {
+        "review_state": "current",
+        "title": "one actor one item kind v3",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
+      }
+    },
+    "intention-state-transitions": {
+      "type": "claim",
+      "status": "proposed",
+      "text": "Transitions of the five-value state, each caused by one operation or event. ready: on file-intention, or on record rest while waiting, or when a desk item on it is answered while waiting. claimed: when the steward begins reassess-intention. waiting: when reassess chooses more work (records created) or wait, or sends the intention to the desk. satisfied or withdrawn: on settle-intention, by the steward or the operator; both are rest and final. Observation-kind intentions enter at ready only when the inbox run reaches them. No other transitions exist.",
+      "meta": {
+        "review_state": "current",
+        "title": "intention state transitions",
+        "author": "assistant",
+        "source_kind": "assistant-proposal"
       }
     }
   },
@@ -4740,7 +4786,7 @@
       "to": "session-2026-09-16-kind-artifacts"
     },
     "intention-kind-fixed-set-answers-intention-kind-registry": {
-      "from": "intention-kind-fixed-set",
+      "from": "intention-kind-is-origin",
       "type": "answers",
       "to": "intention-kind-registry",
       "coverage": "full"
@@ -4931,6 +4977,156 @@
       "from": "observations-wait-for-inbox-run",
       "type": "supports",
       "to": "worker-inbox-under-user-dials"
+    },
+    "intention-kind-is-origin-about-intention-type": {
+      "from": "intention-kind-is-origin",
+      "type": "about",
+      "to": "intention-type"
+    },
+    "intention-kind-is-origin-about-observation": {
+      "from": "intention-kind-is-origin",
+      "type": "about",
+      "to": "observation"
+    },
+    "intention-kind-is-origin-about-steward-role": {
+      "from": "intention-kind-is-origin",
+      "type": "about",
+      "to": "steward-role"
+    },
+    "intention-kind-is-origin-depends-on-running-policy-is-user-configuration": {
+      "from": "intention-kind-is-origin",
+      "type": "depends-on",
+      "to": "running-policy-is-user-configuration"
+    },
+    "intention-kind-is-origin-extracted-from-session-2026-09-16-kind-origin": {
+      "from": "intention-kind-is-origin",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-kind-origin"
+    },
+    "intention-kind-is-origin-revises-intention-kind-fixed-set": {
+      "from": "intention-kind-is-origin",
+      "type": "revises",
+      "to": "intention-kind-fixed-set"
+    },
+    "one-actor-one-item-kind-v3-about-steward-role": {
+      "from": "one-actor-one-item-kind-v3",
+      "type": "about",
+      "to": "steward-role"
+    },
+    "one-actor-one-item-kind-v3-about-orchestrator-role": {
+      "from": "one-actor-one-item-kind-v3",
+      "type": "about",
+      "to": "orchestrator-role"
+    },
+    "one-actor-one-item-kind-v3-about-worker-role": {
+      "from": "one-actor-one-item-kind-v3",
+      "type": "about",
+      "to": "worker-role"
+    },
+    "one-actor-one-item-kind-v3-about-auditor-role": {
+      "from": "one-actor-one-item-kind-v3",
+      "type": "about",
+      "to": "auditor-role"
+    },
+    "one-actor-one-item-kind-v3-about-operator-role": {
+      "from": "one-actor-one-item-kind-v3",
+      "type": "about",
+      "to": "operator-role"
+    },
+    "one-actor-one-item-kind-v3-about-intention-type": {
+      "from": "one-actor-one-item-kind-v3",
+      "type": "about",
+      "to": "intention-type"
+    },
+    "one-actor-one-item-kind-v3-about-record-type": {
+      "from": "one-actor-one-item-kind-v3",
+      "type": "about",
+      "to": "record-type"
+    },
+    "one-actor-one-item-kind-v3-about-run": {
+      "from": "one-actor-one-item-kind-v3",
+      "type": "about",
+      "to": "run"
+    },
+    "one-actor-one-item-kind-v3-about-flag": {
+      "from": "one-actor-one-item-kind-v3",
+      "type": "about",
+      "to": "flag"
+    },
+    "one-actor-one-item-kind-v3-about-desk-item": {
+      "from": "one-actor-one-item-kind-v3",
+      "type": "about",
+      "to": "desk-item"
+    },
+    "one-actor-one-item-kind-v3-extracted-from-session-2026-09-16-kind-origin": {
+      "from": "one-actor-one-item-kind-v3",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-kind-origin"
+    },
+    "one-actor-one-item-kind-v3-revises-one-actor-one-item-kind-v2": {
+      "from": "one-actor-one-item-kind-v3",
+      "type": "revises",
+      "to": "one-actor-one-item-kind-v2"
+    },
+    "one-actor-one-item-kind-v3-supports-attempt-ladder": {
+      "from": "one-actor-one-item-kind-v3",
+      "type": "supports",
+      "to": "attempt-ladder"
+    },
+    "one-actor-one-item-kind-v3-supports-claimability-not-waking": {
+      "from": "one-actor-one-item-kind-v3",
+      "type": "supports",
+      "to": "claimability-not-waking"
+    },
+    "intention-state-transitions-about-intention-type": {
+      "from": "intention-state-transitions",
+      "type": "about",
+      "to": "intention-type"
+    },
+    "intention-state-transitions-about-steward-role": {
+      "from": "intention-state-transitions",
+      "type": "about",
+      "to": "steward-role"
+    },
+    "intention-state-transitions-governs-reassess-intention": {
+      "from": "intention-state-transitions",
+      "type": "governs",
+      "to": "reassess-intention"
+    },
+    "intention-state-transitions-governs-settle-intention": {
+      "from": "intention-state-transitions",
+      "type": "governs",
+      "to": "settle-intention"
+    },
+    "intention-state-transitions-governs-file-intention": {
+      "from": "intention-state-transitions",
+      "type": "governs",
+      "to": "file-intention"
+    },
+    "intention-state-transitions-governs-send-to-desk": {
+      "from": "intention-state-transitions",
+      "type": "governs",
+      "to": "send-to-desk"
+    },
+    "intention-state-transitions-governs-answer-at-desk": {
+      "from": "intention-state-transitions",
+      "type": "governs",
+      "to": "answer-at-desk"
+    },
+    "intention-state-transitions-depends-on-intention-single-state": {
+      "from": "intention-state-transitions",
+      "type": "depends-on",
+      "to": "intention-single-state"
+    },
+    "intention-state-transitions-depends-on-claimability-not-waking": {
+      "from": "intention-state-transitions",
+      "type": "depends-on",
+      "to": "claimability-not-waking"
+    },
+    "intention-state-transitions-depends-on-observations-wait-for-inbox-run": {
+      "from": "intention-state-transitions",
+      "type": "depends-on",
+      "to": "observations-wait-for-inbox-run"
     }
   },
   "changes": [
@@ -17430,6 +17626,506 @@
             "meta": {
               "review_state": "current",
               "title": "attempt obstruction dual",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 130,
+      "at": "2026-09-16T09:37:50.372423+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: kind is filing origin (person-filed, agent-filed); subject is the steward judgment; auditor claims flags",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "session-2026-09-16-kind-origin",
+          "before": null,
+          "after": {
+            "type": "source",
+            "status": "recorded",
+            "text": "Blake, 2026-09-16, verbatim: \"This has to be extremely general. And yeah, we could introduce subtypes, for example, underneath that. But the whole point is we shouldn't be saying, 'Oh, this is a bug.' How do we know it's a bug? That's up to the steward to decide.\" \"the steward will decide what it is, what the subject is, what the subject matter is. You're exactly right. This is filing origin. Good. I like it.\" On the auditor claiming flags: \"Yeah, order to claims flags.\" (transcribed; read as 'auditor claims flags')",
+            "meta": {
+              "review_state": "current",
+              "title": "session 2026 09 16 kind origin",
+              "author": "Blake",
+              "source_kind": "verbatim"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 131,
+      "at": "2026-09-16T09:37:50.488546+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: kind is filing origin (person-filed, agent-filed); subject is the steward judgment; auditor claims flags",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "intention-kind-is-origin",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "An intention's kind is its filing origin, with two shipped values: person-filed (the operator or anyone outside) and agent-filed (an agent in the course of its work; the observation). Kind is the running policy's routing key to an inbox. Subject (bug, feature, question) is never a field: the steward decides what a filing is by reading it, and may find that a claimed bug is not one and settle the intention. Subtypes may be added under the two values later.",
+            "meta": {
+              "review_state": "current",
+              "title": "intention kind is origin",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-kind-is-origin-about-intention-type",
+          "before": null,
+          "after": {
+            "from": "intention-kind-is-origin",
+            "type": "about",
+            "to": "intention-type"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-kind-is-origin-about-observation",
+          "before": null,
+          "after": {
+            "from": "intention-kind-is-origin",
+            "type": "about",
+            "to": "observation"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-kind-is-origin-about-steward-role",
+          "before": null,
+          "after": {
+            "from": "intention-kind-is-origin",
+            "type": "about",
+            "to": "steward-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-kind-is-origin-depends-on-running-policy-is-user-configuration",
+          "before": null,
+          "after": {
+            "from": "intention-kind-is-origin",
+            "type": "depends-on",
+            "to": "running-policy-is-user-configuration"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-kind-is-origin-extracted-from-session-2026-09-16-kind-origin",
+          "before": null,
+          "after": {
+            "from": "intention-kind-is-origin",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-kind-origin"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-kind-is-origin-revises-intention-kind-fixed-set",
+          "before": null,
+          "after": {
+            "from": "intention-kind-is-origin",
+            "type": "revises",
+            "to": "intention-kind-fixed-set"
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "intention-kind-fixed-set",
+          "before": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "An intention's kind comes from a fixed set shipped with Morphisms, not a user registry, until a real need proves otherwise. Reason: a user-added kind needs an agent configured to consume it, and an unconsumed kind is a user error the system would have to alert on.",
+            "meta": {
+              "review_state": "current",
+              "title": "intention kind fixed set",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "withdrawn",
+            "text": "An intention's kind comes from a fixed set shipped with Morphisms, not a user registry, until a real need proves otherwise. Reason: a user-added kind needs an agent configured to consume it, and an unconsumed kind is a user error the system would have to alert on.",
+            "meta": {
+              "review_state": "historical",
+              "title": "intention kind fixed set",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "superseded_by": "intention-kind-is-origin"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-kind-fixed-set-answers-intention-kind-registry",
+          "before": {
+            "from": "intention-kind-fixed-set",
+            "type": "answers",
+            "to": "intention-kind-registry",
+            "coverage": "full"
+          },
+          "after": {
+            "from": "intention-kind-is-origin",
+            "type": "answers",
+            "to": "intention-kind-registry",
+            "coverage": "full"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 132,
+      "at": "2026-09-16T09:37:50.620801+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: kind is filing origin (person-filed, agent-filed); subject is the steward judgment; auditor claims flags (reviewers 1 and 3: auditor was outside the list)",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "one-actor-one-item-kind-v3",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "Each actor claims exactly one kind of item and no other: the steward claims intentions, the orchestrator claims records, the worker claims runs, the auditor claims flags, the operator claims desk items. The contract writer claims nothing; contract changes are frame work. Any actor's judgment may birth items of another kind, but claiming is exclusive. An intention can birth many records and many desk items.",
+            "meta": {
+              "review_state": "current",
+              "title": "one actor one item kind v3",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-v3-about-steward-role",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind-v3",
+            "type": "about",
+            "to": "steward-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-v3-about-orchestrator-role",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind-v3",
+            "type": "about",
+            "to": "orchestrator-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-v3-about-worker-role",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind-v3",
+            "type": "about",
+            "to": "worker-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-v3-about-auditor-role",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind-v3",
+            "type": "about",
+            "to": "auditor-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-v3-about-operator-role",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind-v3",
+            "type": "about",
+            "to": "operator-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-v3-about-intention-type",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind-v3",
+            "type": "about",
+            "to": "intention-type"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-v3-about-record-type",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind-v3",
+            "type": "about",
+            "to": "record-type"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-v3-about-run",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind-v3",
+            "type": "about",
+            "to": "run"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-v3-about-flag",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind-v3",
+            "type": "about",
+            "to": "flag"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-v3-about-desk-item",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind-v3",
+            "type": "about",
+            "to": "desk-item"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-v3-extracted-from-session-2026-09-16-kind-origin",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind-v3",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-kind-origin"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-v3-revises-one-actor-one-item-kind-v2",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind-v3",
+            "type": "revises",
+            "to": "one-actor-one-item-kind-v2"
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "one-actor-one-item-kind-v2",
+          "before": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "Each actor claims exactly one kind of item and no other: the steward claims intentions, the orchestrator claims records, the worker claims runs, the operator claims desk items. Any actor's judgment may birth items of another kind, but claiming is exclusive. An intention can birth many records and many desk items.",
+            "meta": {
+              "review_state": "current",
+              "title": "one actor one item kind v2",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "withdrawn",
+            "text": "Each actor claims exactly one kind of item and no other: the steward claims intentions, the orchestrator claims records, the worker claims runs, the operator claims desk items. Any actor's judgment may birth items of another kind, but claiming is exclusive. An intention can birth many records and many desk items.",
+            "meta": {
+              "review_state": "historical",
+              "title": "one actor one item kind v2",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "superseded_by": "one-actor-one-item-kind-v3"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-v3-supports-attempt-ladder",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind-v3",
+            "type": "supports",
+            "to": "attempt-ladder"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-v3-supports-claimability-not-waking",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind-v3",
+            "type": "supports",
+            "to": "claimability-not-waking"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 133,
+      "at": "2026-09-16T09:37:50.744854+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: kind is filing origin (person-filed, agent-filed); subject is the steward judgment; auditor claims flags; B4 drafted from ruled operations, proposed until Blake reads it (reviewer 2 F3)",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "intention-state-transitions",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "Transitions of the five-value state, each caused by one operation or event. ready: on file-intention, or on record rest while waiting, or when a desk item on it is answered while waiting. claimed: when the steward begins reassess-intention. waiting: when reassess chooses more work (records created) or wait, or sends the intention to the desk. satisfied or withdrawn: on settle-intention, by the steward or the operator; both are rest and final. Observation-kind intentions enter at ready only when the inbox run reaches them. No other transitions exist.",
+            "meta": {
+              "review_state": "current",
+              "title": "intention state transitions",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-state-transitions-about-intention-type",
+          "before": null,
+          "after": {
+            "from": "intention-state-transitions",
+            "type": "about",
+            "to": "intention-type"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-state-transitions-about-steward-role",
+          "before": null,
+          "after": {
+            "from": "intention-state-transitions",
+            "type": "about",
+            "to": "steward-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-state-transitions-governs-reassess-intention",
+          "before": null,
+          "after": {
+            "from": "intention-state-transitions",
+            "type": "governs",
+            "to": "reassess-intention"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-state-transitions-governs-settle-intention",
+          "before": null,
+          "after": {
+            "from": "intention-state-transitions",
+            "type": "governs",
+            "to": "settle-intention"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-state-transitions-governs-file-intention",
+          "before": null,
+          "after": {
+            "from": "intention-state-transitions",
+            "type": "governs",
+            "to": "file-intention"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-state-transitions-governs-send-to-desk",
+          "before": null,
+          "after": {
+            "from": "intention-state-transitions",
+            "type": "governs",
+            "to": "send-to-desk"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-state-transitions-governs-answer-at-desk",
+          "before": null,
+          "after": {
+            "from": "intention-state-transitions",
+            "type": "governs",
+            "to": "answer-at-desk"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-state-transitions-depends-on-intention-single-state",
+          "before": null,
+          "after": {
+            "from": "intention-state-transitions",
+            "type": "depends-on",
+            "to": "intention-single-state"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-state-transitions-depends-on-claimability-not-waking",
+          "before": null,
+          "after": {
+            "from": "intention-state-transitions",
+            "type": "depends-on",
+            "to": "claimability-not-waking"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-state-transitions-depends-on-observations-wait-for-inbox-run",
+          "before": null,
+          "after": {
+            "from": "intention-state-transitions",
+            "type": "depends-on",
+            "to": "observations-wait-for-inbox-run"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 134,
+      "at": "2026-09-16T09:37:50.858828+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: kind is filing origin (person-filed, agent-filed); subject is the steward judgment; auditor claims flags; kind slot updated",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "intention-schema-draft",
+          "before": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "Schema of an intention. Identity and filing: id, the filed text, filed_by (anyone: operator, agent, worker, outside), kind (from a fixed shipped set; observation is one value). One state: ready, claimed, waiting, satisfied, withdrawn; the last two are rest. History: one append-only event log on the kernel's record-event machinery, events for filed, claimed, reassessed (choice and reason as payload), record linked, record rest, sent to desk (dials trace as payload), desk answered, settled; each dated with actor. Links: the records that are attempts at it; the desk items it birthed, each carrying its own log (discussion and the operator's answers). No artifacts and no discussion of its own. Not a record.",
+            "meta": {
+              "review_state": "current",
+              "title": "intention schema draft",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "Schema of an intention. Identity and filing: id, the filed text, filed_by, kind (filing origin: person-filed or agent-filed; subject is never a field). One state: ready, claimed, waiting, satisfied, withdrawn; the last two are rest. History: one append-only event log on the kernel's record-event machinery, events for filed, claimed, reassessed (choice and reason as payload), record linked, record rest, sent to desk (trace as payload), desk answered, settled; each dated with actor. Links: the records that are attempts at it; the desk items it birthed, each carrying its own log (discussion and the operator's answers). No artifacts and no discussion of its own. Not a record.",
+            "meta": {
+              "review_state": "current",
+              "title": "intention schema draft",
               "author": "assistant",
               "source_kind": "assistant-proposal"
             }
