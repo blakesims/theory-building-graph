@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 134,
+  "revision": 139,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1267,14 +1267,15 @@
     },
     "desk-arrival-carries-trace": {
       "type": "claim",
-      "status": "accepted",
+      "status": "withdrawn",
       "text": "Every item that reaches the desk carries a trace of why: which dials the steward weighed and how it read the operator's words. A wrong arrival is not a failure of the system but its feedback: it shows the operator how the steward interprets a dial, and the operator corrects the dial. You can only improve what you can measure.",
       "meta": {
         "title": "A desk arrival carries its trace",
         "author": "Blake",
         "source_kind": "session-paraphrase",
         "provenance": "2026-09-16; exact words in session-2026-09-16-dials.",
-        "review_state": "current"
+        "review_state": "historical",
+        "superseded_by": "desk-trace-is-sender-reason"
       }
     },
     "case-tri1634": {
@@ -2240,13 +2241,46 @@
     },
     "intention-state-transitions": {
       "type": "claim",
-      "status": "proposed",
+      "status": "accepted",
       "text": "Transitions of the five-value state, each caused by one operation or event. ready: on file-intention, or on record rest while waiting, or when a desk item on it is answered while waiting. claimed: when the steward begins reassess-intention. waiting: when reassess chooses more work (records created) or wait, or sends the intention to the desk. satisfied or withdrawn: on settle-intention, by the steward or the operator; both are rest and final. Observation-kind intentions enter at ready only when the inbox run reaches them. No other transitions exist.",
       "meta": {
         "review_state": "current",
         "title": "intention state transitions",
         "author": "assistant",
         "source_kind": "assistant-proposal"
+      }
+    },
+    "session-2026-09-16-n3-n5": {
+      "type": "source",
+      "status": "recorded",
+      "text": "Blake, 2026-09-16, verbatim: \"Yeah, I'm fine with basically all of them, N3, N4, N5, so you can go ahead and update that. Then let's take stock and prepare for a handover.\"",
+      "meta": {
+        "review_state": "current",
+        "title": "session 2026 09 16 n3 n5",
+        "author": "Blake",
+        "source_kind": "verbatim"
+      }
+    },
+    "desk-trace-is-sender-reason": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "Every item that reaches the desk carries a trace of why from whoever sent it: for the steward, which dials it weighed and how it read the operator's words; for the orchestrator's execution questions, the orchestrator's reason. A wrong arrival is feedback on the sender's reading, and the operator corrects the dial or the persona.",
+      "meta": {
+        "review_state": "current",
+        "title": "desk trace is sender reason",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
+      }
+    },
+    "double-block-raises-both": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "A run blocked by the record and by the contract at once raises both: the flag to the auditor and the blocked return to the orchestrator. They have different resolvers and neither stands in for the other; the record is claimable again only when both are resolved.",
+      "meta": {
+        "review_state": "current",
+        "title": "double block raises both",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
       }
     }
   },
@@ -5127,6 +5161,71 @@
       "from": "intention-state-transitions",
       "type": "depends-on",
       "to": "observations-wait-for-inbox-run"
+    },
+    "intention-state-transitions-extracted-from-session-2026-09-16-n3-n5": {
+      "from": "intention-state-transitions",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-n3-n5"
+    },
+    "desk-trace-is-sender-reason-about-desk-item": {
+      "from": "desk-trace-is-sender-reason",
+      "type": "about",
+      "to": "desk-item"
+    },
+    "desk-trace-is-sender-reason-about-steward-role": {
+      "from": "desk-trace-is-sender-reason",
+      "type": "about",
+      "to": "steward-role"
+    },
+    "desk-trace-is-sender-reason-about-orchestrator-role": {
+      "from": "desk-trace-is-sender-reason",
+      "type": "about",
+      "to": "orchestrator-role"
+    },
+    "desk-trace-is-sender-reason-governs-send-to-desk": {
+      "from": "desk-trace-is-sender-reason",
+      "type": "governs",
+      "to": "send-to-desk"
+    },
+    "desk-trace-is-sender-reason-extracted-from-session-2026-09-16-n3-n5": {
+      "from": "desk-trace-is-sender-reason",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-n3-n5"
+    },
+    "desk-trace-is-sender-reason-revises-desk-arrival-carries-trace": {
+      "from": "desk-trace-is-sender-reason",
+      "type": "revises",
+      "to": "desk-arrival-carries-trace"
+    },
+    "double-block-raises-both-about-run": {
+      "from": "double-block-raises-both",
+      "type": "about",
+      "to": "run"
+    },
+    "double-block-raises-both-about-flag": {
+      "from": "double-block-raises-both",
+      "type": "about",
+      "to": "flag"
+    },
+    "double-block-raises-both-about-record-type": {
+      "from": "double-block-raises-both",
+      "type": "about",
+      "to": "record-type"
+    },
+    "double-block-raises-both-depends-on-flag-is-a-contract-block": {
+      "from": "double-block-raises-both",
+      "type": "depends-on",
+      "to": "flag-is-a-contract-block"
+    },
+    "double-block-raises-both-depends-on-record-block-is-not-a-flag": {
+      "from": "double-block-raises-both",
+      "type": "depends-on",
+      "to": "record-block-is-not-a-flag"
+    },
+    "double-block-raises-both-extracted-from-session-2026-09-16-n3-n5": {
+      "from": "double-block-raises-both",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-n3-n5"
     }
   },
   "changes": [
@@ -18129,6 +18228,279 @@
               "author": "assistant",
               "source_kind": "assistant-proposal"
             }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 135,
+      "at": "2026-09-16T09:44:15.420564+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: N3 transition table accepted; N4 desk trace is the sender reason; N5 double block raises both the flag and the blocked return",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "session-2026-09-16-n3-n5",
+          "before": null,
+          "after": {
+            "type": "source",
+            "status": "recorded",
+            "text": "Blake, 2026-09-16, verbatim: \"Yeah, I'm fine with basically all of them, N3, N4, N5, so you can go ahead and update that. Then let's take stock and prepare for a handover.\"",
+            "meta": {
+              "review_state": "current",
+              "title": "session 2026 09 16 n3 n5",
+              "author": "Blake",
+              "source_kind": "verbatim"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 136,
+      "at": "2026-09-16T09:44:15.561570+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: N3 transition table accepted; N4 desk trace is the sender reason; N5 double block raises both the flag and the blocked return",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "intention-state-transitions",
+          "before": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "Transitions of the five-value state, each caused by one operation or event. ready: on file-intention, or on record rest while waiting, or when a desk item on it is answered while waiting. claimed: when the steward begins reassess-intention. waiting: when reassess chooses more work (records created) or wait, or sends the intention to the desk. satisfied or withdrawn: on settle-intention, by the steward or the operator; both are rest and final. Observation-kind intentions enter at ready only when the inbox run reaches them. No other transitions exist.",
+            "meta": {
+              "review_state": "current",
+              "title": "intention state transitions",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "Transitions of the five-value state, each caused by one operation or event. ready: on file-intention, or on record rest while waiting, or when a desk item on it is answered while waiting. claimed: when the steward begins reassess-intention. waiting: when reassess chooses more work (records created) or wait, or sends the intention to the desk. satisfied or withdrawn: on settle-intention, by the steward or the operator; both are rest and final. Observation-kind intentions enter at ready only when the inbox run reaches them. No other transitions exist.",
+            "meta": {
+              "review_state": "current",
+              "title": "intention state transitions",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 137,
+      "at": "2026-09-16T09:44:15.693189+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: N3 transition table accepted; N4 desk trace is the sender reason; N5 double block raises both the flag and the blocked return",
+      "edits": [
+        {
+          "collection": "edges",
+          "id": "intention-state-transitions-extracted-from-session-2026-09-16-n3-n5",
+          "before": null,
+          "after": {
+            "from": "intention-state-transitions",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-n3-n5"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 138,
+      "at": "2026-09-16T09:44:15.821630+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: N3 transition table accepted; N4 desk trace is the sender reason; N5 double block raises both the flag and the blocked return (reviewer 2 F2: the old wording assumed every desk item came from the steward)",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "desk-trace-is-sender-reason",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "Every item that reaches the desk carries a trace of why from whoever sent it: for the steward, which dials it weighed and how it read the operator's words; for the orchestrator's execution questions, the orchestrator's reason. A wrong arrival is feedback on the sender's reading, and the operator corrects the dial or the persona.",
+            "meta": {
+              "review_state": "current",
+              "title": "desk trace is sender reason",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "desk-trace-is-sender-reason-about-desk-item",
+          "before": null,
+          "after": {
+            "from": "desk-trace-is-sender-reason",
+            "type": "about",
+            "to": "desk-item"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "desk-trace-is-sender-reason-about-steward-role",
+          "before": null,
+          "after": {
+            "from": "desk-trace-is-sender-reason",
+            "type": "about",
+            "to": "steward-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "desk-trace-is-sender-reason-about-orchestrator-role",
+          "before": null,
+          "after": {
+            "from": "desk-trace-is-sender-reason",
+            "type": "about",
+            "to": "orchestrator-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "desk-trace-is-sender-reason-governs-send-to-desk",
+          "before": null,
+          "after": {
+            "from": "desk-trace-is-sender-reason",
+            "type": "governs",
+            "to": "send-to-desk"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "desk-trace-is-sender-reason-extracted-from-session-2026-09-16-n3-n5",
+          "before": null,
+          "after": {
+            "from": "desk-trace-is-sender-reason",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-n3-n5"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "desk-trace-is-sender-reason-revises-desk-arrival-carries-trace",
+          "before": null,
+          "after": {
+            "from": "desk-trace-is-sender-reason",
+            "type": "revises",
+            "to": "desk-arrival-carries-trace"
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "desk-arrival-carries-trace",
+          "before": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "Every item that reaches the desk carries a trace of why: which dials the steward weighed and how it read the operator's words. A wrong arrival is not a failure of the system but its feedback: it shows the operator how the steward interprets a dial, and the operator corrects the dial. You can only improve what you can measure.",
+            "meta": {
+              "title": "A desk arrival carries its trace",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "provenance": "2026-09-16; exact words in session-2026-09-16-dials.",
+              "review_state": "current"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "withdrawn",
+            "text": "Every item that reaches the desk carries a trace of why: which dials the steward weighed and how it read the operator's words. A wrong arrival is not a failure of the system but its feedback: it shows the operator how the steward interprets a dial, and the operator corrects the dial. You can only improve what you can measure.",
+            "meta": {
+              "title": "A desk arrival carries its trace",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "provenance": "2026-09-16; exact words in session-2026-09-16-dials.",
+              "review_state": "historical",
+              "superseded_by": "desk-trace-is-sender-reason"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 139,
+      "at": "2026-09-16T09:44:15.963371+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: N3 transition table accepted; N4 desk trace is the sender reason; N5 double block raises both the flag and the blocked return (reviewer 3 F3)",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "double-block-raises-both",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "A run blocked by the record and by the contract at once raises both: the flag to the auditor and the blocked return to the orchestrator. They have different resolvers and neither stands in for the other; the record is claimable again only when both are resolved.",
+            "meta": {
+              "review_state": "current",
+              "title": "double block raises both",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "double-block-raises-both-about-run",
+          "before": null,
+          "after": {
+            "from": "double-block-raises-both",
+            "type": "about",
+            "to": "run"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "double-block-raises-both-about-flag",
+          "before": null,
+          "after": {
+            "from": "double-block-raises-both",
+            "type": "about",
+            "to": "flag"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "double-block-raises-both-about-record-type",
+          "before": null,
+          "after": {
+            "from": "double-block-raises-both",
+            "type": "about",
+            "to": "record-type"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "double-block-raises-both-depends-on-flag-is-a-contract-block",
+          "before": null,
+          "after": {
+            "from": "double-block-raises-both",
+            "type": "depends-on",
+            "to": "flag-is-a-contract-block"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "double-block-raises-both-depends-on-record-block-is-not-a-flag",
+          "before": null,
+          "after": {
+            "from": "double-block-raises-both",
+            "type": "depends-on",
+            "to": "record-block-is-not-a-flag"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "double-block-raises-both-extracted-from-session-2026-09-16-n3-n5",
+          "before": null,
+          "after": {
+            "from": "double-block-raises-both",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-n3-n5"
           }
         }
       ]
