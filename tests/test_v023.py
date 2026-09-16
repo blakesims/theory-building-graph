@@ -34,7 +34,7 @@ class TemporaryGraph(unittest.TestCase):
 class RetiredTargets(unittest.TestCase):
     def test_current_claims_and_questions_report_retired_relation_targets(self):
         for source_type in ('claim', 'question'):
-            for relation in ('depends-on', 'answers', 'revises'):
+            for relation in ('depends-on', 'answers'):
                 for retirement in ({'status': 'withdrawn'}, {'status': 'retired'},
                                    {'meta': {'review_state': 'historical'}}):
                     with self.subTest(source=source_type, relation=relation, retirement=retirement):
@@ -48,6 +48,13 @@ class RetiredTargets(unittest.TestCase):
                         self.assertEqual(findings[0]['edges'], [eid])
                         self.assertIn('current', findings[0]['message'])
                         self.assertIn('old', findings[0]['message'])
+
+    def test_revises_to_withdrawn_is_how_revision_works_and_is_not_reported(self):
+        model = fixture(['current', 'old'])
+        model['nodes']['current'].update(type='claim', status='accepted')
+        model['nodes']['old']['status'] = 'withdrawn'
+        edge(model, 'current', 'old', 'revises')
+        self.assertFalse(any(f['code'] == 'retired-target' for f in graph.check(model)['findings']))
 
     def test_inactive_sources_and_other_relations_do_not_report(self):
         for source in ({'status': 'withdrawn'}, {'status': 'retired'},
