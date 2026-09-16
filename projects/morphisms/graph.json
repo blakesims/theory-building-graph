@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 24,
+  "revision": 28,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -91,6 +91,12 @@
     },
     "checks": {
       "description": "A saved computation checked this input; does not imply support or acceptance."
+    },
+    "depends-on": {
+      "description": "Dependent question or claim → mandatory prerequisite. The dependent is not ready until the prerequisite is answered or accepted. Use only for a real dependency."
+    },
+    "acts-on": {
+      "description": "Operation → the entity it reads or changes. Lets a reader walk from an entity to the operations on it."
     }
   },
   "nodes": {
@@ -1039,13 +1045,14 @@
     "intention-carries-history": {
       "type": "claim",
       "status": "accepted",
-      "text": "An intention carries its history: discussion entries, linked records, decisions and blocked-work evidence. A report that chosen work no longer serves the intention returns to that same intention with the work's history; it does not create a new intention.",
+      "text": "An intention carries its history: manifest-record links, discussion, and operator answers, as an append-only history. A report that chosen work no longer serves the intention returns to that same intention; it does not create a new intention. Evidence about what went wrong lives on the record (the archive reason), not on the intention.",
       "meta": {
         "title": "The intention carries the history",
         "author": "Blake",
         "source_kind": "assistant-paraphrase",
         "provenance": "Session 2 F5 and the rejected alternative 'making every human-facing matter an intention'. Reaffirmed 2026-09-16 when the bullet list was read back.",
-        "review_state": "current"
+        "review_state": "current",
+        "review_reason": "Narrowed 2026-09-16: 'decisions' and 'blocked-work evidence' were assistant words; the handover lives on the record's archive reason."
       }
     },
     "session-2026-09-16-record-creation": {
@@ -1271,6 +1278,196 @@
         "author": "assistant",
         "source_kind": "assistant-paraphrase",
         "provenance": "Session 1 case 1 (docs/worklog/2026-09-14/01) and Blake's 2026-09-16 comment.",
+        "review_state": "current"
+      }
+    },
+    "intention-operations": {
+      "type": "question",
+      "status": "answered",
+      "text": "What operations act on an intention, and who performs each? Filing it, the steward claiming and reassessing it, linking a record to it, sending it to the operator, the operator answering, settling it as satisfied or withdrawn. Which of these are real operations, which are just state on the intention, and is the list complete?",
+      "meta": {
+        "title": "What operations act on an intention",
+        "author": "Blake",
+        "source_kind": "session-paraphrase",
+        "answer_shape": "exploration",
+        "provenance": "2026-09-16: Blake noticed no operation is linked to the intention anchor, and that the schema cannot be written before the operations are known.",
+        "review_state": "current",
+        "review_reason": "Blake affirmed the list 2026-09-16."
+      }
+    },
+    "intention-schema": {
+      "type": "question",
+      "status": "open",
+      "text": "What is the schema of an intention: its fields, its history, and where the steward's dial reading and the operator's answers are written? Foundational. Not answerable until the operations on an intention are known.",
+      "meta": {
+        "title": "The schema of an intention",
+        "author": "Blake",
+        "source_kind": "session-paraphrase",
+        "answer_shape": "exploration",
+        "provenance": "2026-09-16, raised when asking where a desk arrival's trace lives.",
+        "review_state": "current"
+      }
+    },
+    "file-intention": {
+      "type": "operation",
+      "status": "provisional",
+      "text": "Bring a new intention into existence. The front door: anyone outside, or any agent, may file. A filed, unprocessed intention wakes the steward.",
+      "meta": {
+        "title": "File an intention",
+        "author": "assistant",
+        "source_kind": "session-paraphrase",
+        "review_state": "current"
+      }
+    },
+    "reassess-intention": {
+      "type": "operation",
+      "status": "provisional",
+      "text": "The steward claims an intention and reads all prior work against it, then chooses: more work, wait, send to the desk, or settle. Triggered by rest of a linked record or a new filing.",
+      "meta": {
+        "title": "Claim and reassess an intention",
+        "author": "assistant",
+        "source_kind": "session-paraphrase",
+        "review_state": "current"
+      }
+    },
+    "send-to-desk": {
+      "type": "operation",
+      "status": "provisional",
+      "text": "Put an item on the operator's desk with a trace of why. Not steward-only: the steward sends intentions the dials say the operator must see; the orchestrator sends execution questions directly. While the item is on the desk the operator owes the next action.",
+      "meta": {
+        "title": "Send to the desk",
+        "author": "Blake",
+        "source_kind": "session-paraphrase",
+        "provenance": "2026-09-16: Blake clarified that 'send to operator' means go to the desk and that the orchestrator's orchestration questions also come to the desk, not via the steward.",
+        "review_state": "current"
+      }
+    },
+    "answer-at-desk": {
+      "type": "operation",
+      "status": "provisional",
+      "text": "The operator answers an item on the desk, at the desk or in an agent thread. The answer is recorded against the durable item and ownership of the next action returns to the sender.",
+      "meta": {
+        "title": "Answer at the desk",
+        "author": "assistant",
+        "source_kind": "session-paraphrase",
+        "review_state": "current"
+      }
+    },
+    "settle-intention": {
+      "type": "operation",
+      "status": "provisional",
+      "text": "Judge an intention satisfied or withdrawn. Performed by the steward or the operator, never by a record completing.",
+      "meta": {
+        "title": "Settle an intention",
+        "author": "assistant",
+        "source_kind": "session-paraphrase",
+        "review_state": "current"
+      }
+    },
+    "intention-operation-set": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "The operations on an intention are: file (anyone), claim and reassess (steward), create a linked record (steward only), send to the desk (steward for intentions, orchestrator for execution questions), answer at the desk (operator), settle (steward or operator). No operation on an intention belongs to the orchestrator or a worker except the orchestrator's direct desk question.",
+      "meta": {
+        "title": "The operations on an intention",
+        "author": "Blake",
+        "source_kind": "session-paraphrase",
+        "provenance": "Derived by the assistant from the accepted claims of 2026-09-14 and 2026-09-16; Blake affirmed the list on 2026-09-16 with one correction: send-to-desk is not steward-only.",
+        "review_state": "current"
+      }
+    },
+    "orchestrator-asks-desk-directly": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "The orchestrator's questions about execution go to the operator's desk directly. The steward is not a relay; it is for when the mapping from intention to work needs reconsidering.",
+      "meta": {
+        "title": "The orchestrator asks the desk directly",
+        "author": "Blake",
+        "source_kind": "session-paraphrase",
+        "provenance": "Session 2 rejected alternative 'relaying every question through the steward'; reaffirmed 2026-09-16.",
+        "review_state": "current"
+      }
+    },
+    "desk-item-shows-intention": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "Every item on the desk is linked to its record and, through the record, to the intention, so the operator can see the original filing and the whole point of the work. An orchestrator's execution question is linked to the record it concerns; the link to the intention may be implicit through the record, but the desk must show it.",
+      "meta": {
+        "title": "A desk item shows its intention",
+        "author": "Blake",
+        "source_kind": "session-paraphrase",
+        "provenance": "2026-09-16: 'It should be linked to both ... whether it's explicit or implicit I'm not really bothered, but it should definitely be something that I can see on my desk.'",
+        "review_state": "current"
+      }
+    },
+    "session-2026-09-16-required": {
+      "type": "source",
+      "status": "recorded",
+      "text": "Blake, 2026-09-16, verbatim excerpts: \"Some built-in agents are required, like the orchestrator, which is 100% necessary (you can change its memory and instructions, but it must be there), the steward, and the operator. Those are non-negotiable.\" \"the steward agent and the orchestrator are canonical, while the assistant is not necessarily canonical.\" \"the desk should be cleared every day. The assistant node should also be cleared daily, though it might take a few hours. The architect would be persistent, always holding high-level architectural or design direction, essentially what we're doing right now.\" \"Maybe we could use the theory graph for this, with a theory or design agent.\"",
+      "meta": {
+        "title": "Session 2026-09-16: required agents and half-lives",
+        "author": "Blake",
+        "source_kind": "verbatim",
+        "review_state": "current"
+      }
+    },
+    "required-actors": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "Three actors are required in every Morphisms installation and cannot be removed: the operator, the steward, and the orchestrator. Their memory and instructions are configurable; their existence is not. Every other agent, including the assistant and the architect, is optional and user-defined.",
+      "meta": {
+        "title": "Three actors are required",
+        "author": "Blake",
+        "source_kind": "session-paraphrase",
+        "provenance": "2026-09-16, exact words in session-2026-09-16-required. Settles the notebook's unsettled item 'what is supplied, required, or configurable'.",
+        "review_state": "current"
+      }
+    },
+    "case-triage-desk-discuss": {
+      "type": "case",
+      "status": "recorded",
+      "text": "Prior art for discussion, in the live triage store (contracts/internal/morphisms/contract.mor, dimension journey): the sorter puts a record on the desk with a static packet of one to four numbered options, a recommendation, and the proposition being judged; a standing ruling can route past the desk. When the matter is too big for a static packet the operator walks it to a discuss state (seat both, run by the assistant) or an architect state (seat both). Desk clears daily; discuss takes hours; architect persists for weeks. This is the node-bound version of what v3 lifts above the graph.",
+      "meta": {
+        "title": "Case: desk, discuss and architect in the triage store",
+        "author": "assistant",
+        "source_kind": "assistant-paraphrase",
+        "provenance": "Blake's description 2026-09-16 plus the contract text.",
+        "review_state": "current"
+      }
+    },
+    "discussion-shape": {
+      "type": "question",
+      "status": "open",
+      "text": "What is a discussion on an intention: an operation, a state the intention sits in, or an event stream? And where is it stored: rows in the database, a linked markdown note, or an artifact? Blake is wary of adding artifacts to intentions the way records have them.",
+      "meta": {
+        "title": "What is a discussion",
+        "author": "Blake",
+        "source_kind": "session-paraphrase",
+        "answer_shape": "condition",
+        "review_state": "current"
+      }
+    },
+    "intention-history-mechanism": {
+      "type": "question",
+      "status": "open",
+      "text": "Is the intention's history the same append-only event mechanism the kernel already uses for records, or its own? Blake leans to the same mechanism: no overwritten fields, as close to a record's event log as possible.",
+      "meta": {
+        "title": "Same event mechanism as records?",
+        "author": "Blake",
+        "source_kind": "session-paraphrase",
+        "answer_shape": "verdict",
+        "review_state": "current"
+      }
+    },
+    "assistant-vs-architect": {
+      "type": "question",
+      "status": "open",
+      "text": "What separates the assistant from the architect? Session 2 (2026-09-14, F10) said responsibility, not duration. On 2026-09-16 Blake described them by half-life: desk cleared daily, assistant hours, architect weeks and persistent. Are both true, or has the earlier statement been revised?",
+      "meta": {
+        "title": "Assistant versus architect",
+        "author": "assistant",
+        "source_kind": "assistant-proposal",
+        "answer_shape": "verdict",
         "review_state": "current"
       }
     }
@@ -2671,6 +2868,235 @@
       "from": "case-tri1634",
       "to": "operator-role",
       "type": "about"
+    },
+    "about-intention-operations": {
+      "from": "intention-operations",
+      "to": "intention-type",
+      "type": "about"
+    },
+    "about-intention-schema": {
+      "from": "intention-schema",
+      "to": "intention-type",
+      "type": "about"
+    },
+    "schema-depends-on-operations": {
+      "from": "intention-schema",
+      "to": "intention-operations",
+      "type": "depends-on"
+    },
+    "trace-raises-schema": {
+      "from": "desk-arrival-carries-trace",
+      "to": "intention-schema",
+      "type": "raises"
+    },
+    "src-schema-q": {
+      "from": "intention-schema",
+      "to": "session-2026-09-16-dials",
+      "type": "informs"
+    },
+    "about-opset-intention": {
+      "from": "intention-operation-set",
+      "to": "intention-type",
+      "type": "about"
+    },
+    "gov-opset-file": {
+      "from": "intention-operation-set",
+      "to": "file-intention",
+      "type": "governs"
+    },
+    "gov-opset-reassess": {
+      "from": "intention-operation-set",
+      "to": "reassess-intention",
+      "type": "governs"
+    },
+    "gov-opset-create": {
+      "from": "intention-operation-set",
+      "to": "create-record",
+      "type": "governs"
+    },
+    "gov-opset-send": {
+      "from": "intention-operation-set",
+      "to": "send-to-desk",
+      "type": "governs"
+    },
+    "gov-opset-answer": {
+      "from": "intention-operation-set",
+      "to": "answer-at-desk",
+      "type": "governs"
+    },
+    "gov-opset-settle": {
+      "from": "intention-operation-set",
+      "to": "settle-intention",
+      "type": "governs"
+    },
+    "answers-opset-operations": {
+      "from": "intention-operation-set",
+      "to": "intention-operations",
+      "type": "answers",
+      "coverage": "full",
+      "meta": {
+        "answer": {
+          "findings": [
+            "six operations, performers named"
+          ],
+          "complete": true
+        }
+      }
+    },
+    "gov-asks-desk-send": {
+      "from": "orchestrator-asks-desk-directly",
+      "to": "send-to-desk",
+      "type": "governs"
+    },
+    "about-asks-desk-orchestrator": {
+      "from": "orchestrator-asks-desk-directly",
+      "to": "orchestrator-role",
+      "type": "about"
+    },
+    "about-asks-desk-operator": {
+      "from": "orchestrator-asks-desk-directly",
+      "to": "operator-role",
+      "type": "about"
+    },
+    "src-opset": {
+      "from": "intention-operation-set",
+      "to": "session-2026-09-16-dials",
+      "type": "informs"
+    },
+    "gov-dials-send": {
+      "from": "dials-configure-steward",
+      "to": "send-to-desk",
+      "type": "governs"
+    },
+    "gov-rest-reassess": {
+      "from": "rest-wakes-steward",
+      "to": "reassess-intention",
+      "type": "governs"
+    },
+    "gov-settle-judgment": {
+      "from": "completion-does-not-settle",
+      "to": "settle-intention",
+      "type": "governs"
+    },
+    "acts-file-intention": {
+      "from": "file-intention",
+      "to": "intention-type",
+      "type": "acts-on"
+    },
+    "acts-reassess-intention": {
+      "from": "reassess-intention",
+      "to": "intention-type",
+      "type": "acts-on"
+    },
+    "acts-create-record-intention": {
+      "from": "create-record",
+      "to": "intention-type",
+      "type": "acts-on"
+    },
+    "acts-create-record-record": {
+      "from": "create-record",
+      "to": "record-type",
+      "type": "acts-on"
+    },
+    "acts-send-intention": {
+      "from": "send-to-desk",
+      "to": "intention-type",
+      "type": "acts-on"
+    },
+    "acts-answer-intention": {
+      "from": "answer-at-desk",
+      "to": "intention-type",
+      "type": "acts-on"
+    },
+    "acts-settle-intention": {
+      "from": "settle-intention",
+      "to": "intention-type",
+      "type": "acts-on"
+    },
+    "acts-choose-work-intention": {
+      "from": "choose-work",
+      "to": "intention-type",
+      "type": "acts-on"
+    },
+    "acts-end-attempt-record": {
+      "from": "end-attempt",
+      "to": "record-type",
+      "type": "acts-on"
+    },
+    "gov-desk-item-send": {
+      "from": "desk-item-shows-intention",
+      "to": "send-to-desk",
+      "type": "governs"
+    },
+    "about-desk-item-intention": {
+      "from": "desk-item-shows-intention",
+      "to": "intention-type",
+      "type": "about"
+    },
+    "about-desk-item-operator": {
+      "from": "desk-item-shows-intention",
+      "to": "operator-role",
+      "type": "about"
+    },
+    "about-required-operator": {
+      "from": "required-actors",
+      "to": "operator-role",
+      "type": "about"
+    },
+    "about-required-steward": {
+      "from": "required-actors",
+      "to": "steward-role",
+      "type": "about"
+    },
+    "about-required-orchestrator": {
+      "from": "required-actors",
+      "to": "orchestrator-role",
+      "type": "about"
+    },
+    "src-required": {
+      "from": "required-actors",
+      "to": "session-2026-09-16-required",
+      "type": "supports"
+    },
+    "about-case-triage-operator": {
+      "from": "case-triage-desk-discuss",
+      "to": "operator-role",
+      "type": "about"
+    },
+    "case-triage-informs-discussion": {
+      "from": "case-triage-desk-discuss",
+      "to": "discussion-shape",
+      "type": "informs"
+    },
+    "about-discussion-intention": {
+      "from": "discussion-shape",
+      "to": "intention-type",
+      "type": "about"
+    },
+    "about-history-mech-intention": {
+      "from": "intention-history-mechanism",
+      "to": "intention-type",
+      "type": "about"
+    },
+    "schema-depends-discussion": {
+      "from": "intention-schema",
+      "to": "discussion-shape",
+      "type": "depends-on"
+    },
+    "schema-depends-history": {
+      "from": "intention-schema",
+      "to": "intention-history-mechanism",
+      "type": "depends-on"
+    },
+    "about-asst-arch-operator": {
+      "from": "assistant-vs-architect",
+      "to": "operator-role",
+      "type": "about"
+    },
+    "src-asst-arch": {
+      "from": "assistant-vs-architect",
+      "to": "session-2026-09-16-required",
+      "type": "informs"
     }
   },
   "changes": [
@@ -9050,6 +9476,832 @@
             "from": "case-tri1634",
             "to": "operator-role",
             "type": "about"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 25,
+      "at": "2026-09-16T03:56:40.998379+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: file the intention schema question, blocked on the intention operations question; declare depends-on",
+      "edits": [
+        {
+          "collection": "edge_types",
+          "id": "depends-on",
+          "before": null,
+          "after": {
+            "description": "Dependent question or claim → mandatory prerequisite. The dependent is not ready until the prerequisite is answered or accepted. Use only for a real dependency."
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "intention-operations",
+          "before": null,
+          "after": {
+            "type": "question",
+            "status": "open",
+            "text": "What operations act on an intention, and who performs each? Filing it, the steward claiming and reassessing it, linking a record to it, sending it to the operator, the operator answering, settling it as satisfied or withdrawn. Which of these are real operations, which are just state on the intention, and is the list complete?",
+            "meta": {
+              "title": "What operations act on an intention",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "answer_shape": "exploration",
+              "provenance": "2026-09-16: Blake noticed no operation is linked to the intention anchor, and that the schema cannot be written before the operations are known.",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "intention-schema",
+          "before": null,
+          "after": {
+            "type": "question",
+            "status": "open",
+            "text": "What is the schema of an intention: its fields, its history, and where the steward's dial reading and the operator's answers are written? Foundational. Not answerable until the operations on an intention are known.",
+            "meta": {
+              "title": "The schema of an intention",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "answer_shape": "exploration",
+              "provenance": "2026-09-16, raised when asking where a desk arrival's trace lives.",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-intention-operations",
+          "before": null,
+          "after": {
+            "from": "intention-operations",
+            "to": "intention-type",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-intention-schema",
+          "before": null,
+          "after": {
+            "from": "intention-schema",
+            "to": "intention-type",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "schema-depends-on-operations",
+          "before": null,
+          "after": {
+            "from": "intention-schema",
+            "to": "intention-operations",
+            "type": "depends-on"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "trace-raises-schema",
+          "before": null,
+          "after": {
+            "from": "desk-arrival-carries-trace",
+            "to": "intention-schema",
+            "type": "raises"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "src-schema-q",
+          "before": null,
+          "after": {
+            "from": "intention-schema",
+            "to": "session-2026-09-16-dials",
+            "type": "informs"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 26,
+      "at": "2026-09-16T04:01:25.138499+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16 affirmed the six operations on an intention; send-to-desk is not steward-only, the orchestrator asks the desk directly",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "file-intention",
+          "before": null,
+          "after": {
+            "type": "operation",
+            "status": "provisional",
+            "text": "Bring a new intention into existence. The front door: anyone outside, or any agent, may file. A filed, unprocessed intention wakes the steward.",
+            "meta": {
+              "title": "File an intention",
+              "author": "assistant",
+              "source_kind": "session-paraphrase",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "reassess-intention",
+          "before": null,
+          "after": {
+            "type": "operation",
+            "status": "provisional",
+            "text": "The steward claims an intention and reads all prior work against it, then chooses: more work, wait, send to the desk, or settle. Triggered by rest of a linked record or a new filing.",
+            "meta": {
+              "title": "Claim and reassess an intention",
+              "author": "assistant",
+              "source_kind": "session-paraphrase",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "send-to-desk",
+          "before": null,
+          "after": {
+            "type": "operation",
+            "status": "provisional",
+            "text": "Put an item on the operator's desk with a trace of why. Not steward-only: the steward sends intentions the dials say the operator must see; the orchestrator sends execution questions directly. While the item is on the desk the operator owes the next action.",
+            "meta": {
+              "title": "Send to the desk",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "provenance": "2026-09-16: Blake clarified that 'send to operator' means go to the desk and that the orchestrator's orchestration questions also come to the desk, not via the steward.",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "answer-at-desk",
+          "before": null,
+          "after": {
+            "type": "operation",
+            "status": "provisional",
+            "text": "The operator answers an item on the desk, at the desk or in an agent thread. The answer is recorded against the durable item and ownership of the next action returns to the sender.",
+            "meta": {
+              "title": "Answer at the desk",
+              "author": "assistant",
+              "source_kind": "session-paraphrase",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "settle-intention",
+          "before": null,
+          "after": {
+            "type": "operation",
+            "status": "provisional",
+            "text": "Judge an intention satisfied or withdrawn. Performed by the steward or the operator, never by a record completing.",
+            "meta": {
+              "title": "Settle an intention",
+              "author": "assistant",
+              "source_kind": "session-paraphrase",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "intention-operation-set",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "The operations on an intention are: file (anyone), claim and reassess (steward), create a linked record (steward only), send to the desk (steward for intentions, orchestrator for execution questions), answer at the desk (operator), settle (steward or operator). No operation on an intention belongs to the orchestrator or a worker except the orchestrator's direct desk question.",
+            "meta": {
+              "title": "The operations on an intention",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "provenance": "Derived by the assistant from the accepted claims of 2026-09-14 and 2026-09-16; Blake affirmed the list on 2026-09-16 with one correction: send-to-desk is not steward-only.",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "orchestrator-asks-desk-directly",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "The orchestrator's questions about execution go to the operator's desk directly. The steward is not a relay; it is for when the mapping from intention to work needs reconsidering.",
+            "meta": {
+              "title": "The orchestrator asks the desk directly",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "provenance": "Session 2 rejected alternative 'relaying every question through the steward'; reaffirmed 2026-09-16.",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-opset-intention",
+          "before": null,
+          "after": {
+            "from": "intention-operation-set",
+            "to": "intention-type",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "gov-opset-file",
+          "before": null,
+          "after": {
+            "from": "intention-operation-set",
+            "to": "file-intention",
+            "type": "governs"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "gov-opset-reassess",
+          "before": null,
+          "after": {
+            "from": "intention-operation-set",
+            "to": "reassess-intention",
+            "type": "governs"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "gov-opset-create",
+          "before": null,
+          "after": {
+            "from": "intention-operation-set",
+            "to": "create-record",
+            "type": "governs"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "gov-opset-send",
+          "before": null,
+          "after": {
+            "from": "intention-operation-set",
+            "to": "send-to-desk",
+            "type": "governs"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "gov-opset-answer",
+          "before": null,
+          "after": {
+            "from": "intention-operation-set",
+            "to": "answer-at-desk",
+            "type": "governs"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "gov-opset-settle",
+          "before": null,
+          "after": {
+            "from": "intention-operation-set",
+            "to": "settle-intention",
+            "type": "governs"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "answers-opset-operations",
+          "before": null,
+          "after": {
+            "from": "intention-operation-set",
+            "to": "intention-operations",
+            "type": "answers",
+            "coverage": "full",
+            "meta": {
+              "answer": {
+                "findings": [
+                  "six operations, performers named"
+                ],
+                "complete": true
+              }
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "intention-operations",
+          "before": {
+            "type": "question",
+            "status": "open",
+            "text": "What operations act on an intention, and who performs each? Filing it, the steward claiming and reassessing it, linking a record to it, sending it to the operator, the operator answering, settling it as satisfied or withdrawn. Which of these are real operations, which are just state on the intention, and is the list complete?",
+            "meta": {
+              "title": "What operations act on an intention",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "answer_shape": "exploration",
+              "provenance": "2026-09-16: Blake noticed no operation is linked to the intention anchor, and that the schema cannot be written before the operations are known.",
+              "review_state": "current"
+            }
+          },
+          "after": {
+            "type": "question",
+            "status": "answered",
+            "text": "What operations act on an intention, and who performs each? Filing it, the steward claiming and reassessing it, linking a record to it, sending it to the operator, the operator answering, settling it as satisfied or withdrawn. Which of these are real operations, which are just state on the intention, and is the list complete?",
+            "meta": {
+              "title": "What operations act on an intention",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "answer_shape": "exploration",
+              "provenance": "2026-09-16: Blake noticed no operation is linked to the intention anchor, and that the schema cannot be written before the operations are known.",
+              "review_state": "current",
+              "review_reason": "Blake affirmed the list 2026-09-16."
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "gov-asks-desk-send",
+          "before": null,
+          "after": {
+            "from": "orchestrator-asks-desk-directly",
+            "to": "send-to-desk",
+            "type": "governs"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-asks-desk-orchestrator",
+          "before": null,
+          "after": {
+            "from": "orchestrator-asks-desk-directly",
+            "to": "orchestrator-role",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-asks-desk-operator",
+          "before": null,
+          "after": {
+            "from": "orchestrator-asks-desk-directly",
+            "to": "operator-role",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "src-opset",
+          "before": null,
+          "after": {
+            "from": "intention-operation-set",
+            "to": "session-2026-09-16-dials",
+            "type": "informs"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "gov-dials-send",
+          "before": null,
+          "after": {
+            "from": "dials-configure-steward",
+            "to": "send-to-desk",
+            "type": "governs"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "gov-rest-reassess",
+          "before": null,
+          "after": {
+            "from": "rest-wakes-steward",
+            "to": "reassess-intention",
+            "type": "governs"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "gov-settle-judgment",
+          "before": null,
+          "after": {
+            "from": "completion-does-not-settle",
+            "to": "settle-intention",
+            "type": "governs"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 27,
+      "at": "2026-09-16T04:06:14.356840+00:00",
+      "actor": "assistant",
+      "reason": "Declare acts-on so operations link to the entities they act on; Blake 2026-09-16: a desk item shows its intention through its record",
+      "edits": [
+        {
+          "collection": "edge_types",
+          "id": "acts-on",
+          "before": null,
+          "after": {
+            "description": "Operation → the entity it reads or changes. Lets a reader walk from an entity to the operations on it."
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "acts-file-intention",
+          "before": null,
+          "after": {
+            "from": "file-intention",
+            "to": "intention-type",
+            "type": "acts-on"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "acts-reassess-intention",
+          "before": null,
+          "after": {
+            "from": "reassess-intention",
+            "to": "intention-type",
+            "type": "acts-on"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "acts-create-record-intention",
+          "before": null,
+          "after": {
+            "from": "create-record",
+            "to": "intention-type",
+            "type": "acts-on"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "acts-create-record-record",
+          "before": null,
+          "after": {
+            "from": "create-record",
+            "to": "record-type",
+            "type": "acts-on"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "acts-send-intention",
+          "before": null,
+          "after": {
+            "from": "send-to-desk",
+            "to": "intention-type",
+            "type": "acts-on"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "acts-answer-intention",
+          "before": null,
+          "after": {
+            "from": "answer-at-desk",
+            "to": "intention-type",
+            "type": "acts-on"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "acts-settle-intention",
+          "before": null,
+          "after": {
+            "from": "settle-intention",
+            "to": "intention-type",
+            "type": "acts-on"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "acts-choose-work-intention",
+          "before": null,
+          "after": {
+            "from": "choose-work",
+            "to": "intention-type",
+            "type": "acts-on"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "acts-end-attempt-record",
+          "before": null,
+          "after": {
+            "from": "end-attempt",
+            "to": "record-type",
+            "type": "acts-on"
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "desk-item-shows-intention",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "Every item on the desk is linked to its record and, through the record, to the intention, so the operator can see the original filing and the whole point of the work. An orchestrator's execution question is linked to the record it concerns; the link to the intention may be implicit through the record, but the desk must show it.",
+            "meta": {
+              "title": "A desk item shows its intention",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "provenance": "2026-09-16: 'It should be linked to both ... whether it's explicit or implicit I'm not really bothered, but it should definitely be something that I can see on my desk.'",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "gov-desk-item-send",
+          "before": null,
+          "after": {
+            "from": "desk-item-shows-intention",
+            "to": "send-to-desk",
+            "type": "governs"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-desk-item-intention",
+          "before": null,
+          "after": {
+            "from": "desk-item-shows-intention",
+            "to": "intention-type",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-desk-item-operator",
+          "before": null,
+          "after": {
+            "from": "desk-item-shows-intention",
+            "to": "operator-role",
+            "type": "about"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 28,
+      "at": "2026-09-16T04:17:58.255651+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: three actors required; triage desk/discuss/architect as prior art; discussion, history mechanism and assistant-vs-architect opened; history claim narrowed",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "session-2026-09-16-required",
+          "before": null,
+          "after": {
+            "type": "source",
+            "status": "recorded",
+            "text": "Blake, 2026-09-16, verbatim excerpts: \"Some built-in agents are required, like the orchestrator, which is 100% necessary (you can change its memory and instructions, but it must be there), the steward, and the operator. Those are non-negotiable.\" \"the steward agent and the orchestrator are canonical, while the assistant is not necessarily canonical.\" \"the desk should be cleared every day. The assistant node should also be cleared daily, though it might take a few hours. The architect would be persistent, always holding high-level architectural or design direction, essentially what we're doing right now.\" \"Maybe we could use the theory graph for this, with a theory or design agent.\"",
+            "meta": {
+              "title": "Session 2026-09-16: required agents and half-lives",
+              "author": "Blake",
+              "source_kind": "verbatim",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "required-actors",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "Three actors are required in every Morphisms installation and cannot be removed: the operator, the steward, and the orchestrator. Their memory and instructions are configurable; their existence is not. Every other agent, including the assistant and the architect, is optional and user-defined.",
+            "meta": {
+              "title": "Three actors are required",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "provenance": "2026-09-16, exact words in session-2026-09-16-required. Settles the notebook's unsettled item 'what is supplied, required, or configurable'.",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "case-triage-desk-discuss",
+          "before": null,
+          "after": {
+            "type": "case",
+            "status": "recorded",
+            "text": "Prior art for discussion, in the live triage store (contracts/internal/morphisms/contract.mor, dimension journey): the sorter puts a record on the desk with a static packet of one to four numbered options, a recommendation, and the proposition being judged; a standing ruling can route past the desk. When the matter is too big for a static packet the operator walks it to a discuss state (seat both, run by the assistant) or an architect state (seat both). Desk clears daily; discuss takes hours; architect persists for weeks. This is the node-bound version of what v3 lifts above the graph.",
+            "meta": {
+              "title": "Case: desk, discuss and architect in the triage store",
+              "author": "assistant",
+              "source_kind": "assistant-paraphrase",
+              "provenance": "Blake's description 2026-09-16 plus the contract text.",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "discussion-shape",
+          "before": null,
+          "after": {
+            "type": "question",
+            "status": "open",
+            "text": "What is a discussion on an intention: an operation, a state the intention sits in, or an event stream? And where is it stored: rows in the database, a linked markdown note, or an artifact? Blake is wary of adding artifacts to intentions the way records have them.",
+            "meta": {
+              "title": "What is a discussion",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "answer_shape": "condition",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "intention-history-mechanism",
+          "before": null,
+          "after": {
+            "type": "question",
+            "status": "open",
+            "text": "Is the intention's history the same append-only event mechanism the kernel already uses for records, or its own? Blake leans to the same mechanism: no overwritten fields, as close to a record's event log as possible.",
+            "meta": {
+              "title": "Same event mechanism as records?",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "answer_shape": "verdict",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "assistant-vs-architect",
+          "before": null,
+          "after": {
+            "type": "question",
+            "status": "open",
+            "text": "What separates the assistant from the architect? Session 2 (2026-09-14, F10) said responsibility, not duration. On 2026-09-16 Blake described them by half-life: desk cleared daily, assistant hours, architect weeks and persistent. Are both true, or has the earlier statement been revised?",
+            "meta": {
+              "title": "Assistant versus architect",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "answer_shape": "verdict",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "intention-carries-history",
+          "before": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "An intention carries its history: discussion entries, linked records, decisions and blocked-work evidence. A report that chosen work no longer serves the intention returns to that same intention with the work's history; it does not create a new intention.",
+            "meta": {
+              "title": "The intention carries the history",
+              "author": "Blake",
+              "source_kind": "assistant-paraphrase",
+              "provenance": "Session 2 F5 and the rejected alternative 'making every human-facing matter an intention'. Reaffirmed 2026-09-16 when the bullet list was read back.",
+              "review_state": "current"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "An intention carries its history: manifest-record links, discussion, and operator answers, as an append-only history. A report that chosen work no longer serves the intention returns to that same intention; it does not create a new intention. Evidence about what went wrong lives on the record (the archive reason), not on the intention.",
+            "meta": {
+              "title": "The intention carries the history",
+              "author": "Blake",
+              "source_kind": "assistant-paraphrase",
+              "provenance": "Session 2 F5 and the rejected alternative 'making every human-facing matter an intention'. Reaffirmed 2026-09-16 when the bullet list was read back.",
+              "review_state": "current",
+              "review_reason": "Narrowed 2026-09-16: 'decisions' and 'blocked-work evidence' were assistant words; the handover lives on the record's archive reason."
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-required-operator",
+          "before": null,
+          "after": {
+            "from": "required-actors",
+            "to": "operator-role",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-required-steward",
+          "before": null,
+          "after": {
+            "from": "required-actors",
+            "to": "steward-role",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-required-orchestrator",
+          "before": null,
+          "after": {
+            "from": "required-actors",
+            "to": "orchestrator-role",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "src-required",
+          "before": null,
+          "after": {
+            "from": "required-actors",
+            "to": "session-2026-09-16-required",
+            "type": "supports"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-case-triage-operator",
+          "before": null,
+          "after": {
+            "from": "case-triage-desk-discuss",
+            "to": "operator-role",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "case-triage-informs-discussion",
+          "before": null,
+          "after": {
+            "from": "case-triage-desk-discuss",
+            "to": "discussion-shape",
+            "type": "informs"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-discussion-intention",
+          "before": null,
+          "after": {
+            "from": "discussion-shape",
+            "to": "intention-type",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-history-mech-intention",
+          "before": null,
+          "after": {
+            "from": "intention-history-mechanism",
+            "to": "intention-type",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "schema-depends-discussion",
+          "before": null,
+          "after": {
+            "from": "intention-schema",
+            "to": "discussion-shape",
+            "type": "depends-on"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "schema-depends-history",
+          "before": null,
+          "after": {
+            "from": "intention-schema",
+            "to": "intention-history-mechanism",
+            "type": "depends-on"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-asst-arch-operator",
+          "before": null,
+          "after": {
+            "from": "assistant-vs-architect",
+            "to": "operator-role",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "src-asst-arch",
+          "before": null,
+          "after": {
+            "from": "assistant-vs-architect",
+            "to": "session-2026-09-16-required",
+            "type": "informs"
           }
         }
       ]
