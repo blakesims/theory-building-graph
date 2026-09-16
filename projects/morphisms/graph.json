@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 60,
+  "revision": 64,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1520,14 +1520,15 @@
     },
     "one-actor-one-item-kind": {
       "type": "claim",
-      "status": "proposed",
+      "status": "withdrawn",
       "text": "Each actor claims exactly one kind of item and no other: the steward claims intentions, the orchestrator claims runs, the worker claims records, the operator claims desk items. Any actor's judgment may birth items of another kind, but claiming is exclusive. An intention can birth many records and many desk items.",
       "meta": {
-        "review_state": "needs-review",
+        "review_state": "historical",
         "title": "one actor one item kind",
         "author": "Blake",
         "source_kind": "session-paraphrase",
-        "review_reason": "Review relation added: tension-record-claimer"
+        "review_reason": "Review relation added: tension-record-claimer",
+        "superseded_by": "one-actor-one-item-kind-v2"
       }
     },
     "thread-question-mirrors-to-desk": {
@@ -1709,11 +1710,11 @@
       "status": "proposed",
       "text": "One relation, 'is one attempt at', repeated: a record is one attempt at an intention; a run is one attempt at a record's node. Claimed by steward, orchestrator, worker respectively. When a rung comes to rest, the claimer one rung up is woken: run rest wakes the orchestrator, record rest wakes the steward. Note: on the ladder the orchestrator claims the record and the worker claims the run; Blake's phrasing was 'the (record, worker) pair is claimable by the orchestrator', the same fact seen from the run.",
       "meta": {
-        "review_state": "needs-review",
+        "review_state": "current",
         "title": "attempt ladder",
         "author": "assistant",
         "source_kind": "assistant-proposal",
-        "review_reason": "Review relation added: tension-record-claimer"
+        "review_reason": "Tension resolved by Blake's ruling; the ladder's actor-to-rung pairing is the ruled one"
       }
     },
     "attempt-obstruction-dual": {
@@ -1770,6 +1771,39 @@
         "source_kind": "assistant-proposal",
         "review_state": "current",
         "provenance": "2026-09-16"
+      }
+    },
+    "session-2026-09-16-record-claimer": {
+      "type": "source",
+      "status": "recorded",
+      "text": "Blake, 2026-09-16, verbatim: \"I would say that the orchestrator is picking up records and the workers are picking up runs. So that means that when a run has completed, which happens to be the last run possible for a record, in other words, the record has finished terminally across all dimensions in the store that it's in, then it's not up to the orchestrator to do anything. It goes straight to the steward.\"",
+      "meta": {
+        "review_state": "current",
+        "title": "session 2026 09 16 record claimer",
+        "author": "Blake",
+        "source_kind": "verbatim"
+      }
+    },
+    "one-actor-one-item-kind-v2": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "Each actor claims exactly one kind of item and no other: the steward claims intentions, the orchestrator claims records, the worker claims runs, the operator claims desk items. Any actor's judgment may birth items of another kind, but claiming is exclusive. An intention can birth many records and many desk items.",
+      "meta": {
+        "review_state": "current",
+        "title": "one actor one item kind v2",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
+      }
+    },
+    "record-rest-skips-orchestrator": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "When the last run on a record ends and the record is at rest across every dimension of its store, the orchestrator has no step: the record's rest wakes the steward directly.",
+      "meta": {
+        "review_state": "current",
+        "title": "record rest skips orchestrator",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
       }
     }
   },
@@ -3827,6 +3861,91 @@
       "meta": {
         "explanation": "one-actor-one-item-kind (Blake's list) says the worker claims the record and the orchestrator claims the run. attempt-ladder (assistant) says the orchestrator claims the record and the worker claims the run, so that rest-wakes-the-rung-above recurs. Same facts, different bookkeeping; needs one ruling."
       }
+    },
+    "one-actor-one-item-kind-v2-about-steward-role": {
+      "from": "one-actor-one-item-kind-v2",
+      "type": "about",
+      "to": "steward-role"
+    },
+    "one-actor-one-item-kind-v2-about-orchestrator-role": {
+      "from": "one-actor-one-item-kind-v2",
+      "type": "about",
+      "to": "orchestrator-role"
+    },
+    "one-actor-one-item-kind-v2-about-worker-role": {
+      "from": "one-actor-one-item-kind-v2",
+      "type": "about",
+      "to": "worker-role"
+    },
+    "one-actor-one-item-kind-v2-about-operator-role": {
+      "from": "one-actor-one-item-kind-v2",
+      "type": "about",
+      "to": "operator-role"
+    },
+    "one-actor-one-item-kind-v2-about-intention-type": {
+      "from": "one-actor-one-item-kind-v2",
+      "type": "about",
+      "to": "intention-type"
+    },
+    "one-actor-one-item-kind-v2-about-record-type": {
+      "from": "one-actor-one-item-kind-v2",
+      "type": "about",
+      "to": "record-type"
+    },
+    "one-actor-one-item-kind-v2-about-run": {
+      "from": "one-actor-one-item-kind-v2",
+      "type": "about",
+      "to": "run"
+    },
+    "one-actor-one-item-kind-v2-about-desk-item": {
+      "from": "one-actor-one-item-kind-v2",
+      "type": "about",
+      "to": "desk-item"
+    },
+    "one-actor-one-item-kind-v2-extracted-from-session-2026-09-16-record-claimer": {
+      "from": "one-actor-one-item-kind-v2",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-record-claimer"
+    },
+    "one-actor-one-item-kind-v2-revises-one-actor-one-item-kind": {
+      "from": "one-actor-one-item-kind-v2",
+      "type": "revises",
+      "to": "one-actor-one-item-kind"
+    },
+    "one-actor-one-item-kind-v2-supports-attempt-ladder": {
+      "from": "one-actor-one-item-kind-v2",
+      "type": "supports",
+      "to": "attempt-ladder"
+    },
+    "record-rest-skips-orchestrator-about-record-type": {
+      "from": "record-rest-skips-orchestrator",
+      "type": "about",
+      "to": "record-type"
+    },
+    "record-rest-skips-orchestrator-about-orchestrator-role": {
+      "from": "record-rest-skips-orchestrator",
+      "type": "about",
+      "to": "orchestrator-role"
+    },
+    "record-rest-skips-orchestrator-about-steward-role": {
+      "from": "record-rest-skips-orchestrator",
+      "type": "about",
+      "to": "steward-role"
+    },
+    "record-rest-skips-orchestrator-extracted-from-session-2026-09-16-record-claimer": {
+      "from": "record-rest-skips-orchestrator",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-record-claimer"
+    },
+    "record-rest-skips-orchestrator-supports-attempt-ladder": {
+      "from": "record-rest-skips-orchestrator",
+      "type": "supports",
+      "to": "attempt-ladder"
+    },
+    "record-rest-skips-orchestrator-supports-rest-wakes-steward": {
+      "from": "record-rest-skips-orchestrator",
+      "type": "supports",
+      "to": "rest-wakes-steward"
     }
   },
   "changes": [
@@ -12703,6 +12822,313 @@
               "source_kind": "assistant-proposal",
               "provenance": "Notebook State changes tab, marked there as a candidate. Not ratified.",
               "review_state": "current"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 61,
+      "at": "2026-09-16T07:04:12.996567+00:00",
+      "actor": "assistant",
+      "reason": "Blake ruled the record-claimer tension 2026-09-16: orchestrator claims records, worker claims runs; record rest goes straight to the steward",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "session-2026-09-16-record-claimer",
+          "before": null,
+          "after": {
+            "type": "source",
+            "status": "recorded",
+            "text": "Blake, 2026-09-16, verbatim: \"I would say that the orchestrator is picking up records and the workers are picking up runs. So that means that when a run has completed, which happens to be the last run possible for a record, in other words, the record has finished terminally across all dimensions in the store that it's in, then it's not up to the orchestrator to do anything. It goes straight to the steward.\"",
+            "meta": {
+              "review_state": "current",
+              "title": "session 2026 09 16 record claimer",
+              "author": "Blake",
+              "source_kind": "verbatim"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 62,
+      "at": "2026-09-16T07:04:13.111373+00:00",
+      "actor": "assistant",
+      "reason": "Blake ruled the record-claimer tension 2026-09-16: orchestrator claims records, worker claims runs; record rest goes straight to the steward",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "one-actor-one-item-kind-v2",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "Each actor claims exactly one kind of item and no other: the steward claims intentions, the orchestrator claims records, the worker claims runs, the operator claims desk items. Any actor's judgment may birth items of another kind, but claiming is exclusive. An intention can birth many records and many desk items.",
+            "meta": {
+              "review_state": "current",
+              "title": "one actor one item kind v2",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-v2-about-steward-role",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind-v2",
+            "type": "about",
+            "to": "steward-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-v2-about-orchestrator-role",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind-v2",
+            "type": "about",
+            "to": "orchestrator-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-v2-about-worker-role",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind-v2",
+            "type": "about",
+            "to": "worker-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-v2-about-operator-role",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind-v2",
+            "type": "about",
+            "to": "operator-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-v2-about-intention-type",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind-v2",
+            "type": "about",
+            "to": "intention-type"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-v2-about-record-type",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind-v2",
+            "type": "about",
+            "to": "record-type"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-v2-about-run",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind-v2",
+            "type": "about",
+            "to": "run"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-v2-about-desk-item",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind-v2",
+            "type": "about",
+            "to": "desk-item"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-v2-extracted-from-session-2026-09-16-record-claimer",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind-v2",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-record-claimer"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-v2-revises-one-actor-one-item-kind",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind-v2",
+            "type": "revises",
+            "to": "one-actor-one-item-kind"
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "one-actor-one-item-kind",
+          "before": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "Each actor claims exactly one kind of item and no other: the steward claims intentions, the orchestrator claims runs, the worker claims records, the operator claims desk items. Any actor's judgment may birth items of another kind, but claiming is exclusive. An intention can birth many records and many desk items.",
+            "meta": {
+              "review_state": "needs-review",
+              "title": "one actor one item kind",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "review_reason": "Review relation added: tension-record-claimer"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "withdrawn",
+            "text": "Each actor claims exactly one kind of item and no other: the steward claims intentions, the orchestrator claims runs, the worker claims records, the operator claims desk items. Any actor's judgment may birth items of another kind, but claiming is exclusive. An intention can birth many records and many desk items.",
+            "meta": {
+              "review_state": "historical",
+              "title": "one actor one item kind",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "review_reason": "Review relation added: tension-record-claimer",
+              "superseded_by": "one-actor-one-item-kind-v2"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "one-actor-one-item-kind-v2-supports-attempt-ladder",
+          "before": null,
+          "after": {
+            "from": "one-actor-one-item-kind-v2",
+            "type": "supports",
+            "to": "attempt-ladder"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 63,
+      "at": "2026-09-16T07:04:13.212409+00:00",
+      "actor": "assistant",
+      "reason": "Blake ruled the record-claimer tension 2026-09-16: orchestrator claims records, worker claims runs; record rest goes straight to the steward",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "record-rest-skips-orchestrator",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "When the last run on a record ends and the record is at rest across every dimension of its store, the orchestrator has no step: the record's rest wakes the steward directly.",
+            "meta": {
+              "review_state": "current",
+              "title": "record rest skips orchestrator",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "record-rest-skips-orchestrator-about-record-type",
+          "before": null,
+          "after": {
+            "from": "record-rest-skips-orchestrator",
+            "type": "about",
+            "to": "record-type"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "record-rest-skips-orchestrator-about-orchestrator-role",
+          "before": null,
+          "after": {
+            "from": "record-rest-skips-orchestrator",
+            "type": "about",
+            "to": "orchestrator-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "record-rest-skips-orchestrator-about-steward-role",
+          "before": null,
+          "after": {
+            "from": "record-rest-skips-orchestrator",
+            "type": "about",
+            "to": "steward-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "record-rest-skips-orchestrator-extracted-from-session-2026-09-16-record-claimer",
+          "before": null,
+          "after": {
+            "from": "record-rest-skips-orchestrator",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-record-claimer"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "record-rest-skips-orchestrator-supports-attempt-ladder",
+          "before": null,
+          "after": {
+            "from": "record-rest-skips-orchestrator",
+            "type": "supports",
+            "to": "attempt-ladder"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "record-rest-skips-orchestrator-supports-rest-wakes-steward",
+          "before": null,
+          "after": {
+            "from": "record-rest-skips-orchestrator",
+            "type": "supports",
+            "to": "rest-wakes-steward"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 64,
+      "at": "2026-09-16T07:04:13.304882+00:00",
+      "actor": "assistant",
+      "reason": "Tension resolved by Blake's ruling; the ladder's actor-to-rung pairing is the ruled one",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "attempt-ladder",
+          "before": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "One relation, 'is one attempt at', repeated: a record is one attempt at an intention; a run is one attempt at a record's node. Claimed by steward, orchestrator, worker respectively. When a rung comes to rest, the claimer one rung up is woken: run rest wakes the orchestrator, record rest wakes the steward. Note: on the ladder the orchestrator claims the record and the worker claims the run; Blake's phrasing was 'the (record, worker) pair is claimable by the orchestrator', the same fact seen from the run.",
+            "meta": {
+              "review_state": "needs-review",
+              "title": "attempt ladder",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "review_reason": "Review relation added: tension-record-claimer"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "One relation, 'is one attempt at', repeated: a record is one attempt at an intention; a run is one attempt at a record's node. Claimed by steward, orchestrator, worker respectively. When a rung comes to rest, the claimer one rung up is woken: run rest wakes the orchestrator, record rest wakes the steward. Note: on the ladder the orchestrator claims the record and the worker claims the run; Blake's phrasing was 'the (record, worker) pair is claimable by the orchestrator', the same fact seen from the run.",
+            "meta": {
+              "review_state": "current",
+              "title": "attempt ladder",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "review_reason": "Tension resolved by Blake's ruling; the ladder's actor-to-rung pairing is the ruled one"
             }
           }
         }
