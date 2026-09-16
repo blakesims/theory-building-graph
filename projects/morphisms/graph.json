@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 59,
+  "revision": 60,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -12669,6 +12669,42 @@
             }
           },
           "automatic": "conflict-review"
+        }
+      ]
+    },
+    {
+      "revision": 60,
+      "at": "2026-09-16T06:45:31.483499+00:00",
+      "actor": "assistant",
+      "reason": "no-op smoke test of --no-sync",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "intention-status-set",
+          "before": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "An intention's outcome status is one of open, satisfied, withdrawn. Steward attention (ready, claimed, waiting) is a separate state machine from that outcome.",
+            "meta": {
+              "title": "Intention status set",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "provenance": "Notebook State changes tab, marked there as a candidate. Not ratified.",
+              "review_state": "current"
+            }
+          },
+          "after": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "An intention's outcome status is one of open, satisfied, withdrawn. Steward attention (ready, claimed, waiting) is a separate state machine from that outcome.",
+            "meta": {
+              "title": "Intention status set",
+              "author": "assistant",
+              "source_kind": "assistant-proposal",
+              "provenance": "Notebook State changes tab, marked there as a candidate. Not ratified.",
+              "review_state": "current"
+            }
+          }
         }
       ]
     }
