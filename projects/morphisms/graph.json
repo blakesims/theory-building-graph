@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 97,
+  "revision": 103,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1444,7 +1444,7 @@
     },
     "discussion-shape": {
       "type": "question",
-      "status": "open",
+      "status": "answered",
       "text": "What is a discussion on an intention: an operation, a state the intention sits in, or an event stream? And where is it stored: rows in the database, a linked markdown note, or an artifact? Blake is wary of adding artifacts to intentions the way records have them.",
       "meta": {
         "title": "What is a discussion",
@@ -2012,6 +2012,72 @@
         "title": "sorter is not an actor",
         "author": "Blake",
         "source_kind": "session-paraphrase"
+      }
+    },
+    "session-2026-09-16-discussion": {
+      "type": "source",
+      "status": "recorded",
+      "text": "Blake, 2026-09-16, verbatim: \"Discussions are merely event logs for desk items. That's my proposal. Yeah, that's my proposal. They are dated. I think they would honestly just be... maybe they have a schema, you know? Maybe. I don't know. That should probably be configurable. But basically, the agent that I'm working with will fill in the discussion, and again, the discussion is dated.\" \"These are the work logs that I've been running manually, using a new note in my work logs. Then I have to keep going back and finding them ... This should be tracked more explicitly, and we might even link in the future. ... This theory-graph system is actually working very well. But anyway, that would be more like an extension or an add-on.\"",
+      "meta": {
+        "review_state": "current",
+        "title": "session 2026 09 16 discussion",
+        "author": "Blake",
+        "source_kind": "verbatim"
+      }
+    },
+    "discussion-is-desk-item-log": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "A discussion is the desk item's own event log: dated entries appended by the operator or by the co-seat agent working with the operator. It replaces the hand-written worklog notes. Entry shape is configurable; a theory graph may link in later as an extension.",
+      "meta": {
+        "review_state": "current",
+        "title": "discussion is desk item log",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
+      }
+    },
+    "intention-schema-draft": {
+      "type": "claim",
+      "status": "proposed",
+      "text": "Draft schema of an intention. Identity and filing: id, the filed text, filed_by (anyone: operator, agent, worker, outside), kind (the machine-readable signature, e.g. observation). Two states: outcome (open, satisfied, withdrawn) and steward attention (ready, claimed, waiting). History: one append-only event log on the kernel's record-event machinery, events for filed, claimed, reassessed, record linked, record rest, sent to desk, desk answered, settled; each dated with actor and payload. Links: the records that are attempts at it; the desk items it birthed, each carrying its own log (discussion and the operator's answers) and the dials trace written at send-to-desk. The intention holds no artifacts and no discussion of its own.",
+      "meta": {
+        "review_state": "current",
+        "title": "intention schema draft",
+        "author": "assistant",
+        "source_kind": "assistant-proposal"
+      }
+    },
+    "intention-kind-registry": {
+      "type": "question",
+      "status": "open",
+      "text": "Is an intention's kind a fixed set shipped with Morphisms, a user-configurable registry, or free text with a few reserved values (such as observation)?",
+      "meta": {
+        "review_state": "current",
+        "title": "intention kind registry",
+        "author": "assistant",
+        "source_kind": "assistant-proposal"
+      }
+    },
+    "reassessment-reasoning-location": {
+      "type": "question",
+      "status": "open",
+      "text": "Where does the steward's reasoning at reassessment live: as the payload of the reassessed event on the intention log, or somewhere else? The dials trace already lives on the send-to-desk event.",
+      "meta": {
+        "review_state": "current",
+        "title": "reassessment reasoning location",
+        "author": "assistant",
+        "source_kind": "assistant-proposal"
+      }
+    },
+    "intention-has-no-artifacts": {
+      "type": "question",
+      "status": "open",
+      "text": "Does an intention carry no artifacts at all, with everything durable living in its event log and its desk items' logs? Blake is wary of artifacts on intentions; the draft assumes none.",
+      "meta": {
+        "review_state": "current",
+        "title": "intention has no artifacts",
+        "author": "assistant",
+        "source_kind": "assistant-proposal"
       }
     }
   },
@@ -4447,6 +4513,103 @@
       "from": "sorter-is-not-an-actor",
       "type": "supports",
       "to": "required-actors"
+    },
+    "discussion-is-desk-item-log-about-desk-item": {
+      "from": "discussion-is-desk-item-log",
+      "type": "about",
+      "to": "desk-item"
+    },
+    "discussion-is-desk-item-log-depends-on-one-log-per-item-kind": {
+      "from": "discussion-is-desk-item-log",
+      "type": "depends-on",
+      "to": "one-log-per-item-kind"
+    },
+    "discussion-is-desk-item-log-depends-on-delegates-are-co-seats": {
+      "from": "discussion-is-desk-item-log",
+      "type": "depends-on",
+      "to": "delegates-are-co-seats"
+    },
+    "discussion-is-desk-item-log-extracted-from-session-2026-09-16-discussion": {
+      "from": "discussion-is-desk-item-log",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-discussion"
+    },
+    "discussion-is-desk-item-log-answers-discussion-shape": {
+      "from": "discussion-is-desk-item-log",
+      "type": "answers",
+      "to": "discussion-shape",
+      "coverage": "full"
+    },
+    "intention-schema-draft-about-intention-type": {
+      "from": "intention-schema-draft",
+      "type": "about",
+      "to": "intention-type"
+    },
+    "intention-schema-draft-depends-on-intention-history-reuses-record-events": {
+      "from": "intention-schema-draft",
+      "type": "depends-on",
+      "to": "intention-history-reuses-record-events"
+    },
+    "intention-schema-draft-depends-on-discussion-is-desk-item-log": {
+      "from": "intention-schema-draft",
+      "type": "depends-on",
+      "to": "discussion-is-desk-item-log"
+    },
+    "intention-schema-draft-depends-on-intention-operation-set": {
+      "from": "intention-schema-draft",
+      "type": "depends-on",
+      "to": "intention-operation-set"
+    },
+    "intention-schema-draft-depends-on-intention-status-set": {
+      "from": "intention-schema-draft",
+      "type": "depends-on",
+      "to": "intention-status-set"
+    },
+    "intention-schema-draft-depends-on-desk-arrival-carries-trace": {
+      "from": "intention-schema-draft",
+      "type": "depends-on",
+      "to": "desk-arrival-carries-trace"
+    },
+    "intention-schema-draft-answers-intention-schema": {
+      "from": "intention-schema-draft",
+      "type": "answers",
+      "to": "intention-schema",
+      "coverage": "partial"
+    },
+    "intention-kind-registry-about-intention-type": {
+      "from": "intention-kind-registry",
+      "type": "about",
+      "to": "intention-type"
+    },
+    "intention-schema-draft-raises-intention-kind-registry": {
+      "from": "intention-schema-draft",
+      "type": "raises",
+      "to": "intention-kind-registry"
+    },
+    "reassessment-reasoning-location-about-intention-type": {
+      "from": "reassessment-reasoning-location",
+      "type": "about",
+      "to": "intention-type"
+    },
+    "reassessment-reasoning-location-about-steward-role": {
+      "from": "reassessment-reasoning-location",
+      "type": "about",
+      "to": "steward-role"
+    },
+    "intention-schema-draft-raises-reassessment-reasoning-location": {
+      "from": "intention-schema-draft",
+      "type": "raises",
+      "to": "reassessment-reasoning-location"
+    },
+    "intention-has-no-artifacts-about-intention-type": {
+      "from": "intention-has-no-artifacts",
+      "type": "about",
+      "to": "intention-type"
+    },
+    "intention-schema-draft-raises-intention-has-no-artifacts": {
+      "from": "intention-schema-draft",
+      "type": "raises",
+      "to": "intention-has-no-artifacts"
     }
   },
   "changes": [
@@ -15345,6 +15508,370 @@
             "to": "delegates-are-co-seats"
           },
           "after": null
+        }
+      ]
+    },
+    {
+      "revision": 98,
+      "at": "2026-09-16T08:49:32.271688+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: a discussion is the desk item event log, dated, written by the operator or the co-seat; schema draft for the intention",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "session-2026-09-16-discussion",
+          "before": null,
+          "after": {
+            "type": "source",
+            "status": "recorded",
+            "text": "Blake, 2026-09-16, verbatim: \"Discussions are merely event logs for desk items. That's my proposal. Yeah, that's my proposal. They are dated. I think they would honestly just be... maybe they have a schema, you know? Maybe. I don't know. That should probably be configurable. But basically, the agent that I'm working with will fill in the discussion, and again, the discussion is dated.\" \"These are the work logs that I've been running manually, using a new note in my work logs. Then I have to keep going back and finding them ... This should be tracked more explicitly, and we might even link in the future. ... This theory-graph system is actually working very well. But anyway, that would be more like an extension or an add-on.\"",
+            "meta": {
+              "review_state": "current",
+              "title": "session 2026 09 16 discussion",
+              "author": "Blake",
+              "source_kind": "verbatim"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 99,
+      "at": "2026-09-16T08:49:32.380231+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: a discussion is the desk item event log, dated, written by the operator or the co-seat; schema draft for the intention",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "discussion-is-desk-item-log",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "A discussion is the desk item's own event log: dated entries appended by the operator or by the co-seat agent working with the operator. It replaces the hand-written worklog notes. Entry shape is configurable; a theory graph may link in later as an extension.",
+            "meta": {
+              "review_state": "current",
+              "title": "discussion is desk item log",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "discussion-is-desk-item-log-about-desk-item",
+          "before": null,
+          "after": {
+            "from": "discussion-is-desk-item-log",
+            "type": "about",
+            "to": "desk-item"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "discussion-is-desk-item-log-depends-on-one-log-per-item-kind",
+          "before": null,
+          "after": {
+            "from": "discussion-is-desk-item-log",
+            "type": "depends-on",
+            "to": "one-log-per-item-kind"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "discussion-is-desk-item-log-depends-on-delegates-are-co-seats",
+          "before": null,
+          "after": {
+            "from": "discussion-is-desk-item-log",
+            "type": "depends-on",
+            "to": "delegates-are-co-seats"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "discussion-is-desk-item-log-extracted-from-session-2026-09-16-discussion",
+          "before": null,
+          "after": {
+            "from": "discussion-is-desk-item-log",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-discussion"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "discussion-is-desk-item-log-answers-discussion-shape",
+          "before": null,
+          "after": {
+            "from": "discussion-is-desk-item-log",
+            "type": "answers",
+            "to": "discussion-shape",
+            "coverage": "full"
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "discussion-shape",
+          "before": {
+            "type": "question",
+            "status": "open",
+            "text": "What is a discussion on an intention: an operation, a state the intention sits in, or an event stream? And where is it stored: rows in the database, a linked markdown note, or an artifact? Blake is wary of adding artifacts to intentions the way records have them.",
+            "meta": {
+              "title": "What is a discussion",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "answer_shape": "condition",
+              "review_state": "current"
+            }
+          },
+          "after": {
+            "type": "question",
+            "status": "answered",
+            "text": "What is a discussion on an intention: an operation, a state the intention sits in, or an event stream? And where is it stored: rows in the database, a linked markdown note, or an artifact? Blake is wary of adding artifacts to intentions the way records have them.",
+            "meta": {
+              "title": "What is a discussion",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "answer_shape": "condition",
+              "review_state": "current"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "revision": 100,
+      "at": "2026-09-16T08:49:32.484647+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: a discussion is the desk item event log, dated, written by the operator or the co-seat; schema draft for the intention; assembled from ruled claims, proposed until Blake reads it",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "intention-schema-draft",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "proposed",
+            "text": "Draft schema of an intention. Identity and filing: id, the filed text, filed_by (anyone: operator, agent, worker, outside), kind (the machine-readable signature, e.g. observation). Two states: outcome (open, satisfied, withdrawn) and steward attention (ready, claimed, waiting). History: one append-only event log on the kernel's record-event machinery, events for filed, claimed, reassessed, record linked, record rest, sent to desk, desk answered, settled; each dated with actor and payload. Links: the records that are attempts at it; the desk items it birthed, each carrying its own log (discussion and the operator's answers) and the dials trace written at send-to-desk. The intention holds no artifacts and no discussion of its own.",
+            "meta": {
+              "review_state": "current",
+              "title": "intention schema draft",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-schema-draft-about-intention-type",
+          "before": null,
+          "after": {
+            "from": "intention-schema-draft",
+            "type": "about",
+            "to": "intention-type"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-schema-draft-depends-on-intention-history-reuses-record-events",
+          "before": null,
+          "after": {
+            "from": "intention-schema-draft",
+            "type": "depends-on",
+            "to": "intention-history-reuses-record-events"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-schema-draft-depends-on-discussion-is-desk-item-log",
+          "before": null,
+          "after": {
+            "from": "intention-schema-draft",
+            "type": "depends-on",
+            "to": "discussion-is-desk-item-log"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-schema-draft-depends-on-intention-operation-set",
+          "before": null,
+          "after": {
+            "from": "intention-schema-draft",
+            "type": "depends-on",
+            "to": "intention-operation-set"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-schema-draft-depends-on-intention-status-set",
+          "before": null,
+          "after": {
+            "from": "intention-schema-draft",
+            "type": "depends-on",
+            "to": "intention-status-set"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-schema-draft-depends-on-desk-arrival-carries-trace",
+          "before": null,
+          "after": {
+            "from": "intention-schema-draft",
+            "type": "depends-on",
+            "to": "desk-arrival-carries-trace"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-schema-draft-answers-intention-schema",
+          "before": null,
+          "after": {
+            "from": "intention-schema-draft",
+            "type": "answers",
+            "to": "intention-schema",
+            "coverage": "partial"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 101,
+      "at": "2026-09-16T08:49:32.582883+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: a discussion is the desk item event log, dated, written by the operator or the co-seat; schema draft for the intention",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "intention-kind-registry",
+          "before": null,
+          "after": {
+            "type": "question",
+            "status": "open",
+            "text": "Is an intention's kind a fixed set shipped with Morphisms, a user-configurable registry, or free text with a few reserved values (such as observation)?",
+            "meta": {
+              "review_state": "current",
+              "title": "intention kind registry",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-kind-registry-about-intention-type",
+          "before": null,
+          "after": {
+            "from": "intention-kind-registry",
+            "type": "about",
+            "to": "intention-type"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-schema-draft-raises-intention-kind-registry",
+          "before": null,
+          "after": {
+            "from": "intention-schema-draft",
+            "type": "raises",
+            "to": "intention-kind-registry"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 102,
+      "at": "2026-09-16T08:49:32.682289+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: a discussion is the desk item event log, dated, written by the operator or the co-seat; schema draft for the intention",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "reassessment-reasoning-location",
+          "before": null,
+          "after": {
+            "type": "question",
+            "status": "open",
+            "text": "Where does the steward's reasoning at reassessment live: as the payload of the reassessed event on the intention log, or somewhere else? The dials trace already lives on the send-to-desk event.",
+            "meta": {
+              "review_state": "current",
+              "title": "reassessment reasoning location",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "reassessment-reasoning-location-about-intention-type",
+          "before": null,
+          "after": {
+            "from": "reassessment-reasoning-location",
+            "type": "about",
+            "to": "intention-type"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "reassessment-reasoning-location-about-steward-role",
+          "before": null,
+          "after": {
+            "from": "reassessment-reasoning-location",
+            "type": "about",
+            "to": "steward-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-schema-draft-raises-reassessment-reasoning-location",
+          "before": null,
+          "after": {
+            "from": "intention-schema-draft",
+            "type": "raises",
+            "to": "reassessment-reasoning-location"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 103,
+      "at": "2026-09-16T08:49:32.787094+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: a discussion is the desk item event log, dated, written by the operator or the co-seat; schema draft for the intention",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "intention-has-no-artifacts",
+          "before": null,
+          "after": {
+            "type": "question",
+            "status": "open",
+            "text": "Does an intention carry no artifacts at all, with everything durable living in its event log and its desk items' logs? Blake is wary of artifacts on intentions; the draft assumes none.",
+            "meta": {
+              "review_state": "current",
+              "title": "intention has no artifacts",
+              "author": "assistant",
+              "source_kind": "assistant-proposal"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-has-no-artifacts-about-intention-type",
+          "before": null,
+          "after": {
+            "from": "intention-has-no-artifacts",
+            "type": "about",
+            "to": "intention-type"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "intention-schema-draft-raises-intention-has-no-artifacts",
+          "before": null,
+          "after": {
+            "from": "intention-schema-draft",
+            "type": "raises",
+            "to": "intention-has-no-artifacts"
+          }
         }
       ]
     }
