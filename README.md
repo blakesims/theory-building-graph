@@ -53,6 +53,19 @@ write reason. Default is off. It pulls with rebase before pushing and never forc
 A sync failure leaves the write saved locally and reports the problem. `--no-sync`
 skips the sync for one write; run `tg sync` once after a burst of writes.
 
+## Graph location and reference example
+
+Each graph lives in the git repo of the program it describes, not in this tool's
+repo. Use `tg new <name> --dir DIR` or `tg register <name> <path>` to select that
+location. `tg sync` commits the graph there.
+
+Start from the Morphisms design graph, `docs/design/theory/graph.json` in
+[blakesims/morphisms](https://github.com/blakesims/morphisms), as the reference
+example of a carefully built graph. It preserves verbatim source nodes for every
+ruling, distinguishes proposed from accepted standing, keeps withdrawn claims
+with reasons, and answers questions through linked claims. Use it as the model
+for building your own graph.
+
 ## Selection and boundaries
 
 Choose a graph with `--file PATH`, `-p NAME`, `$TG_PROJECT`, the nearest ancestor's
@@ -75,6 +88,6 @@ of the live graph. Tests and all archived trial artifacts live under `tests/`.
 `tests/relocations.json` records every cleanup move without rewriting hash-bound
 inputs or receipts. Historical decisions and findings live in `docs/worklog/`.
 
-`theorygraph/` is the Python package. Graph data does not live in this repo: each graph lives in the git repo of the program it describes (`tg new <name> --dir DIR`, or `tg register <name> <path>`), and `tg sync` commits it there. Keep
-backups and do not edit a graph file by hand while an agent is writing. The original
+`theorygraph/` is the Python package. Keep backups and do not edit a graph file by
+hand while an agent is writing. The original
 notebook remains a separate project on port 8766, not this viewer on 8767.
