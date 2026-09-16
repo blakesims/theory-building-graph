@@ -1,4 +1,5 @@
 """v0.2.3 backlog regressions. All graph writes use temporary fixtures."""
+import fcntl
 import json
 import os
 import subprocess
@@ -6,8 +7,9 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
-from theorygraph import graph
+from theorygraph import graph, locks
 from tests.test_dependency import fixture, edge
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -19,7 +21,8 @@ class TemporaryGraph(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory(); self.addCleanup(self.tmp.cleanup)
         self.path = Path(self.tmp.name) / 'graph.json'
         self.path.write_bytes((ROOT / 'theorygraph/template.json').read_bytes())
-        self.env = {**os.environ, 'TG_REGISTRY': str(Path(self.tmp.name) / 'registry.json')}
+        self.env = {**os.environ, 'TG_REGISTRY': str(Path(self.tmp.name) / 'registry.json'),
+                    'XDG_RUNTIME_DIR': str(Path(self.tmp.name) / 'runtime')}
 
     def cli(self, *args, ok=True):
         result = subprocess.run([sys.executable, TG, '--file', str(self.path), *args],
@@ -93,6 +96,49 @@ class StatusListings(TemporaryGraph):
             self.assertEqual(list(data['nodes']), [status])
             self.assertEqual(data['nodes'][status]['text'], text)
             self.assertFalse(data['truncated'])
+
+
+class RuntimeLocks(TemporaryGraph):
+    def test_writes_leave_no_lock_files_beside_graph(self):
+        self.cli('entity', 'add', 'subject', 'Subject', '--reason', 'anchor')
+        with patch.dict(os.environ, self.env):
+            for suffix in ('.lock', '.write.lock'):
+                path = locks.lock_path(self.path, suffix)
+                self.assertTrue(path.is_file())
+                self.assertTrue(path.is_relative_to(Path(self.env['XDG_RUNTIME_DIR'])))
+                self.assertEqual(path.name, 'graph.json' + suffix)
+        self.assertFalse(list(self.path.parent.glob('*.lock')))
+
+    def test_lock_identity_uses_canonical_path_and_cache_fallback(self):
+        alias = self.path.parent / 'alias.json'; alias.symlink_to(self.path)
+        with patch.dict(os.environ, {'HOME': self.tmp.name, 'XDG_RUNTIME_DIR': ''}):
+            path = locks.lock_path(self.path)
+            self.assertTrue(path.is_relative_to(Path(self.tmp.name) / '.cache/theory-graph/locks'))
+            self.assertEqual(path, locks.lock_path(alias))
+            self.assertNotEqual(path, locks.lock_path(self.path.parent / 'other/graph.json'))
+            self.assertNotEqual(path, locks.lock_path(self.path, '.write.lock'))
+
+    def test_both_locks_block_cli_writers_until_released(self):
+        for suffix in ('.lock', '.write.lock'):
+            with self.subTest(suffix=suffix), patch.dict(os.environ, self.env):
+                lock_path = locks.lock_path(self.path, suffix)
+                before = self.path.read_bytes()
+                with open(lock_path, 'a') as lock:
+                    fcntl.flock(lock, fcntl.LOCK_EX)
+                    code = "from theorygraph import graph; import sys; print('ready', flush=True); sys.exit(graph.main())"
+                    proc = subprocess.Popen([sys.executable, '-c', code, '--file', str(self.path),
+                                             'entity', 'add', suffix, 'Subject', '--reason', 'lock test'],
+                                            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, env=self.env)
+                    try:
+                        self.assertEqual(proc.stdout.readline().strip(), 'ready')
+                        with self.assertRaises(subprocess.TimeoutExpired): proc.wait(timeout=0.2)
+                        self.assertEqual(self.path.read_bytes(), before)
+                        fcntl.flock(lock, fcntl.LOCK_UN)
+                        stdout, stderr = proc.communicate(timeout=10)
+                        self.assertEqual(proc.returncode, 0, stdout + stderr)
+                    finally:
+                        if proc.poll() is None: proc.kill(); proc.communicate()
+                self.assertIn(suffix, graph.load(self.path)['nodes'])
 
 
 class FrontierSummary(TemporaryGraph):
@@ -183,6 +229,7 @@ class DirtyRepositorySync(TemporaryGraph):
         self.assertEqual(self.unrelated.read_text(), 'unsaved user work\n')
         self.assertEqual(self.git(self.repo, 'status', '--porcelain', '--', 'work.txt'), 'M work.txt')
         self.assertEqual(self.git(self.repo, 'diff', '--cached', '--name-only'), '')
+        self.assertEqual(self.git(self.repo, 'ls-files', '--others', '--exclude-standard'), '')
         self.assertEqual(self.git(self.repo, 'show', '--pretty=', '--name-only', 'HEAD'), 'graph.json')
         self.assertEqual(self.git(self.repo, 'rev-parse', 'HEAD'), self.git(self.remote, 'rev-parse', 'HEAD'))
 

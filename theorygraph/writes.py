@@ -4,7 +4,7 @@ import fcntl
 import json
 import os
 from pathlib import Path
-from . import projects
+from . import projects, locks
 
 TYPED = {'claim', 'question', 'entity', 'operation', 'source', 'withdraw', 'retire', 'answer', 'edge', 'set'}
 KINDS = ('verbatim', 'paraphrase', 'session-paraphrase', 'assistant-proposal')
@@ -172,7 +172,7 @@ def build(g, a):
 
 
 def synchronize(path, message=None):
-    with open(str(path) + '.write.lock', 'a') as lock:
+    with open(locks.lock_path(path, '.write.lock'), 'a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX)
         return projects.sync(path, message)
 
@@ -193,7 +193,7 @@ def sync_result(path, reason, result, project=None, no_sync=False):
 
 def evaluate_and_save(path, a, project=None):
     from . import graph, tracecheck
-    with open(str(path) + '.write.lock', 'a') as lock:
+    with open(locks.lock_path(path, '.write.lock'), 'a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX)
         g = graph.load(path)
         checked = tracecheck.evaluate(g, graph.resolve(g, a.claim), graph.resolve(g, a.trace))
@@ -229,6 +229,6 @@ def execute(path, a, project=None):
         return sync_result(path, a.reason, result, project, getattr(a, 'no_sync', False))
 
     if a.dry_run: return run()
-    with open(str(path) + '.write.lock', 'a') as lock:
+    with open(locks.lock_path(path, '.write.lock'), 'a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX)
         return run()

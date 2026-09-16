@@ -6,7 +6,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse, parse_qs
 from . import tracecheck
 from . import dependency
-from . import projects, writes, __version__
+from . import projects, writes, locks, __version__
 HERE = Path(__file__).resolve().parent
 
 class GraphError(Exception): pass
@@ -292,7 +292,7 @@ def simulate(g, ops, actor, reason):
 
 def apply(path, ops, actor, reason, expected=None):
     path=Path(path)
-    with open(str(path)+'.lock','a') as lock:
+    with open(locks.lock_path(path),'a') as lock:
         fcntl.flock(lock,fcntl.LOCK_EX)
         g=load(path)
         if expected is not None and expected!=g['revision']: raise GraphError(f'Revision conflict: expected {expected}, found {g["revision"]}')
