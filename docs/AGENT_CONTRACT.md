@@ -44,7 +44,7 @@ whole command. `--about` or `--governs` is required for claims and questions.
 tg entity add ID "text" [--alias A ...] --reason "..."
 tg operation add ID "text" [--acts-on ENTITY ...] --reason "..."
 tg source add SRC "exact words" --kind verbatim [--author NAME] --reason "..."
-tg claim add ID "one proposition" --about ANCHOR [--depends-on NODE ...] [--status accepted|proposed] --reason "..."
+tg claim add ID "one proposition" --about ANCHOR [--depends-on NODE ...] [--status accepted|proposed|withdrawn] --reason "..."
 tg question add Q "question" --about ANCHOR [--depends-on NODE ...] [--raised-by CLAIM] --reason "..."
 tg answer Q --with CLAIM [--coverage full|partial] --reason "..."
 tg withdraw OLD [--superseded-by NEW] --reason "..."
@@ -58,7 +58,8 @@ Node additions also accept `--title`, `--author` and `--kind`. Claims additional
 accept `--governs OP ...`, `--source SRC`, `--answers Q`, `--coverage full|partial`,
 `--revises OLD`, `--withdraw-old`, `--raises Q ...` and `--supports CLAIM ...`.
 Source kinds are `verbatim|paraphrase`; other additions also allow
-`session-paraphrase|assistant-proposal`. Claim status defaults to proposed.
+`session-paraphrase|assistant-proposal`. Claim status defaults to proposed;
+`--status withdrawn` records a rejected idea in one command.
 
 `--revises OLD --withdraw-old` retains the old claim as withdrawn history, records
 `meta.superseded_by`, and moves its answer edges with coverage and payload intact.
@@ -108,7 +109,8 @@ not neighbor bodies. A filtered `review` is not a complete incident inventory.
 `tg config autosync on|off` sets per-project commit/push behavior, default off.
 Autosync uses the write reason as its commit message and pulls with rebase before
 pushing. If syncing fails, the write remains local and the error says so. Resolve
-conflicts before retrying `tg sync`. It never forces a push.
+conflicts before retrying `tg sync`. It never forces a push. The global `--no-sync`
+flag skips the sync for one write; run `tg sync` once after a burst.
 
 Respect read-only, proposal-only and one-step requests. A read budget includes
 preparation and filesystem probes. If asked to show a command first, show the exact

@@ -50,7 +50,8 @@ hatch. A question's declared status is authoritative, not inferred from metadata
 
 `tg -p example config autosync on` makes successful writes commit and push with the
 write reason. Default is off. It pulls with rebase before pushing and never forces.
-A sync failure leaves the write saved locally and reports the problem.
+A sync failure leaves the write saved locally and reports the problem. `--no-sync`
+skips the sync for one write; run `tg sync` once after a burst of writes.
 
 ## Selection and boundaries
 

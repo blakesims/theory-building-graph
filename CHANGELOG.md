@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.2
+
+- Count `performed-by` as operation coverage, so roles stop showing as uncovered entities.
+- Add a global `--no-sync` flag that skips autosync for one write; `tg sync` catches up.
+- Allow `claim add --status withdrawn`, so a rejected idea is recorded in one command.
+
 ## 0.2.1
 
 - Report entities that have no operation acting on them.

@@ -29,7 +29,7 @@ def parsers(sub):
             p.add_argument('--governs', nargs='+', action='extend', default=[])
             p.add_argument('--depends-on', nargs='+', action='extend', default=[])
         if kind == 'claim':
-            p.add_argument('--status', choices=('accepted', 'proposed'), default='proposed')
+            p.add_argument('--status', choices=('accepted', 'proposed', 'withdrawn'), default='proposed')
             p.add_argument('--source'); p.add_argument('--answers')
             p.add_argument('--coverage', choices=('full', 'partial'), default='full')
             p.add_argument('--revises'); p.add_argument('--withdraw-old', action='store_true')
@@ -171,8 +171,12 @@ def synchronize(path, message=None):
         return projects.sync(path, message)
 
 
-def sync_result(path, reason, result, project=None):
+def sync_result(path, reason, result, project=None, no_sync=False):
     if projects.autosync(path, project):
+        if no_sync:
+            # The write is saved; the operator syncs the whole burst with one `tg sync`.
+            result['sync_skipped'] = True
+            return result
         try:
             synced = projects.sync(path, reason)
             result['sync'] = {'committed': synced['committed'], 'pushed': True}
@@ -189,7 +193,7 @@ def evaluate_and_save(path, a, project=None):
         checked = tracecheck.evaluate(g, graph.resolve(g, a.claim), graph.resolve(g, a.trace))
         result = graph.save_evaluation(path, g, checked, a.save or None, a.actor, a.reason)
         result.update(revision=result['saved_revision'], summary='saved evaluation ' + result['saved_as'])
-        return sync_result(path, a.reason, result, project)
+        return sync_result(path, a.reason, result, project, getattr(a, 'no_sync', False))
 
 
 def execute(path, a, project=None):
@@ -216,7 +220,7 @@ def execute(path, a, project=None):
         result = graph.apply(path, ops, a.actor, a.reason, expected)
         result['summary'] = summary
         if a.cmd == 'reviewed': result['reviewed'] = list(dict.fromkeys(a.ids))
-        return sync_result(path, a.reason, result, project)
+        return sync_result(path, a.reason, result, project, getattr(a, 'no_sync', False))
 
     if a.dry_run: return run()
     with open(str(path) + '.write.lock', 'a') as lock:
