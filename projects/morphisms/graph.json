@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 47,
+  "revision": 48,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1646,6 +1646,17 @@
         "title": "rule on flag",
         "author": "assistant",
         "source_kind": "assistant-proposal"
+      }
+    },
+    "operator-is-terminal-resolver": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "Every obstruction has a resolver, and every resolver chain ends at the operator: worker to orchestrator, orchestrator and steward to the operator, worker-about-the-contract to the auditor, auditor to the operator. The operator is the only actor with no resolver. This is what makes the obstruction structure finite.",
+      "meta": {
+        "review_state": "current",
+        "title": "operator is terminal resolver",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
       }
     }
   },
@@ -3389,6 +3400,31 @@
       "from": "rule-on-flag",
       "type": "acts-on",
       "to": "contract"
+    },
+    "operator-is-terminal-resolver-about-operator-role": {
+      "from": "operator-is-terminal-resolver",
+      "type": "about",
+      "to": "operator-role"
+    },
+    "operator-is-terminal-resolver-about-orchestrator-role": {
+      "from": "operator-is-terminal-resolver",
+      "type": "about",
+      "to": "orchestrator-role"
+    },
+    "operator-is-terminal-resolver-about-steward-role": {
+      "from": "operator-is-terminal-resolver",
+      "type": "about",
+      "to": "steward-role"
+    },
+    "operator-is-terminal-resolver-about-auditor-role": {
+      "from": "operator-is-terminal-resolver",
+      "type": "about",
+      "to": "auditor-role"
+    },
+    "operator-is-terminal-resolver-extracted-from-session-2026-09-16-ladder": {
+      "from": "operator-is-terminal-resolver",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-ladder"
     }
   },
   "changes": [
@@ -11277,6 +11313,80 @@
             "from": "rule-on-flag",
             "type": "acts-on",
             "to": "contract"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 48,
+      "at": "2026-09-16T06:33:35.454697+00:00",
+      "actor": "assistant",
+      "reason": "Handover update 2026-09-16: ladder and obstruction model, delegates, frame",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "operator-is-terminal-resolver",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "Every obstruction has a resolver, and every resolver chain ends at the operator: worker to orchestrator, orchestrator and steward to the operator, worker-about-the-contract to the auditor, auditor to the operator. The operator is the only actor with no resolver. This is what makes the obstruction structure finite.",
+            "meta": {
+              "review_state": "current",
+              "title": "operator is terminal resolver",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "operator-is-terminal-resolver-about-operator-role",
+          "before": null,
+          "after": {
+            "from": "operator-is-terminal-resolver",
+            "type": "about",
+            "to": "operator-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "operator-is-terminal-resolver-about-orchestrator-role",
+          "before": null,
+          "after": {
+            "from": "operator-is-terminal-resolver",
+            "type": "about",
+            "to": "orchestrator-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "operator-is-terminal-resolver-about-steward-role",
+          "before": null,
+          "after": {
+            "from": "operator-is-terminal-resolver",
+            "type": "about",
+            "to": "steward-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "operator-is-terminal-resolver-about-auditor-role",
+          "before": null,
+          "after": {
+            "from": "operator-is-terminal-resolver",
+            "type": "about",
+            "to": "auditor-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "operator-is-terminal-resolver-extracted-from-session-2026-09-16-ladder",
+          "before": null,
+          "after": {
+            "from": "operator-is-terminal-resolver",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-ladder"
           }
         }
       ]
