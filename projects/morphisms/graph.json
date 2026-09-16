@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 37,
+  "revision": 38,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1535,6 +1535,17 @@
         "title": "thread question mirrors to desk",
         "author": "Blake",
         "source_kind": "session-paraphrase"
+      }
+    },
+    "session-2026-09-16-ladder": {
+      "type": "source",
+      "status": "recorded",
+      "text": "Blake, 2026-09-16, verbatim excerpts: \"there is this relation which is essentially all about trying to get an intention realised. at each stage something can obstruct this process.\" \"perhaps it's better to think about obstructions to the claimee? steward obs -> desk (resolver=operator) ... worker obs -> flag (resolver=contract auditor)\" \"Of course this needs to be finite, otherwise we regress.\" \"two types of edges: births/is an attempt at, versus blocked.\" \"i like the idea of the operator being the terminal; makes sense.\" \"a flag is a representation of an obstruction that arose during the attempted manifestation of an intention.\" \"I don't want contract improvements themselves to be treated as a record.\" \"That's the tagline: add it to morphisms. Whatever it is ... is meant to be an intention.\" On the conflicting-records case: \"If it's obstructed, it's obstructed on what? On both of them, right? So do we have many intentions linked to one desk item?\" On delegates: \"yes, that's pretty good.\"",
+      "meta": {
+        "review_state": "current",
+        "title": "session 2026 09 16 ladder",
+        "author": "Blake",
+        "source_kind": "verbatim"
       }
     }
   },
@@ -10820,6 +10831,30 @@
             "from": "desk-item-shows-intention",
             "type": "about",
             "to": "desk-item"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 38,
+      "at": "2026-09-16T06:32:23.401965+00:00",
+      "actor": "assistant",
+      "reason": "Handover update 2026-09-16: ladder and obstruction model, delegates, frame",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "session-2026-09-16-ladder",
+          "before": null,
+          "after": {
+            "type": "source",
+            "status": "recorded",
+            "text": "Blake, 2026-09-16, verbatim excerpts: \"there is this relation which is essentially all about trying to get an intention realised. at each stage something can obstruct this process.\" \"perhaps it's better to think about obstructions to the claimee? steward obs -> desk (resolver=operator) ... worker obs -> flag (resolver=contract auditor)\" \"Of course this needs to be finite, otherwise we regress.\" \"two types of edges: births/is an attempt at, versus blocked.\" \"i like the idea of the operator being the terminal; makes sense.\" \"a flag is a representation of an obstruction that arose during the attempted manifestation of an intention.\" \"I don't want contract improvements themselves to be treated as a record.\" \"That's the tagline: add it to morphisms. Whatever it is ... is meant to be an intention.\" On the conflicting-records case: \"If it's obstructed, it's obstructed on what? On both of them, right? So do we have many intentions linked to one desk item?\" On delegates: \"yes, that's pretty good.\"",
+            "meta": {
+              "review_state": "current",
+              "title": "session 2026 09 16 ladder",
+              "author": "Blake",
+              "source_kind": "verbatim"
+            }
           }
         }
       ]
