@@ -75,6 +75,6 @@ of the live graph. Tests and all archived trial artifacts live under `tests/`.
 `tests/relocations.json` records every cleanup move without rewriting hash-bound
 inputs or receipts. Historical decisions and findings live in `docs/worklog/`.
 
-`theorygraph/` is the Python package. `projects/` contains user graph data. Keep
+`theorygraph/` is the Python package. Graph data does not live in this repo: each graph lives in the git repo of the program it describes (`tg new <name> --dir DIR`, or `tg register <name> <path>`), and `tg sync` commits it there. Keep
 backups and do not edit a graph file by hand while an agent is writing. The original
 notebook remains a separate project on port 8766, not this viewer on 8767.
