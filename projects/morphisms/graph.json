@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 49,
+  "revision": 50,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1666,6 +1666,17 @@
       "meta": {
         "review_state": "current",
         "title": "flag is an obstruction",
+        "author": "Blake",
+        "source_kind": "session-paraphrase"
+      }
+    },
+    "contract-changes-are-not-records": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "Contract improvements are not records and are not treated as attempts at an intention. They are changes to the frame, made by the contract writer under the operator or after an auditor ruling.",
+      "meta": {
+        "review_state": "current",
+        "title": "contract changes are not records",
         "author": "Blake",
         "source_kind": "session-paraphrase"
       }
@@ -3454,6 +3465,26 @@
     },
     "flag-is-an-obstruction-extracted-from-session-2026-09-16-ladder": {
       "from": "flag-is-an-obstruction",
+      "type": "extracted-from",
+      "to": "session-2026-09-16-ladder"
+    },
+    "contract-changes-are-not-records-about-contract": {
+      "from": "contract-changes-are-not-records",
+      "type": "about",
+      "to": "contract"
+    },
+    "contract-changes-are-not-records-about-auditor-role": {
+      "from": "contract-changes-are-not-records",
+      "type": "about",
+      "to": "auditor-role"
+    },
+    "contract-changes-are-not-records-governs-rule-on-flag": {
+      "from": "contract-changes-are-not-records",
+      "type": "governs",
+      "to": "rule-on-flag"
+    },
+    "contract-changes-are-not-records-extracted-from-session-2026-09-16-ladder": {
+      "from": "contract-changes-are-not-records",
       "type": "extracted-from",
       "to": "session-2026-09-16-ladder"
     }
@@ -11480,6 +11511,70 @@
           "before": null,
           "after": {
             "from": "flag-is-an-obstruction",
+            "type": "extracted-from",
+            "to": "session-2026-09-16-ladder"
+          }
+        }
+      ]
+    },
+    {
+      "revision": 50,
+      "at": "2026-09-16T06:33:49.239893+00:00",
+      "actor": "assistant",
+      "reason": "Handover update 2026-09-16: ladder and obstruction model, delegates, frame",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "contract-changes-are-not-records",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "Contract improvements are not records and are not treated as attempts at an intention. They are changes to the frame, made by the contract writer under the operator or after an auditor ruling.",
+            "meta": {
+              "review_state": "current",
+              "title": "contract changes are not records",
+              "author": "Blake",
+              "source_kind": "session-paraphrase"
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "contract-changes-are-not-records-about-contract",
+          "before": null,
+          "after": {
+            "from": "contract-changes-are-not-records",
+            "type": "about",
+            "to": "contract"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "contract-changes-are-not-records-about-auditor-role",
+          "before": null,
+          "after": {
+            "from": "contract-changes-are-not-records",
+            "type": "about",
+            "to": "auditor-role"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "contract-changes-are-not-records-governs-rule-on-flag",
+          "before": null,
+          "after": {
+            "from": "contract-changes-are-not-records",
+            "type": "governs",
+            "to": "rule-on-flag"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "contract-changes-are-not-records-extracted-from-session-2026-09-16-ladder",
+          "before": null,
+          "after": {
+            "from": "contract-changes-are-not-records",
             "type": "extracted-from",
             "to": "session-2026-09-16-ladder"
           }
