@@ -27,7 +27,7 @@ tg -p my-program check            # structural and supported pattern findings
 tg -p my-program claim add RULE "text" --about SUBJECT --reason 'Record proposal'
 tg -p my-program reviewed ID --reason 'Reviewed the tension'
 tg -p my-program history          # audited revisions
-tg -p my-program serve            # http://127.0.0.1:8767
+tg -p my-program serve            # http://127.0.0.1:8767 — serves every registered graph
 ```
 
 ## Worked example

@@ -25,7 +25,8 @@ revisions. In other words: saving an interpretation does not establish its truth
    Otherwise use `tg sync` when a durable remote copy is wanted. A sync failure
    leaves the local write intact. End with one useful question, or stop when done.
 
-The read-only viewer is `http://127.0.0.1:8767/#ID`. Port 8766 belongs to the separate
+One viewer serves every registered graph: `http://127.0.0.1:8767/?p=PROJECT#ID`, with a
+switcher on `p`. Omit `?p=` for the graph the server was started on. Port 8766 belongs to the separate
 original notebook. Optional `evaluate CLAIM TRACE` checks finite supplied evidence,
 not prose fidelity, source truth or unbounded reachability.
 
