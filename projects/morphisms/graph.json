@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": 22,
+  "revision": 23,
   "node_types": {
     "claim": {
       "description": "A proposition, including proposals, user-stated positions and challenged formulations; status records its standing.",
@@ -1175,13 +1175,27 @@
     },
     "handover-location": {
       "type": "question",
-      "status": "open",
+      "status": "answered",
       "text": "Where does the orchestrator's handover note live: as the note on the record's archive, or on the intention above the record? Blake leans to the archive note being the handover.",
       "meta": {
         "title": "Where the handover lives",
         "author": "Blake",
         "source_kind": "session-paraphrase",
         "answer_shape": "condition",
+        "review_state": "current",
+        "review_reason": "Blake chose the archive reason."
+      },
+      "semantic_version": 2
+    },
+    "archive-reason-is-handover": {
+      "type": "claim",
+      "status": "accepted",
+      "text": "The handover from orchestrator to steward is the reason recorded on the record's archive event. Nothing is added to the intention: the intention sits above, the record was one attempt at it, and the attempt was archived. Today `mor <store> archive <id> --reason <text>` records an optional free-form reason on the archive event; there is no schema.",
+      "meta": {
+        "title": "The archive reason is the handover",
+        "author": "Blake",
+        "source_kind": "session-paraphrase",
+        "provenance": "Blake 2026-09-16: keep the archive as the handover, keep it simple, do not add to the intention. Kernel fact checked in `mor task archive --help`.",
         "review_state": "current"
       }
     }
@@ -2496,6 +2510,27 @@
       "from": "orchestrator-handover-artifact",
       "to": "handover-location",
       "type": "raises"
+    },
+    "answers-archive-handover-location": {
+      "from": "archive-reason-is-handover",
+      "to": "handover-location",
+      "type": "answers",
+      "coverage": "full",
+      "meta": {
+        "answer": {
+          "condition": "on the archive event's reason, not on the intention"
+        }
+      }
+    },
+    "about-archive-record": {
+      "from": "archive-reason-is-handover",
+      "to": "record-type",
+      "type": "about"
+    },
+    "supports-archive-handover": {
+      "from": "archive-reason-is-handover",
+      "to": "orchestrator-handover-artifact",
+      "type": "supports"
     }
   },
   "changes": [
@@ -8511,6 +8546,128 @@
               ]
             }
           }
+        }
+      ]
+    },
+    {
+      "revision": 23,
+      "at": "2026-09-16T03:33:03.088687+00:00",
+      "actor": "assistant",
+      "reason": "Blake 2026-09-16: the archive reason is the handover; nothing added to the intention",
+      "edits": [
+        {
+          "collection": "nodes",
+          "id": "archive-reason-is-handover",
+          "before": null,
+          "after": {
+            "type": "claim",
+            "status": "accepted",
+            "text": "The handover from orchestrator to steward is the reason recorded on the record's archive event. Nothing is added to the intention: the intention sits above, the record was one attempt at it, and the attempt was archived. Today `mor <store> archive <id> --reason <text>` records an optional free-form reason on the archive event; there is no schema.",
+            "meta": {
+              "title": "The archive reason is the handover",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "provenance": "Blake 2026-09-16: keep the archive as the handover, keep it simple, do not add to the intention. Kernel fact checked in `mor task archive --help`.",
+              "review_state": "current"
+            }
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "handover-location",
+          "before": {
+            "type": "question",
+            "status": "open",
+            "text": "Where does the orchestrator's handover note live: as the note on the record's archive, or on the intention above the record? Blake leans to the archive note being the handover.",
+            "meta": {
+              "title": "Where the handover lives",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "answer_shape": "condition",
+              "review_state": "current"
+            }
+          },
+          "after": {
+            "type": "question",
+            "status": "answered",
+            "text": "Where does the orchestrator's handover note live: as the note on the record's archive, or on the intention above the record? Blake leans to the archive note being the handover.",
+            "meta": {
+              "title": "Where the handover lives",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "answer_shape": "condition",
+              "review_state": "current",
+              "review_reason": "Blake chose the archive reason."
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "answers-archive-handover-location",
+          "before": null,
+          "after": {
+            "from": "archive-reason-is-handover",
+            "to": "handover-location",
+            "type": "answers",
+            "coverage": "full",
+            "meta": {
+              "answer": {
+                "condition": "on the archive event's reason, not on the intention"
+              }
+            }
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "about-archive-record",
+          "before": null,
+          "after": {
+            "from": "archive-reason-is-handover",
+            "to": "record-type",
+            "type": "about"
+          }
+        },
+        {
+          "collection": "edges",
+          "id": "supports-archive-handover",
+          "before": null,
+          "after": {
+            "from": "archive-reason-is-handover",
+            "to": "orchestrator-handover-artifact",
+            "type": "supports"
+          }
+        },
+        {
+          "collection": "nodes",
+          "id": "handover-location",
+          "before": {
+            "type": "question",
+            "status": "answered",
+            "text": "Where does the orchestrator's handover note live: as the note on the record's archive, or on the intention above the record? Blake leans to the archive note being the handover.",
+            "meta": {
+              "title": "Where the handover lives",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "answer_shape": "condition",
+              "review_state": "current",
+              "review_reason": "Blake chose the archive reason."
+            }
+          },
+          "after": {
+            "type": "question",
+            "status": "answered",
+            "text": "Where does the orchestrator's handover note live: as the note on the record's archive, or on the intention above the record? Blake leans to the archive note being the handover.",
+            "meta": {
+              "title": "Where the handover lives",
+              "author": "Blake",
+              "source_kind": "session-paraphrase",
+              "answer_shape": "condition",
+              "review_state": "current",
+              "review_reason": "Blake chose the archive reason."
+            },
+            "semantic_version": 2
+          },
+          "automatic": "semantic-version"
         }
       ]
     }
