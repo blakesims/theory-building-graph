@@ -1,4 +1,9 @@
-# Tool feedback from three DeepSeek Flash reviewers, 2026-09-16
+# Flash Review Tool Feedback
+
+**Date:** 2026-09-16
+**Type:** note
+
+## Summary
 
 Three read-only reviewers each got a private copy of the morphisms graph (revision 116,
 124 nodes) via `--file`, a one-page briefing on the model and the read commands, and a
@@ -7,6 +12,9 @@ different focus (actors and waking; intention lifecycle; obstructions and cases)
 real (stale entity text after a ruling, a wrong dependency edge, missing wake rules, two
 accepted claims that disagree), the rest wording or already-answered. Overlap between
 reviewers was low, so focus prompts worked.
+
+## Details
+
 
 ## What helped (all three agreed)
 
