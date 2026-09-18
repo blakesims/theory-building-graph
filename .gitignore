@@ -27,3 +27,6 @@ tests/acceptance/*
 !tests/acceptance/__init__.py
 !tests/acceptance/browser_smoke.py
 !tests/acceptance/session_fixtures.py
+
+# agent worktrees
+.claude/worktrees/
