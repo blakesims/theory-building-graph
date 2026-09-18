@@ -25,13 +25,8 @@ revisions. In other words: saving an interpretation does not establish its truth
    the user. End with one useful question, or stop when done.
 
 One viewer serves every registered graph: `http://127.0.0.1:8767/?p=PROJECT#ID`, with a
-switcher on `p`. Omit `?p=` for the graph the server was started on. Port 8766 belongs to the separate
-original notebook. Optional `evaluate CLAIM TRACE` checks finite supplied evidence,
-not prose fidelity, source truth or unbounded reachability.
+switcher on `p`. Omit `?p=` for the graph the server was started on. Keep it open:
+the user should watch every change land. Optional `evaluate CLAIM TRACE` checks
+finite supplied evidence, not prose fidelity, source truth or unbounded reachability.
 
-Use temporary copies for examples and evaluations. `tests/acceptance/` contains
-runners, and `tests/fixtures/` preserves original inputs, grades and failures.
-A rerun is a new trial. Give participants only their arm and questions, never grader
-answers. Measure actual calls, tokens and time, using null when unavailable.
-Mechanical tests and recorded agent observations are distinct evidence. Existing
-comparisons do not establish that graphs outperform equivalent versioned prose.
+Use temporary copies for examples and experiments, never somebody's live graph.

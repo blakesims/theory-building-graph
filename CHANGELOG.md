@@ -3,6 +3,10 @@
 ## Unreleased
 
 - Removed sync/autosync; tg only writes the local graph file. `tg sync`, `tg config autosync` and `--no-sync` are gone.
+- Add `tg skill install` / `tg skill path` for the bundled `/theory` Claude Code skill.
+- `tg --file PATH serve` now shows that file even when it is not registered.
+- Ship the Morphisms design graph as `examples/morphisms/graph.json`.
+- Rewrite the README for public use.
 
 ## 0.2.3
 

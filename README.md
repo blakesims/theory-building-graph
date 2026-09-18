@@ -1,38 +1,103 @@
 # Theory graph
 
-Keep a program's design decisions, open questions, sources and revisions in a local
-graph. An agent writes through `tg`; a human inspects the same data in a read-only
-browser. The tool preserves your theory. It does not infer meaning from prose.
+> "…programming properly should be regarded as an activity by which the programmers
+> form or achieve a certain kind of insight, a theory, of the matters at hand."
+> — Peter Naur, [*Programming as Theory Building*](https://pages.cs.wisc.edu/~remzi/Naur.pdf) (1985)
 
-## Install
+Theory graph is a shared workspace for designing software **together with an AI**.
+While you talk through a design, the AI records the decisions, open questions and
+reasons in a small graph. You watch that graph live in your browser. Together it
+becomes a written record of the program's *theory*: what it is about, what it does,
+and why.
 
-Python 3.10 or later, with no runtime dependencies:
+**Watch everything the AI writes.** The tool is meant for sessions where you and
+the AI work side by side. Left alone, an AI will build a graph that is too large
+and not necessarily right. Keep the batches small, read each change in the
+browser, and only you decide what is accepted.
+
+## Quick start
 
 ```sh
 git clone https://github.com/blakesims/theory-building-graph.git
 cd theory-building-graph
-./tg --version
-# Optional: put this checkout's tg launcher on PATH, or pip install .
+pipx install .                # puts `tg` on your PATH (or just run ./tg from here)
+tg skill install              # adds the /theory skill to Claude Code
+tg --file examples/morphisms/graph.json serve   # open http://127.0.0.1:8767
 ```
 
-## Ten everyday commands
+Then, in the repo of the program you are designing, start Claude Code and type:
+
+```
+/theory new my-program
+```
+
+Keep the browser open next to the conversation and watch the graph grow.
+
+## The building blocks
+
+| Kind | What it holds | Example |
+|---|---|---|
+| **entity** | a thing the program is about | `invoice`, `user` |
+| **operation** | something the program does | `send-invoice` |
+| **claim** | one statement about an entity or operation, *proposed* or *accepted* | "An invoice is sent once." |
+| **question** | something still undecided | "Who can void an invoice?" |
+| **case** | a concrete scenario that tests the claims | "Customer pays twice." |
+
+Secondary kinds support them:
+
+| Kind | What it holds |
+|---|---|
+| **source** | your exact words, so every claim can point back to what was actually said |
+| **trace** | a recorded run or sequence of events used as evidence |
+| **check** | a saved result of testing a claim against a trace |
+
+Relations between them (`about`, `answers`, `depends-on`, `challenges`, `revises`, …)
+make the graph. Nothing is deleted: a revised claim keeps its history and reason.
+
+## Example: the Morphisms graph
+
+`examples/morphisms/graph.json` is a real design graph (about 280 nodes) built in
+sessions like the ones above. Use it as a guide to what a careful graph looks like:
+
+- every ruling has a verbatim **source** node with the user's words;
+- claims are **proposed** until the user affirms them, then **accepted**;
+- withdrawn claims stay, with the reason they were replaced;
+- questions are answered by linking claims to them.
+
+```sh
+tg --file examples/morphisms/graph.json frontier   # open decisions
+tg --file examples/morphisms/graph.json serve      # browse it
+```
+
+In the browser: press `/` to find a node, `Esc` to close the find panel, `p` to switch graph.
+
+## For AI agents
+
+If you are an AI agent and have just cloned or installed this tool:
+
+1. Run `tg skill install` so the user can type `/theory <project>` in Claude Code.
+   (`tg skill path` prints the skill file if you use another agent.)
+2. Read [docs/AGENT_CONTRACT.md](docs/AGENT_CONTRACT.md) and
+   [docs/AGENT_WORKFLOW.md](docs/AGENT_WORKFLOW.md) before writing to any graph.
+3. Start the viewer (`tg -p <project> serve`) so the user can watch, record one small
+   batch at a time, and never mark anything accepted without the user saying so.
+
+## Everyday commands
 
 ```sh
 tg new my-program                 # create and register ./theory/graph.json
 tg -p my-program frontier         # open decisions and recent changes
-tg -p my-program search owner     # discover stable IDs
-tg -p my-program review ID        # statement and direct reasoning context
+tg -p my-program search owner     # find stable IDs
+tg -p my-program review ID        # a node and its direct reasoning context
 tg -p my-program questions        # question inventory
-tg -p my-program check            # structural and supported pattern findings
+tg -p my-program check            # structural findings
 tg -p my-program claim add RULE "text" --about SUBJECT --reason 'Record proposal'
 tg -p my-program reviewed ID --reason 'Reviewed the tension'
 tg -p my-program history          # audited revisions
-tg -p my-program serve            # http://127.0.0.1:8767 — serves every registered graph
+tg -p my-program serve            # http://127.0.0.1:8767, serves every registered graph
 ```
 
-## Worked example
-
-Use a new project, never somebody else's live theory:
+A small worked example, in a throwaway project:
 
 ```sh
 tg new example --dir /tmp/theory-example
@@ -43,46 +108,25 @@ tg -p example claim add owner-approves "The owner approves releases." --about ow
 tg -p example questions
 ```
 
-Each typed write is one audited revision. `--dry-run` previews its effects without
-writing. Claims default to proposed until affirmed. `--revises OLD --withdraw-old`
-records a replacement and preserves its history. `tg apply` remains the JSON escape
-hatch. A question's declared status is authoritative, not inferred from metadata.
+Each write is one audited revision. `--dry-run` previews a write without saving it.
+`--revises OLD --withdraw-old` replaces a claim and keeps its history. `tg apply`
+takes a JSON batch for anything the typed commands cannot express (for example cases).
 
-## Graph location and reference example
+## Where graphs live
 
-Each graph lives in the git repo of the program it describes, not in this tool's
-repo. Use `tg new <name> --dir DIR` or `tg register <name> <path>` to select that
-location. `tg` only writes the local graph file; commit it with the rest of that repo.
+Each graph lives in the repo of the program it describes, usually `theory/graph.json`,
+not in this tool's repo. `tg` only writes that local file; commit it like any other file.
 
-Start from the Morphisms design graph, `docs/design/theory/graph.json` in
-[blakesims/morphisms](https://github.com/blakesims/morphisms), as the reference
-example of a carefully built graph. It preserves verbatim source nodes for every
-ruling, distinguishes proposed from accepted standing, keeps withdrawn claims
-with reasons, and answers questions through linked claims. Use it as the model
-for building your own graph.
+`tg` picks a graph from `--file PATH`, then `-p NAME`, `$TG_PROJECT`, the nearest
+`theory/graph.json` or `graph.json` above the current directory, then the registry
+default. The registry is `~/.config/theory-graph/projects.json`; `tg projects`,
+`tg use NAME` and `tg where` inspect or change it.
 
-## Selection and boundaries
+A successful write means the graph is valid, not that the interpretation is right.
+That is what the human in the loop is for.
 
-Choose a graph with `--file PATH`, `-p NAME`, `$TG_PROJECT`, the nearest ancestor's
-`theory/graph.json` or `graph.json`, then the registry default, in that order.
-`tg projects`, `tg use NAME` and `tg where` inspect or change selection. The registry
-is `~/.config/theory-graph/projects.json`. `--json` gives structured reads and
-`--full` includes extended metadata. `--evidence` includes traces and saved checks.
+## Development
 
-Read the [agent contract](docs/AGENT_CONTRACT.md) and
-[workflow](docs/AGENT_WORKFLOW.md) before representing a user's theory. A successful
-write validates storage, not interpretation or acceptance. Finite checks only test
-supplied patterns and evidence. Graph/prose trials have not established superiority.
-
-## Verify and navigate
-
-`make test` runs unit, receipt and acceptance checks. It validates saved agent
-observations, not fresh paid model trials. Superseded v0.1 requirements are reported
-separately from the six v0.2 checks. `make baseline` checks a temporary copy
-of the live graph. Tests and all archived trial artifacts live under `tests/`.
-`tests/relocations.json` records every cleanup move without rewriting hash-bound
-inputs or receipts. Historical decisions and findings live in `docs/worklog/`.
-
-`theorygraph/` is the Python package. Keep backups and do not edit a graph file by
-hand while an agent is writing. The original
-notebook remains a separate project on port 8766, not this viewer on 8767.
+Python 3.10+, no runtime dependencies. `make test` runs the test suite.
+`make browser-smoke` drives the viewer in a headless browser (needs `npx agent-browser`).
+MIT licensed.
