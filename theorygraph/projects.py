@@ -140,7 +140,7 @@ def git_root(path):
 
 
 def sync(graph_path, message=None):
-    """Commit the graph file if it changed, pull with rebase, push. Never forces.
+    """Commit the graph file if it changed, pull with rebase when behind, push. Never forces.
 
     Only the graph is staged and committed. Autostash preserves unrelated dirty
     work during rebase. On conflict the local commit is kept for hand merging.
@@ -161,7 +161,11 @@ def sync(graph_path, message=None):
             except (OSError, ValueError, KeyError, TypeError): message = f'Update {rel}'
         git('add', '--', rel); git('commit', '-q', '-m', message, '--', rel)
         committed = git('rev-parse', '--short', 'HEAD').stdout.strip()
-    r = git('pull', '--rebase', '--autostash', check=False)
+    # Pull only when the upstream has commits we lack: a no-op rebase still trips
+    # repositories whose hooks refuse any rebase of their main branch.
+    git('fetch')
+    behind = git('rev-list', '--count', 'HEAD..@{u}', check=False)
+    r = git('pull', '--rebase', '--autostash', check=False) if behind.returncode or behind.stdout.strip() != '0' else behind
     if r.returncode:
         conflicts = git('diff', '--name-only', '--diff-filter=U', check=False).stdout.strip()
         git('rebase', '--abort', check=False)

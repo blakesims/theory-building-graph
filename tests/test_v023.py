@@ -240,6 +240,20 @@ class DirtyRepositorySync(TemporaryGraph):
         self.assertEqual(self.git(self.repo, 'show', '--pretty=', '--name-only', 'HEAD'), 'graph.json')
         self.assertEqual(self.git(self.repo, 'rev-parse', 'HEAD'), self.git(self.remote, 'rev-parse', 'HEAD'))
 
+    def test_sync_does_not_rebase_when_nothing_to_pull(self):
+        hook = self.repo / '.git/hooks/pre-rebase'
+        hook.write_text('#!/bin/sh\necho refused >&2\nexit 1\n'); hook.chmod(0o755)
+        # A local merge commit: a no-op `pull --rebase` would flatten and rename it.
+        self.git(self.repo, 'checkout', '-q', '-b', 'side'); (self.repo / 'side.txt').write_text('side\n')
+        self.git(self.repo, 'add', 'side.txt'); self.git(self.repo, 'commit', '-q', '-m', 'side')
+        self.git(self.repo, 'checkout', '-q', '-'); self.git(self.repo, 'merge', '-q', '--no-ff', '-m', 'merge side', 'side')
+        merge = self.git(self.repo, 'rev-parse', 'HEAD')
+        self.cli('entity', 'add', 'subject', 'Subject', '--reason', 'local graph change')
+        self.cli('sync')
+        self.assertEqual(self.git(self.repo, 'rev-parse', 'HEAD'), self.git(self.remote, 'rev-parse', 'HEAD'))
+        self.assertEqual(self.git(self.repo, 'rev-parse', 'HEAD~1'), merge)
+        self.assertEqual(self.unrelated.read_text(), 'unsaved user work\n')
+
     def test_autostash_conflict_is_not_reported_as_success(self):
         (self.other / 'work.txt').write_text('remote work conflicts with local work\n')
         self.git(self.other, 'commit', '-am', 'remote work'); self.git(self.other, 'push')
