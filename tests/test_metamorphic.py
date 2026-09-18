@@ -30,7 +30,7 @@ class MetamorphicChecks(unittest.TestCase):
 
     def test_duplicate_cardinality_report_cannot_increase_distinct_count(self):
         p={'kind':'cardinality','scope':'all','min':1,'max':1,'slot':{'identity_key':['host','number'],'count':'distinct'}}
-        report={'subject':{'host':'zen','number':8767},'target':'server'}
+        report={'subject':{'host':'example','number':8767},'target':'server'}
         for copies in [1,2,20]:
             actual=f.evaluate_cardinality(p,[copy.deepcopy(report) for _ in range(copies)],complete=True)
             self.assertEqual(actual['outcome'],'satisfies')

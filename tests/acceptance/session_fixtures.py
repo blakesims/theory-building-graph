@@ -1,9 +1,9 @@
 """Authored conversational fixture operations, never inferred from live user text."""
 
 FACTS=[
- {'id':'source-1','type':'source','text':'Session paraphrase: Blake initially allowed operator-approved orchestrator replacement to avoid a relay when the orchestrator already had the context.','status':'recorded','source_kind':'session-paraphrase'},
- {'id':'source-2','type':'source','text':'Session paraphrase: Blake later chose the simpler rule: steward always chooses the work. Orchestrator can ask keep trying versus mark failed and let steward decide next.','status':'recorded','source_kind':'session-paraphrase'},
- {'id':'source-3','type':'source','text':'Only summaries of M1688 and M1689 are supplied. M1688 describes repeated useful reviews without an effective ruling. M1689 describes planning a proposed solution instead of reassessing the original performance concern. The primary postmortems are unavailable in this fixture.','status':'recorded','source_kind':'summary'},
+ {'id':'source-1','type':'source','text':'Session paraphrase: The user initially allowed operator-approved orchestrator replacement to avoid a relay when the orchestrator already had the context.','status':'recorded','source_kind':'session-paraphrase'},
+ {'id':'source-2','type':'source','text':'Session paraphrase: The user later chose the simpler rule: steward always chooses the work. Orchestrator can ask keep trying versus mark failed and let steward decide next.','status':'recorded','source_kind':'session-paraphrase'},
+ {'id':'source-3','type':'source','text':'Only summaries of two postmortems are supplied. The first describes repeated useful reviews without an effective ruling. The second describes planning a proposed solution instead of reassessing the original performance concern. The primary postmortems are unavailable in this fixture.','status':'recorded','source_kind':'summary'},
  {'id':'steward-role','type':'entity','text':'Steward is the role responsible for selecting and sequencing work for a continuing intention.','status':'declared'},
  {'id':'choose-next-work','type':'operation','text':'Decide which subsequent work should pursue the intention. This decision is distinct from mechanically inserting a record.','status':'declared'},
  {'id':'replacement-exception','type':'claim','text':'Operator-approved orchestrator replacement can bypass steward.','status':'withdrawn','review_state':'historical','sources':['source-1'],'rationale':'Avoid a relay when the orchestrator has context; later rejected in favor of one owner of next-work choice.'},

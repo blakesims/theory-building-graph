@@ -599,7 +599,7 @@ def main():
     q=sub.add_parser('new',help='Create a new project graph from the template and register it');q.add_argument('name');q.add_argument('--dir',type=Path,default=None,help='Directory for graph.json (default: ./theory)');q.add_argument('--no-register',action='store_true')
     q=sub.add_parser('register',help='Register an existing graph.json under a name');q.add_argument('name');q.add_argument('path',type=Path);q.add_argument('--default',action='store_true',help='Also make it the default project')
     q=sub.add_parser('use',help='Set the default project');q.add_argument('name')
-    q=sub.add_parser('serve',help='Serve every registered project; this one is the default');q.add_argument('--port',type=int,default=8767,help='Local port; graph default8767, original notebook separate on8766');q.add_argument('--host',default='127.0.0.1',help='Bind address; 127.0.0.1 keeps it local, 0.0.0.0 reaches other hosts (reads only, no write endpoints)')
+    q=sub.add_parser('serve',help='Serve every registered project; this one is the default');q.add_argument('--port',type=int,default=8767,help='Local port (default 8767)');q.add_argument('--host',default='127.0.0.1',help='Bind address; 127.0.0.1 keeps it local, 0.0.0.0 reaches other hosts (reads only, no write endpoints)')
     # Normalize these global flags so they also work after subcommands.
     argv=sys.argv[1:]; front=[];rest=[];i=0
     while i<len(argv):

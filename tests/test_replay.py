@@ -13,7 +13,7 @@ def theory_model():
     """Synthetic explicit interpretation of agreed rules; no stopping rule invented."""
     record=['records',A('record')]
     duty=lambda owner:{'owner':owner,'state':'pending','record':A('record'),'intention':S(*record,'intention'),'evidence':A('evidence')}
-    return {'meta':{'synthetic':True,'source':'Morphisms design session; executable interpretation requires separate review'},'initial':{
+    return {'meta':{'synthetic':True,'source':'An example design session; executable interpretation requires separate review'},'initial':{
         'intentions':{'I':{'state':'open','text':'reduce CPU','valid':True}},
         'records':{'A':{'intention':'I','lifecycle':'running','outcome':None},'B':{'intention':'I','lifecycle':'running','outcome':None}},
         'responses':{},'decisions':{'D':{'owner':'operator','answer':None}},
@@ -80,7 +80,7 @@ class ModelReplayTests(unittest.TestCase):
    self.assertEqual(r['state']['intentions']['I'],model['initial']['intentions']['I']);self.assertEqual(r['state']['pulse'],[{'intention':'I','desk':enabled}])
  def test_M08_start_and_drive_are_independent(self):
   # Separate explicit finite fixture: changing drive does not change launch.
-  # This exercises the two axes; it is not a Morphisms scheduling implementation.
+  # This exercises the two axes; it is not a scheduling implementation.
   for drive in ('user','autonomous'):
    m={'initial':{'start':'user','drive':drive,'running':False,'turns':[]},'rules':[
     {'id':'launch','on':'launch','guards':[{'path':['start'],'equals':A('signal')}],

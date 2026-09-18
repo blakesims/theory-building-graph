@@ -64,11 +64,11 @@ class WithdrawnOnCreate(unittest.TestCase):
     def test_rejected_idea_is_recorded_in_one_command(self):
         self.cli('entity', 'add', 'subject', 'Subject', '--reason', 'anchor')
         self.cli('claim', 'add', 'rejected-idea', 'We could shard the store.', '--about', 'subject',
-                 '--status', 'withdrawn', '--reason', 'Blake rejected this in session 3')
+                 '--status', 'withdrawn', '--reason', 'The user rejected this in session 3')
         node = graph.load(self.path)['nodes']['rejected-idea']
         self.assertEqual(node['status'], 'withdrawn')
         self.assertEqual(node['meta']['review_state'], 'current')
-        self.assertEqual(graph.load(self.path)['changes'][-1]['reason'], 'Blake rejected this in session 3')
+        self.assertEqual(graph.load(self.path)['changes'][-1]['reason'], 'The user rejected this in session 3')
 
     def test_other_statuses_are_unchanged_and_nonsense_is_still_refused(self):
         self.cli('entity', 'add', 'subject', 'Subject', '--reason', 'anchor')

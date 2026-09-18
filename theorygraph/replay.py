@@ -1,4 +1,4 @@
-"""Finite, explicit theory-model replay. This is not a Morphisms runtime.
+"""Finite, explicit theory-model replay. This is not a runtime for the modelled system.
 
 A transition has an event kind, guards and ordered set/create/append/delete
 mutations. Values support {$arg: name}, {$state: path}, {$event: field}.

@@ -1,11 +1,11 @@
-"""Regressions from independent Fable 5.1 CLI probes; isolated graphs only."""
+"""Dependency and presentation regressions found by independent CLI probes; isolated graphs only."""
 import copy,json,tempfile,unittest
 from pathlib import Path
 from theorygraph import graph
 from theorygraph import dependency
 from tests.test_dependency import fixture,edge
 
-class FableDependencyRegressions(unittest.TestCase):
+class DependencyRegressions(unittest.TestCase):
  def setUp(self):self.tmp=tempfile.TemporaryDirectory();self.path=Path(self.tmp.name)/'graph.json'
  def tearDown(self):self.tmp.cleanup()
  def put(self,model):self.path.write_text(json.dumps(model))
@@ -87,7 +87,7 @@ class FableDependencyRegressions(unittest.TestCase):
   after=self.edit('A',text='new premise');self.assertEqual(dependency.currency(after['nodes']['B']),'historical');self.assertEqual(dependency.currency(after['nodes']['C']),'current')
   self.assertEqual(dependency.readiness(after,'C')['readiness'],'blocked')
 
-class FableScopeAndPresentationRegressions(unittest.TestCase):
+class ScopeAndPresentationRegressions(unittest.TestCase):
  def test_H2_default_question_requirement_is_answered(self):
   model=fixture();model['nodes']['B'].update(type='question',status='open');edge(model,'Q','B')
   self.assertEqual(dependency.readiness(model,'Q')['readiness'],'blocked')
