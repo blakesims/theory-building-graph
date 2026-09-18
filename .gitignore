@@ -1,9 +1,12 @@
 __pycache__/
 *.pyc
 *.lock
+.DS_Store
+.venv/
+dist/
 build/
 *.egg-info/
-.DS_Store
+.pytest_cache/
 
 # internal development notes and AI-trial evidence (kept locally, not published)
 docs/worklog/
