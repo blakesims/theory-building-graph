@@ -1,4 +1,4 @@
-"""v0.2 contract tests on isolated graphs and local Git remotes. No agent trial claims."""
+"""v0.2 contract tests on isolated graphs. No agent trial claims."""
 import copy
 import json
 import os
@@ -8,7 +8,7 @@ import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
-from theorygraph import graph, projects, writes
+from theorygraph import graph, writes
 
 ROOT = Path(__file__).resolve().parents[1]
 TG = ROOT / 'tg'
@@ -211,85 +211,26 @@ class TypedWrites(unittest.TestCase):
         self.assertIn('semantic_version',graph.public_read(g)['nodes'])
 
 
-class Autosync(unittest.TestCase):
+class SavedEvaluation(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory(); self.addCleanup(self.tmp.cleanup)
-        self.root = Path(self.tmp.name); self.remote = self.root/'remote.git'; self.repo = self.root/'repo'
-        self.env = {**os.environ, 'TG_REGISTRY':str(self.root/'registry.json'),
-                    'GIT_AUTHOR_NAME':'test', 'GIT_AUTHOR_EMAIL':'test@example.invalid',
-                    'GIT_COMMITTER_NAME':'test', 'GIT_COMMITTER_EMAIL':'test@example.invalid'}
-        self.git(self.root,'init','--bare',str(self.remote))
-        self.git(self.root,'clone',str(self.remote),str(self.repo))
-        self.path=self.repo/'graph.json'; self.path.write_bytes((ROOT/'theorygraph/template.json').read_bytes())
-        (self.repo/'.gitignore').write_text('*.lock\n')
-        self.git(self.repo,'add','graph.json','.gitignore'); self.git(self.repo,'commit','-m','initial')
-        self.git(self.repo,'push','-u','origin','HEAD')
-        self.cli('register','demo',str(self.path)); self.cli('register','other',str(self.path))
-
-    def git(self, cwd, *args):
-        r=subprocess.run(['git','-C',str(cwd),*args],capture_output=True,text=True,env=self.env)
-        self.assertEqual(r.returncode,0,r.stderr); return r.stdout.strip()
+        self.root = Path(self.tmp.name); self.path = self.root/'graph.json'
+        self.env = {**os.environ, 'TG_REGISTRY':str(self.root/'registry.json')}
+        self.path.write_bytes((ROOT/'theorygraph/template.json').read_bytes())
 
     def cli(self,*args,ok=True):
-        r=subprocess.run([sys.executable,str(TG),*args],capture_output=True,text=True,env=self.env)
+        r=subprocess.run([sys.executable,str(TG),'--file',str(self.path),*args],capture_output=True,text=True,env=self.env)
         self.assertEqual(r.returncode==0,ok,r.stderr); return r
 
-    def test_default_off_per_project_and_every_write_path(self):
-        self.cli('-p','demo','entity','add','a','A','--reason','local')
-        self.assertEqual(self.git(self.remote,'log','-1','--format=%s'),'initial')
-        self.cli('-p','demo','config','autosync','on')
-        reg=json.loads((self.root/'registry.json').read_text())
-        self.assertTrue(reg['settings']['demo']['autosync']); self.assertNotIn('other',reg['settings'])
-        unrelated=self.repo/'unrelated.txt'; unrelated.write_text('unrelated')
-        result=self.cli('-p','demo','set','a','--text','Changed','--reason','typed ruling')
-        self.assertEqual(len(result.stdout.splitlines()),1); self.assertIn('synced',result.stdout)
-        self.assertEqual(self.git(self.remote,'log','-1','--format=%s'),'typed ruling')
-        self.assertEqual(self.git(self.repo,'ls-files','unrelated.txt'),'')
-        self.assertEqual(unrelated.read_text(),'unrelated')
-        self.cli('-p','demo','reviewed','a','--reason','review acknowledgement')
-        self.assertEqual(self.git(self.remote,'log','-1','--format=%s'),'review acknowledgement')
-        ops=self.root/'ops.json'; ops.write_text(json.dumps([{'op':'update','collection':'nodes','id':'a','value':{'text':'Applied'}}]))
-        self.cli('-p','demo','apply',str(ops),'--reason','batch ruling')
-        self.assertEqual(self.git(self.remote,'log','-1','--format=%s'),'batch ruling')
-        before=self.path.read_bytes(); head=self.git(self.remote,'rev-parse','HEAD')
-        self.cli('-p','demo','set','a','--text','Dry','--reason','not written','--dry-run')
-        self.assertEqual(before,self.path.read_bytes());self.assertEqual(head,self.git(self.remote,'rev-parse','HEAD'))
-        self.cli('-p','demo','config','autosync','off')
-        self.cli('-p','demo','set','a','--text','Local','--reason','disabled')
-        self.assertEqual(head,self.git(self.remote,'rev-parse','HEAD'))
-
-    def test_saved_evaluation_syncs_and_requires_reason(self):
-        self.cli('-p','demo','config','autosync','on')
-        self.cli('-p','demo','entity','add','a','A','--reason','subject')
-        self.cli('-p','demo','claim','add','c','C','--about','a','--reason','claim')
+    def test_saved_evaluation_requires_reason(self):
+        self.cli('entity','add','a','A','--reason','subject')
+        self.cli('claim','add','c','C','--about','a','--reason','claim')
         ops=self.root/'trace.json';ops.write_text(json.dumps([{'op':'add','collection':'nodes','id':'t','value':{'type':'trace','status':'recorded','text':'Synthetic','trace':{'events':[]}}}]))
-        self.cli('-p','demo','apply',str(ops),'--reason','trace')
+        self.cli('apply',str(ops),'--reason','trace')
         before=self.path.read_bytes()
-        self.cli('-p','demo','evaluate','c','t','--save','result',ok=False)
+        self.cli('evaluate','c','t','--save','result',ok=False)
         self.assertEqual(self.path.read_bytes(),before)
-        r=self.cli('-p','demo','evaluate','c','t','--save','result','--reason','save evidence')
+        r=self.cli('evaluate','c','t','--save','result','--reason','save evidence')
         self.assertEqual(len(r.stdout.splitlines()),1)
-        self.assertEqual(self.git(self.remote,'log','-1','--format=%s'),'save evidence')
         self.assertEqual(graph.load(self.path)['nodes']['result']['result']['outcome'],'not-checked')
-
-    def test_unrelated_staged_work_is_never_committed(self):
-        self.cli('-p','demo','config','autosync','on')
-        (self.repo/'unrelated.txt').write_text('Keep staged')
-        self.git(self.repo,'add','unrelated.txt')
-        r=self.cli('-p','demo','entity','add','a','A','--reason','local ruling')
-        self.assertIn('synced',r.stdout)
-        self.assertEqual(self.git(self.repo,'diff','--cached','--name-only'),'unrelated.txt')
-        self.assertEqual(self.git(self.repo,'show','--pretty=','--name-only','HEAD'),'graph.json')
-
-    def test_conflict_keeps_local_write_and_reports_file(self):
-        self.cli('-p','demo','config','autosync','on')
-        other=self.root/'other'; self.git(self.root,'clone',str(self.remote),str(other))
-        remote=json.loads((other/'graph.json').read_text());remote['revision']=99
-        (other/'graph.json').write_text(json.dumps(remote));self.git(other,'commit','-am','remote change');self.git(other,'push')
-        remote_head=self.git(self.remote,'rev-parse','HEAD')
-        r=self.cli('-p','demo','entity','add','a','Local','--reason','local change',ok=False)
-        self.assertIn('saved locally',r.stderr); self.assertIn('Conflicting files: graph.json',r.stderr)
-        self.assertIn('a',graph.load(self.path)['nodes'])
-        self.assertEqual(self.git(self.repo,'log','-1','--format=%s'),'local change')
-        self.assertEqual(self.git(self.remote,'rev-parse','HEAD'),remote_head)
-        self.assertFalse((self.repo/'.git/rebase-merge').exists())
+        self.assertEqual(graph.load(self.path)['changes'][-1]['reason'],'save evidence')

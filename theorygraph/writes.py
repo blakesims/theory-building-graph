@@ -4,7 +4,7 @@ import fcntl
 import json
 import os
 from pathlib import Path
-from . import projects, locks
+from . import locks
 
 TYPED = {'claim', 'question', 'entity', 'operation', 'source', 'withdraw', 'retire', 'answer', 'edge', 'set'}
 KINDS = ('verbatim', 'paraphrase', 'session-paraphrase', 'assistant-proposal')
@@ -171,27 +171,7 @@ def build(g, a):
     return ops, summary
 
 
-def synchronize(path, message=None):
-    with open(locks.lock_path(path, '.write.lock'), 'a') as lock:
-        fcntl.flock(lock, fcntl.LOCK_EX)
-        return projects.sync(path, message)
-
-
-def sync_result(path, reason, result, project=None, no_sync=False):
-    if projects.autosync(path, project):
-        if no_sync:
-            # The write is saved; the operator syncs the whole burst with one `tg sync`.
-            result['sync_skipped'] = True
-            return result
-        try:
-            synced = projects.sync(path, reason)
-            result['sync'] = {'committed': synced['committed'], 'pushed': True}
-        except projects.ProjectError as exc:
-            raise projects.ProjectError(f'r{result["revision"]} saved locally; sync failed: {exc}') from exc
-    return result
-
-
-def evaluate_and_save(path, a, project=None):
+def evaluate_and_save(path, a):
     from . import graph, tracecheck
     with open(locks.lock_path(path, '.write.lock'), 'a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX)
@@ -199,11 +179,11 @@ def evaluate_and_save(path, a, project=None):
         checked = tracecheck.evaluate(g, graph.resolve(g, a.claim), graph.resolve(g, a.trace))
         result = graph.save_evaluation(path, g, checked, a.save or None, a.actor, a.reason)
         result.update(revision=result['saved_revision'], summary='saved evaluation ' + result['saved_as'])
-        return sync_result(path, a.reason, result, project, getattr(a, 'no_sync', False))
+        return result
 
 
-def execute(path, a, project=None):
-    """Serialize CLI writers through compile/apply/sync; apply retains its own lock."""
+def execute(path, a):
+    """Serialize CLI writers through compile/apply; apply retains its own lock."""
     from . import graph
 
     def run():
@@ -226,7 +206,7 @@ def execute(path, a, project=None):
         result = graph.apply(path, ops, a.actor, a.reason, expected)
         result['summary'] = summary
         if a.cmd == 'reviewed': result['reviewed'] = list(dict.fromkeys(a.ids))
-        return sync_result(path, a.reason, result, project, getattr(a, 'no_sync', False))
+        return result
 
     if a.dry_run: return run()
     with open(locks.lock_path(path, '.write.lock'), 'a') as lock:

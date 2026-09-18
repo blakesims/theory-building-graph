@@ -53,7 +53,7 @@ tg set ID --status S --reason "..."
 tg set ID --text "text" --reason "..."
 ```
 
-All typed writes accept `--dry-run`, which reports effects without writing or syncing.
+All typed writes accept `--dry-run`, which reports effects without writing.
 Node additions also accept `--title`, `--author` and `--kind`. Claims additionally
 accept `--governs OP ...`, `--source SRC`, `--answers Q`, `--coverage full|partial`,
 `--revises OLD`, `--withdraw-old`, `--raises Q ...` and `--supports CLAIM ...`.
@@ -106,11 +106,8 @@ not neighbor bodies. A filtered `review` is not a complete incident inventory.
 `evaluate CLAIM TRACE` checks only the supported finite pattern. Saving requires
 `--save [ID] --reason "..."`. Do not invent results or infer unreturned fields.
 
-`tg config autosync on|off` sets per-project commit/push behavior, default off.
-Autosync uses the write reason as its commit message and pulls with rebase before
-pushing. If syncing fails, the write remains local and the error says so. Resolve
-conflicts before retrying `tg sync`. It never forces a push. The global `--no-sync`
-flag skips the sync for one write; run `tg sync` once after a burst.
+`tg` only writes the local graph file. It never commits, pulls or pushes; version
+the graph with the repository that contains it.
 
 Respect read-only, proposal-only and one-step requests. A read budget includes
 preparation and filesystem probes. If asked to show a command first, show the exact

@@ -21,9 +21,8 @@ revisions. In other words: saving an interpretation does not establish its truth
    independent unknowns open. Review potential conflicts before clearing their
    flags with `reviewed`. Use `impact`, `readiness` or `check` when relevant, not as
    mandatory ceremony after every sentence.
-5. **Finish.** With autosync enabled, successful writes commit and push quietly.
-   Otherwise use `tg sync` when a durable remote copy is wanted. A sync failure
-   leaves the local write intact. End with one useful question, or stop when done.
+5. **Finish.** Writes land in the local graph file only; committing it is left to
+   the user. End with one useful question, or stop when done.
 
 One viewer serves every registered graph: `http://127.0.0.1:8767/?p=PROJECT#ID`, with a
 switcher on `p`. Omit `?p=` for the graph the server was started on. Port 8766 belongs to the separate

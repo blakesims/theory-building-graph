@@ -1,5 +1,5 @@
 """Noise reduction for the agent-facing CLI: check presentation, evidence filtering,
-fingerprint tolerance for review commentary, dry runs, reviewed, frontier, where, sync."""
+fingerprint tolerance for review commentary, dry runs, reviewed, frontier, where."""
 import copy, json, os, subprocess, sys, tempfile, unittest
 from pathlib import Path
 from tests.paths import RepositoryPath as Path
@@ -155,36 +155,6 @@ class Where(unittest.TestCase):
                 env={**os.environ,'TG_REGISTRY':str(reg)};r=subprocess.run([sys.executable,TG,'--file',str(p),'where','--json'],capture_output=True,text=True,env=env)
                 self.assertEqual(r.returncode,0);self.assertEqual(json.loads(r.stdout)['graph'],str(p.resolve()))
             finally:projects.REGISTRY=old
-
-
-class Sync(unittest.TestCase):
-    def git(self,cwd,*args):
-        r=subprocess.run(['git','-C',str(cwd),*args],capture_output=True,text=True);self.assertEqual(r.returncode,0,r.stderr);return r.stdout.strip()
-    def setUp(self):
-        self.tmp=tempfile.TemporaryDirectory();t=Path(self.tmp.name);self.bare=t/'remote.git';self.git(t,'init','-q','--bare',str(self.bare))
-        self.env={**os.environ,'GIT_AUTHOR_NAME':'t','GIT_AUTHOR_EMAIL':'t@x','GIT_COMMITTER_NAME':'t','GIT_COMMITTER_EMAIL':'t@x'};os.environ.update({k:v for k,v in self.env.items() if k.startswith('GIT_')})
-        self.a=t/'a';self.git(t,'clone','-q',str(self.bare),str(self.a));self.git(self.a,'config','user.email','t@x');self.git(self.a,'config','user.name','t')
-        self.graph=self.a/'theory'/'graph.json';self.graph.parent.mkdir();self.graph.write_text(json.dumps(fixture(['A'])))
-        self.git(self.a,'add','.');self.git(self.a,'commit','-q','-m','init');self.git(self.a,'push','-q','-u','origin','HEAD')
-    def tearDown(self):self.tmp.cleanup()
-    def test_commit_message_from_audit_and_push(self):
-        g.apply(self.graph,[{'op':'update','collection':'nodes','id':'A','value':{'text':'A2'}}],'agent','Recorded the decision')
-        r=projects.sync(self.graph);self.assertEqual(r['message'],'Recorded the decision');self.assertIsNotNone(r['committed'])
-        self.assertEqual(self.git(self.bare,'log','-1','--format=%s'),'Recorded the decision')
-        self.assertEqual(self.git(self.a,'status','--porcelain','--untracked-files=no'),'')  # only the gitignored-in-practice lock file is untracked
-        again=projects.sync(self.graph,'unused');self.assertIsNone(again['committed'])
-    def test_not_a_repo(self):
-        with tempfile.TemporaryDirectory() as t:
-            p=Path(t)/'graph.json';p.write_text(json.dumps(fixture(['A'])))
-            with self.assertRaises(projects.ProjectError):projects.sync(p)
-            code,_,err=run('--file',str(p),'sync');self.assertEqual(code,1);self.assertIn('not inside a git repository',err)
-    def test_conflict_aborts_rebase(self):
-        b=Path(self.tmp.name)/'b';self.git(Path(self.tmp.name),'clone','-q',str(self.bare),str(b));self.git(b,'config','user.email','t@x');self.git(b,'config','user.name','t')
-        g.apply(b/'theory'/'graph.json',[{'op':'update','collection':'nodes','id':'A','value':{'text':'from b'}}],'agent','b edit');self.git(b,'commit','-q','-am','b edit');self.git(b,'push','-q')
-        g.apply(self.graph,[{'op':'update','collection':'nodes','id':'A','value':{'text':'from a'}}],'agent','a edit');self.git(self.a,'commit','-q','-am','a edit')
-        with self.assertRaises(projects.ProjectError) as ctx:projects.sync(self.graph)
-        self.assertIn('theory/graph.json',str(ctx.exception));self.assertFalse((self.a/'.git'/'rebase-merge').exists());self.assertFalse((self.a/'.git'/'rebase-apply').exists())
-        self.assertEqual(self.git(self.a,'log','-1','--format=%s'),'a edit')
 
 
 if __name__=='__main__':unittest.main()

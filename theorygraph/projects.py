@@ -113,65 +113,6 @@ def where(graph_path, selected_by, project=None):
     return {'engine': str(HERE.parent), 'registry': str(REGISTRY), 'project': name, 'graph': str(graph_path), 'selected_by': selected_by, 'git_root': git_root(graph_path)}
 
 
-def project_name(graph_path, preferred=None):
-    reg = read_registry(); target = Path(graph_path).resolve()
-    if preferred and preferred in reg['projects'] and Path(reg['projects'][preferred]).resolve() == target:
-        return preferred
-    return next((name for name, path in reg['projects'].items() if Path(path).resolve() == target), None)
-
-
-def autosync(graph_path, project=None):
-    name = project_name(graph_path, project)
-    return read_registry().get('settings', {}).get(name, {}).get('autosync', False) is True
-
-
-def configure_autosync(graph_path, enabled, project=None):
-    name = project_name(graph_path, project)
-    if name is None: raise ProjectError('Autosync requires a registered project. Use tg register NAME PATH first.')
-    reg = read_registry()
-    reg.setdefault('settings', {}).setdefault(name, {})['autosync'] = enabled
-    write_registry(reg)
-    return {'project': name, 'autosync': 'on' if enabled else 'off'}
-
-
 def git_root(path):
     r = subprocess.run(['git', '-C', str(Path(path).resolve().parent), 'rev-parse', '--show-toplevel'], capture_output=True, text=True)
     return r.stdout.strip() if r.returncode == 0 else None
-
-
-def sync(graph_path, message=None):
-    """Commit the graph file if it changed, pull with rebase when behind, push. Never forces.
-
-    Only the graph is staged and committed. Autostash preserves unrelated dirty
-    work during rebase. On conflict the local commit is kept for hand merging.
-    """
-    graph_path = Path(graph_path).resolve(); root = git_root(graph_path)
-    if not root: raise ProjectError(f'{graph_path} is not inside a git repository')
-    steps = []
-    def git(*args, check=True):
-        r = subprocess.run(['git', '-C', root, *args], capture_output=True, text=True)
-        steps.append({'command': 'git '+' '.join(args), 'exit_code': r.returncode, 'output': (r.stdout+r.stderr).strip()[-2000:]})
-        if check and r.returncode: raise ProjectError(f'git {args[0]} failed: '+(r.stderr or r.stdout).strip())
-        return r
-    rel = str(graph_path.relative_to(Path(root).resolve()))
-    committed = None
-    if git('status', '--porcelain', '--', rel).stdout.strip():
-        if message is None:
-            try: changes = json.loads(graph_path.read_text()).get('changes', []); message = changes[-1]['reason'] if changes else f'Update {rel}'
-            except (OSError, ValueError, KeyError, TypeError): message = f'Update {rel}'
-        git('add', '--', rel); git('commit', '-q', '-m', message, '--', rel)
-        committed = git('rev-parse', '--short', 'HEAD').stdout.strip()
-    # Pull only when the upstream has commits we lack: a no-op rebase still trips
-    # repositories whose hooks refuse any rebase of their main branch.
-    git('fetch')
-    behind = git('rev-list', '--count', 'HEAD..@{u}', check=False)
-    r = git('pull', '--rebase', '--autostash', check=False) if behind.returncode or behind.stdout.strip() != '0' else behind
-    if r.returncode:
-        conflicts = git('diff', '--name-only', '--diff-filter=U', check=False).stdout.strip()
-        git('rebase', '--abort', check=False)
-        raise ProjectError(f'Pull/rebase failed; local commit kept. Conflicting files: {conflicts or "none reported"}. Repository: {root}, graph: {rel}. '+(r.stderr or r.stdout).strip()[-800:])
-    conflicts = git('diff', '--name-only', '--diff-filter=U').stdout.strip()
-    if conflicts:
-        raise ProjectError(f'Autostash restore conflicted; not pushed. Conflicting files: {conflicts}. Repository: {root}. Resolve the working tree before retrying sync.')
-    git('push')
-    return {'repository': root, 'graph': rel, 'committed': committed, 'message': message if committed else None, 'steps': steps}

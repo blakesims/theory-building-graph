@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Removed sync/autosync; tg only writes the local graph file. `tg sync`, `tg config autosync` and `--no-sync` are gone.
+
 ## 0.2.3
 
 - Report current claims and questions whose dependency, answer or revision targets are withdrawn or retired.

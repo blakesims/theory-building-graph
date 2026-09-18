@@ -48,16 +48,11 @@ writing. Claims default to proposed until affirmed. `--revises OLD --withdraw-ol
 records a replacement and preserves its history. `tg apply` remains the JSON escape
 hatch. A question's declared status is authoritative, not inferred from metadata.
 
-`tg -p example config autosync on` makes successful writes commit and push with the
-write reason. Default is off. It pulls with rebase before pushing and never forces.
-A sync failure leaves the write saved locally and reports the problem. `--no-sync`
-skips the sync for one write; run `tg sync` once after a burst of writes.
-
 ## Graph location and reference example
 
 Each graph lives in the git repo of the program it describes, not in this tool's
 repo. Use `tg new <name> --dir DIR` or `tg register <name> <path>` to select that
-location. `tg sync` commits the graph there.
+location. `tg` only writes the local graph file; commit it with the rest of that repo.
 
 Start from the Morphisms design graph, `docs/design/theory/graph.json` in
 [blakesims/morphisms](https://github.com/blakesims/morphisms), as the reference
