@@ -1,74 +1,104 @@
 #!/usr/bin/env python3
-"""Live browser smoke on an isolated graph. Requires npx agent-browser@0.27.0."""
-import hashlib,json,socket,subprocess,sys,tempfile,time,urllib.request
+"""Live browser smoke test of the viewer on a temporary synthetic graph.
+
+Requires Node and `npx agent-browser@0.27.0`; not part of `make test`.
+Run with `make browser-smoke` or `python3 -m tests.acceptance.browser_smoke [--out DIR]`.
+Screenshots and the command log go to --out (default: a temporary directory).
+"""
+import argparse, json, os, shutil, socket, subprocess, sys, tempfile, time, urllib.request
 from pathlib import Path
-import sys as _path_sys
-_path_sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
-from tests.paths import RepositoryPath as Path
-ROOT=Path(__file__).resolve().parents[2]
-sys.path.insert(0,str(ROOT))
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
 from theorygraph import graph
-OUT=ROOT/'reviews'/'browser'/'current';OUT.mkdir(parents=True,exist_ok=True)  # original 2026-09-15 r12 run stays at reviews/browser/ (bound by S08)
-log=[]
-def browser(*args):
-    cmd=['npx','--yes','agent-browser@0.27.0','--session','theory-smoke',*args]
-    r=subprocess.run(cmd,capture_output=True,text=True,timeout=45)
-    log.append({'command':cmd,'exit_code':r.returncode,'stdout':r.stdout,'stderr':r.stderr})
-    (OUT/'commands.json').write_text(json.dumps(log,indent=2)+'\n')
-    if r.returncode:raise RuntimeError(r.stderr or r.stdout)
+
+log = []
+
+
+def browser(out, *args):
+    cmd = ['npx', '--yes', 'agent-browser@0.27.0', '--session', 'theory-smoke', *args]
+    r = subprocess.run(cmd, capture_output=True, text=True, timeout=45)
+    log.append({'command': cmd, 'exit_code': r.returncode, 'stdout': r.stdout, 'stderr': r.stderr})
+    (out/'commands.json').write_text(json.dumps(log, indent=2)+'\n')
+    if r.returncode: raise RuntimeError(r.stderr or r.stdout)
     return r.stdout
-before=(ROOT/'projects'/'morphisms'/'graph.json').read_bytes()
-with tempfile.TemporaryDirectory(prefix='theory-browser-') as d:
-    path=Path(d)/'graph.json';path.write_bytes(before)
-    sock=socket.socket();sock.bind(('127.0.0.1',0));port=sock.getsockname()[1];sock.close()
-    proc=subprocess.Popen([sys.executable,str(ROOT/'tg'),'--file',str(path),'serve','--port',str(port)],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
-    url=f'http://127.0.0.1:{port}'
-    try:
-        for _ in range(100):
-            try:urllib.request.urlopen(url+'/api/status',timeout=1);break
-            except OSError:time.sleep(.05)
-        browser('open',url)
-        browser('wait','--text','Live · r'+str(json.loads(before)['revision']))
-        browser('snapshot','-i')
-        seed=json.loads(before)
-        question=sorted(i for i,n in seed['nodes'].items() if n['type']=='question' and (n.get('meta') or {}).get('review_state','current')!='historical')[0]
-        expected=json.load(urllib.request.urlopen(url+'/api/readiness?id='+question,timeout=5))
-        browser('fill','#search',question)
-        browser('wait','--fn',"document.querySelector('#results button') !== null")
-        browser('click','#results button')
-        browser('wait','--text','Readiness:')
-        browser('snapshot','-i')
-        body=browser('get','text','#detail')
-        assert f"Readiness: {expected['readiness']} · Resolution: {expected['resolution']}" in body,body
-        browser('find','role','button','click','--name','Show affected dependencies')
-        browser('wait','--text','Declared dependency impact')
-        browser('find','role','button','click','--name','Inspect checks')
-        browser('wait','--text','Findings about this node')
-        browser('screenshot',str(OUT/'readiness.png'))
-        original=graph.load(path);anchor=next(k for k,v in original['nodes'].items() if v['type']=='entity')
-        edits=[{'op':'add','collection':'nodes','id':'ui-observability-fixture','value':{'type':'question','status':'open','text':'SYNTHETIC: can the user see this new question?','meta':{'synthetic':True,'answer_shape':'verdict'}}}, {'op':'add','collection':'edges','id':'ui-fixture-about','value':{'type':'about','from':'ui-observability-fixture','to':anchor}}]
-        (OUT/'edits.json').write_text(json.dumps(edits,indent=2)+'\n')
-        r=subprocess.run([sys.executable,str(ROOT/'tg'),'--file',str(path),'apply',str(OUT/'edits.json'),'--actor','browser-smoke','--reason','Synthetic visual observability check','--expect',str(original['revision']),'--json'],capture_output=True,text=True)
-        log.append({'command':['graph.py','--file','TEMP_GRAPH','apply','reviews/browser/edits.json'],'exit_code':r.returncode,'stdout':r.stdout,'stderr':r.stderr});assert r.returncode==0,r.stderr
-        browser('wait','--text',f"Live · r{original['revision']+1}")
-        browser('fill','#search','ui-observability-fixture')
-        browser('wait','--fn',"document.querySelector('#results button')?.textContent.includes('ui-observability-fixture')")
-        browser('click','#results button')
-        browser('wait','--text','SYNTHETIC: can the user see this new question?')
-        browser('snapshot','-i')
-        browser('screenshot',str(OUT/'live-change.png'))
-        browser('click','#history-button')
-        browser('wait','--text','Synthetic visual observability check')
-        history=browser('get','text','#activity-body');assert 'ui-observability-fixture' in history and 'ui-fixture-about' in history
-        browser('screenshot',str(OUT/'change-history.png'))
-        browser('click','#theme'); browser('click','#theme')
-        browser('wait','--fn',"document.documentElement.dataset.theme==='dark'")
-        browser('screenshot',str(OUT/'dark-mode.png'))
-        assert (ROOT/'projects'/'morphisms'/'graph.json').read_bytes()==before
-        (OUT/'receipt.json').write_text(json.dumps({'status':'completed','passed':True,'synthetic':True,'graph_revision':original['revision'],'live_graph_unchanged':True,'scope':'Browser integration on isolated graph: search, question resolution, impact, scoped findings, live add+edge update, history and dark theme. Not an LLM or design evaluation.','files_sha256':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in [ROOT/'theorygraph'/'viewer'/'index.html',ROOT/'theorygraph'/'graph.py',OUT/'commands.json',OUT/'edits.json']},'checks':['resolution-visible','impact-visible','findings-visible','revision-live-update','new-node-findable','node-and-edge-history','live-data-unchanged'],'question':question,'expected_resolution':expected['resolution'],'screenshots':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in [OUT/'readiness.png',OUT/'live-change.png',OUT/'change-history.png',OUT/'dark-mode.png']}},indent=2)+'\n')
-        print('Browser smoke passed:',OUT/'receipt.json')
-    finally:
-        browser('close');proc.terminate();proc.wait(timeout=10)
-        receipt=OUT/'receipt.json'
-        if receipt.exists():
-            result=json.loads(receipt.read_text());result['files_sha256']['commands.json']=hashlib.sha256((OUT/'commands.json').read_bytes()).hexdigest();receipt.write_text(json.dumps(result,indent=2)+'\n')
+
+
+def tg(path, *args):
+    r = subprocess.run([sys.executable, str(ROOT/'tg'), '--file', str(path), *args], capture_output=True, text=True)
+    if r.returncode: raise RuntimeError(r.stderr or r.stdout)
+    return r.stdout
+
+
+def build_graph(path):
+    """A small synthetic graph: one entity, one claim, one open question that depends on the claim."""
+    path.write_bytes((ROOT/'theorygraph'/'template.json').read_bytes())
+    tg(path, 'entity', 'add', 'owner', 'Owner', '--reason', 'Smoke anchor')
+    tg(path, 'claim', 'add', 'owner-approves', 'The owner approves releases.', '--about', 'owner', '--status', 'accepted', '--reason', 'Smoke claim')
+    tg(path, 'question', 'add', 'release-cadence', 'How often are releases cut?', '--about', 'owner', '--depends-on', 'owner-approves', '--reason', 'Smoke question')
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--out', type=Path, default=None, help='Directory for screenshots and the command log')
+    args = parser.parse_args()
+    with tempfile.TemporaryDirectory(prefix='theory-browser-') as d:
+        out = args.out or Path(d)/'out'
+        out.mkdir(parents=True, exist_ok=True)
+        path = Path(d)/'graph.json'
+        build_graph(path)
+        seed = graph.load(path)
+        sock = socket.socket(); sock.bind(('127.0.0.1', 0)); port = sock.getsockname()[1]; sock.close()
+        # An empty temporary registry keeps the viewer on this graph only.
+        env = {**os.environ, 'TG_REGISTRY': str(Path(d)/'registry.json')}
+        proc = subprocess.Popen([sys.executable, str(ROOT/'tg'), '--file', str(path), 'serve', '--port', str(port)],
+                                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, env=env)
+        url = f'http://127.0.0.1:{port}'
+        try:
+            for _ in range(100):
+                try: urllib.request.urlopen(url+'/api/status', timeout=1); break
+                except OSError: time.sleep(.05)
+            browser(out, 'open', url)
+            browser(out, 'wait', '--text', 'Live · r'+str(seed['revision']))
+            question = 'release-cadence'
+            expected = json.load(urllib.request.urlopen(url+'/api/readiness?id='+question, timeout=5))
+            browser(out, 'fill', '#search', question)
+            browser(out, 'wait', '--fn', "document.querySelector('#results button') !== null")
+            browser(out, 'click', '#results button')
+            browser(out, 'wait', '--text', 'Readiness:')
+            body = browser(out, 'get', 'text', '#detail')
+            assert f"Readiness: {expected['readiness']} · Resolution: {expected['resolution']}" in body, body
+            browser(out, 'find', 'role', 'button', 'click', '--name', 'Show affected dependencies')
+            browser(out, 'wait', '--text', 'Declared dependency impact')
+            browser(out, 'find', 'role', 'button', 'click', '--name', 'Inspect checks')
+            browser(out, 'wait', '--text', 'Findings about this node')
+            browser(out, 'screenshot', str(out/'readiness.png'))
+            edits = [{'op': 'add', 'collection': 'nodes', 'id': 'ui-observability-fixture', 'value': {'type': 'question', 'status': 'open', 'text': 'SYNTHETIC: can the user see this new question?'}},
+                     {'op': 'add', 'collection': 'edges', 'id': 'ui-fixture-about', 'value': {'type': 'about', 'from': 'ui-observability-fixture', 'to': 'owner'}}]
+            (out/'edits.json').write_text(json.dumps(edits, indent=2)+'\n')
+            tg(path, 'apply', str(out/'edits.json'), '--actor', 'browser-smoke', '--reason', 'Synthetic visual observability check', '--expect', str(seed['revision']))
+            browser(out, 'wait', '--text', f"Live · r{seed['revision']+1}")
+            browser(out, 'fill', '#search', 'ui-observability-fixture')
+            browser(out, 'wait', '--fn', "document.querySelector('#results button')?.textContent.includes('ui-observability-fixture')")
+            browser(out, 'click', '#results button')
+            browser(out, 'wait', '--text', 'SYNTHETIC: can the user see this new question?')
+            browser(out, 'screenshot', str(out/'live-change.png'))
+            browser(out, 'click', '#history-button')
+            browser(out, 'wait', '--text', 'Synthetic visual observability check')
+            history = browser(out, 'get', 'text', '#activity-body')
+            assert 'ui-observability-fixture' in history and 'ui-fixture-about' in history, history
+            browser(out, 'screenshot', str(out/'change-history.png'))
+            browser(out, 'click', '#theme'); browser(out, 'click', '#theme')
+            browser(out, 'wait', '--fn', "document.documentElement.dataset.theme==='dark'")
+            browser(out, 'screenshot', str(out/'dark-mode.png'))
+            print('Browser smoke passed' + (f': {out}' if args.out else ''))
+        finally:
+            try: browser(out, 'close')
+            except RuntimeError: pass
+            proc.terminate(); proc.wait(timeout=10)
+    return 0
+
+
+if __name__ == '__main__':
+    if not shutil.which('npx'): sys.exit('browser_smoke needs npx (Node.js) for agent-browser')
+    sys.exit(main())

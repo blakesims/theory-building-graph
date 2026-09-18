@@ -3,7 +3,6 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
-from tests.paths import RepositoryPath as Path
 from theorygraph import replay
 
 A=lambda name:{'$arg':name}
@@ -159,16 +158,6 @@ class SessionReplayTests(unittest.TestCase):
   self.assertEqual(formalcheck.evaluate_cardinality(pattern,reports,True)['outcome'],'satisfies')
   reports.append({'subject':{'host':'a','number':8080},'target':'bob'})
   self.assertEqual(formalcheck.evaluate_cardinality(pattern,reports,True)['outcome'],'violates')
- def test_S06_S07_packets_same_facts_and_no_fake_trial(self):
-  from tests.acceptance import session_evaluation as se
-  with tempfile.TemporaryDirectory() as d:
-   r=se.prepare(d);data=json.loads((Path(d)/'graph-arm.json').read_text());prose=(Path(d)/'prose-arm.md').read_text()
-   for fact in data['facts']:
-    self.assertIn('## '+fact['id'],prose)
-    for key,val in fact.items():
-     if key!='id':self.assertIn(key+': '+(json.dumps(val,ensure_ascii=False) if not isinstance(val,str) else val),prose)
-   receipt=json.loads((Path(d)/'receipt-template.json').read_text());self.assertEqual(receipt['status'],'not-run');self.assertFalse(se.validate_receipt(receipt)['valid'])
-   self.assertEqual(r['status'],'prepared-not-run')
  def test_S08_cli_read_then_authorized_single_batch(self):
   import subprocess,sys; from tests.acceptance import session_fixtures
   g,steps=session_fixtures.replacement_session()

@@ -1,4 +1,0 @@
-[
- {"op":"update","collection":"nodes","id":"atomic-replacement-question","value":{"status":"answered","meta":{"review_state":"current"}}},
- {"op":"update","collection":"nodes","id":"steward-always-chooses-question","value":{"status":"answered","meta":{"review_state":"current"}}}
-]

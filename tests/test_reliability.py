@@ -5,7 +5,6 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
-from tests.paths import RepositoryPath as Path
 from theorygraph import graph
 
 ROOT = Path(__file__).resolve().parents[1]

@@ -1,7 +1,6 @@
 """Regressions from independent Fable 5.1 CLI probes; isolated graphs only."""
 import copy,json,tempfile,unittest
 from pathlib import Path
-from tests.paths import RepositoryPath as Path
 from theorygraph import graph
 from theorygraph import dependency
 from tests.test_dependency import fixture,edge

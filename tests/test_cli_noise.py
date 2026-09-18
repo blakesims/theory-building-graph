@@ -2,7 +2,6 @@
 fingerprint tolerance for review commentary, dry runs, reviewed, frontier, where."""
 import copy, json, os, subprocess, sys, tempfile, unittest
 from pathlib import Path
-from tests.paths import RepositoryPath as Path
 from theorygraph import graph as g, dependency as d, tracecheck, projects
 from tests.test_dependency import fixture, edge
 

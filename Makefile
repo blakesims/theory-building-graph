@@ -1,15 +1,11 @@
-.PHONY: test acceptance baseline serve check
+.PHONY: test browser-smoke serve check
 
 test:
 	python3 -m unittest discover -s tests -t . -p 'test*.py' -v
-	$(MAKE) acceptance
 
-acceptance:
-	python3 -m tests.acceptance.validate_suite
-	python3 -m tests.acceptance.run --report /tmp/theorygraph-acceptance-report.json
-
-baseline:
-	python3 -m tests.acceptance.baseline_smoke --engine .
+# Live viewer check in a real browser; needs Node (npx agent-browser). Not part of `make test`.
+browser-smoke:
+	python3 -m tests.acceptance.browser_smoke
 
 serve:
 	./tg -p morphisms serve --port 8767

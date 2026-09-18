@@ -1,6 +1,5 @@
 import copy, json, tempfile, unittest
 from pathlib import Path
-from tests.paths import RepositoryPath as Path
 from theorygraph import graph, tracecheck as checker
 
 class TraceChecks(unittest.TestCase):

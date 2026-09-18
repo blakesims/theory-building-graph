@@ -1,8 +1,26 @@
 __pycache__/
 *.pyc
 *.lock
-# Recorded evidence workspaces hash their (empty) lock files; keep those tracked.
-!tests/fixtures/**/*.lock
 build/
 *.egg-info/
 .DS_Store
+
+# internal development notes and AI-trial evidence (kept locally, not published)
+docs/worklog/
+tests/fixtures/
+tests/paths.py
+tests/relocations.json
+tests/test_acceptance_receipt_gate.py
+tests/test_agent_receipts.py
+tests/test_browser_receipt.py
+tests/test_interpretation_receipts.py
+tests/test_maintenance_protocol.py
+tests/test_maintenance_receipts.py
+tests/test_maintenance_timed_review.py
+tests/test_multiturn_protocol.py
+tests/test_multiturn_receipts.py
+tests/test_staged_receipt_gate.py
+tests/acceptance/*
+!tests/acceptance/__init__.py
+!tests/acceptance/browser_smoke.py
+!tests/acceptance/session_fixtures.py
